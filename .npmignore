@@ -1,0 +1,17 @@
+/.vscode
+/src
+/tests
+api-extractor.json
+tsconfig.json
+tsconfig.es5.json
+tsconfig.es2015.json
+ngv.config.json
+
+*.ts
+!*.d.ts
+
+*~
+*.orig
+*.log
+*.spec.js
+*.spec.d.ts

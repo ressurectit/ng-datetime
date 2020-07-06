@@ -1,0 +1,47 @@
+{
+    "compilerOptions":
+    {
+        "target": "es5",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "declaration": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "strict": true,
+        "lib":
+        [
+            "ES2016",
+            "ES2017",
+            "ES2018",
+            "dom"
+        ],
+        "plugins":
+        [
+            {
+                "name": "@angular/language-service"
+            }
+        ]
+    },
+    "files": 
+    [
+        "index.ts"
+    ],
+    "include": 
+    [
+        "src/**/*.ts"
+    ],
+    "exclude":
+    [
+        "node_modules",
+        "dist"
+    ],
+    "angularCompilerOptions":
+    {
+        "fullTemplateTypeCheck": true,
+        "strictTemplates": true,
+        "enableIvy": false
+    }
+}
