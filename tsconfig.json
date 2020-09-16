@@ -11,6 +11,7 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "strict": true,
+        "esModuleInterop": true,
         "lib":
         [
             "ES2016",
@@ -25,14 +26,6 @@
             }
         ]
     },
-    "files": 
-    [
-        "index.ts"
-    ],
-    "include": 
-    [
-        "src/**/*.ts"
-    ],
     "exclude":
     [
         "node_modules",
