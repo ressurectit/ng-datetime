@@ -1,7 +1,21 @@
-import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
+import {Component, ChangeDetectionStrategy, Input, Inject, Optional} from '@angular/core';
 
-import {DateTimeConfiguration} from '../../../datetime';
+import {DateTimeConfiguration} from '../../../misc/datetime.interface';
 import {DateTimeSelector} from '../../misc/datetimeSelector.interface';
+import {DATE_TIME_SELECTOR_CONFIGURATION} from '../../misc/tokens';
+import {InputDateTimeSelectorComponent} from '../inputDateTime/inputDateTime.component';
+
+/**
+ * Default configuration for selector
+ */
+const defaultConfiguration: DateTimeConfiguration<DateTimeSelector> =
+{
+    defaultPeriod: 'day',
+    periodsDefinition:
+    {
+        "day": InputDateTimeSelectorComponent
+    }
+};
 
 /**
  * Component used for displaying and selecting date time
@@ -28,4 +42,9 @@ export class DateTimeSelectorComponent<TDate = any>
      */
     @Input()
     public config: DateTimeConfiguration<DateTimeSelector<TDate>>;
+    
+    //######################### constructor #########################
+    constructor(@Optional() @Inject(DATE_TIME_SELECTOR_CONFIGURATION) protected _options: DateTimeConfiguration<DateTimeSelector<TDate>>)
+    {
+    }
 }

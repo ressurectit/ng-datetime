@@ -1,19 +1,4 @@
 /**
- * Represents time component of datetime
- */
-export const TIME = 'time';
-
-/**
- * Represents date component of datetime
- */
-export const DATE = 'date';
-
-/**
- * Represents date and time component of datetime
- */
-export const DATE_TIME = 'datetime';
-
-/**
  * Represents minute component of datetime
  */
 export const MINUTE = 'minute';
