@@ -104,6 +104,15 @@ export class DateTimeSelectorControlValueAccessor<TDate> implements ControlValue
         this._subscriptions.add(this._selector.touched.subscribe(() => fn()));
     }
 
+    /**
+     * Used for setting control as disabled
+     * @param isDisabled - disabled status to set on the element
+     */
+    public setDisabledState(isDisabled: boolean): void
+    {
+        this._selector.setDisabled(isDisabled);
+    }
+
     //######################### protected methods #########################
 
     /**

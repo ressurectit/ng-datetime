@@ -1,5 +1,5 @@
-import {Component, ChangeDetectionStrategy, Input, Inject, Optional, Type, OnInit, OnDestroy} from '@angular/core';
-import {extend} from '@jscrpt/common';
+import {Component, ChangeDetectionStrategy, Input, Inject, Optional, Type, OnInit, OnDestroy, OnChanges, SimpleChanges} from '@angular/core';
+import {extend, nameof} from '@jscrpt/common';
 import {Observable, Subject, Subscription} from 'rxjs';
 
 import {DateTimeConfiguration, DateTimeValue} from '../../../misc/datetime.interface';
@@ -31,7 +31,7 @@ const defaultConfiguration: DateTimeConfiguration<DateTimeSelector> =
     // styleUrls: ['selector.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnDestroy
+export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges ,OnDestroy
 {
     //######################### protected fields #########################
 
@@ -64,6 +64,11 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnDestroy
      * All subscriptions for active selector
      */
     protected _activeSelectorSubscriptions: Subscription = new Subscription();
+
+    /**
+     * Indication whether is control disabled
+     */
+    protected _disabled: boolean = false;
 
     //######################### public properties #########################
 
@@ -159,6 +164,20 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnDestroy
         this.activeSelectorComponent = this.config.periodsDefinition[this.config.defaultPeriod];
     }
 
+    //######################### public methods - implementation of OnChanges #########################
+    
+    /**
+     * Called when input value changes
+     */
+    public ngOnChanges(changes: SimpleChanges): void
+    {
+        if(nameof<DateTimeSelectorComponent>('format') in changes && this._activeSelector)
+        {
+            this._activeSelector.format = this.format;
+            this._activeSelector.invalidateVisuals();
+        }
+    }
+
     //######################### public methods - implementation of OnDestroy #########################
     
     /**
@@ -182,7 +201,26 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnDestroy
 
         this._activeSelectorSubscriptions.unsubscribe();
         this._activeSelectorSubscriptions = new Subscription();
+
+        this._activeSelectorSubscriptions.add(selector.anyChange.subscribe(() => this._anyChange.next()));
+        this._activeSelectorSubscriptions.add(selector.touched.subscribe(() => this._touched.next()));
+        
+        selector.format = this.format;
+        selector.setValue(this._value);
+        selector.setDisabled(this._disabled);
+
+        selector.invalidateVisuals();
     }
 
     //######################### public methods #########################
+
+    /**
+     * Sets as 'control' disabled
+     * @param disabled - Indication whether sets value as disabled, if omitted it is same as disabled set to true
+     */
+    public setDisabled(disabled: boolean = true): void
+    {
+        this._disabled = disabled;
+        this._activeSelector?.setDisabled(disabled);
+    }
 }

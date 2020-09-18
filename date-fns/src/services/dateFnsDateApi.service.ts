@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {DateApi, DateValue, DateApiObject} from '@anglr/datetime';
-import {isBlank, isPresent} from '@jscrpt/common';
-import {toDate, getDate, setDate, setDay, getDay, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid} from 'date-fns';
+import {isBlank, isPresent, isString} from '@jscrpt/common';
+import {toDate, getDate, setDate, setDay, getDay, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse} from 'date-fns';
 
 import {DATE_FNS_LOCALE} from '../misc/tokens';
 import {DateFnsLocale} from './dateFnsLocale.service';
@@ -43,9 +43,17 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 
     //######################### constructor #########################
     constructor(value: DateValue|Date,
-                protected _localeSvc: DateFnsLocale)
+                protected _localeSvc: DateFnsLocale,
+                format?: string)
     {
-        this._value = this._originalValue = toDate(value);
+        if(isString(value))
+        {
+            this._value = this._originalValue = parse(value, format!, new Date(1970, 0));
+        }
+        else
+        {
+            this._value = this._originalValue = toDate(value);
+        }
     }
 
     //######################### public methods - implementation of DateApiObject #########################
@@ -60,7 +68,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 
     /**
      * Formats date value
-     * @param formatString Format token used for creating formatted string
+     * @param formatString - Format token used for creating formatted string
      */
     public format(formatString: string): string
     {
@@ -91,7 +99,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 
     /**
      * Add months, if count not specified adds 1 month
-     * @param count Number of months count
+     * @param count - Number of months count
      * @returns Itself for fluent API
      */
     public addMonths(count?: number): DateApiObject<Date>
@@ -103,7 +111,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 
     /**
      * Subtract months, if count not specified subtract 1 month
-     * @param count Number of months count
+     * @param count - Number of months count
      * @returns Itself for fluent API
      */
     public subtractMonths(count?: number): DateApiObject<Date>
@@ -137,7 +145,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 
     /**
      * Add weeks, if count not specified adds 1 week
-     * @param count Number of weeks count
+     * @param count - Number of weeks count
      * @returns Itself for fluent API
      */
     public addWeeks(count?: number): DateApiObject<Date>
@@ -149,7 +157,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 
     /**
      * Subtract weeks, if count not specified subtract 1 week
-     * @param count Number of weeks count
+     * @param count - Number of weeks count
      * @returns Itself for fluent API
      */
     public subtractWeeks(count?: number): DateApiObject<Date>
@@ -183,7 +191,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 
     /**
      * Add days, if count not specified adds 1 day
-     * @param count Number of days count
+     * @param count - Number of days count
      * @returns Itself for fluent API
      */
     public addDays(count?: number): DateApiObject<Date>
@@ -195,7 +203,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 
     /**
      * Subtract days, if count not specified subtract 1 day
-     * @param count Number of days count
+     * @param count - Number of days count
      * @returns Itself for fluent API
      */
     public subtractDays(count?: number): DateApiObject<Date>
@@ -219,12 +227,12 @@ class DateFnsDateApiObject implements DateApiObject<Date>
     public dayOfMonth(): number;
     /**
      * Sets day of month one based
-     * @param day Day of month to be set
+     * @param day - Day of month to be set
      */
     public dayOfMonth(day: number): DateApiObject<Date>;
     /**
      * Gets or sets day of month one based
-     * @param day If specified, sets day of month
+     * @param day - If specified, sets day of month
      */
     public dayOfMonth(day?: number): DateApiObject<Date>|number
     {
@@ -244,12 +252,12 @@ class DateFnsDateApiObject implements DateApiObject<Date>
     public dayOfWeek(): number;
     /**
      * Sets day of week zero based, first is monday
-     * @param day Day of week to be set
+     * @param day - Day of week to be set
      */
     public dayOfWeek(day: number): DateApiObject<Date>;
     /**
      * Gets or sets day of week zero based, first is monday
-     * @param day If specified, sets day of week
+     * @param day - If specified, sets day of week
      */
     public dayOfWeek(day?: number): number|DateApiObject<Date>
     {
@@ -265,7 +273,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 
     /**
      * Gets indication whether current value is before 'date'
-     * @param date Date which is this date compared to
+     * @param date - Date which is this date compared to
      */
     public isBefore(date: Date): boolean
     {
@@ -274,7 +282,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 
     /**
      * Gets indication whether current value is after 'date'
-     * @param date Date which is this date compared to
+     * @param date - Date which is this date compared to
      */
     public isAfter(date: Date): boolean
     {
@@ -283,7 +291,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 
     /**
      * Gets number of days between this and provided date
-     * @param date Date which is used for computation of diff against
+     * @param date - Date which is used for computation of diff against
      */
     public diffDays(date: Date): number
     {
@@ -292,7 +300,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 
     /**
      * Compares whether this date is same week as provided date
-     * @param date Date which is used for comparison of same week
+     * @param date - Date which is used for comparison of same week
      */
     public isSameWeek(date: Date): boolean
     {
@@ -301,7 +309,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 
     /**
      * Compares whether this date is same month as provided date
-     * @param date Date which is used for comparison of same month
+     * @param date - Date which is used for comparison of same month
      */
     public isSameMonth(date: Date): boolean
     {
@@ -310,7 +318,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 
     /**
      * Compares whether this date is same day as provided date
-     * @param date Date which is used for comparison of same day
+     * @param date - Date which is used for comparison of same day
      */
     public isSameDay(date: Date): boolean
     {
@@ -335,7 +343,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 
     /**
      * Updates originalValue, if value is not provided originalValue is set to value
-     * @param value Value to be set as original, or null (value will be used as value)
+     * @param value - Value to be set as original, or null (value will be used as value)
      * @returns Itself for fluent API
      */
     public updateOriginal(value?: Date): DateApiObject<Date>
@@ -379,11 +387,12 @@ export class DateFnsDateApi implements DateApi<Date>
 
     /**
      * Gets wrapping object used for manipulation
-     * @param value Value to be converted (parsed) and used for manipulation
+     * @param value - Value to be converted (parsed) and used for manipulation
+     * @param format - Format string used for parsing string value
      */
-    public getValue(value: DateValue|Date): DateApiObject<Date>
+    public getValue(value: DateValue|Date, format?: string): DateApiObject<Date>
     {
-        return new DateFnsDateApiObject(value, this._localeSvc);
+        return new DateFnsDateApiObject(value, this._localeSvc, format);
     }
 
     /**

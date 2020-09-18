@@ -39,9 +39,9 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     //######################### constructor #########################
-    constructor(value: DateValue|moment.Moment)
+    constructor(value: DateValue|moment.Moment, format?: string)
     {
-        this._value = this._originalValue = moment(value);
+        this._value = this._originalValue = moment(value, format);
     }
 
     //######################### public methods - implementation of DateApiObject #########################
@@ -56,7 +56,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
 
     /**
      * Formats date value
-     * @param format Format token used for creating formatted string
+     * @param format - Format token used for creating formatted string
      */
     public format(format: string): string
     {
@@ -87,7 +87,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
 
     /**
      * Add months, if count not specified adds 1 month
-     * @param count Number of months count
+     * @param count - Number of months count
      * @returns Itself for fluent API
      */
     public addMonths(count?: number): DateApiObject<moment.Moment>
@@ -99,7 +99,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
 
     /**
      * Subtract months, if count not specified subtract 1 month
-     * @param count Number of months count
+     * @param count - Number of months count
      * @returns Itself for fluent API
      */
     public subtractMonths(count?: number): DateApiObject<moment.Moment>
@@ -133,7 +133,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
 
     /**
      * Add weeks, if count not specified adds 1 week
-     * @param count Number of weeks count
+     * @param count - Number of weeks count
      * @returns Itself for fluent API
      */
     public addWeeks(count?: number): DateApiObject<moment.Moment>
@@ -145,7 +145,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
 
     /**
      * Subtract weeks, if count not specified subtract 1 week
-     * @param count Number of weeks count
+     * @param count - Number of weeks count
      * @returns Itself for fluent API
      */
     public subtractWeeks(count?: number): DateApiObject<moment.Moment>
@@ -179,7 +179,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
 
     /**
      * Add days, if count not specified adds 1 day
-     * @param count Number of days count
+     * @param count - Number of days count
      * @returns Itself for fluent API
      */
     public addDays(count?: number): DateApiObject<moment.Moment>
@@ -191,7 +191,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
 
     /**
      * Subtract days, if count not specified subtract 1 day
-     * @param count Number of days count
+     * @param count - Number of days count
      * @returns Itself for fluent API
      */
     public subtractDays(count?: number): DateApiObject<moment.Moment>
@@ -215,12 +215,12 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
     public dayOfMonth(): number;
     /**
      * Sets day of month one based
-     * @param day Day of month to be set
+     * @param day - Day of month to be set
      */
     public dayOfMonth(day: number): DateApiObject<moment.Moment>;
     /**
      * Gets or sets day of month one based
-     * @param day If specified, sets day of month
+     * @param day - If specified, sets day of month
      */
     public dayOfMonth(day?: number): DateApiObject<moment.Moment>|number
     {
@@ -240,12 +240,12 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
     public dayOfWeek(): number;
     /**
      * Sets day of week zero based, first is monday
-     * @param day Day of week to be set
+     * @param day - Day of week to be set
      */
     public dayOfWeek(day: number): DateApiObject<moment.Moment>;
     /**
      * Gets or sets day of week zero based, first is monday
-     * @param day If specified, sets day of week
+     * @param day - If specified, sets day of week
      */
     public dayOfWeek(day?: number): number|DateApiObject<moment.Moment>
     {
@@ -261,7 +261,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
 
     /**
      * Gets indication whether current value is before 'date'
-     * @param date Date which is this date compared to
+     * @param date - Date which is this date compared to
      */
     public isBefore(date: moment.Moment): boolean
     {
@@ -270,7 +270,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
 
     /**
      * Gets indication whether current value is after 'date'
-     * @param date Date which is this date compared to
+     * @param date - Date which is this date compared to
      */
     public isAfter(date: moment.Moment): boolean
     {
@@ -279,7 +279,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
 
     /**
      * Gets number of days between this and provided date
-     * @param date Date which is used for computation of diff against
+     * @param date - Date which is used for computation of diff against
      */
     public diffDays(date: moment.Moment): number
     {
@@ -288,7 +288,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
 
     /**
      * Compares whether this date is same week as provided date
-     * @param date Date which is used for comparison of same week
+     * @param date - Date which is used for comparison of same week
      */
     public isSameWeek(date: moment.Moment): boolean
     {
@@ -297,7 +297,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
 
     /**
      * Compares whether this date is same month as provided date
-     * @param date Date which is used for comparison of same month
+     * @param date - Date which is used for comparison of same month
      */
     public isSameMonth(date: moment.Moment): boolean
     {
@@ -306,7 +306,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
 
     /**
      * Compares whether this date is same day as provided date
-     * @param date Date which is used for comparison of same day
+     * @param date - Date which is used for comparison of same day
      */
     public isSameDay(date: moment.Moment): boolean
     {
@@ -331,7 +331,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
 
     /**
      * Updates originalValue, if value is not provided originalValue is set to value
-     * @param value Value to be set as original, or null (value will be used as value)
+     * @param value - Value to be set as original, or null (value will be used as value)
      * @returns Itself for fluent API
      */
     public updateOriginal(value?: moment.Moment): DateApiObject<moment.Moment>
@@ -368,11 +368,12 @@ export class MomentDateApi implements DateApi<moment.Moment>
 {
     /**
      * Gets wrapping object used for manipulation
-     * @param value Value to be converted (parsed) and used for manipulation
+     * @param value - Value to be converted (parsed) and used for manipulation
+     * @param format - Format string used for parsing string value
      */
-    public getValue(value: DateValue|moment.Moment): DateApiObject<moment.Moment>
+    public getValue(value: DateValue|moment.Moment, format?: string): DateApiObject<moment.Moment>
     {
-        return new MomentDateApiObject(value);
+        return new MomentDateApiObject(value, format);
     }
 
     /**

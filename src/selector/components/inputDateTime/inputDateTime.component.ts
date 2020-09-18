@@ -134,9 +134,8 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     /**
      * Sets value of datetime selector
      * @param value - Value to be set to this selector
-     * @param options - Additional options, emitChange defaults to true, if set to false valueChange did not fire
      */
-    public setValue(value: DateTimeValue<TDate>, options?: {emitChange?: boolean}): void
+    public setValue(value: DateTimeValue<TDate>|null): void
     {
     }
 

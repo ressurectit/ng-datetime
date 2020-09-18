@@ -1,7 +1,7 @@
 /**
  * Date can be represented as formatted string, timestamp or javascript Date object
  */
-export type DateValue = any|string|number;
+export type DateValue = Date|string|number;
 
 /**
  * Instance of object wrapping TDate, allowing manipulation with it
@@ -25,7 +25,7 @@ export interface DateApiObject<TDate = any>
 
     /**
      * Formats date value
-     * @param format Format token used for creating formatted string
+     * @param format - Format token used for creating formatted string
      */
     format(format: string): string;
 
@@ -43,14 +43,14 @@ export interface DateApiObject<TDate = any>
 
     /**
      * Add months, if count not specified adds 1 month
-     * @param count Number of months count
+     * @param count - Number of months count
      * @returns Itself for fluent API
      */
     addMonths(count?: number): DateApiObject<TDate>;
 
     /**
      * Subtract months, if count not specified subtract 1 month
-     * @param count Number of months count
+     * @param count - Number of months count
      * @returns Itself for fluent API
      */
     subtractMonths(count?: number): DateApiObject<TDate>;
@@ -69,14 +69,14 @@ export interface DateApiObject<TDate = any>
 
     /**
      * Add weeks, if count not specified adds 1 week
-     * @param count Number of weeks count
+     * @param count - Number of weeks count
      * @returns Itself for fluent API
      */
     addWeeks(count?: number): DateApiObject<TDate>;
 
     /**
      * Subtract weeks, if count not specified subtract 1 week
-     * @param count Number of weeks count
+     * @param count - Number of weeks count
      * @returns Itself for fluent API
      */
     subtractWeeks(count?: number): DateApiObject<TDate>;
@@ -95,14 +95,14 @@ export interface DateApiObject<TDate = any>
 
     /**
      * Add days, if count not specified adds 1 day
-     * @param count Number of days count
+     * @param count - Number of days count
      * @returns Itself for fluent API
      */
     addDays(count?: number): DateApiObject<TDate>;
 
     /**
      * Subtract days, if count not specified subtract 1 day
-     * @param count Number of days count
+     * @param count - Number of days count
      * @returns Itself for fluent API
      */
     subtractDays(count?: number): DateApiObject<TDate>;
@@ -118,12 +118,12 @@ export interface DateApiObject<TDate = any>
     dayOfMonth(): number;
     /**
      * Sets day of month one based
-     * @param day Day of month to be set
+     * @param day - Day of month to be set
      */
     dayOfMonth(day: number): DateApiObject<TDate>;
     /**
      * Gets or sets day of month one based
-     * @param day If specified, sets day of month
+     * @param day - If specified, sets day of month
      */
     dayOfMonth(day?: number): DateApiObject<TDate>|number;
 
@@ -133,48 +133,48 @@ export interface DateApiObject<TDate = any>
     dayOfWeek(): number;
     /**
      * Sets day of week zero based, first is monday
-     * @param day Day of week to be set
+     * @param day - Day of week to be set
      */
     dayOfWeek(day: number): DateApiObject<TDate>;
     /**
      * Gets or sets day of week zero based, first is monday
-     * @param day If specified, sets day of week
+     * @param day - If specified, sets day of week
      */
     dayOfWeek(day?: number): number|DateApiObject<TDate>;
 
     /**
      * Gets indication whether current value is before 'date'
-     * @param date Date which is this date compared to
+     * @param date - Date which is this date compared to
      */
     isBefore(date: TDate): boolean;
 
     /**
      * Gets indication whether current value is after 'date'
-     * @param date Date which is this date compared to
+     * @param date - Date which is this date compared to
      */
     isAfter(date: TDate): boolean;
 
     /**
      * Gets number of days between this and provided date
-     * @param date Date which is used for computation of diff against
+     * @param date - Date which is used for computation of diff against
      */
     diffDays(date: TDate): number;
 
     /**
      * Compares whether this date is same week as provided date
-     * @param date Date which is used for comparison of same week
+     * @param date - Date which is used for comparison of same week
      */
     isSameWeek(date: TDate): boolean;
 
     /**
      * Compares whether this date is same month as provided date
-     * @param date Date which is used for comparison of same month
+     * @param date - Date which is used for comparison of same month
      */
     isSameMonth(date: TDate): boolean;
 
     /**
      * Compares whether this date is same day as provided date
-     * @param date Date which is used for comparison of same day
+     * @param date - Date which is used for comparison of same day
      */
     isSameDay(date: TDate): boolean;
 
@@ -190,7 +190,7 @@ export interface DateApiObject<TDate = any>
 
     /**
      * Updates originalValue, if value is not provided originalValue is set to value
-     * @param value Value to be set as original, or null (value will be used as value)
+     * @param value - Value to be set as original, or null (value will be used as value)
      * @returns Itself for fluent API
      */
     updateOriginal(value?: TDate): DateApiObject<TDate>;
@@ -209,9 +209,10 @@ export interface DateApi<TDate = any>
 {
     /**
      * Gets wrapping object used for manipulation
-     * @param value Value to be converted (parsed) and used for manipulation
+     * @param value - Value to be converted (parsed) and used for manipulation
+     * @param format - Format string used for parsing string value
      */
-    getValue(value: DateValue|TDate): DateApiObject<TDate>;
+    getValue(value: DateValue|TDate, format?: string): DateApiObject<TDate>;
 
     /**
      * Gets wrapping object used for manipulation instantiated to current date and time
