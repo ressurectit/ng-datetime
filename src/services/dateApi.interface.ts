@@ -19,6 +19,11 @@ export interface DateApiObject<TDate = any>
     readonly value: TDate;
 
     /**
+     * Gets indication whether provided instance of date is valid
+     */
+    isValid(): boolean;
+
+    /**
      * Formats date value
      * @param format Format token used for creating formatted string
      */

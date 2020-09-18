@@ -21,17 +21,32 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     /**
      * Gets current value of datetime
      */
-    protected _value: DateTimeValue<TDate>;
+    protected _value: DateTimeValue<TDate>|null = null;
 
     /**
      * Gets formatted value
      */
-    protected _formattedValue: string;
+    protected _formattedValue: string|null = null;
 
     /**
      * Occurs when value changes
      */
     protected _valueChange: Subject<void> = new Subject<void>();
+
+    /**
+     * Occurs when selector is touched by user
+     */
+    protected _touched: Subject<void> = new Subject<void>();
+
+    /**
+     * Occurs when selector was changed anyway
+     */
+    protected _anyChange: Subject<void> = new Subject<void>();
+
+    /**
+     * Occurs when selector requires picker to be displayed
+     */
+    protected _pickerRequest: Subject<void> = new Subject<void>();
 
     /**
      * Occurs when user scales up
@@ -48,12 +63,12 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     /**
      * Currently used format for displaying data
      */
-    public format: string;
+    public format: string = '';
 
     /**
      * Gets current value of datetime
      */
-    public get value(): DateTimeValue<TDate>
+    public get value(): DateTimeValue<TDate>|null
     {
         return this._value;
     }
@@ -61,7 +76,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     /**
      * Gets formatted value
      */
-    public get formattedValue(): string
+    public get formattedValue(): string|null
     {
         return this._formattedValue;
     }
@@ -71,7 +86,31 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      */
     public get valueChange(): Observable<void>
     {
-        return this._valueChange;
+        return this._valueChange.asObservable();
+    }
+
+    /**
+     * Occurs when selector is touched by user
+     */
+    public get touched(): Observable<void>
+    {
+        return this._touched.asObservable();
+    }
+
+    /**
+     * Occurs when selector was changed anyway
+     */
+    public get anyChange(): Observable<void>
+    {
+        return this._anyChange.asObservable();
+    }
+
+    /**
+     * Occurs when selector requires picker to be displayed
+     */
+    public get pickerRequest(): Observable<void>
+    {
+        return this._pickerRequest.asObservable();
     }
 
     /**
@@ -98,6 +137,14 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      * @param options - Additional options, emitChange defaults to true, if set to false valueChange did not fire
      */
     public setValue(value: DateTimeValue<TDate>, options?: {emitChange?: boolean}): void
+    {
+    }
+
+    /**
+     * Sets as 'control' disabled
+     * @param disabled - Indication whether sets value as disabled, if omitted it is same as disabled set to true
+     */
+    public setDisabled(disabled?: boolean): void
     {
     }
 

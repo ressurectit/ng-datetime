@@ -1,3 +1,4 @@
+import {Injectable} from '@angular/core';
 import {DateApi, DateValue, DateApiObject} from '@anglr/datetime';
 import {isBlank, isPresent} from '@jscrpt/common';
 import moment from 'moment';
@@ -44,6 +45,14 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     //######################### public methods - implementation of DateApiObject #########################
+
+    /**
+     * Gets indication whether provided instance of date is valid
+     */
+    public isValid(): boolean
+    {
+        return this._value.isValid();
+    }
 
     /**
      * Formats date value
@@ -354,6 +363,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
 /**
  * Date api using MomentJS, used for obtaining DateApi wrapper object
  */
+@Injectable()
 export class MomentDateApi implements DateApi<moment.Moment>
 {
     /**

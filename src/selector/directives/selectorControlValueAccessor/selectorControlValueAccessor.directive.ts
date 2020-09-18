@@ -1,5 +1,9 @@
-import {Directive, ExistingProvider, forwardRef, Renderer2, ElementRef} from '@angular/core';
+import {Directive, ExistingProvider, forwardRef, Input, OnDestroy} from '@angular/core';
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
+import {Subscription} from 'rxjs';
+
+import {DateTimeValue} from '../../../misc/datetime.interface';
+import {DateTimeSelectorComponent} from '../../components';
 
 /**
  * Value accessor provider for date time selector
@@ -17,51 +21,117 @@ const DATE_TIME_SELECTOR_VALUE_ACCESSOR = <ExistingProvider>
 @Directive(
 {
     selector: 'date-time-selector[formControlName],date-time-selector[formControl],date-time-selector[ngModel]',
-    providers: [DATE_TIME_SELECTOR_VALUE_ACCESSOR],
-    host: 
-    {
-        '(change)': 'onChange($event.target.value)',
-        '(input)': 'onChange($event.target.value)',
-        '(blur)': 'onTouched()'
-    }
+    providers: [DATE_TIME_SELECTOR_VALUE_ACCESSOR]
 })
-export class DateTimeSelectorControlValueAccessor implements ControlValueAccessor
+export class DateTimeSelectorControlValueAccessor<TDate> implements ControlValueAccessor, OnDestroy
 {
-    //######################### public properties #########################
-    
-    public onChange = (_: any) => {};
+    //######################### protected fields #########################
+
+    /**
+     * Subscriptions that are destroyed on directive destruction
+     */
+    protected _subscriptions: Subscription = new Subscription();
+
+    //######################### public properties - inputs #########################
+
+    /**
+     * Indication whether value for selector is represented as range {from, to}
+     */
+    @Input()
+    public range: boolean = false;
+
+    /**
+     * Indication whether value for selector is represented as formatted string value, if both 'formatted' and 'range' are set, 'range' takes precedence
+     */
+    @Input()
+    public formatted: boolean = false;
+
+    //######################### constructor #########################
+    constructor(protected _selector: DateTimeSelectorComponent<TDate>)
+    {
+    }
+
+    //######################### public methods - implementation of OnDestroy #########################
     
     /**
-     * Method that is called when picker was touched
+     * Called when component is destroyed
      */
-    public onTouched = () => {};
-    
-    //######################### constructor #########################
-    constructor(private _renderer: Renderer2, private _elementRef: ElementRef)
+    public ngOnDestroy()
     {
+        this._subscriptions?.unsubscribe();
     }
 
     //######################### public methods - implementation of ControlValueAccessor #########################
 
     /**
-     * Sets value to select
+     * Sets value to datetime selector
      */
-    public writeValue(value: any): void
+    public writeValue(value: string|DateTimeValue<TDate>|TDate|null): void
     {
-        this._renderer.setProperty(this._elementRef.nativeElement, 'value', value);
+        if(this.range)
+        {
+            this._selector.value = value as DateTimeValue<TDate>;
+        }
+        else if(this.formatted)
+        {
+            this._selector.formattedValue = value as string;
+        }
+        else
+        {
+            this._selector.value =
+            {
+                from: value as TDate,
+                to: value as TDate
+            };
+        }
     }
 
     /**
-     * Registers callback that is called when value of select changes
+     * Registers callback that is called when value of datetime selector value changes
      */
-    public registerOnChange(fn: (data: any) => any): void
+    public registerOnChange(fn: (data: string|DateTimeValue<TDate>|TDate|null) => any): void
     {
+        this._subscriptions.add(this._selector.anyChange.subscribe(() => this._emitValue(fn)));
+        //TODO - remove if not needed
+        this._subscriptions.add(this._selector.valueChange.subscribe(() => this._emitValue(fn)));
     }
 
     /**
-     * Registers callback that is called when select is closed
+     * Registers callback that is called when datetime selector was touched by user
      */
     public registerOnTouched(fn: () => any): void
     {
+        this._subscriptions.add(this._selector.touched.subscribe(() => fn()));
+    }
+
+    //######################### protected methods #########################
+
+    /**
+     * Used for emitting value that was changed
+     * @param fn - Function that is used for emitting changed value
+     */
+    protected _emitValue(fn: (value: string|DateTimeValue<TDate>|TDate|null) => any)
+    {
+        if(this.range)
+        {
+            fn(this._selector.value);
+        }
+        else if(this.formatted)
+        {
+            fn(this._selector.formattedValue);
+        }
+        else
+        {
+            let value = this._selector.value;
+
+            if(!value)
+            {
+                fn(null);
+            }
+            else
+            {
+                fn(value.from);
+            }
+        }
     }
 }

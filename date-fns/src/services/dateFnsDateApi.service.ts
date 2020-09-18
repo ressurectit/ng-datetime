@@ -1,7 +1,10 @@
+import {Inject, Injectable} from '@angular/core';
 import {DateApi, DateValue, DateApiObject} from '@anglr/datetime';
 import {isBlank, isPresent} from '@jscrpt/common';
-import {toDate, getDate, setDate, setDay, getDay, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth} from 'date-fns';
-import {sk} from 'date-fns/locale';
+import {toDate, getDate, setDate, setDay, getDay, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid} from 'date-fns';
+
+import {DATE_FNS_LOCALE} from '../misc/tokens';
+import {DateFnsLocale} from './dateFnsLocale.service';
 
 /**
  * Instance of object wrapping TDate, allowing manipulation with it
@@ -39,7 +42,8 @@ class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     //######################### constructor #########################
-    constructor(value: DateValue|Date)
+    constructor(value: DateValue|Date,
+                protected _localeSvc: DateFnsLocale)
     {
         this._value = this._originalValue = toDate(value);
     }
@@ -47,12 +51,20 @@ class DateFnsDateApiObject implements DateApiObject<Date>
     //######################### public methods - implementation of DateApiObject #########################
 
     /**
+     * Gets indication whether provided instance of date is valid
+     */
+    public isValid(): boolean
+    {
+        return isValid(this._value);
+    }
+
+    /**
      * Formats date value
      * @param formatString Format token used for creating formatted string
      */
     public format(formatString: string): string
     {
-        return format(this._value, formatString.replace(/Y/g, 'y').replace(/D/g, 'd'), {locale: sk});
+        return format(this._value, formatString.replace(/Y/g, 'y').replace(/D/g, 'd'), {locale: this._localeSvc.locale});
     }
 
     /**
@@ -310,7 +322,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
      */
     public clone(): DateApiObject<Date>
     {
-        return new DateFnsDateApiObject(new Date(this._value));
+        return new DateFnsDateApiObject(new Date(this._value), this._localeSvc);
     }
 
     /**
@@ -318,7 +330,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
      */
     public cloneOriginal(): DateApiObject<Date>
     {
-        return new DateFnsDateApiObject(new Date(this._originalValue));
+        return new DateFnsDateApiObject(new Date(this._originalValue), this._localeSvc);
     }
 
     /**
@@ -355,15 +367,23 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 /**
  * Date api using DateFnsJS, used for obtaining DateApi wrapper object
  */
+@Injectable()
 export class DateFnsDateApi implements DateApi<Date>
 {
+    //######################### constructor #########################
+    constructor(@Inject(DATE_FNS_LOCALE) protected _localeSvc: DateFnsLocale)
+    {
+    }
+
+    //######################### public methods - implementation of DateApi #########################
+
     /**
      * Gets wrapping object used for manipulation
      * @param value Value to be converted (parsed) and used for manipulation
      */
     public getValue(value: DateValue|Date): DateApiObject<Date>
     {
-        return new DateFnsDateApiObject(value);
+        return new DateFnsDateApiObject(value, this._localeSvc);
     }
 
     /**
@@ -371,6 +391,6 @@ export class DateFnsDateApi implements DateApi<Date>
      */
     public now(): DateApiObject<Date>
     {
-        return new DateFnsDateApiObject(new Date());
+        return new DateFnsDateApiObject(new Date(), this._localeSvc);
     }
 }
