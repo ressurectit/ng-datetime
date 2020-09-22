@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {DateApi, DateValue, DateApiObject} from '@anglr/datetime';
 import {isBlank, isPresent} from '@jscrpt/common';
-import moment from 'moment';
+import moment, {LongDateFormatKey} from 'moment';
 
 /**
  * Instance of object wrapping TDate, allowing manipulation with it
@@ -382,5 +382,19 @@ export class MomentDateApi implements DateApi<moment.Moment>
     public now(): DateApiObject<moment.Moment>
     {
         return new MomentDateApiObject(moment());
+    }
+
+    /**
+     * Gets format string using pseudo format
+     * @param pseudoFormat - Pseudo format token, used for obtaining 'date' or 'time' format string
+     */
+    public getFormat(pseudoFormat: string): string
+    {
+        if(/^((LT|LTS|L+|l+)\s*)*$/g.test(pseudoFormat))
+        {
+            return pseudoFormat.split(' ').map(itm => moment.localeData().longDateFormat(itm as LongDateFormatKey)).join(' ');
+        }
+
+        return pseudoFormat;
     }
 }

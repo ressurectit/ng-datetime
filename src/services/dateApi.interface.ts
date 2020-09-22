@@ -218,4 +218,10 @@ export interface DateApi<TDate = any>
      * Gets wrapping object used for manipulation instantiated to current date and time
      */
     now(): DateApiObject<TDate>;
+
+    /**
+     * Gets format string using pseudo format
+     * @param pseudoFormat - Pseudo format token, used for obtaining 'date' or 'time' format string
+     */
+    getFormat(pseudoFormat: string): string;
 }

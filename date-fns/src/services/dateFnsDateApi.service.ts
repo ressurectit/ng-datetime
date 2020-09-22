@@ -402,4 +402,40 @@ export class DateFnsDateApi implements DateApi<Date>
     {
         return new DateFnsDateApiObject(new Date(), this._localeSvc);
     }
+
+    /**
+     * Gets format string using pseudo format
+     * @param pseudoFormat - Pseudo format token, used for obtaining 'date' or 'time' format string
+     */
+    public getFormat(pseudoFormat: string): string
+    {
+        if(/^p+$/i.test(pseudoFormat))
+        {
+            let widths =
+            {
+                1: 'short',
+                2: 'medium',
+                3: 'long',
+                4: 'full'
+            };
+
+            //date time format
+            if(pseudoFormat.indexOf('Pp') >= 0 && pseudoFormat.length <= 8)
+            {
+                return this._localeSvc.locale.formatLong.dateTime({width: widths[pseudoFormat.length / 2]});
+            }
+            //date format
+            else if(pseudoFormat.indexOf('P') >= 0 && pseudoFormat.length <= 4)
+            {
+                return this._localeSvc.locale.formatLong.date({width: widths[pseudoFormat.length]});
+            }
+            //time format
+            else if(pseudoFormat.indexOf('p') >= 0 && pseudoFormat.length <= 4)
+            {
+                return this._localeSvc.locale.formatLong.time({width: widths[pseudoFormat.length]});
+            }
+        }
+
+        return pseudoFormat;
+    }
 }

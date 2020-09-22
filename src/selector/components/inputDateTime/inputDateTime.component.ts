@@ -1,7 +1,8 @@
-import {Component, ChangeDetectionStrategy} from '@angular/core';
+import {Component, ChangeDetectionStrategy, Inject, ChangeDetectorRef} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 
-import {DateTimeValue} from '../../../datetime';
+import {DateTimeValue, DATE_API} from '../../../datetime';
+import {DateApi, DatePositionParser, DatePositionParserService} from '../../../services';
 import {DateTimeSelector} from '../../misc/datetimeSelector.interface';
 
 /**
@@ -58,12 +59,34 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      */
     protected _scaleDown: Subject<TDate> = new Subject<TDate>();
 
-    //######################### public properties - implementation of DateTimeSelector #########################
-    
+    /**
+     * Instance of parser created for specific format
+     */
+    protected _parser: DatePositionParser|null = null;
+
     /**
      * Currently used format for displaying data
      */
-    public format: string = '';
+    protected _format: string = '';
+
+    //######################### public properties - implementation of DateTimeSelector #########################
+    
+    /**
+     * Gets or sets currently used format for displaying data
+     */
+    public get format(): string
+    {
+        return this._format;
+    }
+    public set format(value: string)
+    {
+        if(this._format != value)
+        {
+            this._parser = this._parserSvc.createParser(this._dateApi.getFormat(value));
+        }
+
+        this._format = value;
+    }
 
     /**
      * Gets current value of datetime
@@ -129,6 +152,21 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
         return this._scaleDown;
     }
 
+    //######################### public properties - template bindings #########################
+
+    /**
+     * String representation current of value
+     * @internal
+     */
+    public currentValue: string|null = null;
+
+    //######################### constructor #########################
+    constructor(@Inject(DATE_API) protected _dateApi: DateApi<TDate>,
+                protected _parserSvc: DatePositionParserService,
+                protected _changeDetector: ChangeDetectorRef)
+    {
+    }
+
     //######################### public methods - implementation of DateTimeSelector #########################
 
     /**
@@ -152,5 +190,44 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      */
     public invalidateVisuals(): void
     {
+        console.log(this.format, this._dateApi.getFormat(this.format));
+        console.log(this._dateApi.now().format(this.format));
+    }
+
+    //######################### public methods - template bindings #########################
+
+    public handleFocus(input: HTMLInputElement)
+    {
+        this.currentValue = this._dateApi.now().format(this.format);
+        input.value = this.currentValue;
+
+        console.log(this._parser?.parse(input.value, input.selectionStart!));
+    }
+
+    public handleBlur()
+    {
+
+    }
+
+    public handleInput()
+    {
+
+    }
+
+    public handleChange()
+    {
+
+    }
+
+    public handleClick()
+    {
+        console.log('click');
+    }
+
+    public handleSelect(event: UIEvent, input: HTMLInputElement)
+    {
+        event.preventDefault();
+        event.stopPropagation();
+        console.log('select', input.selectionStart, input.selectionEnd);
     }
 }
