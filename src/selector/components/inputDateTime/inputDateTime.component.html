@@ -4,5 +4,6 @@
        (blur)="handleBlur()"
        (input)="handleInput()"
        (change)="handleChange()"
-       (select)="handleSelect($event, $any($event.target))"
-       (click)="handleClick()">
+       (select)="handleSelect($any($event.target))"
+       (click)="handleClick($any($event.target))"
+       (keydown)="handleKeyboard($any($event), $any($event.target))">

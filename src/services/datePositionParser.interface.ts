@@ -9,6 +9,20 @@ export interface DatePositionParser
      * @param cursorPosition - Current cursor position
      */
     parse(date: string, cursorPosition: number): DatePositionParserResult;
+
+    /**
+     * Parse date as string and returns information about position and selected part of date, while moving it to next part, if it was last part returns null
+     * @param date - String date to be parsed
+     * @param cursorPosition - Current cursor position
+     */
+    next(date: string, cursorPosition: number): null|DatePositionParserResult;
+
+    /**
+     * Parse date as string and returns information about position and selected part of date, while moving it to previous part, if it was first part returns null
+     * @param date - String date to be parsed
+     * @param cursorPosition - Current cursor position
+     */
+    previous(date: string, cursorPosition: number): null|DatePositionParserResult;
 }
 
 /**

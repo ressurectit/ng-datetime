@@ -219,15 +219,79 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
 
     }
 
-    public handleClick()
+    public handleClick(input: HTMLInputElement)
     {
-        console.log('click');
+        this.currentValue = this._dateApi.now().format(this.format);
+        input.value = this.currentValue;
+
+        let result = this._parser!.parse(input.value, input.selectionStart!);
+
+        console.log(result);
+
+        input.selectionStart = result.positionFrom;
+        input.selectionEnd = result.positionTo;
     }
 
-    public handleSelect(event: UIEvent, input: HTMLInputElement)
+    public handleSelect(input: HTMLInputElement)
     {
-        event.preventDefault();
-        event.stopPropagation();
         console.log('select', input.selectionStart, input.selectionEnd);
+    }
+
+    public handleKeyboard(event: KeyboardEvent, input: HTMLInputElement)
+    {
+        console.log(event);
+
+        switch(event.key)
+        {
+            case 'ArrowRight':
+            {
+                event.preventDefault();
+                event.stopPropagation();
+
+                let result = this._parser!.next(input.value, input.selectionStart!);
+
+                console.log(result);
+
+                if(result)
+                {
+                    input.selectionStart = result.positionFrom;
+                    input.selectionEnd = result.positionTo;
+                }
+
+                break;
+            }
+            case 'ArrowLeft':
+            {
+                event.preventDefault();
+                event.stopPropagation();
+
+                let result = this._parser!.previous(input.value, input.selectionStart!);
+
+                console.log(result);
+
+                if(result)
+                {
+                    input.selectionStart = result.positionFrom;
+                    input.selectionEnd = result.positionTo;
+                }
+
+                break;
+            }
+            case 'Tab':
+            {
+                let result = event.shiftKey ? this._parser!.previous(input.value, input.selectionStart!) : this._parser!.next(input.value, input.selectionStart!);
+
+                if(result)
+                {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    input.selectionStart = result.positionFrom;
+                    input.selectionEnd = result.positionTo;
+                }
+
+                break;
+            }
+        }
     }
 }
