@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {DateApi, DateValue, DateApiObject} from '@anglr/datetime';
 import {isBlank, isPresent, isString} from '@jscrpt/common';
-import {toDate, getDate, setDate, setDay, getDay, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse} from 'date-fns';
+import {toDate, getDate, setDate, setDay, getDay, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, addYears, subYears, startOfYear, endOfYear} from 'date-fns';
 
 import {DATE_FNS_LOCALE} from '../misc/tokens';
 import {DateFnsLocale} from './dateFnsLocale.service';
@@ -73,6 +73,52 @@ class DateFnsDateApiObject implements DateApiObject<Date>
     public format(formatString: string): string
     {
         return format(this._value, formatString.replace(/Y/g, 'y').replace(/D/g, 'd'), {locale: this._localeSvc.locale});
+    }
+
+     /**
+     * Updates value to start date and time of current year
+     * @returns Itself for fluent API
+     */
+    public startOfYear(): DateApiObject<Date>
+    {
+        this._value = startOfYear(this._value);
+
+        return this;
+    }
+
+    /**
+     * Updates value to end date and time of current year
+     * @returns Itself for fluent API
+     */
+    public endOfYear(): DateApiObject<Date>
+    {
+        this._value = endOfYear(this._value);
+
+        return this;
+    }
+
+    /**
+     * Add years, if count not specified adds 1 year
+     * @param count - Number of years count
+     * @returns Itself for fluent API
+     */
+    public addYears(count?: number): DateApiObject<Date>
+    {
+        this._value = addYears(this._value, count ?? 1);
+
+        return this;
+    }
+
+    /**
+     * Subtract years, if count not specified subtract 1 year
+     * @param count - Number of years count
+     * @returns Itself for fluent API
+     */
+    public subtractYears(count?: number): DateApiObject<Date>
+    {
+        this._value = subYears(this._value, count ?? 1);
+
+        return this;
     }
 
     /**

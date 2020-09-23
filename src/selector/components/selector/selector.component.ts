@@ -204,6 +204,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
 
         this._activeSelectorSubscriptions.add(selector.anyChange.subscribe(() => this._anyChange.next()));
         this._activeSelectorSubscriptions.add(selector.touched.subscribe(() => this._touched.next()));
+        this._activeSelectorSubscriptions.add(selector.valueChange.subscribe(() => console.log(selector.value)));
         
         selector.format = this.format;
         selector.setValue(this._value);

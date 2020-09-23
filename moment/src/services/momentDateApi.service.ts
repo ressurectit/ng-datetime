@@ -64,6 +64,52 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
+     * Updates value to start date and time of current year
+     * @returns Itself for fluent API
+     */
+    public startOfYear(): DateApiObject<moment.Moment>
+    {
+        moment(this._value).startOf('year');
+
+        return this;
+    }
+
+    /**
+     * Updates value to end date and time of current year
+     * @returns Itself for fluent API
+     */
+    public endOfYear(): DateApiObject<moment.Moment>
+    {
+        moment(this._value).endOf('year');
+
+        return this;
+    }
+
+    /**
+     * Add years, if count not specified adds 1 year
+     * @param count - Number of years count
+     * @returns Itself for fluent API
+     */
+    public addYears(count?: number): DateApiObject<moment.Moment>
+    {
+        this._value = moment(this._value).add(count ?? 1, 'years');
+
+        return this;
+    }
+
+    /**
+     * Subtract years, if count not specified subtract 1 year
+     * @param count - Number of years count
+     * @returns Itself for fluent API
+     */
+    public subtractYears(count?: number): DateApiObject<moment.Moment>
+    {
+        this._value = moment(this._value).subtract(count ?? 1, 'years');
+
+        return this;
+    }
+
+    /**
      * Updates value to start date and time of current month
      * @returns Itself for fluent API
      */

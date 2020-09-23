@@ -30,6 +30,32 @@ export interface DateApiObject<TDate = any>
     format(format: string): string;
 
     /**
+     * Updates value to start date and time of current year
+     * @returns Itself for fluent API
+     */
+    startOfYear(): DateApiObject<TDate>;
+
+    /**
+     * Updates value to end date and time of current year
+     * @returns Itself for fluent API
+     */
+    endOfYear(): DateApiObject<TDate>;
+
+    /**
+     * Add years, if count not specified adds 1 year
+     * @param count - Number of years count
+     * @returns Itself for fluent API
+     */
+    addYears(count?: number): DateApiObject<TDate>;
+
+    /**
+     * Subtract years, if count not specified subtract 1 year
+     * @param count - Number of years count
+     * @returns Itself for fluent API
+     */
+    subtractYears(count?: number): DateApiObject<TDate>;
+
+    /**
      * Updates value to start date and time of current month
      * @returns Itself for fluent API
      */
