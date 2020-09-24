@@ -1,0 +1,14 @@
+.month
+{
+    width: 280px;
+
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(7, 1fr);
+    justify-items: stretch;
+}
+
+.day
+{
+    text-align: center;
+}

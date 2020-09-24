@@ -58,6 +58,12 @@ export interface DateTimePicker<TDate = any>
     display(value: TDate): void;
 
     /**
+     * Sets callback for testing whether picker can go down
+     * @param fn - Callback function that is called when picker is testing whether can go down
+     */
+    setupCanGoDown(fn: () => boolean): void;
+
+    /**
      * Explicitly runs invalidation of content (change detection)
      */
     invalidateVisuals(): void;

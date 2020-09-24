@@ -1,6 +1,8 @@
 import {Component, ChangeDetectionStrategy, Optional, Inject, Input, Type, OnInit} from '@angular/core';
 import {extend} from '@jscrpt/common';
+import {Subscription} from 'rxjs';
 
+import {DateTimeValue} from '../../../misc/datetime.interface';
 import {DateTimePicker, DateTimePickerOptions} from '../../misc/datetimePicker.interface';
 import {DATE_TIME_PICKER_CONFIGURATION} from '../../misc/tokens';
 import {DateTimeDayPickerComponent} from '../dayPicker/dayPicker.component';
@@ -36,6 +38,16 @@ export class DateTimePickerComponent<TDate = any> implements OnInit
      */
     protected _activePicker?: DateTimePicker<TDate>;
 
+    /**
+     * Current selected value
+     */
+    protected _value: DateTimeValue<TDate>|null = null;
+
+    /**
+     * All subscriptions for active picker
+     */
+    protected _activePickerSubscriptions: Subscription = new Subscription();
+
     //######################### public properties - template bindings #########################
 
     /**
@@ -51,6 +63,11 @@ export class DateTimePickerComponent<TDate = any> implements OnInit
      */
     @Input()
     public options: DateTimePickerOptions<DateTimePicker<TDate>>;
+
+    public get value(): DateTimeValue<TDate>|null
+    {
+        return this._value;
+    }
 
     //######################### constructor #########################
     constructor(@Optional() @Inject(DATE_TIME_PICKER_CONFIGURATION) configuration: DateTimePickerOptions<DateTimePicker<TDate>>)
@@ -82,6 +99,23 @@ export class DateTimePickerComponent<TDate = any> implements OnInit
      */
     public pickerCreated(picker: DateTimePicker<TDate>)
     {
-        console.log(picker);
+        this._activePicker = picker;
+
+        this._activePickerSubscriptions.unsubscribe();
+        this._activePickerSubscriptions = new Subscription();
+
+        // this._activePickerSubscriptions.add(picker.touched.subscribe(() => this._touched.next()));
+        // this._activePickerSubscriptions.add(picker.pickerRequest.subscribe((request) => console.log('picker', request)));
+
+        this._activePickerSubscriptions.add(picker.valueChange.subscribe(() =>
+        {
+            // this._value = picker.value;
+            // this._valueChange.next();
+        }));
+
+        picker.setValue(this._value);
+        // picker.display(this._disabled);
+
+        picker.invalidateVisuals();
     }
 }
