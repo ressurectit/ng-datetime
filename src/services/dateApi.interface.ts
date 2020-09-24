@@ -24,6 +24,11 @@ export interface DateApiObject<TDate = any>
     isValid(): boolean;
 
     /**
+     * Gets information 
+     */
+    weekStartsOnMonday(): boolean;
+
+    /**
      * Formats date value
      * @param format - Format token used for creating formatted string
      */

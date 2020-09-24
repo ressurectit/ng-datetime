@@ -114,7 +114,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit
         }));
 
         picker.setValue(this._value);
-        // picker.display(this._disabled);
+        picker.display(this._value?.from!);
 
         picker.invalidateVisuals();
     }

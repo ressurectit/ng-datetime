@@ -67,6 +67,14 @@ class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
+     * Gets information 
+     */
+    public weekStartsOnMonday(): boolean
+    {
+        return this._localeSvc.locale.options?.weekStartsOn === 1;
+    }
+
+    /**
      * Formats date value
      * @param formatString - Format token used for creating formatted string
      */

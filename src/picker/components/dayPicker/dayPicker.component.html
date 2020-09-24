@@ -1,3 +1,9 @@
+<div class="month-selection">
+    <div class="text-center fas fa-angle-left"></div>
+    <div class="text-center">{{this.displayDateApi?.format('MMMM YYYY')}}</div>
+    <div class="text-center fas fa-angle-right"></div>
+</div>
+
 <div class="month">
     <div class="day" *ngFor="let day of days">{{day}}</div>
 </div>

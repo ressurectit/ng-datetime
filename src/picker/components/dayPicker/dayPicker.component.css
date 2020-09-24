@@ -1,3 +1,21 @@
+.month-selection
+{
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+}
+
+.text-center
+{
+    text-align: center;
+}
+
+.fas
+{
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
 .month
 {
     width: 280px;

@@ -1,7 +1,9 @@
-import {Component, ChangeDetectionStrategy} from '@angular/core';
+import {Component, ChangeDetectionStrategy, Inject} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 
 import {DateTimeValue} from '../../../misc/datetime.interface';
+import {DATE_API} from '../../../misc/tokens';
+import {DateApi, DateApiObject} from '../../../services/dateApi.interface';
 import {DateTimePicker} from '../../misc/datetimePicker.interface';
 
 /**
@@ -90,13 +92,15 @@ export class DateTimeDayPickerComponent<TDate = any> implements DateTimePicker
      */
     public days: string[] = [];
 
+    /**
+     * Date api instance for displayed date
+     * @internal
+     */
+    public displayDateApi?: DateApiObject<TDate>;
+
     //######################### constructor #########################
-    constructor()
+    constructor(@Inject(DATE_API) protected _dateApi: DateApi<TDate>)
     {
-        for(let x = 1; x <= 31; x++)
-        {
-            this.days.push(x.toString());
-        }
     }
 
     //######################### public methods - implementation of DateTimePicker #########################
@@ -116,6 +120,22 @@ export class DateTimeDayPickerComponent<TDate = any> implements DateTimePicker
     public display(value: TDate): void
     {
         this._display = value;
+
+        this.displayDateApi = this._dateApi.getValue(value);
+
+        let emptyDays = this.displayDateApi.startOfMonth().dayOfWeek();
+
+        for(let x = 0; x < emptyDays; x++)
+        {
+            this.days.push("");
+        }
+
+        let monthDays = this.displayDateApi.endOfMonth().dayOfMonth();
+
+        for(let x = 1; x <= monthDays; x++)
+        {
+            this.days.push(x.toString());
+        }
     }
 
     /**

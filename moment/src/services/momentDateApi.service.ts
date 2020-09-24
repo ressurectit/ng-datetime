@@ -55,6 +55,14 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
+     * Gets information 
+     */
+    public weekStartsOnMonday(): boolean
+    {
+        return moment.localeData().firstDayOfWeek() === 1;
+    }
+
+    /**
      * Formats date value
      * @param format - Format token used for creating formatted string
      */
