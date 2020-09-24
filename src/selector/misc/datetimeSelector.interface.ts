@@ -1,6 +1,19 @@
+import {Type} from '@angular/core';
 import {Observable} from 'rxjs';
 
-import {DateTimeValue} from '../../datetime';
+import {DateTimeValue} from '../../misc/datetime.interface';
+import {DateTimePickerOptions} from '../../picker';
+
+/**
+ * Defintion of datetime selector component options
+ */
+export interface DateTimeSelectorOptions<TSelector = any, TPicker = any> extends DateTimePickerOptions<TPicker>
+{
+    /**
+     * Definition of type that is used for selector
+     */
+    selectorComponent: Type<TSelector>;
+}
 
 /**
  * Describes datetime selector component used for displaying and selecting value
@@ -41,16 +54,6 @@ export interface DateTimeSelector<TDate = any>
      * Occurs when selector requires picker to be displayed or hidden
      */
     readonly pickerRequest: Observable<boolean>;
-
-    // /**
-    //  * Occurs when user scales up
-    //  */
-    // readonly scaleUp: Observable<TDate>;
-
-    // /**
-    //  * Occurs when user scales down
-    //  */
-    // readonly scaleDown: Observable<TDate>;
 
     /**
      * Sets value of datetime selector

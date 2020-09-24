@@ -1,8 +1,10 @@
 import {NgModule} from '@angular/core';
+import {CommonModule as AngularCommonModule} from '@angular/common';
 import {CommonModule} from '@anglr/common';
 
 import {DateTimeSelectorComponent, InputDateTimeSelectorComponent} from '../components';
 import {DateTimeSelectorControlValueAccessor} from '../directives';
+import {DateTimePickerModule} from '../../picker';
 
 /**
  * Angular module for date time selector components
@@ -11,7 +13,9 @@ import {DateTimeSelectorControlValueAccessor} from '../directives';
 {
     imports:
     [
-        CommonModule
+        AngularCommonModule,
+        CommonModule,
+        DateTimePickerModule
     ],
     declarations:
     [

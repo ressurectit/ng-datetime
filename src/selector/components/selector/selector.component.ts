@@ -2,22 +2,26 @@ import {Component, ChangeDetectionStrategy, Input, Inject, Optional, Type, OnIni
 import {extend, nameof} from '@jscrpt/common';
 import {Observable, Subject, Subscription} from 'rxjs';
 
-import {DateTimeConfiguration, DateTimeValue} from '../../../misc/datetime.interface';
+import {DateTimeValue} from '../../../misc/datetime.interface';
 import {DATE_API, FORMAT_PROVIDER} from '../../../misc/tokens';
+import {DateTimeDayPickerComponent} from '../../../picker';
 import {DateApi, DateValueProvider, FormatProvider} from '../../../services';
-import {DateTimeSelector} from '../../misc/datetimeSelector.interface';
+import {DateTimeSelector, DateTimeSelectorOptions} from '../../misc/datetimeSelector.interface';
 import {DATE_TIME_SELECTOR_CONFIGURATION} from '../../misc/tokens';
 import {InputDateTimeSelectorComponent} from '../inputDateTime/inputDateTime.component';
+
+//TODO - add support for body absolute picker
 
 /**
  * Default configuration for selector
  */
-const defaultConfiguration: DateTimeConfiguration<DateTimeSelector> =
+const defaultConfiguration: DateTimeSelectorOptions<DateTimeSelector> =
 {
+    selectorComponent: InputDateTimeSelectorComponent,
     defaultPeriod: 'day',
-    periodsDefinition:
+    pickerPeriodsDefinition:
     {
-        "day": InputDateTimeSelectorComponent
+        "day": DateTimeDayPickerComponent
     }
 };
 
@@ -142,38 +146,33 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     public format: string;
 
     /**
-     * Current configuration used by selector
+     * Current options used by selector
      */
     @Input()
-    public config: DateTimeConfiguration<DateTimeSelector<TDate>>;
+    public options: DateTimeSelectorOptions<DateTimeSelector<TDate>>;
 
     //######################### constructor #########################
-    constructor(@Optional() @Inject(DATE_TIME_SELECTOR_CONFIGURATION) configuration: DateTimeConfiguration<DateTimeSelector<TDate>>,
+    constructor(@Optional() @Inject(DATE_TIME_SELECTOR_CONFIGURATION) configuration: DateTimeSelectorOptions<DateTimeSelector<TDate>>,
                 protected _valueProvider: DateValueProvider<TDate>,
                 @Inject(DATE_API) protected _dateApi: DateApi<TDate>,
                 @Inject(FORMAT_PROVIDER) formatProvider: FormatProvider)
     {
         this.format = formatProvider.date;
-        this.config = extend(true, {}, defaultConfiguration, configuration);
+        this.options = extend(true, {}, defaultConfiguration, configuration);
     }
 
     //######################### public methods - implementation of OnInit #########################
-    
+
     /**
      * Initialize component
      */
     public ngOnInit()
     {
-        if(!this.config.periodsDefinition[this.config.defaultPeriod])
-        {
-            throw new Error(`There is no period '${this.config.defaultPeriod}' configuration`);
-        }
-
-        this.activeSelectorComponent = this.config.periodsDefinition[this.config.defaultPeriod];
+        this.activeSelectorComponent = this.options.selectorComponent;
     }
 
     //######################### public methods - implementation of OnChanges #########################
-    
+
     /**
      * Called when input value changes
      */
@@ -187,7 +186,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     }
 
     //######################### public methods - implementation of OnDestroy #########################
-    
+
     /**
      * Called when component is destroyed
      */
@@ -211,14 +210,14 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
         this._activeSelectorSubscriptions = new Subscription();
 
         this._activeSelectorSubscriptions.add(selector.touched.subscribe(() => this._touched.next()));
-        this._activeSelectorSubscriptions.add(selector.pickerRequest.subscribe((request) => console.log(request)));
+        this._activeSelectorSubscriptions.add(selector.pickerRequest.subscribe((request) => console.log('picker', request)));
 
         this._activeSelectorSubscriptions.add(selector.valueChange.subscribe(() =>
         {
             this._value = selector.value;
             this._valueChange.next();
         }));
-        
+
         selector.format = this.format;
         selector.setValue(this._value);
         selector.setDisabled(this._disabled);

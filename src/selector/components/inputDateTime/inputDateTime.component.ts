@@ -1,7 +1,8 @@
 import {Component, ChangeDetectionStrategy, Inject, ChangeDetectorRef, ElementRef, ViewChild} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 
-import {DateTimeValue, DATE_API} from '../../../datetime';
+import {DateTimeValue} from '../../../misc/datetime.interface';
+import {DATE_API} from '../../../misc/tokens';
 import {DateApi, DateApiObject, DatePositionParser, DatePositionParserService, DateValueProvider} from '../../../services';
 import {DateTimeSelector} from '../../misc/datetimeSelector.interface';
 
@@ -79,7 +80,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      */
     public get value(): DateTimeValue<TDate>|null
     {
-        if(!this._dateApiValue)
+        if(!this._dateApiValue || !this._isValid)
         {
             return null;
         }
@@ -92,6 +93,11 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      */
     public get formattedValue(): string|null
     {
+        if(!this._isValid)
+        {
+            return null;
+        }
+
         return this.currentValue;
     }
 

@@ -1,8 +1,8 @@
 import {InjectionToken} from '@angular/core';
 
-import {DateTimeConfiguration} from '../../datetime';
+import {DateTimeSelectorOptions} from './datetimeSelector.interface';
 
 /**
  * Injection token used for obtaining datetime selector configuration
  */
-export const DATE_TIME_SELECTOR_CONFIGURATION: InjectionToken<DateTimeConfiguration<any>> = new InjectionToken<DateTimeConfiguration<any>>('DATE_TIME_SELECTOR_CONFIGURATION');
+export const DATE_TIME_SELECTOR_CONFIGURATION: InjectionToken<DateTimeSelectorOptions<any>> = new InjectionToken<DateTimeSelectorOptions<any>>('DATE_TIME_SELECTOR_CONFIGURATION');
