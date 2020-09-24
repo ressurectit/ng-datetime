@@ -4,7 +4,7 @@ import {Observable, Subject, Subscription} from 'rxjs';
 
 import {DateTimeConfiguration, DateTimeValue} from '../../../misc/datetime.interface';
 import {DATE_API, FORMAT_PROVIDER} from '../../../misc/tokens';
-import {DateApi, FormatProvider} from '../../../services';
+import {DateApi, DateValueProvider, FormatProvider} from '../../../services';
 import {DateTimeSelector} from '../../misc/datetimeSelector.interface';
 import {DATE_TIME_SELECTOR_CONFIGURATION} from '../../misc/tokens';
 import {InputDateTimeSelectorComponent} from '../inputDateTime/inputDateTime.component';
@@ -41,19 +41,9 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     protected _value: DateTimeValue<TDate>|null = null;
 
     /**
-     * Instance of active date time selector
-     */
-    protected _activeSelector?: DateTimeSelector<TDate>;
-
-    /**
      * Occurs when selector is touched by user
      */
     protected _touched: Subject<void> = new Subject<void>();
-
-    /**
-     * Occurs when selector was changed anyway
-     */
-    protected _anyChange: Subject<void> = new Subject<void>();
 
     /**
      * Occurs when value changes
@@ -61,14 +51,19 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     protected _valueChange: Subject<void> = new Subject<void>();
 
     /**
-     * All subscriptions for active selector
-     */
-    protected _activeSelectorSubscriptions: Subscription = new Subscription();
-
-    /**
      * Indication whether is control disabled
      */
     protected _disabled: boolean = false;
+
+    /**
+     * Instance of active date time selector
+     */
+    protected _activeSelector?: DateTimeSelector<TDate>;
+
+    /**
+     * All subscriptions for active selector
+     */
+    protected _activeSelectorSubscriptions: Subscription = new Subscription();
 
     //######################### public properties #########################
 
@@ -81,6 +76,17 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     }
     public set value(value: DateTimeValue<TDate>|null)
     {
+        this._value = value;
+
+        this._activeSelector?.setValue(this._value);
+    }
+
+    /**
+     * Gets indication whether is current value valid
+     */
+    public get valid(): boolean
+    {
+        return !!this._value && !!this._activeSelector?.valid;
     }
 
     /**
@@ -88,10 +94,19 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
      */
     public get formattedValue(): string|null
     {
-        return null;
+        return this._activeSelector?.formattedValue ?? null;
     }
     public set formattedValue(value: string|null)
     {
+        if(value)
+        {
+            let val = this._dateApi.getValue(value, this.format);
+            this.value = this._valueProvider.getValue(val.value, this.format);
+        }
+        else
+        {
+            this.value = null;
+        }
     }
 
     /**
@@ -100,14 +115,6 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     public get touched(): Observable<void>
     {
         return this._touched.asObservable();
-    }
-
-    /**
-     * Occurs when selector was changed anyway
-     */
-    public get anyChange(): Observable<void>
-    {
-        return this._anyChange.asObservable();
     }
 
     /**
@@ -142,6 +149,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
 
     //######################### constructor #########################
     constructor(@Optional() @Inject(DATE_TIME_SELECTOR_CONFIGURATION) configuration: DateTimeConfiguration<DateTimeSelector<TDate>>,
+                protected _valueProvider: DateValueProvider<TDate>,
                 @Inject(DATE_API) protected _dateApi: DateApi<TDate>,
                 @Inject(FORMAT_PROVIDER) formatProvider: FormatProvider)
     {
@@ -202,9 +210,14 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
         this._activeSelectorSubscriptions.unsubscribe();
         this._activeSelectorSubscriptions = new Subscription();
 
-        this._activeSelectorSubscriptions.add(selector.anyChange.subscribe(() => this._anyChange.next()));
         this._activeSelectorSubscriptions.add(selector.touched.subscribe(() => this._touched.next()));
-        this._activeSelectorSubscriptions.add(selector.valueChange.subscribe(() => console.log(selector.value)));
+        this._activeSelectorSubscriptions.add(selector.pickerRequest.subscribe((request) => console.log(request)));
+
+        this._activeSelectorSubscriptions.add(selector.valueChange.subscribe(() =>
+        {
+            this._value = selector.value;
+            this._valueChange.next();
+        }));
         
         selector.format = this.format;
         selector.setValue(this._value);

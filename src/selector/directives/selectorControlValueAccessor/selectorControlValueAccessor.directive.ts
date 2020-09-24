@@ -91,8 +91,6 @@ export class DateTimeSelectorControlValueAccessor<TDate> implements ControlValue
      */
     public registerOnChange(fn: (data: string|DateTimeValue<TDate>|TDate|null) => any): void
     {
-        this._subscriptions.add(this._selector.anyChange.subscribe(() => this._emitValue(fn)));
-        //TODO - remove if not needed
         this._subscriptions.add(this._selector.valueChange.subscribe(() => this._emitValue(fn)));
     }
 

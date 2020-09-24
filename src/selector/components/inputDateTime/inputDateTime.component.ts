@@ -30,24 +30,9 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     protected _touched: Subject<void> = new Subject<void>();
 
     /**
-     * Occurs when selector was changed anyway
+     * Occurs when selector requires picker to be displayed or hidden
      */
-    protected _anyChange: Subject<void> = new Subject<void>();
-
-    /**
-     * Occurs when selector requires picker to be displayed
-     */
-    protected _pickerRequest: Subject<void> = new Subject<void>();
-
-    /**
-     * Occurs when user scales up
-     */
-    protected _scaleUp: Subject<TDate> = new Subject<TDate>();
-
-    /**
-     * Occurs when user scales down
-     */
-    protected _scaleDown: Subject<TDate> = new Subject<TDate>();
+    protected _pickerRequest: Subject<boolean> = new Subject<boolean>();
 
     /**
      * Instance of parser created for specific format
@@ -70,7 +55,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     protected _isValid: boolean = false;
 
     //######################### public properties - implementation of DateTimeSelector #########################
-    
+
     /**
      * Gets or sets currently used format for displaying data
      */
@@ -111,6 +96,14 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     }
 
     /**
+     * Gets indication whether is current value valid
+     */
+    public get valid(): boolean
+    {
+        return this._isValid;
+    }
+
+    /**
      * Occurs when value changes
      */
     public get valueChange(): Observable<void>
@@ -127,35 +120,11 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     }
 
     /**
-     * Occurs when selector was changed anyway
-     */
-    public get anyChange(): Observable<void>
-    {
-        return this._anyChange.asObservable();
-    }
-
-    /**
      * Occurs when selector requires picker to be displayed
      */
-    public get pickerRequest(): Observable<void>
+    public get pickerRequest(): Observable<boolean>
     {
         return this._pickerRequest.asObservable();
-    }
-
-    /**
-     * Occurs when user scales up
-     */
-    public get scaleUp(): Observable<TDate>
-    {
-        return this._scaleUp;
-    }
-
-    /**
-     * Occurs when user scales down
-     */
-    public get scaleDown(): Observable<TDate>
-    {
-        return this._scaleDown;
     }
 
     //######################### public properties - template bindings #########################
@@ -203,7 +172,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     //######################### constructor #########################
     constructor(@Inject(DATE_API) protected _dateApi: DateApi<TDate>,
                 protected _parserSvc: DatePositionParserService,
-                protected _valueProvider: DateValueProvider,
+                protected _valueProvider: DateValueProvider<TDate>,
                 protected _changeDetector: ChangeDetectorRef)
     {
     }
@@ -216,6 +185,19 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      */
     public setValue(value: DateTimeValue<TDate>|null): void
     {
+        if(value?.from)
+        {
+            this._dateApiValue = this._dateApi.getValue(value?.from, this._format);
+            this._isValid = this._dateApiValue.isValid();
+            
+            this._show();
+        }
+        else
+        {
+            this._dateApiValue = null;
+            this._isValid = false;
+            this.currentValue = null;
+        }
     }
 
     /**
@@ -232,17 +214,19 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      */
     public invalidateVisuals(): void
     {
-        // console.log(this.format, this._dateApi.getFormat(this.format));
-        // console.log(this._dateApi.now().format(this.format));
+        this._changeDetector.detectChanges();
     }
 
     //######################### public methods - template bindings #########################
 
     /**
-     * Handles gaining of focus 
+     * Handles gaining of focus
+     * @internal
      */
     public handleFocus()
     {
+        this._pickerRequest.next(true);
+
         //no value
         if(!this._dateApiValue)
         {
@@ -251,20 +235,31 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
             this._valueChange.next();
         }
 
-        this.currentValue = this._dateApiValue.format(this.format);
+        if(!this._isValid)
+        {
+            return;
+        }
 
-        let result = this._parser!.parse(this.currentValue, this.input.selectionStart!);
+        this._show();
+
+        let result = this._parser!.parse(this.currentValue!, this.input.selectionStart!);
 
         this.input.selectionStart = result.positionFrom;
         this.input.selectionEnd = result.positionTo;
     }
 
+    /**
+     * Handles blur on input
+     * @internal
+     */
     public handleBlur()
     {
+        this._pickerRequest.next(false);
     }
 
     /**
      * Handles user input
+     * @internal
      */
     public handleInput()
     {
@@ -285,6 +280,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
 
     /**
      * Handles selection of text inside of input
+     * @internal
      */
     public handleSelect()
     {
@@ -304,6 +300,8 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      */
     public handleClick()
     {
+        this._pickerRequest.next(true);
+
         if(!this._dateApiValue)
         {
             return;
@@ -398,7 +396,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
             }
         }
     }
-    
+
     //######################### protected methods #########################
 
     /**
@@ -406,7 +404,10 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      */
     protected _show()
     {
-        this.currentValue = this._dateApiValue?.format(this._format) ?? null;
+        if(this._isValid)
+        {
+            this.currentValue = this._dateApiValue?.format(this._format) ?? null;
+        }
     }
 
     /**

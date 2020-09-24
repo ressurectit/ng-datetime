@@ -220,7 +220,7 @@ export class DefaultDatePositionParser implements DatePositionParser
 
             for(let index of indexes)
             {
-                if(cursorPosition > index)
+                if(cursorPosition >= index)
                 {
                     return {
                         part: this._strictDatePartsIndexes[index].part,

@@ -23,6 +23,11 @@ export interface DateTimeSelector<TDate = any>
     readonly formattedValue: string|null;
 
     /**
+     * Gets indication whether is current value valid
+     */
+    readonly valid: boolean;
+
+    /**
      * Occurs when value changes
      */
     readonly valueChange: Observable<void>;
@@ -33,24 +38,19 @@ export interface DateTimeSelector<TDate = any>
     readonly touched: Observable<void>;
 
     /**
-     * Occurs when selector was changed anyway
+     * Occurs when selector requires picker to be displayed or hidden
      */
-    readonly anyChange: Observable<void>;
+    readonly pickerRequest: Observable<boolean>;
 
-    /**
-     * Occurs when selector requires picker to be displayed
-     */
-    readonly pickerRequest: Observable<void>;
+    // /**
+    //  * Occurs when user scales up
+    //  */
+    // readonly scaleUp: Observable<TDate>;
 
-    /**
-     * Occurs when user scales up
-     */
-    readonly scaleUp: Observable<TDate>;
-
-    /**
-     * Occurs when user scales down
-     */
-    readonly scaleDown: Observable<TDate>;
+    // /**
+    //  * Occurs when user scales down
+    //  */
+    // readonly scaleDown: Observable<TDate>;
 
     /**
      * Sets value of datetime selector
