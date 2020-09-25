@@ -1,2 +1,6 @@
 <ng-template [ngComponentOutletEx]="activeSelectorComponent" (ngComponentOutletExCreated)="selectorCreated($event)"></ng-template>
-<date-time-picker></date-time-picker>
+
+<ng-template [ngIf]="pickerVisible">
+    <date-time-picker [value]="value"
+                      (valueChange)="pickerChangedValue($event)"></date-time-picker>
+</ng-template>

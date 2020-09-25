@@ -55,11 +55,13 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Gets information 
+     * Gets indication whether provided instance of date is weekend day
      */
-    public weekStartsOnMonday(): boolean
+    public isWeekend(): boolean
     {
-        return moment.localeData().firstDayOfWeek() === 1;
+        let weekday = this._value.isoWeekday();
+
+        return weekday == 6 || weekday == 7;
     }
 
     /**
@@ -450,5 +452,21 @@ export class MomentDateApi implements DateApi<moment.Moment>
         }
 
         return pseudoFormat;
+    }
+
+    /**
+     * Gets information 
+     */
+    public weekStartsOnMonday(): boolean
+    {
+        return moment.localeData().firstDayOfWeek() === 1;
+    }
+
+    /**
+     * Gets array of weekday names in short format, order of days is dependent on locale
+     */
+    public weekdaysShort(): string[]
+    {
+        return moment.weekdaysShort(true);
     }
 }

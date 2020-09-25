@@ -1,9 +1,16 @@
 <div class="month-selection">
-    <div class="text-center fas fa-angle-left"></div>
-    <div class="text-center">{{this.displayDateApi?.format('MMMM YYYY')}}</div>
-    <div class="text-center fas fa-angle-right"></div>
+    <div class="text-center fas fa-angle-left clickable" (mousedown)="previousMonth($event)"></div>
+    <div class="text-center month-value">{{this.displayDateApi?.format('MMMM YYYY')}}</div>
+    <div class="text-center fas fa-angle-right clickable" (mousedown)="nextMonth($event)"></div>
 </div>
 
 <div class="month">
-    <div class="day" *ngFor="let day of days">{{day}}</div>
+    <div class="weekday" *ngFor="let weekday of weekdays">{{weekday}}</div>
+    <div *ngFor="let day of days"
+         class="day clickable"
+         [class.other-month]="day?.otherMonth"
+         [class.today]="day?.today"
+         [class.weekend]="day?.weekend"
+         [class.active]="day?.active"
+         (mousedown)="select(day)">{{day?.day}}</div>
 </div>

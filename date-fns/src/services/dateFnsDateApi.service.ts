@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {DateApi, DateValue, DateApiObject} from '@anglr/datetime';
 import {isBlank, isPresent, isString} from '@jscrpt/common';
-import {toDate, getDate, setDate, setDay, getDay, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, addYears, subYears, startOfYear, endOfYear} from 'date-fns';
+import {toDate, getDate, setDate, setDay, getDay, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, addYears, subYears, startOfYear, endOfYear, isWeekend} from 'date-fns';
 
 import {DATE_FNS_LOCALE} from '../misc/tokens';
 import {DateFnsLocale} from './dateFnsLocale.service';
@@ -67,11 +67,11 @@ class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Gets information 
+     * Gets indication whether provided instance of date is weekend day
      */
-    public weekStartsOnMonday(): boolean
+    public isWeekend(): boolean
     {
-        return this._localeSvc.locale.options?.weekStartsOn === 1;
+        return isWeekend(this._value);
     }
 
     /**
@@ -491,5 +491,29 @@ export class DateFnsDateApi implements DateApi<Date>
         }
 
         return pseudoFormat;
+    }
+
+    /**
+     * Gets information 
+     */
+    public weekStartsOnMonday(): boolean
+    {
+        return this._localeSvc.locale.options?.weekStartsOn === 1;
+    }
+
+    /**
+     * Gets array of weekday names in short format, order of days is dependent on locale
+     */
+    public weekdaysShort(): string[]
+    {
+        let startIndex = this._localeSvc.locale.options!.weekStartsOn!;
+        let weekdays: string[] = [];
+
+        for(let x = 0; x < 7; x++)
+        {
+            weekdays.push(this._localeSvc.locale.localize!.day(startIndex++ % 7, {width: 'short'}));
+        }
+
+        return weekdays;
     }
 }

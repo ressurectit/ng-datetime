@@ -1,8 +1,10 @@
-import {Component, ChangeDetectionStrategy, Optional, Inject, Input, Type, OnInit} from '@angular/core';
+import {Component, ChangeDetectionStrategy, Optional, Inject, Input, Type, OnInit, EventEmitter, Output} from '@angular/core';
 import {extend} from '@jscrpt/common';
 import {Subscription} from 'rxjs';
 
 import {DateTimeValue} from '../../../misc/datetime.interface';
+import {DATE_API} from '../../../misc/tokens';
+import {DateApi} from '../../../services';
 import {DateTimePicker, DateTimePickerOptions} from '../../misc/datetimePicker.interface';
 import {DATE_TIME_PICKER_CONFIGURATION} from '../../misc/tokens';
 import {DateTimeDayPickerComponent} from '../dayPicker/dayPicker.component';
@@ -64,13 +66,33 @@ export class DateTimePickerComponent<TDate = any> implements OnInit
     @Input()
     public options: DateTimePickerOptions<DateTimePicker<TDate>>;
 
+    /**
+     * Current selected value
+     */
+    @Input()
     public get value(): DateTimeValue<TDate>|null
     {
         return this._value;
     }
+    public set value(value: DateTimeValue<TDate>|null)
+    {
+        this._value = value;
+
+        this._activePicker?.setValue(value);
+        this._activePicker?.invalidateVisuals();
+    }
+
+    //######################### public properties - outputs #########################
+
+    /**
+     * Occurs when value changes
+     */
+    @Output()
+    public valueChange: EventEmitter<DateTimeValue<TDate>> = new EventEmitter<DateTimeValue<TDate>>();
 
     //######################### constructor #########################
-    constructor(@Optional() @Inject(DATE_TIME_PICKER_CONFIGURATION) configuration: DateTimePickerOptions<DateTimePicker<TDate>>)
+    constructor(@Optional() @Inject(DATE_TIME_PICKER_CONFIGURATION) configuration: DateTimePickerOptions<DateTimePicker<TDate>>,
+                @Inject(DATE_API) protected _dateApi: DateApi<TDate>)
     {
         this.options = extend(true, {}, defaultConfiguration, configuration);
     }
@@ -109,12 +131,12 @@ export class DateTimePickerComponent<TDate = any> implements OnInit
 
         this._activePickerSubscriptions.add(picker.valueChange.subscribe(() =>
         {
-            // this._value = picker.value;
-            // this._valueChange.next();
+            this._value = picker.value;
+            this.valueChange.emit(this._value!);
         }));
 
         picker.setValue(this._value);
-        picker.display(this._value?.from!);
+        picker.display(this._dateApi.getValue(this._value?.from!));
 
         picker.invalidateVisuals();
     }

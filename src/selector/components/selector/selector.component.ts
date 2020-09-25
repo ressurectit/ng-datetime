@@ -137,6 +137,12 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
      */
     public activeSelectorComponent?: Type<DateTimeSelector<TDate>>;
 
+    /**
+     * Indication whether is picker visible or not
+     * @internal
+     */
+    public pickerVisible: boolean = false;
+
     //######################### public properties - inputs #########################
 
     /**
@@ -210,7 +216,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
         this._activeSelectorSubscriptions = new Subscription();
 
         this._activeSelectorSubscriptions.add(selector.touched.subscribe(() => this._touched.next()));
-        this._activeSelectorSubscriptions.add(selector.pickerRequest.subscribe((request) => console.log('picker', request)));
+        this._activeSelectorSubscriptions.add(selector.pickerRequest.subscribe(visible => this.pickerVisible = visible));
 
         this._activeSelectorSubscriptions.add(selector.valueChange.subscribe(() =>
         {
@@ -223,6 +229,16 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
         selector.setDisabled(this._disabled);
 
         selector.invalidateVisuals();
+    }
+
+    /**
+     * Handles changed value by picker
+     * @param value - Value that was changed
+     * @intenral
+     */
+    public pickerChangedValue(value: DateTimeValue<TDate>)
+    {
+        this._activeSelector?.setValue(value);
     }
 
     //######################### public methods #########################

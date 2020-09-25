@@ -3,6 +3,7 @@ import {Dictionary} from '@jscrpt/common';
 import {Observable} from 'rxjs';
 
 import {DateTimeValue} from '../../misc/datetime.interface';
+import {DateApiObject} from '../../services/dateApi.interface';
 
 /**
  * Defintion of datetime picker component options
@@ -55,16 +56,63 @@ export interface DateTimePicker<TDate = any>
      * Set displays date to be displayed
      * @param value - Value that identifies period that is going to be displayed
      */
-    display(value: TDate): void;
+    display(value: DateApiObject<TDate>): void;
 
     /**
-     * Sets callback for testing whether picker can go down
-     * @param fn - Callback function that is called when picker is testing whether can go down
+     * Sets indication whether can go down
+     * @param value - Indication whether can go down in period
      */
-    setupCanGoDown(fn: () => boolean): void;
+    setCanGoDown(value: boolean): void;
+
+    /**
+     * Sets indication whether can go up
+     * @param value - Indication whether can go up in period
+     */
+    setCanGoUp(value: boolean): void;
 
     /**
      * Explicitly runs invalidation of content (change detection)
      */
     invalidateVisuals(): void;
+}
+
+/**
+ * Data that represents day in date picker
+ */
+export interface DayData<TDate = any>
+{
+    /**
+     * Indication that this day is active and selected
+     */
+    active: boolean;
+
+    /**
+     * Indication that range is selected and this day is between selected dates
+     */
+    betweenActive: boolean;
+
+    /**
+     * Indication that this day is out of currently selected month
+     */
+    otherMonth: boolean;
+
+    /**
+     * Indication that this day is today
+     */
+    today: boolean;
+
+    /**
+     * Indication that this day is weekend day
+     */
+    weekend: boolean;
+
+    /**
+     * Date for this day
+     */
+    date: TDate;
+
+    /**
+     * Day number of month
+     */
+    day: number;
 }

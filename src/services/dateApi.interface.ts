@@ -24,9 +24,9 @@ export interface DateApiObject<TDate = any>
     isValid(): boolean;
 
     /**
-     * Gets information 
+     * Gets indication whether provided instance of date is weekend day
      */
-    weekStartsOnMonday(): boolean;
+    isWeekend(): boolean;
 
     /**
      * Formats date value
@@ -255,4 +255,14 @@ export interface DateApi<TDate = any>
      * @param pseudoFormat - Pseudo format token, used for obtaining 'date' or 'time' format string
      */
     getFormat(pseudoFormat: string): string;
+
+    /**
+     * Gets information 
+     */
+    weekStartsOnMonday(): boolean;
+
+    /**
+     * Gets array of weekday names in short format, order of days is dependent on locale
+     */
+    weekdaysShort(): string[];
 }
