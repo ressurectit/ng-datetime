@@ -79,7 +79,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
      */
     public startOfYear(): DateApiObject<moment.Moment>
     {
-        moment(this._value).startOf('year');
+        this._value = moment(this._value).startOf('year');
 
         return this;
     }
@@ -90,7 +90,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
      */
     public endOfYear(): DateApiObject<moment.Moment>
     {
-        moment(this._value).endOf('year');
+        this._value = moment(this._value).endOf('year');
 
         return this;
     }

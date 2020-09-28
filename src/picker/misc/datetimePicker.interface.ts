@@ -77,15 +77,26 @@ export interface DateTimePicker<TDate = any>
 }
 
 /**
- * Data that represents day in date picker
+ * Data that represents data for any picker type
  */
-export interface DayData<TDate = any>
+export interface PeriodData<TDate = any>
 {
     /**
      * Indication that this day is active and selected
      */
     active: boolean;
 
+    /**
+     * Date for this day
+     */
+    date: TDate;
+}
+
+/**
+ * Data that represents day in date picker
+ */
+export interface DayData<TDate = any> extends PeriodData<TDate>
+{
     /**
      * Indication that range is selected and this day is between selected dates
      */
@@ -107,12 +118,18 @@ export interface DayData<TDate = any>
     weekend: boolean;
 
     /**
-     * Date for this day
-     */
-    date: TDate;
-
-    /**
      * Day number of month
      */
     day: number;
+}
+
+/**
+ * Data that represents month in date picker
+ */
+export interface MonthData<TDate = any> extends PeriodData<TDate>
+{
+    /**
+     * Name of month
+     */
+    name: string;
 }

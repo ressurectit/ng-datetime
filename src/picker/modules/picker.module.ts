@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule as AngularCommonModule} from '@angular/common';
 import {CommonModule} from '@anglr/common';
 
-import {DateTimePickerComponent, DateTimeDayPickerComponent} from '../components';
+import {DateTimePickerComponent, DateTimeDayPickerComponent, DateTimeMonthPickerComponent} from '../components';
 
 /**
  * Angular module for date time picker components
@@ -17,7 +17,8 @@ import {DateTimePickerComponent, DateTimeDayPickerComponent} from '../components
     declarations:
     [
         DateTimePickerComponent,
-        DateTimeDayPickerComponent
+        DateTimeDayPickerComponent,
+        DateTimeMonthPickerComponent
     ],
     exports:
     [

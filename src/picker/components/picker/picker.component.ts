@@ -1,4 +1,4 @@
-import {Component, ChangeDetectionStrategy, Optional, Inject, Input, Type, OnInit, EventEmitter, Output} from '@angular/core';
+import {Component, ChangeDetectionStrategy, Optional, Inject, Input, Type, OnInit, EventEmitter, Output, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {extend} from '@jscrpt/common';
 import {Subscription} from 'rxjs';
 
@@ -8,6 +8,7 @@ import {DateApi} from '../../../services';
 import {DateTimePicker, DateTimePickerOptions} from '../../misc/datetimePicker.interface';
 import {DATE_TIME_PICKER_CONFIGURATION} from '../../misc/tokens';
 import {DateTimeDayPickerComponent} from '../dayPicker/dayPicker.component';
+import {DateTimeMonthPickerComponent} from '../monthPicker/monthPicker.component';
 
 /**
  * Default configuration for picker
@@ -17,7 +18,8 @@ const defaultConfiguration: DateTimePickerOptions<DateTimePicker> =
     defaultPeriod: 'day',
     pickerPeriodsDefinition:
     {
-        "day": DateTimeDayPickerComponent
+        "day": DateTimeDayPickerComponent,
+        "month": DateTimeMonthPickerComponent
     }
 };
 
@@ -31,7 +33,7 @@ const defaultConfiguration: DateTimePickerOptions<DateTimePicker> =
     // styleUrls: ['picker.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DateTimePickerComponent<TDate = any> implements OnInit
+export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
 {
     //######################### protected fields #########################
 
@@ -39,6 +41,16 @@ export class DateTimePickerComponent<TDate = any> implements OnInit
      * Instance of active date time picker
      */
     protected _activePicker?: DateTimePicker<TDate>;
+
+    /**
+     * Name, id of displayed picker
+     */
+    protected _activePickerName!: string;
+
+    /**
+     * Array of available picker names
+     */
+    protected _pickerNames: string[] = [];
 
     /**
      * Current selected value
@@ -49,6 +61,11 @@ export class DateTimePickerComponent<TDate = any> implements OnInit
      * All subscriptions for active picker
      */
     protected _activePickerSubscriptions: Subscription = new Subscription();
+
+    /**
+     * Date that should be displayed in picker, used when moving up or down in periods
+     */
+    protected _display?: TDate;
 
     //######################### public properties - template bindings #########################
 
@@ -92,7 +109,8 @@ export class DateTimePickerComponent<TDate = any> implements OnInit
 
     //######################### constructor #########################
     constructor(@Optional() @Inject(DATE_TIME_PICKER_CONFIGURATION) configuration: DateTimePickerOptions<DateTimePicker<TDate>>,
-                @Inject(DATE_API) protected _dateApi: DateApi<TDate>)
+                @Inject(DATE_API) protected _dateApi: DateApi<TDate>,
+                protected _changeDetector: ChangeDetectorRef)
     {
         this.options = extend(true, {}, defaultConfiguration, configuration);
     }
@@ -110,6 +128,19 @@ export class DateTimePickerComponent<TDate = any> implements OnInit
         }
 
         this.activePickerComponent = this.options.pickerPeriodsDefinition[this.options.defaultPeriod];
+        this._activePickerName = this.options.defaultPeriod;
+        this._pickerNames = Object.keys(this.options.pickerPeriodsDefinition);
+    }
+
+    //######################### public methods - implementation of OnDestroy #########################
+    
+    /**
+     * Called when component is destroyed
+     */
+    public ngOnDestroy()
+    {
+        this._display = undefined;
+        this._activePickerSubscriptions.unsubscribe();
     }
 
     //######################### public methods - template bindings #########################
@@ -121,13 +152,20 @@ export class DateTimePickerComponent<TDate = any> implements OnInit
      */
     public pickerCreated(picker: DateTimePicker<TDate>)
     {
+        if(picker == this._activePicker)
+        {
+            return;
+        }
+
         this._activePicker = picker;
 
         this._activePickerSubscriptions.unsubscribe();
         this._activePickerSubscriptions = new Subscription();
 
-        // this._activePickerSubscriptions.add(picker.touched.subscribe(() => this._touched.next()));
-        // this._activePickerSubscriptions.add(picker.pickerRequest.subscribe((request) => console.log('picker', request)));
+        if(!this._activePicker)
+        {
+            return;
+        }
 
         this._activePickerSubscriptions.add(picker.valueChange.subscribe(() =>
         {
@@ -135,8 +173,27 @@ export class DateTimePickerComponent<TDate = any> implements OnInit
             this.valueChange.emit(this._value!);
         }));
 
+        this._activePickerSubscriptions.add(picker.scaleUp.subscribe(display =>
+        {
+            this._display = display;
+            let index = this._pickerNames.indexOf(this._activePickerName) + 1;
+            this._activePickerName = this._pickerNames[index];
+            this.activePickerComponent = this.options.pickerPeriodsDefinition[this._activePickerName];
+        }));
+
+        this._activePickerSubscriptions.add(picker.scaleDown.subscribe(display =>
+        {
+            this._display = display;
+            let index = this._pickerNames.indexOf(this._activePickerName) - 1;
+            this._activePickerName = this._pickerNames[index];
+            this.activePickerComponent = this.options.pickerPeriodsDefinition[this._activePickerName];
+        }));
+
+        picker.setCanGoDown(this._pickerNames.indexOf(this._activePickerName) > 0);
+        picker.setCanGoUp(this._pickerNames.indexOf(this._activePickerName) < this._pickerNames.length - 1);
+
         picker.setValue(this._value);
-        picker.display(this._dateApi.getValue(this._value?.from!));
+        picker.display(this._display ? this._dateApi.getValue(this._display) : this._dateApi.getValue(this._value?.from ?? this._dateApi.now().value));
 
         picker.invalidateVisuals();
     }

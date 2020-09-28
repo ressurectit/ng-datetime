@@ -4,19 +4,19 @@ import {Observable, Subject} from 'rxjs';
 import {DateTimeValue} from '../../../misc/datetime.interface';
 import {DATE_API} from '../../../misc/tokens';
 import {DateApi, DateApiObject} from '../../../services/dateApi.interface';
-import {DateTimePicker, DayData} from '../../misc/datetimePicker.interface';
+import {DateTimePicker, MonthData} from '../../misc/datetimePicker.interface';
 
 /**
- * Component used for displaying day picker
+ * Component used for displaying month picker
  */
 @Component(
 {
-    selector: 'date-time-day-picker',
-    templateUrl: 'dayPicker.component.html',
-    styleUrls: ['dayPicker.component.css'],
+    selector: 'date-time-month-picker',
+    templateUrl: 'monthPicker.component.html',
+    styleUrls: ['monthPicker.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DateTimeDayPickerComponent<TDate = any> implements DateTimePicker<TDate>
+export class DateTimeMonthPickerComponent<TDate = any> implements DateTimePicker<TDate>
 {
     //######################### protected fields #########################
 
@@ -44,11 +44,6 @@ export class DateTimeDayPickerComponent<TDate = any> implements DateTimePicker<T
      * Currently displayed period of time
      */
     protected _display!: DateApiObject<TDate>;
-
-    /**
-     * Stored this month data
-     */
-    protected _thisMonthData: DayData<TDate>[] = [];
 
     //######################### public properties - implementation of DateTimePicker #########################
 
@@ -87,16 +82,10 @@ export class DateTimeDayPickerComponent<TDate = any> implements DateTimePicker<T
     //######################### public properties - template bindings #########################
 
     /**
-     * Array of days to be displayed
+     * Array of months to be displayed
      * @internal
      */
-    public days: DayData<TDate>[] = [];
-
-    /**
-     * Names of days
-     * @internal
-     */
-    public weekdays: string[] = [];
+    public months: MonthData<TDate>[] = [];
 
     /**
      * Date api instance for displayed date
@@ -120,61 +109,65 @@ export class DateTimeDayPickerComponent<TDate = any> implements DateTimePicker<T
     constructor(@Inject(DATE_API) protected _dateApi: DateApi<TDate>,
                 protected _changeDetector: ChangeDetectorRef)
     {
-        this.weekdays = this._dateApi.weekdaysShort();
+        let monthOfYear = this._dateApi.now().startOfYear();
+
+        for(let x = 0; x < 12; x++)
+        {
+            this.months.push(
+            {
+                active: false,
+                date: monthOfYear.value,
+                name: monthOfYear.format('MMM')
+            });
+
+            monthOfYear.addMonths(1);
+        }
     }
 
     //######################### public methods - template bindings #########################
 
     /**
-     * Changes displayed month to next month
+     * Changes displayed year to next year
      * @param event - Event that occured
      * @internal
      */
-    public nextMonth(event: Event)
+    public nextYear(event: Event)
     {
         event.preventDefault();
-        this.displayDateApi!.addMonths(1);
+        this.displayDateApi!.addYears(1);
 
         this.display(this.displayDateApi!);
     }
 
     /**
-     * Changes displayed month to previous month
+     * Changes displayed year to previous year
      * @param event - Event that occured
      * @internal
      */
-    public previousMonth(event: Event)
+    public previousYear(event: Event)
     {
         event.preventDefault();
-        this.displayDateApi!.subtractMonths(1);
+        this.displayDateApi!.subtractYears(1);
 
         this.display(this.displayDateApi!);
     }
 
     /**
-     * Selects day
+     * Selects month
      * @param event - Event that occured
-     * @param day - Selects day 
+     * @param month - Selected month
      * @internal
      */
-    public select(event: Event, day: DayData<TDate>)
+    public select(event: Event, month: MonthData<TDate>)
     {
         event.preventDefault();
 
-        this._setDay(day);
-
-        this._value =
+        if(!this.canGoDown)
         {
-            from: day.date,
-            to: day.date
-        };
-        
-        this._valueChange.next();
-
-        if(day.otherMonth)
-        {
-            this.display(this._dateApi.getValue(day.date));
+            return;
         }
+
+        this._scaleDown.next(month.date);
     }
 
     /**
@@ -202,28 +195,6 @@ export class DateTimeDayPickerComponent<TDate = any> implements DateTimePicker<T
      */
     public setValue(value: DateTimeValue<TDate>|null): void
     {
-        this._value = value;
-
-        //value is present
-        if(this._value && this.displayDateApi)
-        {
-            let val = this._dateApi.getValue(this._value.from);
-
-            if(!val.isSameMonth(this.displayDateApi.value))
-            {
-                this.display(val);
-
-                return;
-            }
-
-            let day = this._thisMonthData[val.dayOfMonth() - 1];
-
-            //was initialized
-            if(day)
-            {
-                this._setDay(day);
-            }
-        }
     }
 
     /**
@@ -234,52 +205,6 @@ export class DateTimeDayPickerComponent<TDate = any> implements DateTimePicker<T
     {
         this._display = value;
         this.displayDateApi = value;
-        this.days = [];
-        this._thisMonthData = [];
-        let currentMonthDate = this.displayDateApi.value;
-        let today = this._dateApi.now().value;
-
-        this.displayDateApi
-            .startOfMonth()
-            .updateOriginal()
-            .startOfWeek();
-
-        do
-        {
-            for(let x = 0; x < 7; x++)
-            {
-                let day = this.displayDateApi.dayOfMonth();
-                let otherMonth = !this.displayDateApi.isSameMonth(currentMonthDate);
-                let data = 
-                {
-                    active: false,
-                    betweenActive: false,
-                    date: this.displayDateApi.value,
-                    otherMonth: otherMonth,
-                    today: this.displayDateApi.isSameDay(today),
-                    weekend: this.displayDateApi.isWeekend(),
-                    day: day
-                };
-
-                this.days.push(data);
-
-                if(!otherMonth)
-                {
-                    this._thisMonthData.push(data);
-                }
-
-                this.displayDateApi.addDays(1);
-            }
-        }
-        while(this.displayDateApi.isSameMonth(currentMonthDate))
-
-        this.displayDateApi.resetOriginal();
-
-        //set value if exists
-        if(this._value && (this.displayDateApi.isSameMonth(this._value.from) || this.displayDateApi.isSameMonth(this._value.to)))
-        {
-            this.setValue(this._value);
-        }
     }
 
     /**
@@ -306,18 +231,5 @@ export class DateTimeDayPickerComponent<TDate = any> implements DateTimePicker<T
     public invalidateVisuals(): void
     {
         this._changeDetector.detectChanges();
-    }
-
-    //######################### protected methods #########################
-
-    /**
-     * Sets day as active
-     * @param day - Day to be set as active
-     */
-    protected _setDay(day: DayData<TDate>)
-    {
-        this._thisMonthData.forEach(itm => itm.active = false);
-
-        day.active = true;
     }
 }
