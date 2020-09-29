@@ -13,7 +13,7 @@ import {DateTimeSelector} from '../../misc/datetimeSelector.interface';
 {
     selector: 'input-date-time-selector',
     templateUrl: 'inputDateTime.component.html',
-    // styleUrls: ['inputDateTime.component.scss'],
+    styleUrls: ['inputDateTime.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSelector<TDate>

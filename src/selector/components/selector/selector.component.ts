@@ -9,6 +9,7 @@ import {DateApi, DateValueProvider, FormatProvider} from '../../../services';
 import {DateTimeSelector, DateTimeSelectorOptions} from '../../misc/datetimeSelector.interface';
 import {DATE_TIME_SELECTOR_CONFIGURATION} from '../../misc/tokens';
 import {InputDateTimeSelectorComponent} from '../inputDateTime/inputDateTime.component';
+import {enterLeaveAnimateChildTrigger} from './selector.component.animations';
 
 //TODO - add support for body absolute picker
 
@@ -33,7 +34,8 @@ const defaultConfiguration: DateTimeSelectorOptions<DateTimeSelector> =
 {
     selector: 'date-time-selector',
     templateUrl: 'selector.component.html',
-    // styleUrls: ['selector.component.scss'],
+    styleUrls: ['selector.component.css'],
+    animations: [enterLeaveAnimateChildTrigger],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges ,OnDestroy

@@ -9,6 +9,7 @@ import {DateTimePicker, DateTimePickerOptions} from '../../misc/datetimePicker.i
 import {DATE_TIME_PICKER_CONFIGURATION} from '../../misc/tokens';
 import {DateTimeDayPickerComponent} from '../dayPicker/dayPicker.component';
 import {DateTimeMonthPickerComponent} from '../monthPicker/monthPicker.component';
+import {scaleUpDownTrigger} from './picker.component.animations';
 
 /**
  * Default configuration for picker
@@ -31,6 +32,7 @@ const defaultConfiguration: DateTimePickerOptions<DateTimePicker> =
     selector: 'date-time-picker',
     templateUrl: 'picker.component.html',
     // styleUrls: ['picker.component.scss'],
+    animations: [scaleUpDownTrigger],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
@@ -74,6 +76,12 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
      * @internal
      */
     public activePickerComponent?: Type<DateTimePicker<TDate>>;
+
+    /**
+     * Active picker index
+     * @internal
+     */
+    public activePickerIndex: number = 0;
 
     //######################### public properties - inputs #########################
 
@@ -130,6 +138,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
         this.activePickerComponent = this.options.pickerPeriodsDefinition[this.options.defaultPeriod];
         this._activePickerName = this.options.defaultPeriod;
         this._pickerNames = Object.keys(this.options.pickerPeriodsDefinition);
+        this.activePickerIndex = this._pickerNames.indexOf(this._activePickerName);
     }
 
     //######################### public methods - implementation of OnDestroy #########################
@@ -178,6 +187,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
             this._display = display;
             let index = this._pickerNames.indexOf(this._activePickerName) + 1;
             this._activePickerName = this._pickerNames[index];
+            this.activePickerIndex = this._pickerNames.indexOf(this._activePickerName);
             this.activePickerComponent = this.options.pickerPeriodsDefinition[this._activePickerName];
         }));
 
@@ -186,6 +196,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
             this._display = display;
             let index = this._pickerNames.indexOf(this._activePickerName) - 1;
             this._activePickerName = this._pickerNames[index];
+            this.activePickerIndex = this._pickerNames.indexOf(this._activePickerName);
             this.activePickerComponent = this.options.pickerPeriodsDefinition[this._activePickerName];
         }));
 

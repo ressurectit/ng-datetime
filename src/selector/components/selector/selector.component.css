@@ -1,0 +1,11 @@
+:host
+{
+    display: block;
+    position: relative;
+}
+
+date-time-picker
+{
+    position: absolute;
+    top: 100%;
+}
