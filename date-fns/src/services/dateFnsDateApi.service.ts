@@ -465,7 +465,7 @@ export class DateFnsDateApi implements DateApi<Date>
     {
         if(/^p+$/i.test(pseudoFormat))
         {
-            let widths =
+            let widths: {[index: number]: string} =
             {
                 1: 'short',
                 2: 'medium',
@@ -476,17 +476,17 @@ export class DateFnsDateApi implements DateApi<Date>
             //date time format
             if(pseudoFormat.indexOf('Pp') >= 0 && pseudoFormat.length <= 8)
             {
-                return this._localeSvc.locale.formatLong.dateTime({width: widths[pseudoFormat.length / 2]});
+                return this._localeSvc.locale.formatLong!.dateTime({width: widths[pseudoFormat.length / 2]});
             }
             //date format
             else if(pseudoFormat.indexOf('P') >= 0 && pseudoFormat.length <= 4)
             {
-                return this._localeSvc.locale.formatLong.date({width: widths[pseudoFormat.length]});
+                return this._localeSvc.locale.formatLong!.date({width: widths[pseudoFormat.length]});
             }
             //time format
             else if(pseudoFormat.indexOf('p') >= 0 && pseudoFormat.length <= 4)
             {
-                return this._localeSvc.locale.formatLong.time({width: widths[pseudoFormat.length]});
+                return this._localeSvc.locale.formatLong!.time({width: widths[pseudoFormat.length]});
             }
         }
 

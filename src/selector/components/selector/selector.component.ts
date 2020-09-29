@@ -242,6 +242,8 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     public pickerChangedValue(value: DateTimeValue<TDate>)
     {
         this._activeSelector?.setValue(value);
+        this._value = value;
+        this._valueChange.next();
     }
 
     //######################### public methods #########################

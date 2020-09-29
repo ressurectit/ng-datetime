@@ -5,7 +5,7 @@
 </div>
 
 <div class="year">
-    <div *ngFor="let month of months"
+    <div *ngFor="let month of periodData"
          class="month clickable"
          [class.active]="month?.active"
          (mousedown)="select($event, month)">{{month?.name}}</div>

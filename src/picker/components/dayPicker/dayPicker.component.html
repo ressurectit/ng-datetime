@@ -6,7 +6,7 @@
 
 <div class="month">
     <div class="weekday" *ngFor="let weekday of weekdays">{{weekday}}</div>
-    <div *ngFor="let day of days"
+    <div *ngFor="let day of periodData"
          class="day clickable"
          [class.other-month]="day?.otherMonth"
          [class.today]="day?.today"
