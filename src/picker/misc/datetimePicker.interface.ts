@@ -133,3 +133,14 @@ export interface MonthData<TDate = any> extends PeriodData<TDate>
      */
     name: string;
 }
+
+/**
+ * Data that represents year in date picker
+ */
+export interface YearData<TDate = any> extends PeriodData<TDate>
+{
+    /**
+     * Value of year
+     */
+    value: number;
+}

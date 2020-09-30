@@ -49,9 +49,9 @@ export class DateTimeMonthPickerComponent<TDate = any> extends PickerBaseCompone
     public nextYear(event: Event)
     {
         event.preventDefault();
-        this.displayDateApi!.addYears(1);
+        this.displayDate!.addYears(1);
 
-        this.display(this.displayDateApi!);
+        this.display(this.displayDate!);
     }
 
     /**
@@ -62,9 +62,9 @@ export class DateTimeMonthPickerComponent<TDate = any> extends PickerBaseCompone
     public previousYear(event: Event)
     {
         event.preventDefault();
-        this.displayDateApi!.subtractYears(1);
+        this.displayDate!.subtractYears(1);
 
-        this.display(this.displayDateApi!);
+        this.display(this.displayDate!);
     }
 
     /**
@@ -101,7 +101,6 @@ export class DateTimeMonthPickerComponent<TDate = any> extends PickerBaseCompone
      */
     public display(value: DateApiObject<TDate>): void
     {
-        this._display = value;
-        this.displayDateApi = value;
+        this.displayDate = value;
     }
 }

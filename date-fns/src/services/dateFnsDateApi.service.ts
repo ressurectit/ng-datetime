@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {DateApi, DateValue, DateApiObject} from '@anglr/datetime';
 import {isBlank, isPresent, isString} from '@jscrpt/common';
-import {toDate, getDate, setDate, setDay, getDay, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, addYears, subYears, startOfYear, endOfYear, isWeekend} from 'date-fns';
+import {toDate, getDate, setDate, setDay, getDay, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear} from 'date-fns';
 
 import {DATE_FNS_LOCALE} from '../misc/tokens';
 import {DateFnsLocale} from './dateFnsLocale.service';
@@ -273,6 +273,31 @@ class DateFnsDateApiObject implements DateApiObject<Date>
     public daysInMonth(): number
     {
         return getDaysInMonth(this._value);
+    }
+
+    /**
+     * Gets year
+     */
+    public year(): number;
+    /**
+     * Sets year
+     * @param year - Year to be set
+     */
+    public year(year: number): DateApiObject<Date>;
+    /**
+     * Gets or sets year
+     * @param year - If specified, sets year
+     */
+    public year(year?: number): DateApiObject<Date>|number
+    {
+        if(isPresent(year))
+        {
+            this._value = setYear(this._value, year!);
+
+            return this;
+        }
+
+        return getYear(this._value);
     }
 
     /**

@@ -144,6 +144,21 @@ export interface DateApiObject<TDate = any>
     daysInMonth(): number;
 
     /**
+     * Gets year
+     */
+    year(): number;
+    /**
+     * Sets year
+     * @param year - Year to be set
+     */
+    year(year: number): DateApiObject<TDate>;
+    /**
+     * Gets or sets year
+     * @param year - If specified, sets year
+     */
+    year(year?: number): DateApiObject<TDate>|number;
+
+    /**
      * Gets day of month one based
      */
     dayOfMonth(): number;

@@ -5,6 +5,8 @@
     border: 1px solid #333;
     border-radius: 4px;
     background-color: #FFF;
+    z-index: 1;
+    position: relative;
 }
 
 .month-selection

@@ -5,11 +5,9 @@
     border: 1px solid #333;
     border-radius: 4px;
     background-color: #FFF;
-    z-index: 1;
-    position: relative;
 }
 
-.year-selection
+.decade-selection
 {
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -17,22 +15,24 @@
     align-items: center;
 }
 
-.year-value
+.decade-value
 {
     font-weight: bold;
 }
 
-.year
+.decade
 {
     width: 280px;
 
     display: grid;
     grid-template-rows: auto;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     justify-items: stretch;
+    z-index: 1;
+    position: relative;
 }
 
-.month
+.year
 {
     text-align: center;
     border-radius: 4px;

@@ -52,9 +52,9 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
     public nextMonth(event: Event)
     {
         event.preventDefault();
-        this.displayDateApi!.addMonths(1);
+        this.displayDate!.addMonths(1);
 
-        this.display(this.displayDateApi!);
+        this.display(this.displayDate!);
     }
 
     /**
@@ -65,9 +65,9 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
     public previousMonth(event: Event)
     {
         event.preventDefault();
-        this.displayDateApi!.subtractMonths(1);
+        this.displayDate!.subtractMonths(1);
 
-        this.display(this.displayDateApi!);
+        this.display(this.displayDate!);
     }
 
     /**
@@ -107,11 +107,11 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
         this._value = value;
 
         //value is present
-        if(this._value && this.displayDateApi)
+        if(this._value && this.displayDate)
         {
             let val = this._dateApi.getValue(this._value.from);
 
-            if(!val.isSameMonth(this.displayDateApi.value))
+            if(!val.isSameMonth(this.displayDate.value))
             {
                 this.display(val);
 
@@ -134,14 +134,13 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
      */
     public display(value: DateApiObject<TDate>): void
     {
-        this._display = value;
-        this.displayDateApi = value;
+        this.displayDate = value;
         this.periodData = [];
         this._thisMonthData = [];
-        let currentMonthDate = this.displayDateApi.value;
+        let currentMonthDate = this.displayDate.value;
         let today = this._dateApi.now().value;
 
-        this.displayDateApi
+        this.displayDate
             .startOfMonth()
             .updateOriginal()
             .startOfWeek();
@@ -150,16 +149,16 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
         {
             for(let x = 0; x < 7; x++)
             {
-                let day = this.displayDateApi.dayOfMonth();
-                let otherMonth = !this.displayDateApi.isSameMonth(currentMonthDate);
+                let day = this.displayDate.dayOfMonth();
+                let otherMonth = !this.displayDate.isSameMonth(currentMonthDate);
                 let data = 
                 {
                     active: false,
                     betweenActive: false,
-                    date: this.displayDateApi.value,
+                    date: this.displayDate.value,
                     otherMonth: otherMonth,
-                    today: this.displayDateApi.isSameDay(today),
-                    weekend: this.displayDateApi.isWeekend(),
+                    today: this.displayDate.isSameDay(today),
+                    weekend: this.displayDate.isWeekend(),
                     day: day
                 };
 
@@ -170,15 +169,15 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
                     this._thisMonthData.push(data);
                 }
 
-                this.displayDateApi.addDays(1);
+                this.displayDate.addDays(1);
             }
         }
-        while(this.displayDateApi.isSameMonth(currentMonthDate))
+        while(this.displayDate.isSameMonth(currentMonthDate))
 
-        this.displayDateApi.resetOriginal();
+        this.displayDate.resetOriginal();
 
         //set value if exists
-        if(this._value && (this.displayDateApi.isSameMonth(this._value.from) || this.displayDateApi.isSameMonth(this._value.to)))
+        if(this._value && (this.displayDate.isSameMonth(this._value.from) || this.displayDate.isSameMonth(this._value.to)))
         {
             this.setValue(this._value);
         }

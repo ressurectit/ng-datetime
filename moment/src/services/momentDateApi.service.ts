@@ -266,6 +266,31 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
+     * Gets year
+     */
+    public year(): number;
+    /**
+     * Sets year
+     * @param year - Year to be set
+     */
+    public year(year: number): DateApiObject<moment.Moment>;
+    /**
+     * Gets or sets year
+     * @param year - If specified, sets year
+     */
+    public year(year?: number): DateApiObject<moment.Moment>|number
+    {
+        if(isPresent(year))
+        {
+            this._value = moment(this._value).year(year!);
+
+            return this;
+        }
+
+        return this._value.year();
+    }
+
+    /**
      * Gets day of month one based
      */
     public dayOfMonth(): number;

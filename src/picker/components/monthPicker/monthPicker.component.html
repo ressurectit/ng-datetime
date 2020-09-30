@@ -1,6 +1,6 @@
 <div class="year-selection">
     <div class="text-center fas fa-angle-left clickable" (mousedown)="previousYear($event)"></div>
-    <div class="text-center year-value" [class.clickable]="canGoUp" (mousedown)="goUp($event)">{{this.displayDateApi?.format('YYYY')}}</div>
+    <div class="text-center year-value" [class.clickable]="canGoUp" (mousedown)="goUp($event)">{{displayDate?.format('YYYY')}}</div>
     <div class="text-center fas fa-angle-right clickable" (mousedown)="nextYear($event)"></div>
 </div>
 

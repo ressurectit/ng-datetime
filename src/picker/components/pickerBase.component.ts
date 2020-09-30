@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Directive, Inject} from '@angular/core';
+import {ChangeDetectorRef, Directive, HostListener, Inject} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 
 import {DateTimeValue} from '../../misc/datetime.interface';
@@ -33,11 +33,6 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
      * Occurs when user scales down
      */
     protected _scaleDown: Subject<TDate> = new Subject<TDate>();
-
-    /**
-     * Currently displayed period of time
-     */
-    protected _display!: DateApiObject<TDate>;
 
     //######################### public properties - implementation of DateTimePicker #########################
 
@@ -79,7 +74,7 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
      * Date api instance for displayed date
      * @internal
      */
-    public displayDateApi: DateApiObject<TDate>|null = null;
+    public displayDate: DateApiObject<TDate>|null = null;
 
     /**
      * Indication whether can go up in period
@@ -121,7 +116,7 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
             return;
         }
 
-        this._scaleUp.next(this.displayDateApi!.value);
+        this._scaleUp.next(this.displayDate!.value);
     }
 
     //######################### public methods - implementation of DateTimePicker #########################
@@ -162,5 +157,18 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
     public invalidateVisuals(): void
     {
         this._changeDetector.detectChanges();
+    }
+
+    //######################### public methods - host #########################
+
+    /**
+     * Handles click anyway in picker, that blocks blur
+     * @param event - Event that occured
+     * @internal
+     */
+    @HostListener('mousedown', ['$event'])
+    public handleClick(event: Event)
+    {
+        event.preventDefault();
     }
 }

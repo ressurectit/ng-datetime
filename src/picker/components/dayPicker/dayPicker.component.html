@@ -1,6 +1,6 @@
 <div class="month-selection">
     <div class="text-center fas fa-angle-left clickable" (mousedown)="previousMonth($event)"></div>
-    <div class="text-center month-value" [class.clickable]="canGoUp" (mousedown)="goUp($event)">{{this.displayDateApi?.format('MMMM YYYY')}}</div>
+    <div class="text-center month-value" [class.clickable]="canGoUp" (mousedown)="goUp($event)">{{displayDate?.format('MMMM YYYY')}}</div>
     <div class="text-center fas fa-angle-right clickable" (mousedown)="nextMonth($event)"></div>
 </div>
 

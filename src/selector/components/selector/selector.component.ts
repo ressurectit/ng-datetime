@@ -4,7 +4,7 @@ import {Observable, Subject, Subscription} from 'rxjs';
 
 import {DateTimeValue} from '../../../misc/datetime.interface';
 import {DATE_API, FORMAT_PROVIDER} from '../../../misc/tokens';
-import {DateTimeDayPickerComponent, DateTimeMonthPickerComponent} from '../../../picker';
+import {DateTimeDayPickerComponent, DateTimeMonthPickerComponent, DateTimeYearPickerComponent} from '../../../picker';
 import {DateApi, DateValueProvider, FormatProvider} from '../../../services';
 import {DateTimeSelector, DateTimeSelectorOptions} from '../../misc/datetimeSelector.interface';
 import {DATE_TIME_SELECTOR_CONFIGURATION} from '../../misc/tokens';
@@ -23,7 +23,8 @@ const defaultConfiguration: DateTimeSelectorOptions<DateTimeSelector> =
     pickerPeriodsDefinition:
     {
         "day": DateTimeDayPickerComponent,
-        "month": DateTimeMonthPickerComponent
+        "month": DateTimeMonthPickerComponent,
+        "year": DateTimeYearPickerComponent
     }
 };
 

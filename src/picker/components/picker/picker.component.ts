@@ -9,6 +9,7 @@ import {DateTimePicker, DateTimePickerOptions} from '../../misc/datetimePicker.i
 import {DATE_TIME_PICKER_CONFIGURATION} from '../../misc/tokens';
 import {DateTimeDayPickerComponent} from '../dayPicker/dayPicker.component';
 import {DateTimeMonthPickerComponent} from '../monthPicker/monthPicker.component';
+import {DateTimeYearPickerComponent} from '../yearPicker/yearPicker.component';
 import {scaleUpDownTrigger} from './picker.component.animations';
 
 /**
@@ -20,7 +21,8 @@ const defaultConfiguration: DateTimePickerOptions<DateTimePicker> =
     pickerPeriodsDefinition:
     {
         "day": DateTimeDayPickerComponent,
-        "month": DateTimeMonthPickerComponent
+        "month": DateTimeMonthPickerComponent,
+        "year": DateTimeYearPickerComponent
     }
 };
 
@@ -142,7 +144,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
     }
 
     //######################### public methods - implementation of OnDestroy #########################
-    
+
     /**
      * Called when component is destroyed
      */
