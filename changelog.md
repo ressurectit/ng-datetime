@@ -38,3 +38,13 @@
     - `DateTimeMonthPickerComponent` component used for picking month from *year* view
     - `DateTimeYearPickerComponent` component used for picking year from *decade* view
     - `DateTimePickerModule` module containing pickers
+- added new *subpackage* `@anglr/datetime/moment`
+- *subpackage* `@anglr/datetime/moment`
+    - `MOMENT_FORMAT_PROVIDER` token for injecting `FormatProvider` for *MomentJs*
+    - `MomentDateApi` *MomentJs* implementation of `DateApi` returning *MomentJs* implementation of `DateApiObject`
+- added new *subpackage* `@anglr/datetime/date-fns`
+- *subpackage* `@anglr/datetime/date-fns`
+    - `DATEFNS_FORMAT_PROVIDER` token for injecting `FormatProvider` for *date-fns*
+    - `DateFnsDateApi` *date-fns* implementation of `DateApi` returning *date-fns* implementation of `DateApiObject`
+    - `DateFnsLocale` date FNS locale service, used for obtaining locale
+    - `DATE_FNS_LOCALE` token for injecting `DateFnsLocale`
