@@ -3,20 +3,20 @@ import {Observable, Subject} from 'rxjs';
 
 import {DateTimeValue} from '../../../misc/datetime.interface';
 import {DATE_API} from '../../../misc/tokens';
-import {DateApi, DateApiObject, DatePositionParser, DatePositionParserService, DateValueProvider} from '../../../services';
+import {DateApi, DateApiObject, DateValueProvider} from '../../../services';
 import {DateTimeSelector} from '../../misc/datetimeSelector.interface';
 
 /**
- * Component used as datetime selector with input
+ * Component used as datetime selector with simple input
  */
 @Component(
 {
-    selector: 'input-date-time-selector',
-    templateUrl: 'inputDateTime.component.html',
-    styleUrls: ['inputDateTime.component.css'],
+    selector: 'simple-input-date-time-selector',
+    templateUrl: 'simpleInputDateTime.component.html',
+    styleUrls: ['simpleInputDateTime.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSelector<TDate>
+export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTimeSelector<TDate>
 {
     //######################### protected fields #########################
 
@@ -34,11 +34,6 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      * Occurs when selector requires picker to be displayed or hidden
      */
     protected _pickerRequest: Subject<boolean> = new Subject<boolean>();
-
-    /**
-     * Instance of parser created for specific format
-     */
-    protected _parser: DatePositionParser|null = null;
 
     /**
      * Currently used format for displaying data
@@ -66,12 +61,6 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     }
     public set format(value: string)
     {
-        //only if format changes
-        if(this._format != value)
-        {
-            this._parser = this._parserSvc.createParser(this._dateApi.getFormat(value));
-        }
-
         this._format = value;
     }
 
@@ -177,7 +166,6 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
 
     //######################### constructor #########################
     constructor(@Inject(DATE_API) protected _dateApi: DateApi<TDate>,
-                protected _parserSvc: DatePositionParserService,
                 protected _valueProvider: DateValueProvider<TDate>,
                 protected _changeDetector: ChangeDetectorRef)
     {
@@ -195,7 +183,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
         {
             this._dateApiValue = this._dateApi.getValue(value?.from, this._format);
             this._isValid = this._dateApiValue.isValid();
-            
+
             this._show();
         }
         else
@@ -247,11 +235,6 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
         }
 
         this._show();
-
-        let result = this._parser!.parse(this.currentValue!, this.input.selectionStart!);
-
-        this.input.selectionStart = result.positionFrom;
-        this.input.selectionEnd = result.positionTo;
     }
 
     /**
@@ -285,38 +268,12 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     }
 
     /**
-     * Handles selection of text inside of input
-     * @internal
-     */
-    public handleSelect()
-    {
-        //handles when all text is selected
-        if(this.currentValue && this.input.selectionStart == 0 && this.input.selectionEnd == this.input.value.length)
-        {
-            let result = this._parser!.parse(this.input.value, this.input.selectionStart!);
-
-            this.input.selectionStart = result.positionFrom;
-            this.input.selectionEnd = result.positionTo;
-        }
-    }
-
-    /**
      * Handles click event inside of input
      * @internal
      */
     public handleClick()
     {
         this._pickerRequest.next(true);
-
-        if(!this._dateApiValue)
-        {
-            return;
-        }
-
-        let result = this._parser!.parse(this.input.value, this.input.selectionStart!);
-
-        this.input.selectionStart = result.positionFrom;
-        this.input.selectionEnd = result.positionTo;
     }
 
     /**
@@ -340,13 +297,9 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
                 event.preventDefault();
                 event.stopPropagation();
 
-                let result = event.key == 'ArrowLeft' ? this._parser!.previous(this.input.value, this.input.selectionStart!) : this._parser!.next(this.input.value, this.input.selectionStart!);
-
-                if(result)
-                {
-                    this.input.selectionStart = result.positionFrom;
-                    this.input.selectionEnd = result.positionTo;
-                }
+                event.key == 'ArrowLeft' ? this._dateApiValue.subtractDays(1) : this._dateApiValue.addDays(1);
+                this._valueChange.next();
+                this._show();
 
                 break;
             }
@@ -356,47 +309,9 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
                 event.preventDefault();
                 event.stopPropagation();
 
-                let result = this._parser!.parse(this.input.value, this.input.selectionStart!);
-                let selectionStart = result.positionFrom;
-
-                this._stepChangeValue(result.part, event.key == 'ArrowUp');
+                event.key == 'ArrowUp' ? this._dateApiValue.subtractWeeks(1) : this._dateApiValue.addWeeks(1);
+                this._valueChange.next();
                 this._show();
-
-                result = this._parser!.parse(this.input.value, selectionStart);
-
-                this.input.selectionStart = result.positionFrom;
-                this.input.selectionEnd = result.positionTo;
-
-                break;
-            }
-            case 'Tab':
-            {
-                let result = event.shiftKey ? this._parser!.previous(this.input.value, this.input.selectionStart!) : this._parser!.next(this.input.value, this.input.selectionStart!);
-
-                if(result)
-                {
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    this.input.selectionStart = result.positionFrom;
-                    this.input.selectionEnd = result.positionTo;
-                }
-
-                break;
-            }
-            case 'a':
-            {
-                if(event.ctrlKey)
-                {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-
-                break;
-            }
-            case 'Backspace':
-            {
-                this.currentValue = null;
 
                 break;
             }
@@ -428,57 +343,6 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
         if(this._isValid)
         {
             this.currentValue = this._dateApiValue?.format(this._format) ?? null;
-        }
-    }
-
-    /**
-     * Changes current value of date for for specified part by single step
-     * @param part - Part of date that should be changed
-     * @param increment - Indication whether value should be incremented or decremented
-     */
-    protected _stepChangeValue(part: string, increment: boolean)
-    {
-        if(!this._dateApiValue?.isValid())
-        {
-            return;
-        }
-
-        switch(part)
-        {
-            case 'y':
-            case 'Y':
-            {
-                increment ? this._dateApiValue.addYears(1) : this._dateApiValue.subtractYears(1);
-                this._valueChange.next();
-
-                break;
-            }
-            case 'Q':
-            {
-                break;
-            }
-            case 'M':
-            {
-                increment ? this._dateApiValue.addMonths(1) : this._dateApiValue.subtractMonths(1);
-                this._valueChange.next();
-
-                break;
-            }
-            case 'w':
-            {
-                increment ? this._dateApiValue.addWeeks(1) : this._dateApiValue.subtractWeeks(1);
-                this._valueChange.next();
-
-                break;
-            }
-            case 'd':
-            case 'D':
-            {
-                increment ? this._dateApiValue.addDays(1) : this._dateApiValue.subtractDays(1);
-                this._valueChange.next();
-
-                break;
-            }
         }
     }
 }

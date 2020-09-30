@@ -6,6 +6,14 @@ import {DateTimeValue} from '../../misc/datetime.interface';
 import {DateApiObject} from '../../services/dateApi.interface';
 
 /**
+ * Css classes applied to datetime picker
+ */
+export interface DateTimePickerCssClasses
+{
+
+}
+
+/**
  * Defintion of datetime picker component options
  */
 export interface DateTimePickerOptions<TPicker = any>
@@ -13,12 +21,17 @@ export interface DateTimePickerOptions<TPicker = any>
     /**
      * Definition of types for each period type for picker
      */
-    pickerPeriodsDefinition: Dictionary<Type<TPicker>>;
+    pickerPeriodsDefinition?: Dictionary<Type<TPicker>>;
 
     /**
      * Name of default period for picker that is displayed
      */
-    defaultPeriod: string;
+    defaultPeriod?: string;
+
+    /**
+     * Css classes for date time picker
+     */
+    cssClasses?: DateTimePickerCssClasses;
 }
 
 /**

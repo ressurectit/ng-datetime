@@ -12,6 +12,8 @@ import {DateTimeMonthPickerComponent} from '../monthPicker/monthPicker.component
 import {DateTimeYearPickerComponent} from '../yearPicker/yearPicker.component';
 import {scaleUpDownTrigger} from './picker.component.animations';
 
+//TODO - merge options
+
 /**
  * Default configuration for picker
  */
@@ -23,6 +25,9 @@ const defaultConfiguration: DateTimePickerOptions<DateTimePicker> =
         "day": DateTimeDayPickerComponent,
         "month": DateTimeMonthPickerComponent,
         "year": DateTimeYearPickerComponent
+    },
+    cssClasses:
+    {
     }
 };
 
@@ -132,14 +137,14 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
      */
     public ngOnInit()
     {
-        if(!this.options.pickerPeriodsDefinition[this.options.defaultPeriod])
+        if(!this.options.pickerPeriodsDefinition![this.options.defaultPeriod!])
         {
             throw new Error(`There is no period '${this.options.defaultPeriod}' in picker options`);
         }
 
-        this.activePickerComponent = this.options.pickerPeriodsDefinition[this.options.defaultPeriod];
-        this._activePickerName = this.options.defaultPeriod;
-        this._pickerNames = Object.keys(this.options.pickerPeriodsDefinition);
+        this.activePickerComponent = this.options.pickerPeriodsDefinition![this.options.defaultPeriod!];
+        this._activePickerName = this.options.defaultPeriod!;
+        this._pickerNames = Object.keys(this.options.pickerPeriodsDefinition!);
         this.activePickerIndex = this._pickerNames.indexOf(this._activePickerName);
     }
 
@@ -190,7 +195,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
             let index = this._pickerNames.indexOf(this._activePickerName) + 1;
             this._activePickerName = this._pickerNames[index];
             this.activePickerIndex = this._pickerNames.indexOf(this._activePickerName);
-            this.activePickerComponent = this.options.pickerPeriodsDefinition[this._activePickerName];
+            this.activePickerComponent = this.options.pickerPeriodsDefinition![this._activePickerName];
         }));
 
         this._activePickerSubscriptions.add(picker.scaleDown.subscribe(display =>
@@ -199,7 +204,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
             let index = this._pickerNames.indexOf(this._activePickerName) - 1;
             this._activePickerName = this._pickerNames[index];
             this.activePickerIndex = this._pickerNames.indexOf(this._activePickerName);
-            this.activePickerComponent = this.options.pickerPeriodsDefinition[this._activePickerName];
+            this.activePickerComponent = this.options.pickerPeriodsDefinition![this._activePickerName];
         }));
 
         picker.setCanGoDown(this._pickerNames.indexOf(this._activePickerName) > 0);

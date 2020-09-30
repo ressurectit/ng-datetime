@@ -33,25 +33,25 @@ export const scaleUpDownTrigger = trigger('scaleUpDown',
                 {
                     opacity: 0,
                     position: 'absolute',
-                    transform: 'scale(110%)',
+                    transform: 'scale(1.1)',
                 }),
                 animate('220ms', style(
                 {
                     opacity: 1,
-                    transform: 'scale(100%)',
+                    transform: 'scale(1)',
                 }))
             ]),
             query(':leave',
             [
                 style(
                 {
-                    transform: 'scale(100%)',
+                    transform: 'scale(1)',
                     opacity: 1,
                     position: 'absolute'
                 }),
                 animate('220ms', style(
                 {
-                    transform: 'scale(90%)',
+                    transform: 'scale(.9)',
                     opacity: 0
                 }))
             ])
@@ -67,24 +67,24 @@ export const scaleUpDownTrigger = trigger('scaleUpDown',
                 {
                     opacity: 0,
                     position: 'absolute',
-                    transform: 'scale(90%)'
+                    transform: 'scale(.9)'
                 }),
                 animate('220ms', style(
                 {
                     opacity: 1,
-                    transform: 'scale(100%)'
+                    transform: 'scale(1)'
                 }))
             ]),
             query(':leave',
             [
                 style(
                 {
-                    transform: 'scale(100%)',
+                    transform: 'scale(1)',
                     position: 'absolute'
                 }),
                 animate('220ms', style(
                 {
-                    transform: 'scale(110%)',
+                    transform: 'scale(1.1)',
                     opacity: 0
                 }))
             ])

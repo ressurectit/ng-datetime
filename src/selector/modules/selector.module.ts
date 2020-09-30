@@ -21,7 +21,7 @@ import {DateTimePickerModule} from '../../picker';
     [
         DateTimeSelectorComponent,
         DateTimeSelectorControlValueAccessor,
-        InputDateTimeSelectorComponent,
+        InputDateTimeSelectorComponent
     ],
     exports:
     [

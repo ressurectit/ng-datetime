@@ -13,6 +13,11 @@ export interface DateTimeSelectorOptions<TSelector = any, TPicker = any> extends
      * Definition of type that is used for selector
      */
     selectorComponent: Type<TSelector>;
+
+    /**
+     * Indication whether close picker on value selection
+     */
+    closeOnValueSelect?: boolean;
 }
 
 /**

@@ -19,6 +19,7 @@ import {enterLeaveAnimateChildTrigger} from './selector.component.animations';
 const defaultConfiguration: DateTimeSelectorOptions<DateTimeSelector> =
 {
     selectorComponent: InputDateTimeSelectorComponent,
+    closeOnValueSelect: false,
     defaultPeriod: 'day',
     pickerPeriodsDefinition:
     {
@@ -245,6 +246,11 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
         this._activeSelector?.setValue(value);
         this._value = value;
         this._valueChange.next();
+
+        if(this.options.closeOnValueSelect)
+        {
+            this.pickerVisible = false;
+        }
     }
 
     //######################### public methods #########################
