@@ -63,8 +63,19 @@ export class DateTimeYearPickerComponent<TDate = any> extends PickerBaseComponen
     {
         event.preventDefault();
 
+        //handle selection of value
         if(!this.canGoDown)
         {
+            this._setYear(year);
+
+            this._value =
+            {
+                from: year.date,
+                to: this._dateApi.getValue(year.date).endOfYear().value
+            };
+
+            this._valueChange.next();
+
             return;
         }
 
@@ -77,8 +88,31 @@ export class DateTimeYearPickerComponent<TDate = any> extends PickerBaseComponen
      * Sets value of datetime picker
      * @param value - Value to be set to this picker
      */
-    public setValue(_value: DateTimeValue<TDate>|null): void
+    public setValue(value: DateTimeValue<TDate>|null): void
     {
+        this._value = value;
+
+        //value is present
+        if(this._value && this.displayDate)
+        {
+            let val = this._dateApi.getValue(this._value.from);
+
+            //change picker to value
+            if(!val.isSameDecade(this.displayDate.value))
+            {
+                this.display(val);
+
+                return;
+            }
+
+            let year = this.periodData[val.year() % 10];
+
+            //was initialized
+            if(year)
+            {
+                this._setYear(year);
+            }
+        }
     }
 
     /**
@@ -115,5 +149,24 @@ export class DateTimeYearPickerComponent<TDate = any> extends PickerBaseComponen
 
         this.displayDate.resetOriginal();
         this.period = `${this.displayDate.year()} - ${this.displayDate.year() + 10}`;
+
+        //set value if exists
+        if(this._value && (this.displayDate.isSameDecade(this._value.from) || this.displayDate.isSameDecade(this._value.to)))
+        {
+            this.setValue(this._value);
+        }
+    }
+
+    //######################### protected methods #########################
+
+    /**
+     * Sets year as active
+     * @param year - Year to be set as active
+     */
+    protected _setYear(year: YearData<TDate>)
+    {
+        this.periodData.forEach(itm => itm.active = false);
+
+        year.active = true;
     }
 }

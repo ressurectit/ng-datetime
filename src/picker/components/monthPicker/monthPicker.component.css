@@ -41,6 +41,12 @@
     border-color: transparent;
 }
 
+.active
+{
+    background-color: #00c3ff;
+    border-color: transparent;
+}
+
 .text-center
 {
     text-align: center;

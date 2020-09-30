@@ -35,6 +35,18 @@ export interface DateApiObject<TDate = any>
     format(format: string): string;
 
     /**
+     * Updates value to start date and time of current decade
+     * @returns Itself for fluent API
+     */
+    startOfDecade(): DateApiObject<TDate>;
+
+    /**
+     * Updates value to end date and time of current decade
+     * @returns Itself for fluent API
+     */
+    endOfDecade(): DateApiObject<TDate>;
+
+    /**
      * Updates value to start date and time of current year
      * @returns Itself for fluent API
      */
@@ -157,6 +169,21 @@ export interface DateApiObject<TDate = any>
      * @param year - If specified, sets year
      */
     year(year?: number): DateApiObject<TDate>|number;
+    
+    /**
+     * Gets month
+     */
+    month(): number;
+    /**
+     * Sets month
+     * @param month - Month to be set
+     */
+    month(month: number): DateApiObject<TDate>;
+    /**
+     * Gets or sets month
+     * @param month - If specified, sets month
+     */
+    month(month?: number): DateApiObject<TDate>|number;
 
     /**
      * Gets day of month one based
@@ -211,6 +238,18 @@ export interface DateApiObject<TDate = any>
      * @param date - Date which is used for comparison of same week
      */
     isSameWeek(date: TDate): boolean;
+
+    /**
+     * Compares whether this date is same decade as provided date
+     * @param date - Date which is used for comparison of same decade
+     */
+    isSameDecade(date: TDate): boolean;
+
+    /**
+     * Compares whether this date is same year as provided date
+     * @param date - Date which is used for comparison of same year
+     */
+    isSameYear(date: TDate): boolean;
 
     /**
      * Compares whether this date is same month as provided date

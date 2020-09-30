@@ -74,6 +74,32 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
+     * Updates value to start date and time of current decade
+     * @returns Itself for fluent API
+     */
+    public startOfDecade(): DateApiObject<moment.Moment>
+    {
+        let diff = (this._value.year() % 10);
+
+        this._value = moment(this._value).subtract(diff, 'years').startOf('year');
+        
+        return this;
+    }
+
+    /**
+     * Updates value to end date and time of current decade
+     * @returns Itself for fluent API
+     */
+    public endOfDecade(): DateApiObject<moment.Moment>
+    {
+        let diff = 9 - (this._value.year() % 10);
+
+        this._value = moment(this._value).add(diff, 'years').endOf('year');
+        
+        return this;
+    }
+
+    /**
      * Updates value to start date and time of current year
      * @returns Itself for fluent API
      */
@@ -291,6 +317,31 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
+     * Gets month
+     */
+    public month(): number
+    /**
+     * Sets month
+     * @param month - Month to be set
+     */
+    public month(month: number): DateApiObject<moment.Moment>
+    /**
+     * Gets or sets month
+     * @param month - If specified, sets month
+     */
+    public month(month?: number): DateApiObject<moment.Moment>|number
+    {
+        if(isPresent(month))
+        {
+            this._value = moment(this._value).month(month!);
+
+            return this;
+        }
+
+        return this._value.month();
+    }
+
+    /**
      * Gets day of month one based
      */
     public dayOfMonth(): number;
@@ -374,6 +425,28 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
     public isSameWeek(date: moment.Moment): boolean
     {
         return this._value.isSame(date, 'week');
+    }
+
+    /**
+     * Compares whether this date is same decade as provided date
+     * @param date - Date which is used for comparison of same decade
+     */
+    public isSameDecade(date: moment.Moment): boolean
+    {
+        let year = this._value.year();
+        let start = year - (year % 10);
+        let end = start + 10;
+
+        return date.year() >= start && date.year() < end;
+    }
+
+    /**
+     * Compares whether this date is same year as provided date
+     * @param date - Date which is used for comparison of same year
+     */
+    public isSameYear(date: moment.Moment): boolean
+    {
+        return this._value.isSame(date, 'year');
     }
 
     /**

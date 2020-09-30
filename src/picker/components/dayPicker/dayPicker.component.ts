@@ -85,7 +85,7 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
         this._value =
         {
             from: day.date,
-            to: day.date
+            to: this._dateApi.getValue(day.date).endOfDay().value
         };
         
         this._valueChange.next();
@@ -111,6 +111,7 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
         {
             let val = this._dateApi.getValue(this._value.from);
 
+            //change picker to value
             if(!val.isSameMonth(this.displayDate.value))
             {
                 this.display(val);

@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {DateApi, DateValue, DateApiObject} from '@anglr/datetime';
 import {isBlank, isPresent, isString} from '@jscrpt/common';
-import {toDate, getDate, setDate, setDay, getDay, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear} from 'date-fns';
+import {toDate, getDate, setDate, setDay, getDay, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth} from 'date-fns';
 
 import {DATE_FNS_LOCALE} from '../misc/tokens';
 import {DateFnsLocale} from './dateFnsLocale.service';
@@ -81,6 +81,28 @@ class DateFnsDateApiObject implements DateApiObject<Date>
     public format(formatString: string): string
     {
         return format(this._value, formatString.replace(/Y/g, 'y').replace(/D/g, 'd'), {locale: this._localeSvc.locale});
+    }
+
+    /**
+     * Updates value to start date and time of current decade
+     * @returns Itself for fluent API
+     */
+    public startOfDecade(): DateApiObject<Date>
+    {
+        this._value = startOfDecade(this._value);
+        
+        return this;
+    }
+
+    /**
+     * Updates value to end date and time of current decade
+     * @returns Itself for fluent API
+     */
+    public endOfDecade(): DateApiObject<Date>
+    {
+        this._value = endOfDecade(this._value);
+        
+        return this;
     }
 
      /**
@@ -301,6 +323,31 @@ class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
+     * Gets month
+     */
+    public month(): number
+    /**
+     * Sets month
+     * @param month - Month to be set
+     */
+    public month(month: number): DateApiObject<Date>
+    /**
+     * Gets or sets month
+     * @param month - If specified, sets month
+     */
+    public month(month?: number): DateApiObject<Date>|number
+    {
+        if(isPresent(month))
+        {
+            this._value = setMonth(this._value, month!);
+
+            return this;
+        }
+
+        return getMonth(this._value);
+    }
+
+    /**
      * Gets day of month one based
      */
     public dayOfMonth(): number;
@@ -384,6 +431,28 @@ class DateFnsDateApiObject implements DateApiObject<Date>
     public isSameWeek(date: Date): boolean
     {
         return isSameWeek(this._value, date);
+    }
+
+    /**
+     * Compares whether this date is same decade as provided date
+     * @param date - Date which is used for comparison of same decade
+     */
+    public isSameDecade(date: Date): boolean
+    {
+        let year = getYear(this._value);
+        let start = year - (year % 10);
+        let end = start + 10;
+
+        return getYear(date) >= start && getYear(date) < end;
+    }
+
+    /**
+     * Compares whether this date is same year as provided date
+     * @param date - Date which is used for comparison of same year
+     */
+    public isSameYear(date: Date): boolean
+    {
+        return isSameYear(this._value, date);
     }
 
     /**

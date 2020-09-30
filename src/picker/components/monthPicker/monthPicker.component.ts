@@ -1,9 +1,8 @@
-import {Component, ChangeDetectionStrategy, Inject, ChangeDetectorRef} from '@angular/core';
+import {Component, ChangeDetectionStrategy} from '@angular/core';
 
 import {DateTimeValue} from '../../../misc/datetime.interface';
-import {DATE_API} from '../../../misc/tokens';
-import {DateApi, DateApiObject} from '../../../services/dateApi.interface';
-import {DateTimePicker, MonthData} from '../../misc/datetimePicker.interface';
+import {DateApiObject} from '../../../services/dateApi.interface';
+import {DateTimePicker, MonthData, PeriodData} from '../../misc/datetimePicker.interface';
 import {PickerBaseComponent} from '../pickerBase.component';
 
 /**
@@ -18,27 +17,6 @@ import {PickerBaseComponent} from '../pickerBase.component';
 })
 export class DateTimeMonthPickerComponent<TDate = any> extends PickerBaseComponent<TDate, MonthData<TDate>> implements DateTimePicker<TDate>
 {
-    //######################### constructor #########################
-    constructor(@Inject(DATE_API) dateApi: DateApi<TDate>,
-                changeDetector: ChangeDetectorRef)
-    {
-        super(dateApi, changeDetector);
-
-        let monthOfYear = this._dateApi.now().startOfYear();
-
-        for(let x = 0; x < 12; x++)
-        {
-            this.periodData.push(
-            {
-                active: false,
-                date: monthOfYear.value,
-                name: monthOfYear.format('MMM')
-            });
-
-            monthOfYear.addMonths(1);
-        }
-    }
-
     //######################### public methods - template bindings #########################
 
     /**
@@ -77,8 +55,19 @@ export class DateTimeMonthPickerComponent<TDate = any> extends PickerBaseCompone
     {
         event.preventDefault();
 
+        //handle selection of value
         if(!this.canGoDown)
         {
+            this._setPeriod(month);
+
+            this._value =
+            {
+                from: month.date,
+                to: this._dateApi.getValue(month.date).endOfMonth().value
+            };
+
+            this._valueChange.next();
+
             return;
         }
 
@@ -91,8 +80,31 @@ export class DateTimeMonthPickerComponent<TDate = any> extends PickerBaseCompone
      * Sets value of datetime picker
      * @param value - Value to be set to this picker
      */
-    public setValue(_value: DateTimeValue<TDate>|null): void
+    public setValue(value: DateTimeValue<TDate>|null): void
     {
+        this._value = value;
+
+        //value is present
+        if(this._value && this.displayDate)
+        {
+            let val = this._dateApi.getValue(this._value.from);
+
+            //change picker to value
+            if(!val.isSameYear(this.displayDate.value))
+            {
+                this.display(val);
+
+                return;
+            }
+
+            let month = this.periodData[val.month()];
+
+            //was initialized
+            if(month)
+            {
+                this._setPeriod(month);
+            }
+        }
     }
 
     /**
@@ -102,5 +114,43 @@ export class DateTimeMonthPickerComponent<TDate = any> extends PickerBaseCompone
     public display(value: DateApiObject<TDate>): void
     {
         this.displayDate = value;
+
+        let monthOfYear = this.displayDate.startOfYear().updateOriginal();
+        this.periodData = [];
+
+        for(let x = 0; x < 12; x++)
+        {
+            this.periodData.push(
+            {
+                active: false,
+                date: monthOfYear.value,
+                name: monthOfYear.format('MMM')
+            });
+
+            monthOfYear.addMonths(1);
+        }
+
+        this.displayDate.resetOriginal();
+
+        //set value if exists
+        if(this._value && (this.displayDate.isSameYear(this._value.from) || this.displayDate.isSameYear(this._value.to)))
+        {
+            this.setValue(this._value);
+        }
+    }
+
+    //######################### protected methods #########################
+
+    //TODO - move to base
+
+    /**
+     * Sets period as active
+     * @param period - Period to be set as active
+     */
+    protected _setPeriod(period: PeriodData<TDate>)
+    {
+        this.periodData.forEach(itm => itm.active = false);
+
+        period.active = true;
     }
 }
