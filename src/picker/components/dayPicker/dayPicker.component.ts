@@ -79,6 +79,11 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
     {
         event.preventDefault();
 
+        if(day.disabled)
+        {
+            return;
+        }
+
         //handle selection of value
         if(!this.canGoDown)
         {

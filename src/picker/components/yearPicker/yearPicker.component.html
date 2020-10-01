@@ -8,5 +8,6 @@
     <div *ngFor="let year of periodData"
          class="year clickable"
          [class.active]="year.active"
+         [class.disabled]="year.disabled"
          (mousedown)="select($event, year)">{{year.value}}</div>
 </div>

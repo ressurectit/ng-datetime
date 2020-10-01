@@ -129,6 +129,11 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
     {
         event.preventDefault();
 
+        if(period.disabled)
+        {
+            return;
+        }
+
         //handle selection of value
         if(!this.canGoDown)
         {
