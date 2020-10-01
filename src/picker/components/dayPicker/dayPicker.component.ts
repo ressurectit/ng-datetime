@@ -158,6 +158,7 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
         while(this.displayDate.isSameMonth(currentMonthDate))
 
         this.displayDate.resetOriginal();
+        this._updateMinMax();
 
         //set value if exists
         if(this._value && (this.displayDate.isSameMonth(this._value.from) || this.displayDate.isSameMonth(this._value.to)))
@@ -178,12 +179,22 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
     }
 
     /**
-     * Tests whether provided value is in same period
-     * @param val - Tested value for same period as displayDate
+     * Tests whether provided value is in same period as displayed picker
+     * @param val - Tested value for same period as displayed picker
      */
-    protected _isSamePeriod(val: DateApiObject<TDate>): boolean
+    protected _isSamePeriodAsDisplayed(val: DateApiObject<TDate>): boolean
     {
         return val.isSameMonth(this.displayDate!.value);
+    }
+
+    /**
+     * Tests whether provided value is in same period target value
+     * @param val - Tested value
+     * @param target - Target value to be tested against
+     */
+    protected _isSamePeriod(val: DateApiObject<TDate>, target: TDate): boolean
+    {
+        return val.isSameDay(target);
     }
 
     /**

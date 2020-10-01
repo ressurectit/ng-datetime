@@ -88,6 +88,7 @@ export class DateTimeYearPickerComponent<TDate = any> extends PickerBaseComponen
         }
 
         this.displayDate.resetOriginal();
+        this._updateMinMax();
         this.period = `${this.displayDate.year()} - ${this.displayDate.year() + 10}`;
 
         //set value if exists
@@ -109,12 +110,22 @@ export class DateTimeYearPickerComponent<TDate = any> extends PickerBaseComponen
     }
 
     /**
-     * Tests whether provided value is in same period
-     * @param val - Tested value for same period as displayDate
+     * Tests whether provided value is in same period as displayed picker
+     * @param val - Tested value for same period as displayed picker
      */
-    protected _isSamePeriod(val: DateApiObject<TDate>): boolean
+    protected _isSamePeriodAsDisplayed(val: DateApiObject<TDate>): boolean
     {
         return val.isSameDecade(this.displayDate!.value);
+    }
+
+    /**
+     * Tests whether provided value is in same period target value
+     * @param val - Tested value
+     * @param target - Target value to be tested against
+     */
+    protected _isSamePeriod(val: DateApiObject<TDate>, target: TDate): boolean
+    {
+        return val.isSameYear(target);
     }
 
     /**

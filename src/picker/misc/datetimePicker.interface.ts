@@ -60,6 +60,18 @@ export interface DateTimePicker<TDate = any>
     readonly scaleDown: Observable<TDate>;
 
     /**
+     * Sets minimal possible value for picker, that can be picked
+     * @param value - Minimal possible value that can be picked
+     */
+    setMinValue(value: TDate|null): void;
+
+    /**
+     * Sets maximal possible value for picker, that can be picked
+     * @param value - Maximal possible value that can be picked
+     */
+    setMaxValue(value: TDate|null): void;
+
+    /**
      * Sets value of datetime picker
      * @param value - Value to be set to this picker
      */

@@ -71,3 +71,19 @@
     border-color: transparent;
     cursor: pointer;
 }
+
+.disabled
+{
+    opacity: 0.4;
+    border-radius: 0;
+}
+
+.disabled:hover
+{
+    cursor: not-allowed;
+}
+
+.disabled:not(.active)
+{
+    background-color: #CFCFCF;
+}

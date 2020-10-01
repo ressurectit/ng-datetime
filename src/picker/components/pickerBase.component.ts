@@ -34,6 +34,16 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
      */
     protected _scaleDown: Subject<TDate> = new Subject<TDate>();
 
+    /**
+     * Minimal possible value that can be picked
+     */
+    protected _minValue: TDate|null = null;
+
+    /**
+     * Maximal possible value that can be picked
+     */
+    protected _maxValue: TDate|null = null;
+
     //######################### public properties - implementation of DateTimePicker #########################
 
     /**
@@ -156,6 +166,26 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
     //######################### public methods - implementation of DateTimePicker #########################
 
     /**
+     * Sets minimal possible value for picker, that can be picked
+     * @param value - Minimal possible value that can be picked
+     */
+    public setMinValue(value: TDate|null): void
+    {
+        this._minValue = value;
+        this._updateMinMax();
+    }
+
+    /**
+     * Sets maximal possible value for picker, that can be picked
+     * @param value - Maximal possible value that can be picked
+     */
+    public setMaxValue(value: TDate|null): void
+    {
+        this._maxValue = value;
+        this._updateMinMax();
+    }
+
+    /**
      * Sets value of datetime picker
      * @param value - Value to be set to this picker
      */
@@ -169,7 +199,7 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
             let val = this._dateApi.getValue(this._value.from);
 
             //change picker to value
-            if(!this._isSamePeriod(val))
+            if(!this._isSamePeriodAsDisplayed(val))
             {
                 this.display(val);
 
@@ -245,16 +275,60 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
     }
 
     /**
+     * Updates minimal and maximal value for picker
+     */
+    protected _updateMinMax()
+    {
+        if(!this.periodData.length)
+        {
+            return;
+        }
+
+        //no min, no max
+        if(!this._minValue && !this._maxValue)
+        {
+            this.periodData.forEach(itm => itm.disabled = false);
+
+            return;
+        }
+
+        let minDateApi = this._minValue ? this._dateApi.getValue(this._minValue) : null;
+        let maxDateApi = this._maxValue ? this._dateApi.getValue(this._maxValue) : null;
+        let restAfter = false;
+
+        this.periodData.forEach(period =>
+        {
+            if(!!minDateApi && minDateApi.isAfter(period.date) && !this._isSamePeriod(minDateApi, period.date))
+            {
+                period.disabled = true;
+            }
+
+            if(restAfter || (!!maxDateApi && maxDateApi.isBefore(period.date) && !this._isSamePeriod(maxDateApi, period.date)))
+            {
+                restAfter = true;
+                period.disabled = true;
+            }
+        });
+    }
+
+    /**
      * Obtains end of period
      * @param period - Period for which should be end obtained
      */
     protected abstract _endOfPeriod(period: PeriodData<TDate>): TDate;
 
     /**
-     * Tests whether provided value is in same period
-     * @param val - Tested value for same period as displayDate
+     * Tests whether provided value is in same period as displayed picker
+     * @param val - Tested value for same period as displayed picker
      */
-    protected abstract _isSamePeriod(val: DateApiObject<TDate>): boolean;
+    protected abstract _isSamePeriodAsDisplayed(val: DateApiObject<TDate>): boolean;
+
+    /**
+     * Tests whether provided value is in same period target value
+     * @param val - Tested value
+     * @param target - Target value to be tested against
+     */
+    protected abstract _isSamePeriod(val: DateApiObject<TDate>, target: TDate): boolean;
 
     /**
      * Gets period data for specified value
