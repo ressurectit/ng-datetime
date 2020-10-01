@@ -1,5 +1,5 @@
-import {Component, ChangeDetectionStrategy, Input, Inject, Optional, Type, OnInit, OnDestroy, OnChanges, SimpleChanges} from '@angular/core';
-import {extend, nameof} from '@jscrpt/common';
+import {Component, ChangeDetectionStrategy, Input, Inject, Optional, Type, OnInit, OnDestroy, OnChanges, SimpleChanges, ChangeDetectorRef} from '@angular/core';
+import {extend, isBlank, isString, nameof} from '@jscrpt/common';
 import {Observable, Subject, Subscription} from 'rxjs';
 
 import {DateTimeValue} from '../../../misc/datetime.interface';
@@ -19,7 +19,8 @@ import {enterLeaveAnimateChildTrigger} from './selector.component.animations';
 const defaultConfiguration: DateTimeSelectorOptions<DateTimeSelector> =
 {
     selectorComponent: InputDateTimeSelectorComponent,
-    closeOnValueSelect: false,
+    pickerCloseOnValueSelect: false,
+    pickerDisabled: false,
     defaultPeriod: 'day',
     pickerPeriodsDefinition:
     {
@@ -73,6 +74,16 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
      * All subscriptions for active selector
      */
     protected _activeSelectorSubscriptions: Subscription = new Subscription();
+
+    /**
+     * Subscription for changes of min value selector
+     */
+    protected _minValueChangeSubscription: Subscription|null = null;
+
+    /**
+     * Subscription for changes of max value selector
+     */
+    protected _maxValueChangeSubscription: Subscription|null = null;
 
     //######################### public properties #########################
 
@@ -148,6 +159,16 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
      */
     public pickerVisible: boolean = false;
 
+    /**
+     * Gets or sets minimal possible value for picker, that can be picked
+     */
+    public min: TDate|null = null;
+
+    /**
+     * Gets or sets maximal possible value for picker, that can be picked
+     */
+    public max: TDate|null = null;
+
     //######################### public properties - inputs #########################
 
     /**
@@ -162,9 +183,94 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     @Input()
     public options: DateTimeSelectorOptions<DateTimeSelector<TDate>>;
 
+    /**
+     * Gets or sets minimal possible value for picker, that can be picked
+     */
+    @Input()
+    public get minValue(): TDate|string|null|DateTimeSelectorComponent<TDate>
+    {
+        return this.min;
+    }
+    public set minValue(value: TDate|string|null|DateTimeSelectorComponent<TDate>)
+    {
+        this._minValueChangeSubscription?.unsubscribe();
+        this._minValueChangeSubscription = null;
+
+        if(isBlank(value))
+        {
+            this.min = value as null;
+        }
+        else if(isString(value))
+        {
+            let date = this._dateApi.getValue(value);
+
+            if(date.isValid())
+            {
+                this.min = date.value;
+            }
+        }
+        else if(value instanceof DateTimeSelectorComponent)
+        {
+            this.min = value.valueOf();
+
+            this._minValueChangeSubscription = value.valueChange.subscribe(() =>
+            {
+                this.min = value.valueOf();
+                this._changeDetector.detectChanges();
+            });
+        }
+        else
+        {
+            this.min = value;
+        }
+    }
+
+    /**
+     * Gets or sets maximal possible value for picker, that can be picked
+     */
+    @Input()
+    public get maxValue(): TDate|string|null|DateTimeSelectorComponent<TDate>
+    {
+        return this.max;
+    }
+    public set maxValue(value: TDate|string|null|DateTimeSelectorComponent<TDate>)
+    {
+        this._maxValueChangeSubscription?.unsubscribe();
+        this._maxValueChangeSubscription = null;
+
+        if(isBlank(value))
+        {
+            this.max = value as null;
+        }
+        else if(isString(value))
+        {
+            let date = this._dateApi.getValue(value);
+
+            if(date.isValid())
+            {
+                this.max = date.value;
+            }
+        }
+        else if(value instanceof DateTimeSelectorComponent)
+        {
+            this.max = value.valueOf();
+
+            this._maxValueChangeSubscription = value.valueChange.subscribe(() =>
+            {
+                this.max = value.valueOf();
+                this._changeDetector.detectChanges();
+            });
+        }
+        else
+        {
+            this.max = value;
+        }
+    }
+
     //######################### constructor #########################
     constructor(@Optional() @Inject(DATE_TIME_SELECTOR_CONFIGURATION) configuration: DateTimeSelectorOptions<DateTimeSelector<TDate>>,
                 protected _valueProvider: DateValueProvider<TDate>,
+                protected _changeDetector: ChangeDetectorRef,
                 @Inject(DATE_API) protected _dateApi: DateApi<TDate>,
                 @Inject(FORMAT_PROVIDER) formatProvider: FormatProvider)
     {
@@ -204,6 +310,12 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     public ngOnDestroy()
     {
         this._activeSelectorSubscriptions.unsubscribe();
+
+        this._minValueChangeSubscription?.unsubscribe();
+        this._minValueChangeSubscription = null;
+
+        this._maxValueChangeSubscription?.unsubscribe();
+        this._maxValueChangeSubscription = null;
     }
 
     //######################### public methods - template bindings #########################
@@ -247,7 +359,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
         this._value = value;
         this._valueChange.next();
 
-        if(this.options.closeOnValueSelect)
+        if(this.options.pickerCloseOnValueSelect)
         {
             this.pickerVisible = false;
         }
@@ -263,5 +375,18 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     {
         this._disabled = disabled;
         this._activeSelector?.setDisabled(disabled);
+    }
+
+    /**
+     * Gets simple value of selector
+     */
+    public valueOf(): TDate|null
+    {
+        if(!this._value)
+        {
+            return null;
+        }
+
+        return this._value.from;
     }
 }

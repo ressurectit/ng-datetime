@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 1.0.0 (2020-09-30)
+## Version 1.0.0 (2020-10-01)
 
 ### Features
 

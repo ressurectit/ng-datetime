@@ -17,7 +17,12 @@ export interface DateTimeSelectorOptions<TSelector = any, TPicker = any> extends
     /**
      * Indication whether close picker on value selection
      */
-    closeOnValueSelect?: boolean;
+    pickerCloseOnValueSelect?: boolean;
+
+    /**
+     * Indication whether picker is disabled
+     */
+    pickerDisabled?: boolean;
 }
 
 /**

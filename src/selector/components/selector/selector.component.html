@@ -1,6 +1,8 @@
 <ng-template [ngComponentOutletEx]="activeSelectorComponent" (ngComponentOutletExCreated)="selectorCreated($event)"></ng-template>
 
-<ng-template [ngIf]="pickerVisible">
+<ng-template [ngIf]="!options?.pickerDisabled && pickerVisible">
     <date-time-picker [value]="value"
+                      [minValue]="min"
+                      [maxValue]="max"
                       (valueChange)="pickerChangedValue($event)"></date-time-picker>
 </ng-template>

@@ -76,6 +76,16 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
      */
     protected _display?: TDate;
 
+    /**
+     * Minimal possible value that can be picked
+     */
+    protected _minValue: TDate|null = null;
+
+    /**
+     * Maximal possible value that can be picked
+     */
+    protected _maxValue: TDate|null = null;
+
     //######################### public properties - template bindings #########################
 
     /**
@@ -112,6 +122,34 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
 
         this._activePicker?.setValue(value);
         this._activePicker?.invalidateVisuals();
+    }
+
+    /**
+     * Gets or sets minimal possible value for picker, that can be picked
+     */
+    @Input()
+    public get minValue(): TDate|null
+    {
+        return this._minValue;
+    }
+    public set minValue(value: TDate|null)
+    {
+        this._minValue = value;
+        this._activePicker?.setMinValue(this._minValue);
+    }
+
+    /**
+     * Gets or sets maximal possible value for picker, that can be picked
+     */
+    @Input()
+    public get maxValue(): TDate|null
+    {
+        return this._maxValue;
+    }
+    public set maxValue(value: TDate|null)
+    {
+        this._maxValue = value;
+        this._activePicker?.setMaxValue(this._maxValue);
     }
 
     //######################### public properties - outputs #########################
@@ -211,6 +249,8 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
         picker.setCanGoUp(this._pickerNames.indexOf(this._activePickerName) < this._pickerNames.length - 1);
 
         picker.setValue(this._value);
+        picker.setMinValue(this._minValue);
+        picker.setMaxValue(this._maxValue);
         picker.display(this._display ? this._dateApi.getValue(this._display) : this._dateApi.getValue(this._value?.from ?? this._dateApi.now().value));
 
         picker.invalidateVisuals();
