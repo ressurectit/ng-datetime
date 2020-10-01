@@ -1,9 +1,8 @@
 import {Component, ChangeDetectionStrategy, Inject, ChangeDetectorRef} from '@angular/core';
 
-import {DateTimeValue} from '../../../misc/datetime.interface';
 import {DATE_API} from '../../../misc/tokens';
 import {DateApi, DateApiObject} from '../../../services/dateApi.interface';
-import {DateTimePicker, DayData} from '../../misc/datetimePicker.interface';
+import {DateTimePicker, DayData, PeriodData} from '../../misc/datetimePicker.interface';
 import {PickerBaseComponent} from '../pickerBase.component';
 
 /**
@@ -80,54 +79,31 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
     {
         event.preventDefault();
 
-        this._setDay(day);
-
-        this._value =
+        //handle selection of value
+        if(!this.canGoDown)
         {
-            from: day.date,
-            to: this._dateApi.getValue(day.date).endOfDay().value
-        };
-        
-        this._valueChange.next();
+            this._setPeriod(day);
 
-        if(day.otherMonth)
-        {
-            this.display(this._dateApi.getValue(day.date));
+            this._value =
+            {
+                from: day.date,
+                to: this._endOfPeriod(day)
+            };
+            
+            this._valueChange.next();
+
+            if(day.otherMonth)
+            {
+                this.display(this._dateApi.getValue(day.date));
+            }
+
+            return;
         }
+
+        this._scaleDown.next(day.date);
     }
 
     //######################### public methods - implementation of DateTimePicker #########################
-
-    /**
-     * Sets value of datetime picker
-     * @param value - Value to be set to this picker
-     */
-    public setValue(value: DateTimeValue<TDate>|null): void
-    {
-        this._value = value;
-
-        //value is present
-        if(this._value && this.displayDate)
-        {
-            let val = this._dateApi.getValue(this._value.from);
-
-            //change picker to value
-            if(!val.isSameMonth(this.displayDate.value))
-            {
-                this.display(val);
-
-                return;
-            }
-
-            let day = this._thisMonthData[val.dayOfMonth() - 1];
-
-            //was initialized
-            if(day)
-            {
-                this._setDay(day);
-            }
-        }
-    }
 
     /**
      * Set displays date to be displayed
@@ -155,6 +131,7 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
                 let data = 
                 {
                     active: false,
+                    disabled: false,
                     betweenActive: false,
                     date: this.displayDate.value,
                     otherMonth: otherMonth,
@@ -187,13 +164,29 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
     //######################### protected methods #########################
 
     /**
-     * Sets day as active
-     * @param day - Day to be set as active
+     * Obtains end of period
+     * @param period - Period for which should be end obtained
      */
-    protected _setDay(day: DayData<TDate>)
+    protected _endOfPeriod(period: PeriodData<TDate>): TDate
     {
-        this._thisMonthData.forEach(itm => itm.active = false);
+        return this._dateApi.getValue(period.date).endOfDay().value;
+    }
 
-        day.active = true;
+    /**
+     * Tests whether provided value is in same period
+     * @param val - Tested value for same period as displayDate
+     */
+    protected _isSamePeriod(val: DateApiObject<TDate>): boolean
+    {
+        return val.isSameMonth(this.displayDate!.value);
+    }
+
+    /**
+     * Gets period data for specified value
+     * @param val - Value for which is period data obtained
+     */
+    protected _getPeriodData(val: DateApiObject<TDate>): PeriodData<TDate>
+    {
+        return this._thisMonthData[val.dayOfMonth() - 1];
     }
 }

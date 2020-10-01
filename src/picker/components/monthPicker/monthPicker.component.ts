@@ -1,6 +1,5 @@
 import {Component, ChangeDetectionStrategy} from '@angular/core';
 
-import {DateTimeValue} from '../../../misc/datetime.interface';
 import {DateApiObject} from '../../../services/dateApi.interface';
 import {DateTimePicker, MonthData, PeriodData} from '../../misc/datetimePicker.interface';
 import {PickerBaseComponent} from '../pickerBase.component';
@@ -45,67 +44,7 @@ export class DateTimeMonthPickerComponent<TDate = any> extends PickerBaseCompone
         this.display(this.displayDate!);
     }
 
-    /**
-     * Selects month
-     * @param event - Event that occured
-     * @param month - Selected month
-     * @internal
-     */
-    public select(event: Event, month: MonthData<TDate>)
-    {
-        event.preventDefault();
-
-        //handle selection of value
-        if(!this.canGoDown)
-        {
-            this._setPeriod(month);
-
-            this._value =
-            {
-                from: month.date,
-                to: this._dateApi.getValue(month.date).endOfMonth().value
-            };
-
-            this._valueChange.next();
-
-            return;
-        }
-
-        this._scaleDown.next(month.date);
-    }
-
     //######################### public methods - implementation of DateTimePicker #########################
-
-    /**
-     * Sets value of datetime picker
-     * @param value - Value to be set to this picker
-     */
-    public setValue(value: DateTimeValue<TDate>|null): void
-    {
-        this._value = value;
-
-        //value is present
-        if(this._value && this.displayDate)
-        {
-            let val = this._dateApi.getValue(this._value.from);
-
-            //change picker to value
-            if(!val.isSameYear(this.displayDate.value))
-            {
-                this.display(val);
-
-                return;
-            }
-
-            let month = this.periodData[val.month()];
-
-            //was initialized
-            if(month)
-            {
-                this._setPeriod(month);
-            }
-        }
-    }
 
     /**
      * Set displays date to be displayed
@@ -123,6 +62,7 @@ export class DateTimeMonthPickerComponent<TDate = any> extends PickerBaseCompone
             this.periodData.push(
             {
                 active: false,
+                disabled: false,
                 date: monthOfYear.value,
                 name: monthOfYear.format('MMM')
             });
@@ -141,16 +81,30 @@ export class DateTimeMonthPickerComponent<TDate = any> extends PickerBaseCompone
 
     //######################### protected methods #########################
 
-    //TODO - move to base
+    /**
+     * Obtains end of period
+     * @param period - Period for which should be end obtained
+     */
+    protected _endOfPeriod(period: PeriodData<TDate>): TDate
+    {
+        return this._dateApi.getValue(period.date).endOfMonth().value;
+    }
 
     /**
-     * Sets period as active
-     * @param period - Period to be set as active
+     * Tests whether provided value is in same period
+     * @param val - Tested value for same period as displayDate
      */
-    protected _setPeriod(period: PeriodData<TDate>)
+    protected _isSamePeriod(val: DateApiObject<TDate>): boolean
     {
-        this.periodData.forEach(itm => itm.active = false);
+        return val.isSameYear(this.displayDate!.value);
+    }
 
-        period.active = true;
+    /**
+     * Gets period data for specified value
+     * @param val - Value for which is period data obtained
+     */
+    protected _getPeriodData(val: DateApiObject<TDate>): PeriodData<TDate>
+    {
+        return this.periodData[val.month()];
     }
 }

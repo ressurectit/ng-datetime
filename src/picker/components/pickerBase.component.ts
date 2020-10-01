@@ -119,13 +119,67 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
         this._scaleUp.next(this.displayDate!.value);
     }
 
+    /**
+     * Selects period
+     * @param event - Event that occured
+     * @param period - Selected period
+     * @internal
+     */
+    public select(event: Event, period: PeriodData<TDate>)
+    {
+        event.preventDefault();
+
+        //handle selection of value
+        if(!this.canGoDown)
+        {
+            this._setPeriod(period);
+
+            this._value =
+            {
+                from: period.date,
+                to: this._endOfPeriod(period)
+            };
+
+            this._valueChange.next();
+
+            return;
+        }
+
+        this._scaleDown.next(period.date);
+    }
+
     //######################### public methods - implementation of DateTimePicker #########################
 
     /**
      * Sets value of datetime picker
      * @param value - Value to be set to this picker
      */
-    public abstract setValue(value: DateTimeValue<TDate>|null): void;
+    public setValue(value: DateTimeValue<TDate>|null): void
+    {
+        this._value = value;
+
+        //value is present
+        if(this._value && this.displayDate)
+        {
+            let val = this._dateApi.getValue(this._value.from);
+
+            //change picker to value
+            if(!this._isSamePeriod(val))
+            {
+                this.display(val);
+
+                return;
+            }
+
+            let period = this._getPeriodData(val);
+
+            //was initialized
+            if(period)
+            {
+                this._setPeriod(period);
+            }
+        }
+    }
 
     /**
      * Set displays date to be displayed
@@ -171,4 +225,35 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
     {
         event.preventDefault();
     }
+
+    //######################### protected methods #########################
+
+    /**
+     * Sets period as active
+     * @param period - Period to be set as active
+     */
+    protected _setPeriod(period: PeriodData<TDate>)
+    {
+        this.periodData.forEach(itm => itm.active = false);
+
+        period.active = true;
+    }
+
+    /**
+     * Obtains end of period
+     * @param period - Period for which should be end obtained
+     */
+    protected abstract _endOfPeriod(period: PeriodData<TDate>): TDate;
+
+    /**
+     * Tests whether provided value is in same period
+     * @param val - Tested value for same period as displayDate
+     */
+    protected abstract _isSamePeriod(val: DateApiObject<TDate>): boolean;
+
+    /**
+     * Gets period data for specified value
+     * @param val - Value for which is period data obtained
+     */
+    protected abstract _getPeriodData(val: DateApiObject<TDate>): PeriodData<TDate>;
 }

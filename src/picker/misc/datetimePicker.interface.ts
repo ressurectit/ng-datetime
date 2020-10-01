@@ -95,12 +95,17 @@ export interface DateTimePicker<TDate = any>
 export interface PeriodData<TDate = any>
 {
     /**
-     * Indication that this day is active and selected
+     * Indication that this period item is active and selected
      */
     active: boolean;
 
     /**
-     * Date for this day
+     * Indication that this period item is disabled
+     */
+    disabled: boolean;
+
+    /**
+     * Date for this period item
      */
     date: TDate;
 }

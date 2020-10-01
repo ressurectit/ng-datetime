@@ -1,8 +1,7 @@
 import {Component, ChangeDetectionStrategy} from '@angular/core';
 
-import {DateTimeValue} from '../../../misc/datetime.interface';
 import {DateApiObject} from '../../../services/dateApi.interface';
-import {DateTimePicker, YearData} from '../../misc/datetimePicker.interface';
+import {DateTimePicker, PeriodData, YearData} from '../../misc/datetimePicker.interface';
 import {PickerBaseComponent} from '../pickerBase.component';
 
 /**
@@ -53,67 +52,7 @@ export class DateTimeYearPickerComponent<TDate = any> extends PickerBaseComponen
         this.display(this.displayDate!);
     }
 
-    /**
-     * Selects year
-     * @param event - Event that occured
-     * @param year - Selected year
-     * @internal
-     */
-    public select(event: Event, year: YearData<TDate>)
-    {
-        event.preventDefault();
-
-        //handle selection of value
-        if(!this.canGoDown)
-        {
-            this._setYear(year);
-
-            this._value =
-            {
-                from: year.date,
-                to: this._dateApi.getValue(year.date).endOfYear().value
-            };
-
-            this._valueChange.next();
-
-            return;
-        }
-
-        this._scaleDown.next(year.date);
-    }
-
     //######################### public methods - implementation of DateTimePicker #########################
-
-    /**
-     * Sets value of datetime picker
-     * @param value - Value to be set to this picker
-     */
-    public setValue(value: DateTimeValue<TDate>|null): void
-    {
-        this._value = value;
-
-        //value is present
-        if(this._value && this.displayDate)
-        {
-            let val = this._dateApi.getValue(this._value.from);
-
-            //change picker to value
-            if(!val.isSameDecade(this.displayDate.value))
-            {
-                this.display(val);
-
-                return;
-            }
-
-            let year = this.periodData[val.year() % 10];
-
-            //was initialized
-            if(year)
-            {
-                this._setYear(year);
-            }
-        }
-    }
 
     /**
      * Set displays date to be displayed
@@ -139,6 +78,7 @@ export class DateTimeYearPickerComponent<TDate = any> extends PickerBaseComponen
             this.periodData.push(
             {
                 active: false,
+                disabled: false,
                 date: this.displayDate.value,
                 value: year
             });
@@ -160,13 +100,29 @@ export class DateTimeYearPickerComponent<TDate = any> extends PickerBaseComponen
     //######################### protected methods #########################
 
     /**
-     * Sets year as active
-     * @param year - Year to be set as active
+     * Obtains end of period
+     * @param period - Period for which should be end obtained
      */
-    protected _setYear(year: YearData<TDate>)
+    protected _endOfPeriod(period: PeriodData<TDate>): TDate
     {
-        this.periodData.forEach(itm => itm.active = false);
+        return this._dateApi.getValue(period.date).endOfYear().value;
+    }
 
-        year.active = true;
+    /**
+     * Tests whether provided value is in same period
+     * @param val - Tested value for same period as displayDate
+     */
+    protected _isSamePeriod(val: DateApiObject<TDate>): boolean
+    {
+        return val.isSameDecade(this.displayDate!.value);
+    }
+
+    /**
+     * Gets period data for specified value
+     * @param val - Value for which is period data obtained
+     */
+    protected _getPeriodData(val: DateApiObject<TDate>): PeriodData<TDate>
+    {
+        return this.periodData[val.year() % 10];
     }
 }
