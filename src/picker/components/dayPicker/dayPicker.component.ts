@@ -1,9 +1,25 @@
 import {Component, ChangeDetectionStrategy, Inject, ChangeDetectorRef} from '@angular/core';
+import {extend} from '@jscrpt/common';
 
 import {DATE_API} from '../../../misc/tokens';
 import {DateApi, DateApiObject} from '../../../services/dateApi.interface';
 import {DateTimePicker, DayData, PeriodData} from '../../misc/datetimePicker.interface';
 import {PickerBaseComponent} from '../pickerBase.component';
+import {DayPickerCssClasses} from './dayPicker.interfaces';
+
+/**
+ * Default styles for picker
+ */
+const defaultStyles: DayPickerCssClasses =
+{
+    periodSelection: 'period',
+    previousPeriod: 'fas fa-angle-left clickable',
+    nextPeriod: 'fas fa-angle-right clickable',
+    periodValue: 'period-value',
+    periodData: 'period-data',
+    periodDatum: 'period-datum clickable',
+    weekdayName: 'weekday'
+};
 
 /**
  * Component used for displaying day picker
@@ -15,7 +31,7 @@ import {PickerBaseComponent} from '../pickerBase.component';
     styleUrls: ['dayPicker.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent<TDate, DayData<TDate>> implements DateTimePicker<TDate>
+export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent<TDate, DayData<TDate>, DayPickerCssClasses> implements DateTimePicker<TDate, DayPickerCssClasses>
 {
     //######################### protected fields #########################
 
@@ -38,6 +54,7 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
     {
         super(dateApi, changeDetector);
 
+        this.cssClasses = extend(true, {}, defaultStyles);
         this.weekdays = this._dateApi.weekdaysShort();
     }
 

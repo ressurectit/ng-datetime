@@ -1,4 +1,5 @@
 import {ChangeDetectorRef, Directive, HostListener, Inject} from '@angular/core';
+import {extend} from '@jscrpt/common';
 import {Observable, Subject} from 'rxjs';
 
 import {DateTimeValue} from '../../misc/datetime.interface';
@@ -10,7 +11,7 @@ import {DateTimePicker, PeriodData} from '../misc/datetimePicker.interface';
  * Base class used as base for picker
  */
 @Directive()
-export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodData<TDate> = any> implements DateTimePicker<TDate>
+export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodData<TDate> = any, TCssClasses = object> implements DateTimePicker<TDate, TCssClasses>
 {
     //######################### protected fields #########################
 
@@ -104,6 +105,12 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
      */
     public periodData: TDateData[] = [];
 
+    /**
+     * Css classes that are used within picker
+     * @internal
+     */
+    public cssClasses!: TCssClasses;
+
     //######################### constructor #########################
     constructor(@Inject(DATE_API) protected _dateApi: DateApi<TDate>,
                 protected _changeDetector: ChangeDetectorRef)
@@ -164,6 +171,15 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
     }
 
     //######################### public methods - implementation of DateTimePicker #########################
+
+    /**
+     * Sets css classes for picker, allowing to override defaults
+     * @param cssClasses - Css classes to be set for picker
+     */
+    public setCssClasses(cssClasses: TCssClasses): void
+    {
+        this.cssClasses = extend(true, {}, this.cssClasses, cssClasses);
+    }
 
     /**
      * Sets minimal possible value for picker, that can be picked

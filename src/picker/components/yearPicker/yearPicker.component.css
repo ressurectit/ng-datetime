@@ -1,12 +1,3 @@
-:host
-{
-    display: block;
-    padding: 4px;
-    border: 1px solid #333;
-    border-radius: 4px;
-    background-color: #FFF;
-}
-
 .decade-selection
 {
     display: grid;

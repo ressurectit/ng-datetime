@@ -6,11 +6,55 @@ import {DateTimeValue} from '../../misc/datetime.interface';
 import {DateApiObject} from '../../services/dateApi.interface';
 
 /**
+ * Shared css classes for all pickers
+ */
+export interface CommonPickerCssClasses
+{
+    /**
+     * Period selection element wrapping displayed period and previous, next buttons
+     */
+    periodSelection?: string;
+
+    /**
+     * Element used for switching period to previous one
+     */
+    previousPeriod?: string;
+
+    /**
+     * Element used for switching period to next one
+     */
+    nextPeriod?: string;
+
+    /**
+     * Element representing currently displayed period
+     */
+    periodValue?: string;
+
+    /**
+     * Element wrapping displayed period data
+     */
+    periodData?: string;
+
+    /**
+     * Element representing single datum for period item
+     */
+    periodDatum?: string;
+}
+
+/**
  * Css classes applied to datetime picker
  */
 export interface DateTimePickerCssClasses
 {
+    /**
+     * Shared css classes for all pickers
+     */
+    pickerShared?: CommonPickerCssClasses;
 
+    /**
+     * Custom css classes specific for each picker type
+     */
+    pickerCustom?: Dictionary<object>;
 }
 
 /**
@@ -37,7 +81,7 @@ export interface DateTimePickerOptions<TPicker = any>
 /**
  * Describes datetime picker component used for displaying and selecting value
  */
-export interface DateTimePicker<TDate = any>
+export interface DateTimePicker<TDate = any, TCssClasses = object>
 {
     /**
      * Gets current value of datetime
@@ -58,6 +102,12 @@ export interface DateTimePicker<TDate = any>
      * Occurs when user scales down
      */
     readonly scaleDown: Observable<TDate>;
+
+    /**
+     * Sets css classes for picker, allowing to override defaults
+     * @param cssClasses - Css classes to be set for picker
+     */
+    setCssClasses(cssClasses: TCssClasses): void;
 
     /**
      * Sets minimal possible value for picker, that can be picked
