@@ -1,0 +1,35 @@
+@use './theme';
+
+//############## PICKER ##############
+date-time-picker>div>*
+{
+    color: #F0F0F0;
+    border-color: transparent;
+    background-color: #333333;
+    box-shadow: 1px 1px 3px 1px #eee, -1px -1px 4px -1px #eee;
+
+    .today
+    {
+        border-color: #0077ff;
+    }
+
+    .weekend
+    {
+        color: #e70000;
+    }
+
+    .active
+    {
+        background-color: #00c3ff;
+    }
+
+    .clickable:hover
+    {
+        background-color: #00e7ff;
+    }
+
+    .disabled:not(.active)
+    {
+        background-color: #CFCFCF;
+    }
+}

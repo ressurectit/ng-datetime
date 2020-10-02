@@ -1,12 +1,12 @@
-<div class="decade-selection">
-    <div class="text-center fas fa-angle-left clickable" (mousedown)="previousDecade($event)"></div>
-    <div class="text-center decade-value" [class.clickable]="canGoUp" (mousedown)="goUp($event)">{{period}}</div>
-    <div class="text-center fas fa-angle-right clickable" (mousedown)="nextDecade($event)"></div>
+<div [ngClass]="cssClasses?.periodSelection">
+    <div [ngClass]="cssClasses?.previousPeriod" (mousedown)="previousDecade($event)"></div>
+    <div [ngClass]="cssClasses?.periodValue" [class.clickable]="canGoUp" (mousedown)="goUp($event)">{{period}}</div>
+    <div [ngClass]="cssClasses?.nextPeriod" (mousedown)="nextDecade($event)"></div>
 </div>
 
-<div class="decade">
+<div [ngClass]="cssClasses?.periodData">
     <div *ngFor="let year of periodData"
-         class="year clickable"
+         [ngClass]="cssClasses?.periodDatum"
          [class.active]="year.active"
          [class.disabled]="year.disabled"
          (mousedown)="select($event, year)">{{year.value}}</div>

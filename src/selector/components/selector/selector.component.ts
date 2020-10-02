@@ -27,6 +27,9 @@ const defaultConfiguration: DateTimeSelectorOptions<DateTimeSelector> =
         "day": DateTimeDayPickerComponent,
         "month": DateTimeMonthPickerComponent,
         "year": DateTimeYearPickerComponent
+    },
+    cssClasses:
+    {
     }
 };
 

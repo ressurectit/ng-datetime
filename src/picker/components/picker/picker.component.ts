@@ -86,6 +86,11 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
      */
     protected _maxValue: TDate|null = null;
 
+    /**
+     * Current options used by picker
+     */
+    protected _options: DateTimePickerOptions<DateTimePicker<TDate>>;
+
     //######################### public properties - template bindings #########################
 
     /**
@@ -106,7 +111,14 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
      * Current options used by picker
      */
     @Input()
-    public options: DateTimePickerOptions<DateTimePicker<TDate>>;
+    public get options(): DateTimePickerOptions<DateTimePicker<TDate>>
+    {
+        return this._options;
+    }
+    public set options(value: DateTimePickerOptions<DateTimePicker<TDate>>)
+    {
+        this._options = extend(true, this._options, value);
+    }
 
     /**
      * Current selected value
@@ -165,7 +177,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
                 @Inject(DATE_API) protected _dateApi: DateApi<TDate>,
                 protected _changeDetector: ChangeDetectorRef)
     {
-        this.options = extend(true, {}, defaultConfiguration, configuration);
+        this._options = extend(true, {}, defaultConfiguration, configuration);
     }
 
     //######################### public methods - implementation of OnInit #########################
@@ -175,14 +187,14 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
      */
     public ngOnInit()
     {
-        if(!this.options.pickerPeriodsDefinition![this.options.defaultPeriod!])
+        if(!this._options.pickerPeriodsDefinition![this._options.defaultPeriod!])
         {
-            throw new Error(`There is no period '${this.options.defaultPeriod}' in picker options`);
+            throw new Error(`There is no period '${this._options.defaultPeriod}' in picker options`);
         }
 
-        this.activePickerComponent = this.options.pickerPeriodsDefinition![this.options.defaultPeriod!];
-        this._activePickerName = this.options.defaultPeriod!;
-        this._pickerNames = Object.keys(this.options.pickerPeriodsDefinition!);
+        this.activePickerComponent = this._options.pickerPeriodsDefinition![this._options.defaultPeriod!];
+        this._activePickerName = this._options.defaultPeriod!;
+        this._pickerNames = Object.keys(this._options.pickerPeriodsDefinition!);
         this.activePickerIndex = this._pickerNames.indexOf(this._activePickerName);
     }
 
@@ -233,7 +245,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
             let index = this._pickerNames.indexOf(this._activePickerName) + 1;
             this._activePickerName = this._pickerNames[index];
             this.activePickerIndex = this._pickerNames.indexOf(this._activePickerName);
-            this.activePickerComponent = this.options.pickerPeriodsDefinition![this._activePickerName];
+            this.activePickerComponent = this._options.pickerPeriodsDefinition![this._activePickerName];
         }));
 
         this._activePickerSubscriptions.add(picker.scaleDown.subscribe(display =>
@@ -242,17 +254,39 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
             let index = this._pickerNames.indexOf(this._activePickerName) - 1;
             this._activePickerName = this._pickerNames[index];
             this.activePickerIndex = this._pickerNames.indexOf(this._activePickerName);
-            this.activePickerComponent = this.options.pickerPeriodsDefinition![this._activePickerName];
+            this.activePickerComponent = this._options.pickerPeriodsDefinition![this._activePickerName];
         }));
 
         picker.setCanGoDown(this._pickerNames.indexOf(this._activePickerName) > 0);
         picker.setCanGoUp(this._pickerNames.indexOf(this._activePickerName) < this._pickerNames.length - 1);
 
+        this._setPickerCssClasses();
         picker.setValue(this._value);
         picker.setMinValue(this._minValue);
         picker.setMaxValue(this._maxValue);
         picker.display(this._display ? this._dateApi.getValue(this._display) : this._dateApi.getValue(this._value?.from ?? this._dateApi.now().value));
 
         picker.invalidateVisuals();
+    }
+
+    //######################### protected methods #########################
+
+    /**
+     * Sets picker css classes
+     */
+    protected _setPickerCssClasses()
+    {
+        if(!this._activePicker)
+        {
+            return;
+        }
+
+        //sets shared css 
+        this._activePicker.setCssClasses(this._options?.cssClasses?.pickerShared ?? {});
+
+        if(this._options?.cssClasses?.pickerCustom && this._options?.cssClasses?.pickerCustom[this._activePickerName])
+        {
+            this._activePicker.setCssClasses(this._options?.cssClasses?.pickerCustom[this._activePickerName]);
+        }
     }
 }

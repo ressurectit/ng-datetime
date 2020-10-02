@@ -1,8 +1,24 @@
-import {Component, ChangeDetectionStrategy} from '@angular/core';
+import {Component, ChangeDetectionStrategy, Inject, ChangeDetectorRef} from '@angular/core';
+import {extend} from '@jscrpt/common';
 
-import {DateApiObject} from '../../../services/dateApi.interface';
+import {DATE_API} from '../../../misc/tokens';
+import {DateApi, DateApiObject} from '../../../services/dateApi.interface';
 import {DateTimePicker, PeriodData, YearData} from '../../misc/datetimePicker.interface';
 import {PickerBaseComponent} from '../pickerBase.component';
+import {YearPickerCssClasses} from './yearPicker.interfaces';
+
+/**
+ * Default styles for picker
+ */
+const defaultStyles: YearPickerCssClasses =
+{
+    periodSelection: 'period',
+    previousPeriod: 'fas fa-angle-left clickable',
+    nextPeriod: 'fas fa-angle-right clickable',
+    periodValue: 'period-value',
+    periodData: 'period-data',
+    periodDatum: 'period-datum clickable'
+};
 
 /**
  * Component used for displaying year picker
@@ -14,7 +30,7 @@ import {PickerBaseComponent} from '../pickerBase.component';
     styleUrls: ['yearPicker.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DateTimeYearPickerComponent<TDate = any> extends PickerBaseComponent<TDate, YearData<TDate>> implements DateTimePicker<TDate>
+export class DateTimeYearPickerComponent<TDate = any> extends PickerBaseComponent<TDate, YearData<TDate>, YearPickerCssClasses> implements DateTimePicker<TDate, YearPickerCssClasses>
 {
     //######################### public properties - template bindings #########################
 
@@ -23,6 +39,15 @@ export class DateTimeYearPickerComponent<TDate = any> extends PickerBaseComponen
      * @internal
      */
     public period: string = '';
+
+    //######################### constructor #########################
+    constructor(@Inject(DATE_API) dateApi: DateApi<TDate>,
+                changeDetector: ChangeDetectorRef)
+    {
+        super(dateApi, changeDetector);
+
+        this.cssClasses = extend(true, {}, defaultStyles);
+    }
 
     //######################### public methods - template bindings #########################
 
