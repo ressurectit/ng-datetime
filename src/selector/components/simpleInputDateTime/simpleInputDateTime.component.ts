@@ -50,6 +50,16 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
      */
     protected _isValid: boolean = false;
 
+    /**
+     * Minimal possible value that can be picked
+     */
+    protected _minValue: TDate|null = null;
+
+    /**
+     * Maximal possible value that can be picked
+     */
+    protected _maxValue: TDate|null = null;
+
     //######################### public properties - implementation of DateTimeSelector #########################
 
     /**
@@ -174,6 +184,24 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
     //######################### public methods - implementation of DateTimeSelector #########################
 
     /**
+     * Sets minimal possible value for picker, that can be picked
+     * @param value - Minimal possible value that can be picked
+     */
+    public setMinValue(value: TDate|null): void
+    {
+        this._minValue = value;
+    }
+
+    /**
+     * Sets maximal possible value for picker, that can be picked
+     * @param value - Maximal possible value that can be picked
+     */
+    public setMaxValue(value: TDate|null): void
+    {
+        this._maxValue = value;
+    }
+
+    /**
      * Sets value of datetime selector
      * @param value - Value to be set to this selector
      */
@@ -226,7 +254,17 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
         {
             this._dateApiValue = this._dateApi.now();
             this._isValid = this._dateApiValue.isValid();
-            this._valueChange.next();
+
+            if(this._minMaxConstraintTest())
+            {
+                this._dateApiValue = null;
+                this._isValid = false;
+                this.currentValue = null;
+            }
+            else
+            {
+                this._valueChange.next();
+            }
         }
 
         if(!this._isValid)
@@ -297,8 +335,7 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
                 event.preventDefault();
                 event.stopPropagation();
 
-                event.key == 'ArrowLeft' ? this._dateApiValue.subtractDays(1) : this._dateApiValue.addDays(1);
-                this._valueChange.next();
+                this._withMinMaxConstraint(() => event.key == 'ArrowLeft' ? this._dateApiValue!.subtractDays(1) : this._dateApiValue!.addDays(1));
                 this._show();
 
                 break;
@@ -309,8 +346,7 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
                 event.preventDefault();
                 event.stopPropagation();
 
-                event.key == 'ArrowUp' ? this._dateApiValue.subtractWeeks(1) : this._dateApiValue.addWeeks(1);
-                this._valueChange.next();
+                this._withMinMaxConstraint(() => event.key == 'ArrowUp' ? this._dateApiValue!.subtractWeeks(1) : this._dateApiValue!.addWeeks(1));
                 this._show();
 
                 break;
@@ -334,6 +370,36 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
     }
 
     //######################### protected methods #########################
+
+    /**
+     * Tests whether are min or max constraint broken, returns true if constraint is broken
+     */
+    protected _minMaxConstraintTest(): boolean
+    {
+        return (!!this._minValue && this._dateApiValue!.isBefore(this._minValue)) ||
+               (!!this._maxValue && this._dateApiValue!.isAfter(this._maxValue));
+    }
+
+    /**
+     * Runs code with check whether min max constrains was broken
+     * @param code - Code that should be executed which can change current value
+     */
+    protected _withMinMaxConstraint(code: () => void)
+    {
+        this._dateApiValue!.updateOriginal();
+
+        code();
+
+        //min value constraint failure
+        if(this._minMaxConstraintTest())
+        {
+            this._dateApiValue?.resetOriginal();
+
+            return;
+        }
+
+        this._valueChange.next();
+    }
 
     /**
      * Shows current value in input

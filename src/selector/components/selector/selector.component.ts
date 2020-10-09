@@ -201,7 +201,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
 
         if(isBlank(value))
         {
-            this.min = value as null;
+            this.min = null;
         }
         else if(isString(value))
         {
@@ -219,6 +219,8 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
             this._minValueChangeSubscription = value.valueChange.subscribe(() =>
             {
                 this.min = value.valueOf();
+                this._activeSelector?.setMinValue(this.min);
+
                 this._changeDetector.detectChanges();
             });
         }
@@ -226,6 +228,8 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
         {
             this.min = value;
         }
+
+        this._activeSelector?.setMinValue(this.min);
     }
 
     /**
@@ -243,7 +247,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
 
         if(isBlank(value))
         {
-            this.max = value as null;
+            this.max = null;
         }
         else if(isString(value))
         {
@@ -261,6 +265,8 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
             this._maxValueChangeSubscription = value.valueChange.subscribe(() =>
             {
                 this.max = value.valueOf();
+                this._activeSelector?.setMaxValue(this.max);
+
                 this._changeDetector.detectChanges();
             });
         }
@@ -268,6 +274,8 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
         {
             this.max = value;
         }
+
+        this._activeSelector?.setMaxValue(this.max);
     }
 
     //######################### constructor #########################
@@ -345,6 +353,8 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
         }));
 
         selector.format = this.format;
+        selector.setMaxValue(this.max);
+        selector.setMinValue(this.min);
         selector.setValue(this._value);
         selector.setDisabled(this._disabled);
 

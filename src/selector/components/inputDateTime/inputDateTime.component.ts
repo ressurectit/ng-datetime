@@ -55,6 +55,16 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      */
     protected _isValid: boolean = false;
 
+    /**
+     * Minimal possible value that can be picked
+     */
+    protected _minValue: TDate|null = null;
+
+    /**
+     * Maximal possible value that can be picked
+     */
+    protected _maxValue: TDate|null = null;
+
     //######################### public properties - implementation of DateTimeSelector #########################
 
     /**
@@ -186,6 +196,24 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     //######################### public methods - implementation of DateTimeSelector #########################
 
     /**
+     * Sets minimal possible value for picker, that can be picked
+     * @param value - Minimal possible value that can be picked
+     */
+    public setMinValue(value: TDate|null): void
+    {
+        this._minValue = value;
+    }
+
+    /**
+     * Sets maximal possible value for picker, that can be picked
+     * @param value - Maximal possible value that can be picked
+     */
+    public setMaxValue(value: TDate|null): void
+    {
+        this._maxValue = value;
+    }
+
+    /**
      * Sets value of datetime selector
      * @param value - Value to be set to this selector
      */
@@ -238,7 +266,17 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
         {
             this._dateApiValue = this._dateApi.now();
             this._isValid = this._dateApiValue.isValid();
-            this._valueChange.next();
+
+            if(this._minMaxConstraintTest())
+            {
+                this._dateApiValue = null;
+                this._isValid = false;
+                this.currentValue = null;
+            }
+            else
+            {
+                this._valueChange.next();
+            }
         }
 
         if(!this._isValid)
@@ -432,6 +470,36 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     }
 
     /**
+     * Tests whether are min or max constraint broken, returns true if constraint is broken
+     */
+    protected _minMaxConstraintTest(): boolean
+    {
+        return (!!this._minValue && this._dateApiValue!.isBefore(this._minValue)) ||
+               (!!this._maxValue && this._dateApiValue!.isAfter(this._maxValue));
+    }
+
+    /**
+     * Runs code with check whether min max constrains was broken
+     * @param code - Code that should be executed which can change current value
+     */
+    protected _withMinMaxConstraint(code: () => void): void
+    {
+        this._dateApiValue!.updateOriginal();
+
+        code();
+
+        //min value constraint failure
+        if(this._minMaxConstraintTest())
+        {
+            this._dateApiValue?.resetOriginal();
+
+            return;
+        }
+
+        this._valueChange.next();
+    }
+
+    /**
      * Changes current value of date for for specified part by single step
      * @param part - Part of date that should be changed
      * @param increment - Indication whether value should be incremented or decremented
@@ -448,8 +516,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
             case 'y':
             case 'Y':
             {
-                increment ? this._dateApiValue.addYears(1) : this._dateApiValue.subtractYears(1);
-                this._valueChange.next();
+                this._withMinMaxConstraint(() => increment ? this._dateApiValue!.addYears(1) : this._dateApiValue!.subtractYears(1));
 
                 break;
             }
@@ -459,23 +526,20 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
             }
             case 'M':
             {
-                increment ? this._dateApiValue.addMonths(1) : this._dateApiValue.subtractMonths(1);
-                this._valueChange.next();
+                this._withMinMaxConstraint(() => increment ? this._dateApiValue!.addMonths(1) : this._dateApiValue!.subtractMonths(1));
 
                 break;
             }
             case 'w':
             {
-                increment ? this._dateApiValue.addWeeks(1) : this._dateApiValue.subtractWeeks(1);
-                this._valueChange.next();
+                this._withMinMaxConstraint(() => increment ? this._dateApiValue!.addWeeks(1) : this._dateApiValue!.subtractWeeks(1));
 
                 break;
             }
             case 'd':
             case 'D':
             {
-                increment ? this._dateApiValue.addDays(1) : this._dateApiValue.subtractDays(1);
-                this._valueChange.next();
+                this._withMinMaxConstraint(() => increment ? this._dateApiValue!.addDays(1) : this._dateApiValue!.subtractDays(1));
 
                 break;
             }
