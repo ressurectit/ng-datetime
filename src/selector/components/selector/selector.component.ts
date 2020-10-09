@@ -109,7 +109,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
      */
     public get valid(): boolean
     {
-        return !!this._value && !!this._activeSelector?.valid;
+        return this._activeSelector?.valid ?? true;
     }
 
     /**

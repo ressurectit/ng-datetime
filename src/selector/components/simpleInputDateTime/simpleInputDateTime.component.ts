@@ -48,7 +48,7 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
     /**
      * Indication whether is current value valid value
      */
-    protected _isValid: boolean = false;
+    protected _isValid: boolean = true;
 
     /**
      * Minimal possible value that can be picked
@@ -216,9 +216,7 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
         }
         else
         {
-            this._dateApiValue = null;
-            this._isValid = false;
-            this.currentValue = null;
+            this._clearValue();
         }
     }
 
@@ -257,9 +255,7 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
 
             if(this._minMaxConstraintTest())
             {
-                this._dateApiValue = null;
-                this._isValid = false;
-                this.currentValue = null;
+                this._clearValue();
             }
             else
             {
@@ -293,8 +289,7 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
         //empty value
         if(!this.currentValue)
         {
-            this._dateApiValue = null;
-            this._isValid = false;
+            this._clearValue();
             this._valueChange.next();
 
             return;
@@ -370,6 +365,16 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
     }
 
     //######################### protected methods #########################
+
+    /**
+     * Clears current value
+     */
+    protected _clearValue()
+    {
+        this._dateApiValue = null;
+        this._isValid = true;
+        this.currentValue = null;
+    }
 
     /**
      * Tests whether are min or max constraint broken, returns true if constraint is broken

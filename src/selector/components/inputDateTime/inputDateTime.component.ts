@@ -53,7 +53,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     /**
      * Indication whether is current value valid value
      */
-    protected _isValid: boolean = false;
+    protected _isValid: boolean = true;
 
     /**
      * Minimal possible value that can be picked
@@ -228,9 +228,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
         }
         else
         {
-            this._dateApiValue = null;
-            this._isValid = false;
-            this.currentValue = null;
+            this._clearValue();
         }
     }
 
@@ -269,9 +267,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
 
             if(this._minMaxConstraintTest())
             {
-                this._dateApiValue = null;
-                this._isValid = false;
-                this.currentValue = null;
+                this._clearValue();
             }
             else
             {
@@ -310,8 +306,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
         //empty value
         if(!this.currentValue)
         {
-            this._dateApiValue = null;
-            this._isValid = false;
+            this._clearValue();
             this._valueChange.next();
 
             return;
@@ -434,7 +429,8 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
             }
             case 'Backspace':
             {
-                this.currentValue = null;
+                this._clearValue();
+                this._valueChange.next();
 
                 break;
             }
@@ -497,6 +493,16 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
         }
 
         this._valueChange.next();
+    }
+
+    /**
+     * Clears current value
+     */
+    protected _clearValue()
+    {
+        this._dateApiValue = null;
+        this._isValid = true;
+        this.currentValue = null;
     }
 
     /**
