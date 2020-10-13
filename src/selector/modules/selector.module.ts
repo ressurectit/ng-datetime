@@ -3,7 +3,7 @@ import {CommonModule as AngularCommonModule} from '@angular/common';
 import {CommonModule} from '@anglr/common';
 
 import {DateTimeSelectorComponent, InputDateTimeSelectorComponent} from '../components';
-import {DateTimeSelectorControlValueAccessor} from '../directives';
+import {DatetimeMaxValidatorDirective, DatetimeMinValidatorDirective, DateTimeSelectorControlValueAccessor, DatetimeValidatorDirective} from '../directives';
 import {DateTimePickerModule} from '../../picker';
 
 /**
@@ -20,13 +20,19 @@ import {DateTimePickerModule} from '../../picker';
     declarations:
     [
         DateTimeSelectorComponent,
+        InputDateTimeSelectorComponent,
         DateTimeSelectorControlValueAccessor,
-        InputDateTimeSelectorComponent
+        DatetimeValidatorDirective,
+        DatetimeMinValidatorDirective,
+        DatetimeMaxValidatorDirective
     ],
     exports:
     [
         DateTimeSelectorComponent,
-        DateTimeSelectorControlValueAccessor
+        DateTimeSelectorControlValueAccessor,
+        DatetimeValidatorDirective,
+        DatetimeMinValidatorDirective,
+        DatetimeMaxValidatorDirective
     ]
 })
 export class DateTimeSelectorModule

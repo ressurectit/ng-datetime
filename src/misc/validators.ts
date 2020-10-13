@@ -16,7 +16,7 @@ export class Validators
     {
         return (): ValidationErrors|null =>
         {
-            if(!!datetime.value && !datetime.valid)
+            if(!datetime.valid)
             {
                 return {
                     "datetime": true
@@ -36,10 +36,10 @@ export class Validators
     {
         return (control: AbstractControl): ValidationErrors|null =>
         {
-            if(!!datetime.value &&
-               !datetime.valid &&
+            if(!!control.value &&
+               datetime.valid &&
                datetime.minValue &&
-               dateApi.getValue(datetime.value.from).isBefore(datetime.minValue))
+               dateApi.getValue(control.value).isBefore(datetime.minValue))
             {
                 return {
                     "minDatetime": datetime.minValue,
@@ -60,10 +60,10 @@ export class Validators
     {
         return (control: AbstractControl): ValidationErrors|null =>
         {
-            if(!!datetime.value &&
-               !datetime.valid &&
+            if(!!control.value &&
+               datetime.valid &&
                datetime.maxValue &&
-               dateApi.getValue(datetime.value.from).isAfter(datetime.maxValue))
+               dateApi.getValue(control.value).isAfter(datetime.maxValue))
             {
                 return {
                     "maxDatetime": datetime.maxValue,
