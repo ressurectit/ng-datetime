@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {DatePositionParser, DatePositionParserResult} from './datePositionParser.interface';
 
 /**
- * Service used for parsing date 
+ * Service used for parsing date
  */
 @Injectable({providedIn: 'root'})
 export class DatePositionParserService
@@ -171,38 +171,54 @@ export class DefaultDatePositionParser implements DatePositionParser
                /[^0-9ɵ]/.test(date[cursorPosition]) &&
                /[^0-9ɵ]/.test(date[cursorPosition - 1]))
             {
+                let breakCycle = false;
                 cursorPosition++;
-    
+
                 while(/[^0-9ɵ]/.test(date[cursorPosition]))
                 {
+                    if(cursorPosition >= date.length)
+                    {
+                        if(breakCycle)
+                        {
+                            return {
+                                part: '',
+                                positionFrom: 0,
+                                positionTo: 0
+                            };
+                        }
+
+                        breakCycle = true;
+                        cursorPosition = 0;
+                    }
+
                     cursorPosition++;
                 }
             }
-    
+
             let updateDate = [date.substr(0, cursorPosition), 'ɵ', date.substr(cursorPosition)].join('');
             let indexed = updateDate.replace(/[^0-9ɵ]/g, ' ').split(' ');
             let partIndex = 0;
             let startPosition = 0;
             let selectionLength = 0;
-    
+
             for(let itm of indexed)
             {
                 //this segment contains cursor
                 if(itm.indexOf('ɵ') >= 0)
                 {
                     selectionLength = itm.length - 1;
-    
+
                     break;
                 }
-    
+
                 startPosition++;
-    
+
                 //separator
                 if(!itm.length)
                 {
                     continue;
                 }
-    
+
                 partIndex++;
                 startPosition += itm.length;
             }
