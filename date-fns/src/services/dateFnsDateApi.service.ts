@@ -1,5 +1,5 @@
 import {Inject, Injectable} from '@angular/core';
-import {DateApi, DateValue, DateApiObject} from '@anglr/datetime';
+import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser} from '@anglr/datetime';
 import {isBlank, isPresent, isString} from '@jscrpt/common';
 import {toDate, getDate, setDate, setDay, getDay, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth} from 'date-fns';
 
@@ -527,7 +527,8 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 export class DateFnsDateApi implements DateApi<Date>
 {
     //######################### constructor #########################
-    constructor(@Inject(DATE_FNS_LOCALE) protected _localeSvc: DateFnsLocale)
+    constructor(@Inject(DATE_FNS_LOCALE) protected _localeSvc: DateFnsLocale,
+                protected _relativeParser: DateTimeRelativeParser<Date>)
     {
     }
 
@@ -540,7 +541,7 @@ export class DateFnsDateApi implements DateApi<Date>
      */
     public getValue(value: DateValue|Date, format?: string): DateApiObject<Date>
     {
-        return new DateFnsDateApiObject(value, this._localeSvc, format);
+        return new DateFnsDateApiObject(this._relativeParser.parse(value), this._localeSvc, format);
     }
 
     /**

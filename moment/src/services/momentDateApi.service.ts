@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {DateApi, DateValue, DateApiObject} from '@anglr/datetime';
+import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser} from '@anglr/datetime';
 import {isBlank, isPresent} from '@jscrpt/common';
 import moment, {LongDateFormatKey} from 'moment';
 
@@ -520,6 +520,13 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
 @Injectable()
 export class MomentDateApi implements DateApi<moment.Moment>
 {
+    //######################### constructor #########################
+    constructor(protected _relativeParser: DateTimeRelativeParser<moment.Moment>)
+    {
+    }
+
+    //######################### public methods #########################
+
     /**
      * Gets wrapping object used for manipulation
      * @param value - Value to be converted (parsed) and used for manipulation
@@ -527,7 +534,7 @@ export class MomentDateApi implements DateApi<moment.Moment>
      */
     public getValue(value: DateValue|moment.Moment, format?: string): DateApiObject<moment.Moment>
     {
-        return new MomentDateApiObject(value, format);
+        return new MomentDateApiObject(this._relativeParser.parse(value), format);
     }
 
     /**
