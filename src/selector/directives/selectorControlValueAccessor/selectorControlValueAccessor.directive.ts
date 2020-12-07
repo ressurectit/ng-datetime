@@ -3,7 +3,7 @@ import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
 import {Subscription} from 'rxjs';
 
 import {DateTimeValue} from '../../../misc/datetime.interface';
-import {DateTimeSelectorComponent} from '../../components';
+import {DateTimeSelectorComponent} from '../../components/selector/selector.component';
 
 /**
  * Value accessor provider for date time selector

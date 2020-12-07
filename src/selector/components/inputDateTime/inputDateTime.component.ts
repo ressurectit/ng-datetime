@@ -3,7 +3,9 @@ import {Observable, Subject} from 'rxjs';
 
 import {DateTimeValue} from '../../../misc/datetime.interface';
 import {DATE_API} from '../../../misc/tokens';
-import {DateApi, DateApiObject, DatePositionParser, DatePositionParserService, DateValueProvider} from '../../../services';
+import {DateApi, DateApiObject, DatePositionParser} from '../../../services';
+import {DatePositionParserService} from '../../../services/datePositionParser.service';
+import {DateValueProvider} from '../../../services/dateValueProvider.service';
 import {DateTimeSelector} from '../../misc/datetimeSelector.interface';
 
 /**

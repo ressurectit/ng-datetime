@@ -2,7 +2,7 @@ import {Type} from '@angular/core';
 import {Observable} from 'rxjs';
 
 import {DateTimeValue} from '../../misc/datetime.interface';
-import {DateTimePickerOptions} from '../../picker';
+import {DateTimePickerOptions} from '../../picker/misc/datetimePicker.interface';
 
 /**
  * Defintion of datetime selector component options

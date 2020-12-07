@@ -4,8 +4,11 @@ import {Observable, Subject, Subscription} from 'rxjs';
 
 import {DateTimeValue} from '../../../misc/datetime.interface';
 import {DATE_API, FORMAT_PROVIDER} from '../../../misc/tokens';
-import {DateTimeDayPickerComponent, DateTimeMonthPickerComponent, DateTimeYearPickerComponent} from '../../../picker';
-import {DateApi, DateValueProvider, FormatProvider} from '../../../services';
+import {DateTimeDayPickerComponent} from '../../../picker/components/dayPicker/dayPicker.component';
+import {DateTimeMonthPickerComponent} from '../../../picker/components/monthPicker/monthPicker.component';
+import {DateTimeYearPickerComponent} from '../../../picker/components/yearPicker/yearPicker.component';
+import {DateApi, FormatProvider} from '../../../services';
+import {DateValueProvider} from '../../../services/dateValueProvider.service';
 import {DateTimeSelector, DateTimeSelectorOptions} from '../../misc/datetimeSelector.interface';
 import {DATE_TIME_SELECTOR_CONFIGURATION} from '../../misc/tokens';
 import {InputDateTimeSelectorComponent} from '../inputDateTime/inputDateTime.component';
