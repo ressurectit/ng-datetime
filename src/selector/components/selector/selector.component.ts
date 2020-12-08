@@ -91,6 +91,11 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
      */
     protected _maxValueChangeSubscription: Subscription|null = null;
 
+    /**
+     * Current options used by selector
+     */
+    protected _options: DateTimeSelectorOptions<DateTimeSelector<TDate>>;
+
     //######################### public properties #########################
 
     /**
@@ -187,7 +192,14 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
      * Current options used by selector
      */
     @Input()
-    public options: DateTimeSelectorOptions<DateTimeSelector<TDate>>;
+    public get options(): DateTimeSelectorOptions<DateTimeSelector<TDate>>
+    {
+        return this._options;
+    }
+    public set options(value: DateTimeSelectorOptions<DateTimeSelector<TDate>>)
+    {
+        this._options = extend(true, this._options, value);
+    }
 
     /**
      * Gets or sets minimal possible value for picker, that can be picked
@@ -289,7 +301,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
                 @Inject(FORMAT_PROVIDER) formatProvider: FormatProvider)
     {
         this.format = formatProvider.date;
-        this.options = extend(true, {}, defaultConfiguration, configuration);
+        this._options = extend(true, {}, defaultConfiguration, configuration);
     }
 
     //######################### public methods - implementation of OnInit #########################
@@ -299,7 +311,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
      */
     public ngOnInit()
     {
-        this.activeSelectorComponent = this.options.selectorComponent;
+        this.activeSelectorComponent = this._options.selectorComponent;
     }
 
     //######################### public methods - implementation of OnChanges #########################
@@ -375,7 +387,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
         this._value = value;
         this._valueChange.next();
 
-        if(this.options.pickerCloseOnValueSelect)
+        if(this._options.pickerCloseOnValueSelect)
         {
             this.pickerVisible = false;
         }

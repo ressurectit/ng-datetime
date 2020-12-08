@@ -50,25 +50,25 @@ export class DateTimeRelativeParser<TDate = any>
                 }
                 case "d":
                 {
-                    operation == "+" ? now.addDays(+amount) : now.subtractDays(+amount);
+                    operation == "+" ? now.addDays(+amount).endOfDay() : now.subtractDays(+amount).startOfDay();
 
                     break;
                 }
                 case "w":
                 {
-                    operation == "+" ? now.addWeeks(+amount) : now.subtractWeeks(+amount);
+                    operation == "+" ? now.addWeeks(+amount).endOfDay() : now.subtractWeeks(+amount).startOfDay();
 
                     break;
                 }
                 case "m":
                 {
-                    operation == "+" ? now.addMonths(+amount) : now.subtractMonths(+amount);
+                    operation == "+" ? now.addMonths(+amount).endOfDay() : now.subtractMonths(+amount).startOfDay();
 
                     break;
                 }
                 case "y":
                 {
-                    operation == "+" ? now.addYears(+amount) : now.subtractYears(+amount);
+                    operation == "+" ? now.addYears(+amount).endOfDay() : now.subtractYears(+amount).startOfDay();
 
                     break;
                 }
