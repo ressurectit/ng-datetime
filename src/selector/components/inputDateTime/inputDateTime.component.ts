@@ -88,6 +88,11 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     }
 
     /**
+     * Gets or sets placeholder that is displayed when there is no value selected
+     */
+    public placeholder: string|undefined;
+
+    /**
      * Gets current value of datetime
      */
     public get value(): DateTimeValue<TDate>|null

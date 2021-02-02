@@ -36,6 +36,11 @@ export interface DateTimeSelector<TDate = any>
     format: string;
 
     /**
+     * Placeholder that is displayed when there is no value selected
+     */
+    placeholder?: string;
+
+    /**
      * Gets current value of datetime
      */
     readonly value: DateTimeValue<TDate>|null;

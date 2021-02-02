@@ -96,6 +96,11 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
      */
     protected _options: DateTimeSelectorOptions<DateTimeSelector<TDate>>;
 
+    /**
+     * Placeholder that is displayed when there is no value selected
+     */
+    protected _placeholder?: string;
+
     //######################### public properties #########################
 
     /**
@@ -187,6 +192,26 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
      */
     @Input()
     public format: string;
+
+    /**
+     * Gets or sets placeholder that is displayed when there is no value selected
+     */
+    @Input()
+    public get placeholder(): string|undefined
+    {
+        return this._placeholder;
+    }
+    public set placeholder(value: string|undefined)
+    {
+        this._placeholder = value;
+
+        if(this._activeSelector)
+        {
+            this._activeSelector.placeholder = this._placeholder;
+
+            this._activeSelector.invalidateVisuals();
+        }
+    }
 
     /**
      * Current options used by selector
@@ -372,6 +397,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
         selector.setMinValue(this.min);
         selector.setValue(this._value);
         selector.setDisabled(this._disabled);
+        selector.placeholder = this._placeholder;
 
         selector.invalidateVisuals();
     }
