@@ -70,7 +70,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
      */
     public format(format: string): string
     {
-        return this._value.format(format);
+        return this._value.format(format.replace(/y/g, 'Y').replace(/d/g, 'D'));
     }
 
     /**

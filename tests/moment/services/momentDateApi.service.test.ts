@@ -2,6 +2,9 @@ import {DateApi, DateTimeRelativeParser} from '@anglr/datetime';
 import {MomentDateApi} from '@anglr/datetime/moment';
 import moment from 'moment';
 
+const DAY_FORMAT_ISO: string = 'yyyy-MM-dd';
+const FULL_FORMAT_ISO: string = `${DAY_FORMAT_ISO}=HH:mm:ss`;
+
 function initialize(): DateApi<moment.Moment>
 {
     moment.locale('sk');
@@ -90,5 +93,68 @@ describe("MomentDateApiObject class", () =>
         let dateApiObj = dateApi.getValue('2021-03-29T00:20:20');
 
         expect(dateApiObj.isWeekend()).toBe(false);
+    });
+
+    it("format method => full ISO", () =>
+    {
+        let dateApiObj = dateApi.getValue('2021-03-31T00:20:20');
+
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-31=00:20:20');
+    });
+
+    it("format method => full ISO", () =>
+    {
+        let dateApiObj = dateApi.getValue('2021-03-31T00:20:20').startOfDecade();
+
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2020-01-01=00:00:00');
+    });
+
+    it("format method => full ISO", () =>
+    {
+        let dateApiObj = dateApi.getValue('2021-03-31T00:20:20').endOfDecade();
+
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2029-12-31=23:59:59');
+    });
+
+    it("startOfYear method => 2021", () =>
+    {
+        let dateApiObj = dateApi.getValue('2021-03-31T00:20:20').startOfYear();
+
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-01-01=00:00:00');
+    });
+
+    it("endOfYear method => 2021", () =>
+    {
+        let dateApiObj = dateApi.getValue('2021-03-31T00:20:20').endOfYear();
+
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-12-31=23:59:59');
+    });
+
+    it("startOfMonth method => 2021 march", () =>
+    {
+        let dateApiObj = dateApi.getValue('2021-03-31T00:20:20').startOfMonth();
+
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-01=00:00:00');
+    });
+
+    it("endOfMonth method => 2021 march", () =>
+    {
+        let dateApiObj = dateApi.getValue('2021-03-31T00:20:20').endOfMonth();
+
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-31=23:59:59');
+    });
+
+    it("startOfWeek method => 2021 march/april", () =>
+    {
+        let dateApiObj = dateApi.getValue('2021-03-31T00:20:20').startOfWeek();
+
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-29=00:00:00');
+    });
+
+    it("endOfWeek method => 2021 march/april", () =>
+    {
+        let dateApiObj = dateApi.getValue('2021-03-31T00:20:20').endOfWeek();
+
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-04-04=23:59:59');
     });
 });

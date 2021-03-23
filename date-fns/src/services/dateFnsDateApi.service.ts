@@ -55,7 +55,12 @@ class DateFnsDateApiObject implements DateApiObject<Date>
             }
             else
             {
-                this._value = this._originalValue = parse(value, format!, new Date(1970, 0));
+                if(isBlank(format))
+                {
+                    throw new Error(`date-fns requires format parameter to be set for parsing non ISO string date!`);
+                }
+
+                this._value = this._originalValue = parse(value, format, new Date(1970, 0));
             }
         }
         else
@@ -88,7 +93,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
      */
     public format(formatString: string): string
     {
-        return format(this._value, formatString.replace(/Y/g, 'y').replace(/D/g, 'd'), {locale: this._localeSvc.locale});
+        return format(this._value, formatString, {locale: this._localeSvc.locale});
     }
 
     /**
