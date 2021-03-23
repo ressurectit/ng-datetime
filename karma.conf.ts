@@ -43,10 +43,17 @@ module.exports = function(config: any)
             {
                 rules:
                 [
-                    //file processing
                     {
                         test: /\.ts$/,
                         loader: '@ngtools/webpack'
+                    },
+                    {
+                        test: /\.html$/,
+                        loader: 'raw-loader'
+                    },
+                    {
+                        test: /\.css$/,
+                        loader: 'raw-loader'
                     }
                 ]
             },

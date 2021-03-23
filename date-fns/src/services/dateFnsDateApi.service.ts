@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser} from '@anglr/datetime';
 import {isBlank, isPresent, isString} from '@jscrpt/common';
-import {toDate, getDate, setDate, setDay, getDay, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth} from 'date-fns';
+import {toDate, getDate, setDate, setDay, getDay, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, parseISO, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth} from 'date-fns';
 
 import {DATE_FNS_LOCALE} from '../misc/tokens';
 import {DateFnsLocale} from './dateFnsLocale.service';
@@ -48,7 +48,15 @@ class DateFnsDateApiObject implements DateApiObject<Date>
     {
         if(isString(value))
         {
-            this._value = this._originalValue = parse(value, format!, new Date(1970, 0));
+            //ISO string
+            if(/^\d+-\d+-\d+(T\d+:\d+:\d+)?/.test(value))
+            {
+                this._value = this._originalValue = parseISO(value);
+            }
+            else
+            {
+                this._value = this._originalValue = parse(value, format!, new Date(1970, 0));
+            }
         }
         else
         {
