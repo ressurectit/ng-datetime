@@ -45,7 +45,7 @@ describe("DateFnsDateApi class", () =>
     });
 });
 
-describe("MomentDateApiObject class", () =>
+describe("DateFnsDateApiObject class", () =>
 {
     let dateApi: DateApi<Date> = null!;
 
@@ -54,6 +54,5 @@ describe("MomentDateApiObject class", () =>
         dateApi = initialize();
     });
 
-    
     dateApiTests(() => dateApi);
 });

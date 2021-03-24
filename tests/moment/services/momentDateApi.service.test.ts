@@ -7,7 +7,7 @@ import {dateApiTests} from '../../src/services/dateApi.test';
 function initialize(): DateApi<moment.Moment>
 {
     moment.locale('sk');
-    
+
     let parser: DateTimeRelativeParser<moment.Moment> = new class extends DateTimeRelativeParser<moment.Moment>
     {
         constructor()

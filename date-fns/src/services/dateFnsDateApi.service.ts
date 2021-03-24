@@ -216,7 +216,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
      */
     public startOfWeek(): DateApiObject<Date>
     {
-        this._value = startOfWeek(this._value);
+        this._value = startOfWeek(this._value, {locale: this._localeSvc.locale});
 
         return this;
     }
@@ -227,7 +227,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
      */
     public endOfWeek(): DateApiObject<Date>
     {
-        this._value = endOfWeek(this._value);
+        this._value = endOfWeek(this._value, {locale: this._localeSvc.locale});
 
         return this;
     }
