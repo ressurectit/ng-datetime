@@ -57,6 +57,9 @@ build_script:
       
   - ps: Update-AppveyorBuild -Version "$(cat version.bak)"
 
+test_script:
+  - npm test
+
 deploy:
   - provider: GitHub
     description: '$(Changelog)'
