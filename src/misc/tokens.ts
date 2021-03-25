@@ -16,8 +16,8 @@ export const FORMAT_PROVIDER: InjectionToken<FormatProvider> = new InjectionToke
                                                                                                       factory: () =>
                                                                                                       {
                                                                                                           return {
-                                                                                                              date: 'YYYY-MM-DD',
-                                                                                                              dateTime: 'YYYY-MM-DD HH:mm',
+                                                                                                              date: 'yyyy-MM-dd',
+                                                                                                              dateTime: 'yyyy-MM-dd HH:mm',
                                                                                                               time: 'HH:mm'
                                                                                                           };
                                                                                                       }
