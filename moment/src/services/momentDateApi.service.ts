@@ -415,7 +415,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
      */
     public diffDays(date: moment.Moment): number
     {
-        return this._value.diff(date, 'days');
+        return moment(this._value).startOf('day').diff(moment(date).startOf('day'), 'days');
     }
 
     /**

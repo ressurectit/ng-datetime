@@ -443,7 +443,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
      */
     public isSameWeek(date: Date): boolean
     {
-        return isSameWeek(this._value, date);
+        return isSameWeek(this._value, date, {locale: this._localeSvc.locale});
     }
 
     /**

@@ -264,14 +264,14 @@ export function dateApiTests<TDate>(dateApi: () => DateApi<TDate>)
         expect(dateApi().getValue('2021-02-25T00:20:20').isAfter(dateApiObj.value)).toBe(false);
     });
 
-    it("diffDays method => less than whole", () =>
+    it("diffDays method => more than whole day", () =>
     {
         let dateApiObj = dateApi().getValue('2021-02-20T12:00:00');
 
         expect(dateApi().getValue('2021-02-25T18:00:00').diffDays(dateApiObj.value)).toBe(5);
     });
 
-    it("diffDays method => more than whole", () =>
+    it("diffDays method => less than whole day", () =>
     {
         let dateApiObj = dateApi().getValue('2021-02-20T12:00:00');
 
@@ -280,15 +280,171 @@ export function dateApiTests<TDate>(dateApi: () => DateApi<TDate>)
 
     it("diffDays method => almost next day", () =>
     {
+        let dateApiObj = dateApi().getValue('2021-02-20T02:00:00');
+
+        expect(dateApi().getValue('2021-02-25T22:00:00').diffDays(dateApiObj.value)).toBe(5);
+    });
+
+    it("diffDays method => overflowing next day", () =>
+    {
         let dateApiObj = dateApi().getValue('2021-02-20T12:00:00');
 
-        expect(dateApi().getValue('2021-02-26T11:00:00').diffDays(dateApiObj.value)).toBe(5);
+        expect(dateApi().getValue('2021-02-26T11:00:00').diffDays(dateApiObj.value)).toBe(6);
     });
 
     it("diffDays method => half way", () =>
     {
         let dateApiObj = dateApi().getValue('2021-02-20T12:00:00');
 
-        expect(dateApi().getValue('2021-02-26T00:00:00').diffDays(dateApiObj.value)).toBe(5);
+        expect(dateApi().getValue('2021-02-26T00:00:00').diffDays(dateApiObj.value)).toBe(6);
+    });
+
+    it("isSameWeek method => start valid", () =>
+    {
+        let dateApiObj = dateApi().getValue('2021-03-22T12:00:00');
+
+        expect(dateApi().getValue('2021-03-25T00:00:00').isSameWeek(dateApiObj.value)).toBe(true);
+    });
+
+    it("isSameWeek method => end valid", () =>
+    {
+        let dateApiObj = dateApi().getValue('2021-03-28T12:00:00');
+
+        expect(dateApi().getValue('2021-03-25T00:00:00').isSameWeek(dateApiObj.value)).toBe(true);
+    });
+
+    it("isSameWeek method => middle valid", () =>
+    {
+        let dateApiObj = dateApi().getValue('2021-03-26T12:00:00');
+
+        expect(dateApi().getValue('2021-03-25T00:00:00').isSameWeek(dateApiObj.value)).toBe(true);
+    });
+
+    it("isSameWeek method => invalid", () =>
+    {
+        let dateApiObj = dateApi().getValue('2021-03-21T12:00:00');
+
+        expect(dateApi().getValue('2021-03-25T00:00:00').isSameWeek(dateApiObj.value)).toBe(false);
+    });
+
+    it("isSameDecade method => valid", () =>
+    {
+        let dateApiObj = dateApi().getValue('2021-03-21T12:00:00');
+
+        expect(dateApi().getValue('2029-12-25T00:00:00').isSameDecade(dateApiObj.value)).toBe(true);
+    });
+
+    it("isSameDecade method => invalid", () =>
+    {
+        let dateApiObj = dateApi().getValue('2019-12-21T12:00:00');
+
+        expect(dateApi().getValue('2029-12-25T00:00:00').isSameDecade(dateApiObj.value)).toBe(false);
+    });
+
+    it("isSameYear method => valid", () =>
+    {
+        let dateApiObj = dateApi().getValue('2021-02-22T12:00:00');
+
+        expect(dateApi().getValue('2021-12-25T00:00:00').isSameYear(dateApiObj.value)).toBe(true);
+    });
+
+    it("isSameYear method => invalid", () =>
+    {
+        let dateApiObj = dateApi().getValue('2021-02-22T12:00:00');
+
+        expect(dateApi().getValue('2020-12-25T00:00:00').isSameYear(dateApiObj.value)).toBe(false);
+    });
+
+    it("isSameMonth method => valid", () =>
+    {
+        let dateApiObj = dateApi().getValue('2021-02-22T12:00:00');
+
+        expect(dateApi().getValue('2021-02-02T00:00:00').isSameMonth(dateApiObj.value)).toBe(true);
+    });
+
+    it("isSameMonth method => invalid", () =>
+    {
+        let dateApiObj = dateApi().getValue('2021-03-22T12:00:00');
+
+        expect(dateApi().getValue('2021-02-02T00:00:00').isSameMonth(dateApiObj.value)).toBe(false);
+    });
+
+    it("isSameDay method => valid", () =>
+    {
+        let dateApiObj = dateApi().getValue('2021-03-22T23:59:59');
+
+        expect(dateApi().getValue('2021-03-22T00:00:00').isSameDay(dateApiObj.value)).toBe(true);
+    });
+
+    it("isSameDay method => invalid", () =>
+    {
+        let dateApiObj = dateApi().getValue('2021-03-22T23:59:59');
+
+        expect(dateApi().getValue('2021-03-23T00:00:00').isSameDay(dateApiObj.value)).toBe(false);
+    });
+
+    it("clone method => valid", () =>
+    {
+        let dateApiObj = dateApi().getValue('2021-02-22T23:59:59');
+        dateApiObj.addMonths(1);
+        let dateApiCloneObj = dateApiObj.clone();
+
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe(dateApiCloneObj.format(FULL_FORMAT_ISO));
+        
+        dateApiCloneObj.addMonths(1);
+        
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).not.toBe(dateApiCloneObj.format(FULL_FORMAT_ISO));
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-22=23:59:59');
+        expect(dateApiCloneObj.format(FULL_FORMAT_ISO)).toBe('2021-04-22=23:59:59');
+    });
+
+    it("cloneOriginal method => valid", () =>
+    {
+        let dateApiObj = dateApi().getValue('2021-02-22T23:59:59');
+        dateApiObj.addMonths(1);
+        let dateApiCloneObj = dateApiObj.cloneOriginal();
+
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).not.toBe(dateApiCloneObj.format(FULL_FORMAT_ISO));
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-22=23:59:59');
+        expect(dateApiCloneObj.format(FULL_FORMAT_ISO)).toBe('2021-02-22=23:59:59');
+    });
+
+    it("updateOriginal method => value to original", () =>
+    {
+        let dateApiObj = dateApi().getValue('2021-02-22T23:59:59');
+        dateApiObj.addMonths(1);
+
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-22=23:59:59');
+        expect(dateApi().getValue(dateApiObj.originalValue).format(FULL_FORMAT_ISO)).toBe('2021-02-22=23:59:59');
+        
+        dateApiObj.updateOriginal();
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-22=23:59:59');
+        expect(dateApi().getValue(dateApiObj.originalValue).format(FULL_FORMAT_ISO)).toBe('2021-03-22=23:59:59');
+    });
+
+    it("updateOriginal method => date to original", () =>
+    {
+        let dateApiObj = dateApi().getValue('2021-02-22T23:59:59');
+        dateApiObj.addMonths(1);
+
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-22=23:59:59');
+        expect(dateApi().getValue(dateApiObj.originalValue).format(FULL_FORMAT_ISO)).toBe('2021-02-22=23:59:59');
+        
+        dateApiObj.updateOriginal(dateApi().getValue('2020-03-10T12:00:00').value);
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2020-03-10=12:00:00');
+        expect(dateApi().getValue(dateApiObj.originalValue).format(FULL_FORMAT_ISO)).toBe('2020-03-10=12:00:00');
+    });
+
+    it("resetOriginal method => original to value", () =>
+    {
+        let dateApiObj = dateApi().getValue('2021-02-22T23:59:59');
+        dateApiObj.addMonths(1);
+
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-22=23:59:59');
+        expect(dateApi().getValue(dateApiObj.originalValue).format(FULL_FORMAT_ISO)).toBe('2021-02-22=23:59:59');
+        
+        dateApiObj.resetOriginal();
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-02-22=23:59:59');
+        expect(dateApi().getValue(dateApiObj.originalValue).format(FULL_FORMAT_ISO)).toBe('2021-02-22=23:59:59');
     });
 }
