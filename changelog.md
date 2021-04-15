@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 1.0.0 (2021-02-02)
+## Version 1.0.0 (2021-04-15)
 
 ### Features
 
@@ -14,6 +14,9 @@
 - `DatePositionParser` and `DefaultDatePositionParser` used for parsing string datetime into parts and allowing selection of separate parts
 - `DatePositionParserResult` as result of datetime parsing
 - `DateValueProvider` which serves as provider of `DateTimeValue` for specified date and format
+- `DateFormatPipe` pipe that is used for formatting date
+- `DateConvertPipe` pipe that is used for converting date
+- `DatePipesModule` module used for exporting date pipes
 - customizable `DateTimeSelector`, allowing to select, insert, edit datetime value
     - `DATE_TIME_SELECTOR_CONFIGURATION` token for injecting `DateTimeSelectorOptions`
     - `DateTimeSelectorOptions` defintion of datetime selector component options

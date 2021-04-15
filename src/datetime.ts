@@ -13,3 +13,6 @@ export * from './services/dateValueProvider.service';
 export * from './picker/modules/picker.module';
 export * from './picker/interfaces';
 export * from './picker/types';
+export * from './pipes/dateConvert.pipe';
+export * from './pipes/dateFormat.pipe';
+export * from './modules/datePipes.module';
