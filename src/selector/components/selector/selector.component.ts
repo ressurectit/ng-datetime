@@ -224,6 +224,11 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     public set options(value: DateTimeSelectorOptions<DateTimeSelector<TDate>>)
     {
         this._options = extend(true, this._options, value);
+        // without deep-copy for this attribute
+        if (value?.pickerPeriodsDefinition)
+        {
+            this._options.pickerPeriodsDefinition = value.pickerPeriodsDefinition
+        }
     }
 
     /**
@@ -327,6 +332,11 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     {
         this.format = formatProvider.date;
         this._options = extend(true, {}, defaultConfiguration, configuration);
+        // without deep-copy for this attribute
+        if (configuration?.pickerPeriodsDefinition)
+        {
+            this._options.pickerPeriodsDefinition = configuration.pickerPeriodsDefinition
+        }
     }
 
     //######################### public methods - implementation of OnInit #########################

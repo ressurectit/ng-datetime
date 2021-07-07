@@ -118,6 +118,12 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
     public set options(value: DateTimePickerOptions<DateTimePicker<TDate>>)
     {
         this._options = extend(true, this._options, value);
+
+        // without deep-copy for this attribute
+        if (value?.pickerPeriodsDefinition)
+        {
+            this._options.pickerPeriodsDefinition = value.pickerPeriodsDefinition
+        }
     }
 
     /**
@@ -178,6 +184,11 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
                 protected _changeDetector: ChangeDetectorRef)
     {
         this._options = extend(true, {}, defaultConfiguration, configuration);
+        // without deep-copy for this attribute
+        if (configuration?.pickerPeriodsDefinition)
+        {
+            this._options.pickerPeriodsDefinition = configuration.pickerPeriodsDefinition
+        }
     }
 
     //######################### public methods - implementation of OnInit #########################
@@ -281,7 +292,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
             return;
         }
 
-        //sets shared css 
+        //sets shared css
         this._activePicker.setCssClasses(this._options?.cssClasses?.pickerShared ?? {});
 
         if(this._options?.cssClasses?.pickerCustom && this._options?.cssClasses?.pickerCustom[this._activePickerName])
