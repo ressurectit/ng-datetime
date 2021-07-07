@@ -198,14 +198,40 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
      */
     public ngOnInit()
     {
-        if(!this._options.pickerPeriodsDefinition![this._options.defaultPeriod!])
+        if (this._options.pickerPeriodsOrder)
+        {
+            if (Array.isArray(this._options.pickerPeriodsOrder))
+            {
+                this._pickerNames = this._options.pickerPeriodsOrder
+            }
+            else
+            {
+                this._pickerNames = this._options.pickerPeriodsOrder.split(',')
+                                    .map(x => x.trim())
+                                    .filter(x => x)
+            }
+        }
+        if (this._pickerNames && this._pickerNames.length > 0)
+        {
+            this._pickerNames.forEach(x => {
+                if(!this._options.pickerPeriodsDefinition![x!])
+                {
+                    throw new Error(`There is no period '${x}' in picker options`);
+                }
+            })
+        }
+        else
+        {
+            this._pickerNames = Object.keys(this._options.pickerPeriodsDefinition!);
+        }
+
+        if(this._pickerNames.findIndex(x => x == this._options.defaultPeriod) < 0)
         {
             throw new Error(`There is no period '${this._options.defaultPeriod}' in picker options`);
         }
 
         this.activePickerComponent = this._options.pickerPeriodsDefinition![this._options.defaultPeriod!];
         this._activePickerName = this._options.defaultPeriod!;
-        this._pickerNames = Object.keys(this._options.pickerPeriodsDefinition!);
         this.activePickerIndex = this._pickerNames.indexOf(this._activePickerName);
     }
 

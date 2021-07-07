@@ -63,6 +63,11 @@ export interface DateTimePickerCssClasses
 export interface DateTimePickerOptions<TPicker = any>
 {
     /**
+     * Order of pickers, it's possible use less pickers as is defined in pickerPeriodsDefinition for example 'month,year'
+     */
+    pickerPeriodsOrder?: string[] | string
+
+    /**
      * Definition of types for each period type for picker
      */
     pickerPeriodsDefinition?: Dictionary<Type<TPicker>>;
