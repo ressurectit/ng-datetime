@@ -118,6 +118,12 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
     public set options(value: DateTimePickerOptions<DateTimePicker<TDate>>)
     {
         this._options = extend(true, this._options, value);
+
+        // without deep-copy for this attribute
+        if (value?.pickerPeriodsDefinition)
+        {
+            this._options.pickerPeriodsDefinition = value.pickerPeriodsDefinition
+        }
     }
 
     /**
@@ -178,6 +184,11 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
                 protected _changeDetector: ChangeDetectorRef)
     {
         this._options = extend(true, {}, defaultConfiguration, configuration);
+        // without deep-copy for this attribute
+        if (configuration?.pickerPeriodsDefinition)
+        {
+            this._options.pickerPeriodsDefinition = configuration.pickerPeriodsDefinition
+        }
     }
 
     //######################### public methods - implementation of OnInit #########################
@@ -187,14 +198,40 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
      */
     public ngOnInit()
     {
-        if(!this._options.pickerPeriodsDefinition![this._options.defaultPeriod!])
+        if (this._options.pickerPeriodsOrder)
+        {
+            if (Array.isArray(this._options.pickerPeriodsOrder))
+            {
+                this._pickerNames = this._options.pickerPeriodsOrder
+            }
+            else
+            {
+                this._pickerNames = this._options.pickerPeriodsOrder.split(',')
+                                    .map(x => x.trim())
+                                    .filter(x => x)
+            }
+        }
+        if (this._pickerNames && this._pickerNames.length > 0)
+        {
+            this._pickerNames.forEach(x => {
+                if(!this._options.pickerPeriodsDefinition![x!])
+                {
+                    throw new Error(`There is no period '${x}' in picker options`);
+                }
+            })
+        }
+        else
+        {
+            this._pickerNames = Object.keys(this._options.pickerPeriodsDefinition!);
+        }
+
+        if(this._pickerNames.findIndex(x => x == this._options.defaultPeriod) < 0)
         {
             throw new Error(`There is no period '${this._options.defaultPeriod}' in picker options`);
         }
 
         this.activePickerComponent = this._options.pickerPeriodsDefinition![this._options.defaultPeriod!];
         this._activePickerName = this._options.defaultPeriod!;
-        this._pickerNames = Object.keys(this._options.pickerPeriodsDefinition!);
         this.activePickerIndex = this._pickerNames.indexOf(this._activePickerName);
     }
 
@@ -281,7 +318,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
             return;
         }
 
-        //sets shared css 
+        //sets shared css
         this._activePicker.setCssClasses(this._options?.cssClasses?.pickerShared ?? {});
 
         if(this._options?.cssClasses?.pickerCustom && this._options?.cssClasses?.pickerCustom[this._activePickerName])
