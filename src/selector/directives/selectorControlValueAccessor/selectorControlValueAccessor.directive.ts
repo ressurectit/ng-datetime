@@ -35,7 +35,7 @@ export class DateTimeSelectorControlValueAccessor<TDate> implements ControlValue
     //######################### public properties - inputs #########################
 
     /**
-     * Indication whether value for selector is represented as range {from, to}
+     * Indication whether value for selector is represented as range from, to
      */
     @Input()
     public range: boolean = false;

@@ -3,14 +3,13 @@
     "compilerOptions":
     {
         "target": "ES2015",
-        "baseUrl": ".",
         "paths": 
         {
-            "date-fns": ["node_modules/date-fns/typings.d.ts"],
-            "moment": ["node_modules/moment/ts3.1-typings/moment.d.ts"],
-            "@anglr/datetime": ["src/datetime.ts"],
-            "@anglr/datetime/moment": ["moment/src/moment.ts"],
-            "@anglr/datetime/date-fns": ["date-fns/src/date-fns.ts"]
+            "date-fns": ["../node_modules/date-fns/typings.d.ts"],
+            "moment": ["../node_modules/moment/ts3.1-typings/moment.d.ts"],
+            "@anglr/datetime": ["index.ts"],
+            "@anglr/datetime/moment": ["../moment/src/moment.ts"],
+            "@anglr/datetime/date-fns": ["../date-fns/src/date-fns.ts"]
         }
     },
     "include":

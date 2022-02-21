@@ -3,198 +3,198 @@ import {FULL_FORMAT_ISO} from '../../constants';
 
 export function dateApiTests<TDate>(dateApi: () => DateApi<TDate>)
 {
-    it("isValid method => valid", () =>
+    it('isValid method => valid', () =>
     {
-        let dateApiObj = dateApi().getValue('2020-01-01T06:30:00');
+        const dateApiObj = dateApi().getValue('2020-01-01T06:30:00');
 
         expect(dateApiObj.isValid()).toBe(true);
     });
 
-    it("isValid method => invalid", () =>
+    it('isValid method => invalid', () =>
     {
-        let dateApiObj = dateApi().getValue('2020-14-02T30:20:20');
+        const dateApiObj = dateApi().getValue('2020-14-02T30:20:20');
 
         expect(dateApiObj.isValid()).toBe(false);
     });
 
-    it("isWeekend method => saturday", () =>
+    it('isWeekend method => saturday', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-27T00:20:20');
+        const dateApiObj = dateApi().getValue('2021-03-27T00:20:20');
 
         expect(dateApiObj.isWeekend()).toBe(true);
     });
 
-    it("isWeekend method => sunday", () =>
+    it('isWeekend method => sunday', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-28T23:20:20');
+        const dateApiObj = dateApi().getValue('2021-03-28T23:20:20');
 
         expect(dateApiObj.isWeekend()).toBe(true);
-    });``
+    });
 
-    it("isWeekend method => friday", () =>
+    it('isWeekend method => friday', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-26T23:20:20');
+        const dateApiObj = dateApi().getValue('2021-03-26T23:20:20');
 
         expect(dateApiObj.isWeekend()).toBe(false);
     });
 
-    it("isWeekend method => monday", () =>
+    it('isWeekend method => monday', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-29T00:20:20');
+        const dateApiObj = dateApi().getValue('2021-03-29T00:20:20');
 
         expect(dateApiObj.isWeekend()).toBe(false);
     });
 
-    it("format method => full ISO", () =>
+    it('format method => full ISO', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-31T00:20:20');
+        const dateApiObj = dateApi().getValue('2021-03-31T00:20:20');
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-31=00:20:20');
     });
 
-    it("startOfDecade method => 2020", () =>
+    it('startOfDecade method => 2020', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-31T00:20:20').startOfDecade();
+        const dateApiObj = dateApi().getValue('2021-03-31T00:20:20').startOfDecade();
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2020-01-01=00:00:00');
     });
 
-    it("endOfDecade method => 2029", () =>
+    it('endOfDecade method => 2029', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-31T00:20:20').endOfDecade();
+        const dateApiObj = dateApi().getValue('2021-03-31T00:20:20').endOfDecade();
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2029-12-31=23:59:59');
     });
 
-    it("startOfYear method => 2021", () =>
+    it('startOfYear method => 2021', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-31T00:20:20').startOfYear();
+        const dateApiObj = dateApi().getValue('2021-03-31T00:20:20').startOfYear();
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-01-01=00:00:00');
     });
 
-    it("endOfYear method => 2021", () =>
+    it('endOfYear method => 2021', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-31T00:20:20').endOfYear();
+        const dateApiObj = dateApi().getValue('2021-03-31T00:20:20').endOfYear();
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-12-31=23:59:59');
     });
 
-    it("addYears method => 2032", () =>
+    it('addYears method => 2032', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-31T00:20:20').addYears(11);
+        const dateApiObj = dateApi().getValue('2021-03-31T00:20:20').addYears(11);
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2032-03-31=00:20:20');
     });
 
-    it("subtractYears method => 2015", () =>
+    it('subtractYears method => 2015', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-31T00:20:20').subtractYears(6);
+        const dateApiObj = dateApi().getValue('2021-03-31T00:20:20').subtractYears(6);
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2015-03-31=00:20:20');
     });
 
-    it("startOfMonth method => 2020 march", () =>
+    it('startOfMonth method => 2020 march', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-25T00:20:20').startOfMonth();
+        const dateApiObj = dateApi().getValue('2021-03-25T00:20:20').startOfMonth();
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-01=00:00:00');
     });
 
-    it("endOfMonth method => 2021 march", () =>
+    it('endOfMonth method => 2021 march', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-25T00:20:20').endOfMonth();
+        const dateApiObj = dateApi().getValue('2021-03-25T00:20:20').endOfMonth();
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-31=23:59:59');
     });
 
-    it("addMonths method => 2022 january", () =>
+    it('addMonths method => 2022 january', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-25T00:20:20').addMonths(10);
+        const dateApiObj = dateApi().getValue('2021-03-25T00:20:20').addMonths(10);
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2022-01-25=00:20:20');
     });
 
-    it("subtractMonths method => 2020 september", () =>
+    it('subtractMonths method => 2020 september', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-25T00:20:20').subtractMonths(6);
+        const dateApiObj = dateApi().getValue('2021-03-25T00:20:20').subtractMonths(6);
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2020-09-25=00:20:20');
     });
 
-    it("startOfWeek method => 2021 march/april", () =>
+    it('startOfWeek method => 2021 march/april', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-31T00:20:20').startOfWeek();
+        const dateApiObj = dateApi().getValue('2021-03-31T00:20:20').startOfWeek();
     
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-29=00:00:00');
     });
     
-    it("endOfWeek method => 2021 march/april", () =>
+    it('endOfWeek method => 2021 march/april', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-31T00:20:20').endOfWeek();
+        const dateApiObj = dateApi().getValue('2021-03-31T00:20:20').endOfWeek();
     
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-04-04=23:59:59');
     });
 
-    it("addWeeks method => 2021 april", () =>
+    it('addWeeks method => 2021 april', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-25T00:20:20').addWeeks(1);
+        const dateApiObj = dateApi().getValue('2021-03-25T00:20:20').addWeeks(1);
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-04-01=00:20:20');
     });
 
-    it("subtractWeeks method => 2021 march", () =>
+    it('subtractWeeks method => 2021 march', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-25T00:20:20').subtractWeeks(1);
+        const dateApiObj = dateApi().getValue('2021-03-25T00:20:20').subtractWeeks(1);
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-18=00:20:20');
     });
 
-    it("startOfDay method => 2021 march 25th", () =>
+    it('startOfDay method => 2021 march 25th', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-25T00:20:20').startOfDay();
+        const dateApiObj = dateApi().getValue('2021-03-25T00:20:20').startOfDay();
     
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-25=00:00:00');
     });
     
-    it("endOfDay method => 2021 march 25th", () =>
+    it('endOfDay method => 2021 march 25th', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-25T00:20:20').endOfDay();
+        const dateApiObj = dateApi().getValue('2021-03-25T00:20:20').endOfDay();
     
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-25=23:59:59');
     });
 
-    it("addDays method => 2021 april 10", () =>
+    it('addDays method => 2021 april 10', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-25T00:20:20').addDays(16);
+        const dateApiObj = dateApi().getValue('2021-03-25T00:20:20').addDays(16);
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-04-10=00:20:20');
     });
 
-    it("subtractDays method => 2021 february 25", () =>
+    it('subtractDays method => 2021 february 25', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-25T00:20:20').subtractDays(28);
+        const dateApiObj = dateApi().getValue('2021-03-25T00:20:20').subtractDays(28);
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-02-25=00:20:20');
     });
 
-    it("daysInMonth method => 2021 march", () =>
+    it('daysInMonth method => 2021 march', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-25T00:20:20');
+        const dateApiObj = dateApi().getValue('2021-03-25T00:20:20');
 
         expect(dateApiObj.daysInMonth()).toBe(31);
     });
 
-    it("daysInMonth method => 2021 february", () =>
+    it('daysInMonth method => 2021 february', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-25T00:20:20');
+        const dateApiObj = dateApi().getValue('2021-02-25T00:20:20');
 
         expect(dateApiObj.daysInMonth()).toBe(28);
     });
 
-    it("year method => get/set", () =>
+    it('year method => get/set', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-25T00:20:20');
+        const dateApiObj = dateApi().getValue('2021-02-25T00:20:20');
 
         expect(dateApiObj.year()).toBe(2021);
 
@@ -203,9 +203,9 @@ export function dateApiTests<TDate>(dateApi: () => DateApi<TDate>)
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2030-02-25=00:20:20');
     });
 
-    it("month method => get/set", () =>
+    it('month method => get/set', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-25T00:20:20');
+        const dateApiObj = dateApi().getValue('2021-02-25T00:20:20');
 
         expect(dateApiObj.month()).toBe(1);
 
@@ -214,9 +214,9 @@ export function dateApiTests<TDate>(dateApi: () => DateApi<TDate>)
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-10-25=00:20:20');
     });
 
-    it("dayOfMonth method => get/set", () =>
+    it('dayOfMonth method => get/set', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-25T00:20:20');
+        const dateApiObj = dateApi().getValue('2021-02-25T00:20:20');
 
         expect(dateApiObj.dayOfMonth()).toBe(25);
 
@@ -225,9 +225,9 @@ export function dateApiTests<TDate>(dateApi: () => DateApi<TDate>)
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-02-10=00:20:20');
     });
 
-    it("dayOfWeek method => get/set", () =>
+    it('dayOfWeek method => get/set', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-25T00:20:20');
+        const dateApiObj = dateApi().getValue('2021-02-25T00:20:20');
 
         expect(dateApiObj.dayOfWeek()).toBe(3);
 
@@ -236,158 +236,158 @@ export function dateApiTests<TDate>(dateApi: () => DateApi<TDate>)
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-02-22=00:20:20');
     });
 
-    it("isBefore method => valid", () =>
+    it('isBefore method => valid', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-25T00:20:20');
+        const dateApiObj = dateApi().getValue('2021-02-25T00:20:20');
 
         expect(dateApi().getValue('2021-02-25T00:19:20').isBefore(dateApiObj.value)).toBe(true);
     });
 
-    it("isBefore method => invalid", () =>
+    it('isBefore method => invalid', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-25T00:20:20');
+        const dateApiObj = dateApi().getValue('2021-02-25T00:20:20');
 
         expect(dateApi().getValue('2021-02-25T00:20:21').isBefore(dateApiObj.value)).toBe(false);
     });
 
-    it("isAfter method => valid", () =>
+    it('isAfter method => valid', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-25T00:19:20');
+        const dateApiObj = dateApi().getValue('2021-02-25T00:19:20');
 
         expect(dateApi().getValue('2021-02-25T00:20:20').isAfter(dateApiObj.value)).toBe(true);
     });
 
-    it("isAfter method => invalid", () =>
+    it('isAfter method => invalid', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-25T00:20:21');
+        const dateApiObj = dateApi().getValue('2021-02-25T00:20:21');
 
         expect(dateApi().getValue('2021-02-25T00:20:20').isAfter(dateApiObj.value)).toBe(false);
     });
 
-    it("diffDays method => more than whole day", () =>
+    it('diffDays method => more than whole day', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-20T12:00:00');
+        const dateApiObj = dateApi().getValue('2021-02-20T12:00:00');
 
         expect(dateApi().getValue('2021-02-25T18:00:00').diffDays(dateApiObj.value)).toBe(5);
     });
 
-    it("diffDays method => less than whole day", () =>
+    it('diffDays method => less than whole day', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-20T12:00:00');
+        const dateApiObj = dateApi().getValue('2021-02-20T12:00:00');
 
         expect(dateApi().getValue('2021-02-25T06:00:00').diffDays(dateApiObj.value)).toBe(5);
     });
 
-    it("diffDays method => almost next day", () =>
+    it('diffDays method => almost next day', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-20T02:00:00');
+        const dateApiObj = dateApi().getValue('2021-02-20T02:00:00');
 
         expect(dateApi().getValue('2021-02-25T22:00:00').diffDays(dateApiObj.value)).toBe(5);
     });
 
-    it("diffDays method => overflowing next day", () =>
+    it('diffDays method => overflowing next day', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-20T12:00:00');
+        const dateApiObj = dateApi().getValue('2021-02-20T12:00:00');
 
         expect(dateApi().getValue('2021-02-26T11:00:00').diffDays(dateApiObj.value)).toBe(6);
     });
 
-    it("diffDays method => half way", () =>
+    it('diffDays method => half way', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-20T12:00:00');
+        const dateApiObj = dateApi().getValue('2021-02-20T12:00:00');
 
         expect(dateApi().getValue('2021-02-26T00:00:00').diffDays(dateApiObj.value)).toBe(6);
     });
 
-    it("isSameWeek method => start valid", () =>
+    it('isSameWeek method => start valid', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-22T12:00:00');
+        const dateApiObj = dateApi().getValue('2021-03-22T12:00:00');
 
         expect(dateApi().getValue('2021-03-25T00:00:00').isSameWeek(dateApiObj.value)).toBe(true);
     });
 
-    it("isSameWeek method => end valid", () =>
+    it('isSameWeek method => end valid', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-28T12:00:00');
+        const dateApiObj = dateApi().getValue('2021-03-28T12:00:00');
 
         expect(dateApi().getValue('2021-03-25T00:00:00').isSameWeek(dateApiObj.value)).toBe(true);
     });
 
-    it("isSameWeek method => middle valid", () =>
+    it('isSameWeek method => middle valid', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-26T12:00:00');
+        const dateApiObj = dateApi().getValue('2021-03-26T12:00:00');
 
         expect(dateApi().getValue('2021-03-25T00:00:00').isSameWeek(dateApiObj.value)).toBe(true);
     });
 
-    it("isSameWeek method => invalid", () =>
+    it('isSameWeek method => invalid', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-21T12:00:00');
+        const dateApiObj = dateApi().getValue('2021-03-21T12:00:00');
 
         expect(dateApi().getValue('2021-03-25T00:00:00').isSameWeek(dateApiObj.value)).toBe(false);
     });
 
-    it("isSameDecade method => valid", () =>
+    it('isSameDecade method => valid', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-21T12:00:00');
+        const dateApiObj = dateApi().getValue('2021-03-21T12:00:00');
 
         expect(dateApi().getValue('2029-12-25T00:00:00').isSameDecade(dateApiObj.value)).toBe(true);
     });
 
-    it("isSameDecade method => invalid", () =>
+    it('isSameDecade method => invalid', () =>
     {
-        let dateApiObj = dateApi().getValue('2019-12-21T12:00:00');
+        const dateApiObj = dateApi().getValue('2019-12-21T12:00:00');
 
         expect(dateApi().getValue('2029-12-25T00:00:00').isSameDecade(dateApiObj.value)).toBe(false);
     });
 
-    it("isSameYear method => valid", () =>
+    it('isSameYear method => valid', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-22T12:00:00');
+        const dateApiObj = dateApi().getValue('2021-02-22T12:00:00');
 
         expect(dateApi().getValue('2021-12-25T00:00:00').isSameYear(dateApiObj.value)).toBe(true);
     });
 
-    it("isSameYear method => invalid", () =>
+    it('isSameYear method => invalid', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-22T12:00:00');
+        const dateApiObj = dateApi().getValue('2021-02-22T12:00:00');
 
         expect(dateApi().getValue('2020-12-25T00:00:00').isSameYear(dateApiObj.value)).toBe(false);
     });
 
-    it("isSameMonth method => valid", () =>
+    it('isSameMonth method => valid', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-22T12:00:00');
+        const dateApiObj = dateApi().getValue('2021-02-22T12:00:00');
 
         expect(dateApi().getValue('2021-02-02T00:00:00').isSameMonth(dateApiObj.value)).toBe(true);
     });
 
-    it("isSameMonth method => invalid", () =>
+    it('isSameMonth method => invalid', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-22T12:00:00');
+        const dateApiObj = dateApi().getValue('2021-03-22T12:00:00');
 
         expect(dateApi().getValue('2021-02-02T00:00:00').isSameMonth(dateApiObj.value)).toBe(false);
     });
 
-    it("isSameDay method => valid", () =>
+    it('isSameDay method => valid', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-22T23:59:59');
+        const dateApiObj = dateApi().getValue('2021-03-22T23:59:59');
 
         expect(dateApi().getValue('2021-03-22T00:00:00').isSameDay(dateApiObj.value)).toBe(true);
     });
 
-    it("isSameDay method => invalid", () =>
+    it('isSameDay method => invalid', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-03-22T23:59:59');
+        const dateApiObj = dateApi().getValue('2021-03-22T23:59:59');
 
         expect(dateApi().getValue('2021-03-23T00:00:00').isSameDay(dateApiObj.value)).toBe(false);
     });
 
-    it("clone method => valid", () =>
+    it('clone method => valid', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-22T23:59:59');
+        const dateApiObj = dateApi().getValue('2021-02-22T23:59:59');
         dateApiObj.addMonths(1);
-        let dateApiCloneObj = dateApiObj.clone();
+        const dateApiCloneObj = dateApiObj.clone();
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe(dateApiCloneObj.format(FULL_FORMAT_ISO));
         
@@ -398,20 +398,20 @@ export function dateApiTests<TDate>(dateApi: () => DateApi<TDate>)
         expect(dateApiCloneObj.format(FULL_FORMAT_ISO)).toBe('2021-04-22=23:59:59');
     });
 
-    it("cloneOriginal method => valid", () =>
+    it('cloneOriginal method => valid', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-22T23:59:59');
+        const dateApiObj = dateApi().getValue('2021-02-22T23:59:59');
         dateApiObj.addMonths(1);
-        let dateApiCloneObj = dateApiObj.cloneOriginal();
+        const dateApiCloneObj = dateApiObj.cloneOriginal();
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).not.toBe(dateApiCloneObj.format(FULL_FORMAT_ISO));
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-22=23:59:59');
         expect(dateApiCloneObj.format(FULL_FORMAT_ISO)).toBe('2021-02-22=23:59:59');
     });
 
-    it("updateOriginal method => value to original", () =>
+    it('updateOriginal method => value to original', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-22T23:59:59');
+        const dateApiObj = dateApi().getValue('2021-02-22T23:59:59');
         dateApiObj.addMonths(1);
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-22=23:59:59');
@@ -422,9 +422,9 @@ export function dateApiTests<TDate>(dateApi: () => DateApi<TDate>)
         expect(dateApi().getValue(dateApiObj.originalValue).format(FULL_FORMAT_ISO)).toBe('2021-03-22=23:59:59');
     });
 
-    it("updateOriginal method => date to original", () =>
+    it('updateOriginal method => date to original', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-22T23:59:59');
+        const dateApiObj = dateApi().getValue('2021-02-22T23:59:59');
         dateApiObj.addMonths(1);
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-22=23:59:59');
@@ -435,9 +435,9 @@ export function dateApiTests<TDate>(dateApi: () => DateApi<TDate>)
         expect(dateApi().getValue(dateApiObj.originalValue).format(FULL_FORMAT_ISO)).toBe('2020-03-10=12:00:00');
     });
 
-    it("resetOriginal method => original to value", () =>
+    it('resetOriginal method => original to value', () =>
     {
-        let dateApiObj = dateApi().getValue('2021-02-22T23:59:59');
+        const dateApiObj = dateApi().getValue('2021-02-22T23:59:59');
         dateApiObj.addMonths(1);
 
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-03-22=23:59:59');

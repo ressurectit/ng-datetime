@@ -8,7 +8,7 @@ function initialize(): DateApi<moment.Moment>
 {
     moment.locale('sk');
 
-    let parser: DateTimeRelativeParser<moment.Moment> = new class extends DateTimeRelativeParser<moment.Moment>
+    const parser: DateTimeRelativeParser<moment.Moment> = new class extends DateTimeRelativeParser<moment.Moment>
     {
         constructor()
         {
@@ -24,7 +24,7 @@ function initialize(): DateApi<moment.Moment>
     return new MomentDateApi(parser);
 }
 
-describe("MomentDateApi class", () =>
+describe('MomentDateApi class', () =>
 {
     let dateApi: DateApi<moment.Moment> = null!;
 
@@ -33,7 +33,7 @@ describe("MomentDateApi class", () =>
         dateApi = initialize();
     });
 
-    it("weekStartsOnMonday method", () =>
+    it('weekStartsOnMonday method', () =>
     {
         expect(dateApi.weekStartsOnMonday()).toBe(true);
     });
@@ -44,7 +44,7 @@ describe("MomentDateApi class", () =>
     });
 });
 
-describe("MomentDateApiObject class", () =>
+describe('MomentDateApiObject class', () =>
 {
     let dateApi: DateApi<moment.Moment> = null!;
 

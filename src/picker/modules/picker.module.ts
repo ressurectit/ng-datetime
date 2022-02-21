@@ -6,6 +6,7 @@ import {DateTimePickerComponent} from '../components/picker/picker.component';
 import {DateTimeDayPickerComponent} from '../components/dayPicker/dayPicker.component';
 import {DateTimeMonthPickerComponent} from '../components/monthPicker/monthPicker.component';
 import {DateTimeYearPickerComponent} from '../components/yearPicker/yearPicker.component';
+import {DatePipesModule} from '../../modules/datePipes.module';
 
 /**
  * Angular module for date time picker components
@@ -16,6 +17,7 @@ import {DateTimeYearPickerComponent} from '../components/yearPicker/yearPicker.c
     [
         AngularCommonModule,
         CommonDynamicModule,
+        DatePipesModule,
     ],
     declarations:
     [

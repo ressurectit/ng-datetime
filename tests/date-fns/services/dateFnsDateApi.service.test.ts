@@ -6,7 +6,7 @@ import {dateApiTests} from '../../src/services/dateApi.test';
 
 function initialize(): DateApi<Date>
 {
-    let parser: DateTimeRelativeParser<Date> = new class extends DateTimeRelativeParser<Date>
+    const parser: DateTimeRelativeParser<Date> = new class extends DateTimeRelativeParser<Date>
     {
         constructor()
         {
@@ -25,7 +25,7 @@ function initialize(): DateApi<Date>
                               parser);
 }
 
-describe("DateFnsDateApi class", () =>
+describe('DateFnsDateApi class', () =>
 {
     let dateApi: DateApi<Date> = null!;
 
@@ -34,7 +34,7 @@ describe("DateFnsDateApi class", () =>
         dateApi = initialize();
     });
 
-    it("weekStartsOnMonday method", () =>
+    it('weekStartsOnMonday method', () =>
     {
         expect(dateApi.weekStartsOnMonday()).toBe(true);
     });
@@ -45,7 +45,7 @@ describe("DateFnsDateApi class", () =>
     });
 });
 
-describe("DateFnsDateApiObject class", () =>
+describe('DateFnsDateApiObject class', () =>
 {
     let dateApi: DateApi<Date> = null!;
 

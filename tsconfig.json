@@ -16,7 +16,7 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "strict": true,
-        "strictNullChecks": true,
+        "strictNullChecks": false,
         "esModuleInterop": true,
         "importHelpers": true,
         "newLine": "lf",
@@ -25,7 +25,7 @@
         "baseUrl": "src",
         "paths": 
         {
-            "@anglr/datetime": ["index.ts"]
+            "@anglr/datetime": ["index.ts", "index.d.ts"]
         },
         "lib":
         [
@@ -41,7 +41,8 @@
     },
     "exclude":
     [
-        "node_modules"
+        "node_modules",
+        "tests/**/*.ts"
     ],
     "angularCompilerOptions":
     {

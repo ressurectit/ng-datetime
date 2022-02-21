@@ -415,7 +415,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     /**
      * Handles changed value by picker
      * @param value - Value that was changed
-     * @intenral
+     * @internal
      */
     public pickerChangedValue(value: DateTimeValue<TDate>)
     {

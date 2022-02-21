@@ -1,13 +1,13 @@
-<div [ngClass]="cssClasses?.periodSelection">
-    <div [ngClass]="cssClasses?.previousPeriod" (mousedown)="previousMonth($event)"></div>
-    <div [ngClass]="cssClasses?.periodValue" [class.clickable]="canGoUp" (mousedown)="goUp($event)">{{displayDate?.format('MMMM yyyy')}}</div>
-    <div [ngClass]="cssClasses?.nextPeriod" (mousedown)="nextMonth($event)"></div>
+<div [ngClass]="cssClasses?.periodSelection | asRequiredType">
+    <div [ngClass]="cssClasses?.previousPeriod | asRequiredType" (mousedown)="previousMonth($event)"></div>
+    <div [ngClass]="cssClasses?.periodValue | asRequiredType" [class.clickable]="canGoUp" (mousedown)="goUp($event)">{{displayDate?.format('MMMM yyyy')}}</div>
+    <div [ngClass]="cssClasses?.nextPeriod | asRequiredType" (mousedown)="nextMonth($event)"></div>
 </div>
 
-<div [ngClass]="cssClasses?.periodData">
-    <div [ngClass]="cssClasses?.weekdayName" *ngFor="let weekday of weekdays">{{weekday}}</div>
+<div [ngClass]="cssClasses?.periodData | asRequiredType">
+    <div [ngClass]="cssClasses?.weekdayName | asRequiredType" *ngFor="let weekday of weekdays">{{weekday}}</div>
     <div *ngFor="let day of periodData"
-         [ngClass]="cssClasses?.periodDatum"
+         [ngClass]="cssClasses?.periodDatum | asRequiredType"
          [class.other-month]="day.otherMonth"
          [class.today]="day.today"
          [class.weekend]="day.weekend"
