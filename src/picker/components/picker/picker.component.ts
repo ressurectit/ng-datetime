@@ -22,9 +22,9 @@ const defaultConfiguration: DateTimePickerOptions<DateTimePicker> =
     defaultPeriod: 'day',
     pickerPeriodsDefinition:
     {
-        "day": DateTimeDayPickerComponent,
-        "month": DateTimeMonthPickerComponent,
-        "year": DateTimeYearPickerComponent
+        'day': DateTimeDayPickerComponent,
+        'month': DateTimeMonthPickerComponent,
+        'year': DateTimeYearPickerComponent
     },
     cssClasses:
     {
@@ -122,7 +122,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
         // without deep-copy for this attribute
         if (value?.pickerPeriodsDefinition)
         {
-            this._options.pickerPeriodsDefinition = value.pickerPeriodsDefinition
+            this._options.pickerPeriodsDefinition = value.pickerPeriodsDefinition;
         }
     }
 
@@ -187,7 +187,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
         // without deep-copy for this attribute
         if (configuration?.pickerPeriodsDefinition)
         {
-            this._options.pickerPeriodsDefinition = configuration.pickerPeriodsDefinition
+            this._options.pickerPeriodsDefinition = configuration.pickerPeriodsDefinition;
         }
     }
 
@@ -202,23 +202,24 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
         {
             if (Array.isArray(this._options.pickerPeriodsOrder))
             {
-                this._pickerNames = this._options.pickerPeriodsOrder
+                this._pickerNames = this._options.pickerPeriodsOrder;
             }
             else
             {
                 this._pickerNames = this._options.pickerPeriodsOrder.split(',')
                                     .map(x => x.trim())
-                                    .filter(x => x)
+                                    .filter(x => x);
             }
         }
         if (this._pickerNames && this._pickerNames.length > 0)
         {
-            this._pickerNames.forEach(x => {
+            this._pickerNames.forEach(x => 
+            {
                 if(!this._options.pickerPeriodsDefinition![x!])
                 {
                     throw new Error(`There is no period '${x}' in picker options`);
                 }
-            })
+            });
         }
         else
         {
@@ -279,7 +280,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
         this._activePickerSubscriptions.add(picker.scaleUp.subscribe(display =>
         {
             this._display = display;
-            let index = this._pickerNames.indexOf(this._activePickerName) + 1;
+            const index = this._pickerNames.indexOf(this._activePickerName) + 1;
             this._activePickerName = this._pickerNames[index];
             this.activePickerIndex = this._pickerNames.indexOf(this._activePickerName);
             this.activePickerComponent = this._options.pickerPeriodsDefinition![this._activePickerName];
@@ -288,7 +289,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
         this._activePickerSubscriptions.add(picker.scaleDown.subscribe(display =>
         {
             this._display = display;
-            let index = this._pickerNames.indexOf(this._activePickerName) - 1;
+            const index = this._pickerNames.indexOf(this._activePickerName) - 1;
             this._activePickerName = this._pickerNames[index];
             this.activePickerIndex = this._pickerNames.indexOf(this._activePickerName);
             this.activePickerComponent = this._options.pickerPeriodsDefinition![this._activePickerName];

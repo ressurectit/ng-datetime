@@ -79,7 +79,7 @@ export class DateTimeMonthPickerComponent<TDate = any> extends PickerBaseCompone
     {
         this.displayDate = value;
 
-        let monthOfYear = this.displayDate.startOfYear().updateOriginal();
+        const monthOfYear = this.displayDate.startOfYear().updateOriginal();
         this.periodData = [];
 
         for(let x = 0; x < 12; x++)

@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule as AngularCommonModule} from '@angular/common';
-import {CommonModule} from '@anglr/common';
+import {CommonDynamicModule} from '@anglr/common';
 
 import {DateTimePickerModule} from '../../picker/modules/picker.module';
 import {DateTimeSelectorComponent} from '../components/selector/selector.component';
@@ -18,8 +18,8 @@ import {DatetimeMaxValidatorDirective} from '../directives/datetimeMaxValidator/
     imports:
     [
         AngularCommonModule,
-        CommonModule,
-        DateTimePickerModule
+        CommonDynamicModule,
+        DateTimePickerModule,
     ],
     declarations:
     [

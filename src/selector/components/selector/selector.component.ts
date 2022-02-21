@@ -27,9 +27,9 @@ const defaultConfiguration: DateTimeSelectorOptions<DateTimeSelector> =
     defaultPeriod: 'day',
     pickerPeriodsDefinition:
     {
-        "day": DateTimeDayPickerComponent,
-        "month": DateTimeMonthPickerComponent,
-        "year": DateTimeYearPickerComponent
+        'day': DateTimeDayPickerComponent,
+        'month': DateTimeMonthPickerComponent,
+        'year': DateTimeYearPickerComponent
     },
     cssClasses:
     {
@@ -136,7 +136,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     {
         if(value)
         {
-            let val = this._dateApi.getValue(value, this.format);
+            const val = this._dateApi.getValue(value, this.format);
             this.value = this._valueProvider.getValue(val.value, this.format);
         }
         else
@@ -227,7 +227,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
         // without deep-copy for this attribute
         if (value?.pickerPeriodsDefinition)
         {
-            this._options.pickerPeriodsDefinition = value.pickerPeriodsDefinition
+            this._options.pickerPeriodsDefinition = value.pickerPeriodsDefinition;
         }
     }
 
@@ -250,7 +250,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
         }
         else if(isString(value))
         {
-            let date = this._dateApi.getValue(value);
+            const date = this._dateApi.getValue(value);
 
             if(date.isValid())
             {
@@ -296,7 +296,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
         }
         else if(isString(value))
         {
-            let date = this._dateApi.getValue(value);
+            const date = this._dateApi.getValue(value);
 
             if(date.isValid())
             {
@@ -335,7 +335,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
         // without deep-copy for this attribute
         if (configuration?.pickerPeriodsDefinition)
         {
-            this._options.pickerPeriodsDefinition = configuration.pickerPeriodsDefinition
+            this._options.pickerPeriodsDefinition = configuration.pickerPeriodsDefinition;
         }
     }
 

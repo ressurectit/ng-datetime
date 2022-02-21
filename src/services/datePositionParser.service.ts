@@ -85,9 +85,9 @@ export class DefaultDatePositionParser implements DatePositionParser
         //strict format
         else
         {
-            let indexes = Object.keys(this._strictDatePartsIndexes).map(itm => +itm);
+            const indexes = Object.keys(this._strictDatePartsIndexes).map(itm => +itm);
 
-            for(let index of indexes)
+            for(const index of indexes)
             {
                 if(cursorPosition < index)
                 {
@@ -138,9 +138,9 @@ export class DefaultDatePositionParser implements DatePositionParser
         //strict format
         else
         {
-            let indexes = Object.keys(this._strictDatePartsIndexes).reverse().map(itm => +itm);
+            const indexes = Object.keys(this._strictDatePartsIndexes).reverse().map(itm => +itm);
 
-            for(let index of indexes)
+            for(const index of indexes)
             {
                 if(cursorPosition > index)
                 {
@@ -195,13 +195,13 @@ export class DefaultDatePositionParser implements DatePositionParser
                 }
             }
 
-            let updateDate = [date.substr(0, cursorPosition), 'ɵ', date.substr(cursorPosition)].join('');
-            let indexed = updateDate.replace(/[^0-9ɵ]/g, ' ').split(' ');
+            const updateDate = [date.substr(0, cursorPosition), 'ɵ', date.substr(cursorPosition)].join('');
+            const indexed = updateDate.replace(/[^0-9ɵ]/g, ' ').split(' ');
             let partIndex = 0;
             let startPosition = 0;
             let selectionLength = 0;
 
-            for(let itm of indexed)
+            for(const itm of indexed)
             {
                 //this segment contains cursor
                 if(itm.indexOf('ɵ') >= 0)
@@ -232,9 +232,9 @@ export class DefaultDatePositionParser implements DatePositionParser
         //strict format
         else
         {
-            let indexes = Object.keys(this._strictDatePartsIndexes).reverse().map(itm => +itm);
+            const indexes = Object.keys(this._strictDatePartsIndexes).reverse().map(itm => +itm);
 
-            for(let index of indexes)
+            for(const index of indexes)
             {
                 if(cursorPosition >= index)
                 {

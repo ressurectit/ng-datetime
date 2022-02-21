@@ -32,7 +32,7 @@ export class DateFormatPipe<TDate = any> implements PipeTransform
             format = (<any>this._formatProvider)[format];
         }
 
-        let dateObj = this._dateApi.getValue(value, parseFormat);
+        const dateObj = this._dateApi.getValue(value, parseFormat);
 
         if(dateObj.isValid())
         {

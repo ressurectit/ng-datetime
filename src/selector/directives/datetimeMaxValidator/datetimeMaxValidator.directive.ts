@@ -1,5 +1,5 @@
-import {NG_VALIDATORS, AbstractControl, Validator, ValidatorFn, ValidationErrors} from '@angular/forms';
 import {ExistingProvider, forwardRef, Directive, Inject} from '@angular/core';
+import {NG_VALIDATORS, AbstractControl, Validator, ValidatorFn, ValidationErrors} from '@angular/forms';
 
 import {Validators} from '../../../misc/validators';
 import {DateTimeSelectorComponent} from '../../components/selector/selector.component';
@@ -21,7 +21,7 @@ const DATETIME_MIN_VALIDATOR = <ExistingProvider>
  */
 @Directive(
 {
-    selector: "date-time-selector[validate][maxValue][formControlName]:not([range]),date-time-selector[validate][maxValue][formControl]:not([range]),date-time-selector[validate][maxValue][ngModel]:not([range])",
+    selector: 'date-time-selector[validate][maxValue][formControlName]:not([range]),date-time-selector[validate][maxValue][formControl]:not([range]),date-time-selector[validate][maxValue][ngModel]:not([range])',
     providers: [DATETIME_MIN_VALIDATOR]
 })
 export class DatetimeMaxValidatorDirective<TDate = any> implements Validator

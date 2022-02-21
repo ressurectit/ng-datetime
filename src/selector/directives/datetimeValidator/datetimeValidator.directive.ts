@@ -1,5 +1,5 @@
-import {NG_VALIDATORS, AbstractControl, Validator, ValidatorFn, ValidationErrors} from '@angular/forms';
 import {ExistingProvider, forwardRef, Directive} from '@angular/core';
+import {NG_VALIDATORS, AbstractControl, Validator, ValidatorFn, ValidationErrors} from '@angular/forms';
 
 import {Validators} from '../../../misc/validators';
 import {DateTimeSelectorComponent} from '../../components/selector/selector.component';
@@ -19,7 +19,7 @@ const DATETIME_VALIDATOR = <ExistingProvider>
  */
 @Directive(
 {
-    selector: "date-time-selector[validate][formControlName]:not([range]),date-time-selector[validate][formControl]:not([range]),date-time-selector[validate][ngModel]:not([range])",
+    selector: 'date-time-selector[validate][formControlName]:not([range]),date-time-selector[validate][formControl]:not([range]),date-time-selector[validate][ngModel]:not([range])',
     providers: [DATETIME_VALIDATOR]
 })
 export class DatetimeValidatorDirective<TDate = any> implements Validator

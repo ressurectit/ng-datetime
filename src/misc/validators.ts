@@ -1,4 +1,4 @@
-import {AbstractControl, ValidationErrors, ValidatorFn} from "@angular/forms";
+import {AbstractControl, ValidationErrors, ValidatorFn} from '@angular/forms';
 
 import {DateApi} from '../services';
 import {DateTimeValueObject} from './datetime.interface';
@@ -19,7 +19,7 @@ export class Validators
             if(!datetime.valid)
             {
                 return {
-                    "datetime": true
+                    'datetime': true
                 };
             }
 
@@ -42,8 +42,8 @@ export class Validators
                dateApi.getValue(control.value).isBefore(datetime.minValue))
             {
                 return {
-                    "minDatetime": datetime.minValue,
-                    "actualValue": control.value
+                    'minDatetime': datetime.minValue,
+                    'actualValue': control.value
                 };
             }
 
@@ -66,8 +66,8 @@ export class Validators
                dateApi.getValue(control.value).isAfter(datetime.maxValue))
             {
                 return {
-                    "maxDatetime": datetime.maxValue,
-                    "actualValue": control.value
+                    'maxDatetime': datetime.maxValue,
+                    'actualValue': control.value
                 };
             }
 

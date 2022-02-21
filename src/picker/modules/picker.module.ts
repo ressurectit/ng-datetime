@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule as AngularCommonModule} from '@angular/common';
-import {CommonModule} from '@anglr/common';
+import {CommonDynamicModule} from '@anglr/common';
 
 import {DateTimePickerComponent} from '../components/picker/picker.component';
 import {DateTimeDayPickerComponent} from '../components/dayPicker/dayPicker.component';
@@ -15,7 +15,7 @@ import {DateTimeYearPickerComponent} from '../components/yearPicker/yearPicker.c
     imports:
     [
         AngularCommonModule,
-        CommonModule
+        CommonDynamicModule,
     ],
     declarations:
     [

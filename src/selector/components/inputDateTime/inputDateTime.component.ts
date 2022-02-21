@@ -289,7 +289,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
 
         this._show();
 
-        let result = this._parser!.parse(this.currentValue!, this.input.selectionStart!);
+        const result = this._parser!.parse(this.currentValue!, this.input.selectionStart!);
 
         this.input.selectionStart = result.positionFrom;
         this.input.selectionEnd = result.positionTo;
@@ -333,7 +333,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
         //handles when all text is selected
         if(this.currentValue && this.input.selectionStart == 0 && this.input.selectionEnd == this.input.value.length)
         {
-            let result = this._parser!.parse(this.input.value, this.input.selectionStart!);
+            const result = this._parser!.parse(this.input.value, this.input.selectionStart!);
 
             this.input.selectionStart = result.positionFrom;
             this.input.selectionEnd = result.positionTo;
@@ -353,7 +353,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
             return;
         }
 
-        let result = this._parser!.parse(this.input.value, this.input.selectionStart!);
+        const result = this._parser!.parse(this.input.value, this.input.selectionStart!);
 
         this.input.selectionStart = result.positionFrom;
         this.input.selectionEnd = result.positionTo;
@@ -380,7 +380,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
                 event.preventDefault();
                 event.stopPropagation();
 
-                let result = event.key == 'ArrowLeft' ? this._parser!.previous(this.input.value, this.input.selectionStart!) : this._parser!.next(this.input.value, this.input.selectionStart!);
+                const result = event.key == 'ArrowLeft' ? this._parser!.previous(this.input.value, this.input.selectionStart!) : this._parser!.next(this.input.value, this.input.selectionStart!);
 
                 if(result)
                 {
@@ -397,7 +397,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
                 event.stopPropagation();
 
                 let result = this._parser!.parse(this.input.value, this.input.selectionStart!);
-                let selectionStart = result.positionFrom;
+                const selectionStart = result.positionFrom;
 
                 this._stepChangeValue(result.part, event.key == 'ArrowUp');
                 this._show();
@@ -411,7 +411,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
             }
             case 'Tab':
             {
-                let result = event.shiftKey ? this._parser!.previous(this.input.value, this.input.selectionStart!) : this._parser!.next(this.input.value, this.input.selectionStart!);
+                const result = event.shiftKey ? this._parser!.previous(this.input.value, this.input.selectionStart!) : this._parser!.next(this.input.value, this.input.selectionStart!);
 
                 if(result)
                 {

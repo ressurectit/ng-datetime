@@ -57,7 +57,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
             {
                 if(isBlank(format))
                 {
-                    throw new Error(`date-fns requires format parameter to be set for parsing non ISO string date!`);
+                    throw new Error('date-fns requires format parameter to be set for parsing non ISO string date!');
                 }
 
                 this._value = this._originalValue = parse(value, format, new Date(1970, 0));
@@ -452,9 +452,9 @@ class DateFnsDateApiObject implements DateApiObject<Date>
      */
     public isSameDecade(date: Date): boolean
     {
-        let year = getYear(this._value);
-        let start = year - (year % 10);
-        let end = start + 10;
+        const year = getYear(this._value);
+        const start = year - (year % 10);
+        const end = start + 10;
 
         return getYear(date) >= start && getYear(date) < end;
     }
@@ -573,7 +573,7 @@ export class DateFnsDateApi implements DateApi<Date>
     {
         if(/^p+$/i.test(pseudoFormat))
         {
-            let widths: {[index: number]: string} =
+            const widths: {[index: number]: string} =
             {
                 1: 'short',
                 2: 'medium',
@@ -615,7 +615,7 @@ export class DateFnsDateApi implements DateApi<Date>
     public weekdaysShort(): string[]
     {
         let startIndex = this._localeSvc.locale.options!.weekStartsOn!;
-        let weekdays: string[] = [];
+        const weekdays: string[] = [];
 
         for(let x = 0; x < 7; x++)
         {

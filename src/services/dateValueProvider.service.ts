@@ -24,8 +24,8 @@ export class DateValueProvider<TDate = any>
      */
     public getValue(value: TDate, format: string): DateTimeValue<TDate>
     {
-        let val = this._dateApi.getValue(value, format);
-        let fullFormat = this._dateApi.getFormat(format);
+        const val = this._dateApi.getValue(value, format);
+        const fullFormat = this._dateApi.getFormat(format);
         let start: TDate = value;
         let end: TDate;
 

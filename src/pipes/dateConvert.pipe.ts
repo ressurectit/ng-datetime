@@ -23,7 +23,7 @@ export class DateConvertPipe<TDate = any> implements PipeTransform
      */
     public transform(value: TDate|DateValue, parseFormat?: string): TDate|null
     {
-        let dateObj = this._dateApi.getValue(value, parseFormat);
+        const dateObj = this._dateApi.getValue(value, parseFormat);
 
         if(dateObj.isValid())
         {

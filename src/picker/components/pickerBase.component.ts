@@ -212,7 +212,7 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
         //value is present
         if(this._value && this.displayDate)
         {
-            let val = this._dateApi.getValue(this._value.from);
+            const val = this._dateApi.getValue(this._value.from);
 
             //change picker to value
             if(!this._isSamePeriodAsDisplayed(val))
@@ -222,7 +222,7 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
                 return;
             }
 
-            let period = this._getPeriodData(val);
+            const period = this._getPeriodData(val);
 
             //was initialized
             if(period)
@@ -308,8 +308,8 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
             return;
         }
 
-        let minDateApi = this._minValue ? this._dateApi.getValue(this._minValue) : null;
-        let maxDateApi = this._maxValue ? this._dateApi.getValue(this._maxValue) : null;
+        const minDateApi = this._minValue ? this._dateApi.getValue(this._minValue) : null;
+        const maxDateApi = this._maxValue ? this._dateApi.getValue(this._maxValue) : null;
         let restAfter = false;
 
         this.periodData.forEach(period =>

@@ -129,7 +129,7 @@ export class DateTimeSelectorControlValueAccessor<TDate> implements ControlValue
         }
         else
         {
-            let value = this._selector.value;
+            const value = this._selector.value;
 
             if(!value)
             {

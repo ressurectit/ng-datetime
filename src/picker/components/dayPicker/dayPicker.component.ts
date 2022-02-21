@@ -92,7 +92,7 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
      * @param day - Selects day 
      * @internal
      */
-    public select(event: Event, day: DayData<TDate>)
+    public override select(event: Event, day: DayData<TDate>)
     {
         event.preventDefault();
 
@@ -136,8 +136,8 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
         this.displayDate = value;
         this.periodData = [];
         this._thisMonthData = [];
-        let currentMonthDate = this.displayDate.value;
-        let today = this._dateApi.now().value;
+        const currentMonthDate = this.displayDate.value;
+        const today = this._dateApi.now().value;
 
         this.displayDate
             .startOfMonth()
@@ -148,9 +148,9 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
         {
             for(let x = 0; x < 7; x++)
             {
-                let day = this.displayDate.dayOfMonth();
-                let otherMonth = !this.displayDate.isSameMonth(currentMonthDate);
-                let data = 
+                const day = this.displayDate.dayOfMonth();
+                const otherMonth = !this.displayDate.isSameMonth(currentMonthDate);
+                const data = 
                 {
                     active: false,
                     disabled: false,
@@ -172,7 +172,7 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
                 this.displayDate.addDays(1);
             }
         }
-        while(this.displayDate.isSameMonth(currentMonthDate))
+        while(this.displayDate.isSameMonth(currentMonthDate));
 
         this.displayDate.resetOriginal();
         this._updateMinMax();

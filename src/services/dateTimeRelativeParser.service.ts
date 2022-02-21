@@ -30,45 +30,45 @@ export class DateTimeRelativeParser<TDate = any>
      */
     public parse(value: TDate|DateValue): TDate|DateValue
     {
-        let regex = /([+-])\s*(\d+)\s*([hdwmy])/;
+        const regex = /([+-])\s*(\d+)\s*([hdwmy])/;
 
         //relative date provided
         if(isString(value) && regex.test(value))
         {
-            let matches = regex.exec(value);
-            let operation = matches![1];
-            let amount = matches![2];
-            let period = matches![3];
+            const matches = regex.exec(value);
+            const operation = matches![1];
+            const amount = matches![2];
+            const period = matches![3];
             this._dateApi = this._dateApi ?? this._injector.get(DATE_API);
-            let now = this._dateApi.now();
+            const now = this._dateApi.now();
 
             switch(period)
             {
-                case "h":
+                case 'h':
                 {
                     break;
                 }
-                case "d":
+                case 'd':
                 {
-                    operation == "+" ? now.addDays(+amount).endOfDay() : now.subtractDays(+amount).startOfDay();
+                    operation == '+' ? now.addDays(+amount).endOfDay() : now.subtractDays(+amount).startOfDay();
 
                     break;
                 }
-                case "w":
+                case 'w':
                 {
-                    operation == "+" ? now.addWeeks(+amount).endOfDay() : now.subtractWeeks(+amount).startOfDay();
+                    operation == '+' ? now.addWeeks(+amount).endOfDay() : now.subtractWeeks(+amount).startOfDay();
 
                     break;
                 }
-                case "m":
+                case 'm':
                 {
-                    operation == "+" ? now.addMonths(+amount).endOfDay() : now.subtractMonths(+amount).startOfDay();
+                    operation == '+' ? now.addMonths(+amount).endOfDay() : now.subtractMonths(+amount).startOfDay();
 
                     break;
                 }
-                case "y":
+                case 'y':
                 {
-                    operation == "+" ? now.addYears(+amount).endOfDay() : now.subtractYears(+amount).startOfDay();
+                    operation == '+' ? now.addYears(+amount).endOfDay() : now.subtractYears(+amount).startOfDay();
 
                     break;
                 }

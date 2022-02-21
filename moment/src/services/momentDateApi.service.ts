@@ -59,7 +59,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
      */
     public isWeekend(): boolean
     {
-        let weekday = this._value.isoWeekday();
+        const weekday = this._value.isoWeekday();
 
         return weekday == 6 || weekday == 7;
     }
@@ -79,7 +79,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
      */
     public startOfDecade(): DateApiObject<moment.Moment>
     {
-        let diff = (this._value.year() % 10);
+        const diff = (this._value.year() % 10);
 
         this._value = moment(this._value).subtract(diff, 'years').startOf('year');
         
@@ -92,7 +92,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
      */
     public endOfDecade(): DateApiObject<moment.Moment>
     {
-        let diff = 9 - (this._value.year() % 10);
+        const diff = 9 - (this._value.year() % 10);
 
         this._value = moment(this._value).add(diff, 'years').endOf('year');
         
@@ -433,9 +433,9 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
      */
     public isSameDecade(date: moment.Moment): boolean
     {
-        let year = this._value.year();
-        let start = year - (year % 10);
-        let end = start + 10;
+        const year = this._value.year();
+        const start = year - (year % 10);
+        const end = start + 10;
 
         return date.year() >= start && date.year() < end;
     }
