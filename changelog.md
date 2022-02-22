@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 2.0.1 (2022-02-22)
+
+### Bug Fixes
+
+- fixed typings, not using rolled up typings for now
+- fixed scss entry points
+
 ## Version 2.0.0 (2022-02-21)
 
 ### BREAKING CHANGES

@@ -5,7 +5,7 @@
     "type": "module",
     "sideEffects": false,
     "scripts": {
-        "build": "ngc --declaration --declarationDir . --declarationMap && ngc -t es2015 --outDir es2015 && npm run dts:rollup",
+        "build": "ngc --declaration --declarationDir . --declarationMap && ngc -t es2015 --outDir es2015",
         "dts:rollup": "npm run api -- api-extractor.json && npm run api -- date-fns/api-extractor.json && npm run api -- moment/api-extractor.json",
         "api": "api-extractor run --local --verbose -c",
         "clean": "rimraf */temp temp es2015 es2020 **/tsdoc-metadata.json src/**/*.d.ts src/**/*.d.ts.map */src/**/*.d.ts */src/**/*.d.ts.map ./*.d.ts ./*.d.ts.map */*.d.ts",
@@ -116,13 +116,22 @@
     "es2020": "./es2020/src/index.js",
     "es2015": "./es2015/src/index.js",
     "module": "./es2015/src/index.js",
-    "typings": "./datetime.d.ts",
+    "typings": "./src/index.d.ts",
     "exports": {
         "./package.json": {
             "default": "./package.json"
         },
+        "./src/theme.scss": {
+            "sass": "./src/theme.scss"
+        },
+        "./src/dark.scss": {
+            "sass": "./src/dark.scss"
+        },
+        "./src/default.scss": {
+            "sass": "./src/default.scss"
+        },
         ".": {
-            "types": "./datetime.d.ts",
+            "types": "./src/index.d.ts",
             "esm2020": "./es2020/src/index.js",
             "es2020": "./es2020/src/index.js",
             "es2015": "./es2015/src/index.js",
@@ -130,7 +139,7 @@
             "default": "./es2020/src/index.js"
         },
         "./date-fns": {
-            "types": "./date-fns/datetime-date-fns.d.ts",
+            "types": "./date-fns/src/index.d.ts",
             "esm2020": "./es2020/date-fns/src/index.js",
             "es2020": "./es2020/date-fns/src/index.js",
             "es2015": "./es2015/date-fns/src/index.js",
@@ -138,7 +147,7 @@
             "default": "./es2020/date-fns/src/index.js"
         },
         "./moment": {
-            "types": "./moment/datetime-moment.d.ts",
+            "types": "./moment/src/index.d.ts",
             "esm2020": "./es2020/moment/src/index.js",
             "es2020": "./es2020/moment/src/index.js",
             "es2015": "./es2015/moment/src/index.js",
