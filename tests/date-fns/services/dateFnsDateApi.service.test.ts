@@ -2,7 +2,7 @@ import {DateApi, DateTimeRelativeParser} from '@anglr/datetime';
 import {DateFnsDateApi} from '@anglr/datetime/date-fns';
 import {sk} from 'date-fns/locale';
 
-import {dateApiTests} from '../../src/services/dateApi.test';
+import {dateApiTests} from '../../src/services/dateApi.tests';
 
 function initialize(): DateApi<Date>
 {
@@ -13,7 +13,7 @@ function initialize(): DateApi<Date>
             super(null!);
         }
 
-        public parse(value: Date): Date
+        public override parse(value: Date): Date
         {
             return value;
         }

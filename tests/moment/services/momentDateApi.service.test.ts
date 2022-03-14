@@ -2,7 +2,7 @@ import {DateApi, DateTimeRelativeParser} from '@anglr/datetime';
 import {MomentDateApi} from '@anglr/datetime/moment';
 import moment from 'moment';
 
-import {dateApiTests} from '../../src/services/dateApi.test';
+import {dateApiTests} from '../../src/services/dateApi.tests';
 
 function initialize(): DateApi<moment.Moment>
 {
@@ -15,7 +15,7 @@ function initialize(): DateApi<moment.Moment>
             super(null!);
         }
 
-        public parse(value: moment.Moment): moment.Moment
+        public override parse(value: moment.Moment): moment.Moment
         {
             return value;
         }

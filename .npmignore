@@ -6,6 +6,9 @@ api-extractor.json
 appveyor.yml
 ngv.config.json
 tsconfig.json
+tsconfig.test.json
+setup-jest.ts
+jest.config.js
 tsdoc-metadata.json
 
 *.ts

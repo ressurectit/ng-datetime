@@ -25,7 +25,9 @@
         "baseUrl": "src",
         "paths": 
         {
-            "@anglr/datetime": ["index.ts", "index.d.ts"]
+            "@anglr/datetime": ["index.ts", "index.d.ts"],
+            "@anglr/datetime/moment": ["../moment/src/index.ts", "../moment/src/index.d.ts"],
+            "@anglr/datetime/date-fns": ["../date-fns/src/index.ts", "/../date-fns/src/index.d.ts"],
         },
         "lib":
         [
@@ -42,7 +44,8 @@
     "exclude":
     [
         "node_modules",
-        "tests/**/*.ts"
+        "tests/**/*.ts",
+        "setup-jest.ts"
     ],
     "angularCompilerOptions":
     {
