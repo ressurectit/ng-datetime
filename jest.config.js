@@ -15,7 +15,6 @@ export default
     moduleNameMapper: 
     {
         '^@anglr/datetime$': '<rootDir>/src/index.ts',
-        '^@anglr/datetime/moment$': '<rootDir>/moment/src/index.ts',
-        '^@anglr/datetime/date-fns$': '<rootDir>/date-fns/src/index.ts',
+        '^@anglr/datetime/(.*?)$': '<rootDir>/$1/src/index.ts'
     }
 }

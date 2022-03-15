@@ -1,5 +1,32 @@
 # Changelog
 
+## Version 3.0.0 (2022-03-15)
+
+### Bug Fixes
+
+- fixed date-fns bug with displaying *dateTime* format
+
+### Features
+
+- `DateApiObject` interface
+    - new `startOfHour` method, that updates value to start date and time of current hour
+    - new `endOfHour` method, that updates value to end date and time of current hour
+    - new `addHours` method, that add hours, if count not specified adds 1 hour
+    - new `subtractHours` method, that subtract hours, if count not specified subtract 1 hour
+    - new `startOfMinute` method, that updates value to start date and time of current minute
+    - new `endOfMinute` method, that updates value to end date and time of current minute
+    - new `addMinutes` method, that add minutes, if count not specified adds 1 minute
+    - new `subtractMinutes` method, that minutes, if count not specified subtract 1 minute
+- *subpackage* `@anglr/datetime/moment`
+    - updated `MomentDateApiObject` to correspond with `DateApiObject` interface
+- *subpackage* `@anglr/datetime/date-fns`
+    - updated `DateFnsDateApiObject` to correspond with `DateApiObject` interface
+
+### BREAKING CHANGES
+
+- minimal supported version of `@anglr/common` is `11.2.0`
+- removed `AsRequiredTypePipe` replaced with one from `@anglr/common`
+
 ## Version 2.0.1 (2022-02-22)
 
 ### Bug Fixes

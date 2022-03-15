@@ -151,6 +151,58 @@ export interface DateApiObject<TDate = any>
     subtractDays(count?: number): DateApiObject<TDate>;
 
     /**
+     * Updates value to start date and time of current hour
+     * @returns Itself for fluent API
+     */
+    startOfHour(): DateApiObject<TDate>;
+
+    /**
+     * Updates value to end date and time of current hour
+     * @returns Itself for fluent API
+     */
+    endOfHour(): DateApiObject<TDate>;
+
+    /**
+     * Add hours, if count not specified adds 1 hour
+     * @param count - Number of hours count
+     * @returns Itself for fluent API
+     */
+    addHours(count?: number): DateApiObject<TDate>;
+
+    /**
+     * Subtract hours, if count not specified subtract 1 hour
+     * @param count - Number of hours count
+     * @returns Itself for fluent API
+     */
+    subtractHours(count?: number): DateApiObject<TDate>;
+
+    /**
+     * Updates value to start date and time of current minute
+     * @returns Itself for fluent API
+     */
+    startOfMinute(): DateApiObject<TDate>;
+
+    /**
+     * Updates value to end date and time of current minute
+     * @returns Itself for fluent API
+     */
+    endOfMinute(): DateApiObject<TDate>;
+
+    /**
+     * Add minutes, if count not specified adds 1 minute
+     * @param count - Number of minutes count
+     * @returns Itself for fluent API
+     */
+    addMinutes(count?: number): DateApiObject<TDate>;
+
+    /**
+     * Subtract minutes, if count not specified subtract 1 minute
+     * @param count - Number of minutes count
+     * @returns Itself for fluent API
+     */
+    subtractMinutes(count?: number): DateApiObject<TDate>;
+
+    /**
      * Gets number of days in month
      */
     daysInMonth(): number;
@@ -169,7 +221,7 @@ export interface DateApiObject<TDate = any>
      * @param year - If specified, sets year
      */
     year(year?: number): DateApiObject<TDate>|number;
-    
+
     /**
      * Gets month
      */
@@ -311,7 +363,7 @@ export interface DateApi<TDate = any>
     getFormat(pseudoFormat: string): string;
 
     /**
-     * Gets information 
+     * Gets information
      */
     weekStartsOnMonday(): boolean;
 

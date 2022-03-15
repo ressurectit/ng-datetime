@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser} from '@anglr/datetime';
 import {isBlank, isPresent, isString} from '@jscrpt/common';
-import {toDate, getDate, setDate, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, parseISO, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth, setISODay, getISODay} from 'date-fns';
+import {toDate, getDate, setDate, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, parseISO, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth, setISODay, getISODay, subHours, addHours, endOfHour, startOfHour, startOfMinute, endOfMinute, addMinutes, subMinutes} from 'date-fns';
 
 import {DATE_FNS_LOCALE} from '../misc/tokens';
 import {DateFnsLocale} from './dateFnsLocale.service';
@@ -303,6 +303,98 @@ class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
+     * Updates value to start date and time of current hour
+     * @returns Itself for fluent API
+     */
+    public startOfHour(): DateApiObject<Date>
+    {
+        this._value = startOfHour(this._value);
+
+        return this;
+    }
+
+    /**
+     * Updates value to end date and time of current hour
+     * @returns Itself for fluent API
+     */
+    public endOfHour(): DateApiObject<Date>
+    {
+        this._value = endOfHour(this._value);
+
+        return this;
+    }
+
+    /**
+     * Add hours, if count not specified adds 1 hour
+     * @param count - Number of hours count
+     * @returns Itself for fluent API
+     */
+    public addHours(count?: number): DateApiObject<Date>
+    {
+        this._value = addHours(this._value, count ?? 1);
+
+        return this;
+    }
+
+    /**
+     * Subtract hours, if count not specified subtract 1 hour
+     * @param count - Number of hours count
+     * @returns Itself for fluent API
+     */
+    public subtractHours(count?: number): DateApiObject<Date>
+    {
+        this._value = subHours(this._value, count ?? 1);
+
+        return this;
+    }
+
+    /**
+     * Updates value to start date and time of current minute
+     * @returns Itself for fluent API
+     */
+    public startOfMinute(): DateApiObject<Date>
+    {
+        this._value = startOfMinute(this._value);
+
+        return this;
+    }
+
+    /**
+     * Updates value to end date and time of current minute
+     * @returns Itself for fluent API
+     */
+    public endOfMinute(): DateApiObject<Date>
+    {
+        this._value = endOfMinute(this._value);
+
+        return this;
+    }
+
+    /**
+     * Add minutes, if count not specified adds 1 minute
+     * @param count - Number of minutes count
+     * @returns Itself for fluent API
+     */
+    public addMinutes(count?: number): DateApiObject<Date>
+    {
+        this._value = addMinutes(this._value, count ?? 1);
+
+        return this;
+    }
+
+    /**
+     * Subtract minutes, if count not specified subtract 1 minute
+     * @param count - Number of minutes count
+     * @returns Itself for fluent API
+     */
+    public subtractMinutes(count?: number): DateApiObject<Date>
+    {
+        this._value = subMinutes(this._value, count ?? 1);
+
+        return this;
+    }
+
+    /**
      * Gets number of days in month
      */
     public daysInMonth(): number
@@ -573,6 +665,11 @@ export class DateFnsDateApi implements DateApi<Date>
     {
         if(/^p+$/i.test(pseudoFormat))
         {
+            if(!this._localeSvc.locale.formatLong)
+            {
+                throw new Error('Missing long formats for locale in DateApi');
+            }
+
             const widths: {[index: number]: string} =
             {
                 1: 'short',
@@ -584,17 +681,19 @@ export class DateFnsDateApi implements DateApi<Date>
             //date time format
             if(pseudoFormat.indexOf('Pp') >= 0 && pseudoFormat.length <= 8)
             {
-                return this._localeSvc.locale.formatLong!.dateTime({width: widths[pseudoFormat.length / 2]});
+                const partLength = pseudoFormat.length / 2;
+
+                return `${this._localeSvc.locale.formatLong.date({width: widths[partLength]})} ${this._localeSvc.locale.formatLong.time({width: widths[partLength]})}`;
             }
             //date format
             else if(pseudoFormat.indexOf('P') >= 0 && pseudoFormat.length <= 4)
             {
-                return this._localeSvc.locale.formatLong!.date({width: widths[pseudoFormat.length]});
+                return this._localeSvc.locale.formatLong.date({width: widths[pseudoFormat.length]});
             }
             //time format
             else if(pseudoFormat.indexOf('p') >= 0 && pseudoFormat.length <= 4)
             {
-                return this._localeSvc.locale.formatLong!.time({width: widths[pseudoFormat.length]});
+                return this._localeSvc.locale.formatLong.time({width: widths[pseudoFormat.length]});
             }
         }
 

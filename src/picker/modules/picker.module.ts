@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule as AngularCommonModule} from '@angular/common';
-import {CommonDynamicModule} from '@anglr/common';
+import {CommonDynamicModule, CastPipesModule} from '@anglr/common';
 
 import {DateTimePickerComponent} from '../components/picker/picker.component';
 import {DateTimeDayPickerComponent} from '../components/dayPicker/dayPicker.component';
@@ -18,6 +18,7 @@ import {DatePipesModule} from '../../modules/datePipes.module';
         AngularCommonModule,
         CommonDynamicModule,
         DatePipesModule,
+        CastPipesModule,
     ],
     declarations:
     [

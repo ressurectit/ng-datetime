@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 
-import {AsRequiredTypePipe} from '../pipes/asRequiredType';
 import {DateConvertPipe} from '../pipes/dateConvert.pipe';
 import {DateFormatPipe} from '../pipes/dateFormat.pipe';
 
@@ -11,13 +10,11 @@ import {DateFormatPipe} from '../pipes/dateFormat.pipe';
 {
     declarations:
     [
-        AsRequiredTypePipe,
         DateFormatPipe,
         DateConvertPipe,
     ],
     exports:
     [
-        AsRequiredTypePipe,
         DateFormatPipe,
         DateConvertPipe,
     ]

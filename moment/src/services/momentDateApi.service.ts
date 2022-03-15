@@ -284,6 +284,98 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
+     * Updates value to start date and time of current hour
+     * @returns Itself for fluent API
+     */
+    public startOfHour(): DateApiObject<moment.Moment>
+    {
+        this._value = moment(this._value).startOf('hour');
+
+        return this;
+    }
+
+    /**
+     * Updates value to end date and time of current hour
+     * @returns Itself for fluent API
+     */
+    public endOfHour(): DateApiObject<moment.Moment>
+    {
+        this._value = moment(this._value).endOf('hour');
+
+        return this;
+    }
+
+    /**
+     * Add hours, if count not specified adds 1 hour
+     * @param count - Number of hours count
+     * @returns Itself for fluent API
+     */
+    public addHours(count?: number): DateApiObject<moment.Moment>
+    {
+        this._value = moment(this._value).add(count ?? 1, 'hours');
+
+        return this;
+    }
+
+    /**
+     * Subtract hours, if count not specified subtract 1 hour
+     * @param count - Number of hours count
+     * @returns Itself for fluent API
+     */
+    public subtractHours(count?: number): DateApiObject<moment.Moment>
+    {
+        this._value = moment(this._value).subtract(count ?? 1, 'hours');
+
+        return this;
+    }
+
+    /**
+     * Updates value to start date and time of current minute
+     * @returns Itself for fluent API
+     */
+    public startOfMinute(): DateApiObject<moment.Moment>
+    {
+        this._value = moment(this._value).startOf('minute');
+
+        return this;
+    }
+
+    /**
+     * Updates value to end date and time of current minute
+     * @returns Itself for fluent API
+     */
+    public endOfMinute(): DateApiObject<moment.Moment>
+    {
+        this._value = moment(this._value).endOf('minute');
+
+        return this;
+    }
+
+    /**
+     * Add minutes, if count not specified adds 1 minute
+     * @param count - Number of minutes count
+     * @returns Itself for fluent API
+     */
+    public addMinutes(count?: number): DateApiObject<moment.Moment>
+    {
+        this._value = moment(this._value).add(count ?? 1, 'minutes');
+
+        return this;
+    }
+
+    /**
+     * Subtract minutes, if count not specified subtract 1 minute
+     * @param count - Number of minutes count
+     * @returns Itself for fluent API
+     */
+    public subtractMinutes(count?: number): DateApiObject<moment.Moment>
+    {
+        this._value = moment(this._value).subtract(count ?? 1, 'minutes');
+
+        return this;
+    }
+
+    /**
      * Gets number of days in month
      */
     public daysInMonth(): number
