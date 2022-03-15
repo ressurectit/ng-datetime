@@ -16,7 +16,7 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "strict": true,
-        "strictNullChecks": false,
+        "strictNullChecks": true,
         "esModuleInterop": true,
         "importHelpers": true,
         "newLine": "lf",

@@ -90,7 +90,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     /**
      * Gets or sets placeholder that is displayed when there is no value selected
      */
-    public placeholder: string|undefined;
+    public placeholder: string|null;
 
     /**
      * Gets current value of datetime
@@ -165,7 +165,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      * @internal
      */
     @ViewChild('input', {static: true})
-    public inputElement?: ElementRef<HTMLInputElement>;
+    public inputElement: ElementRef<HTMLInputElement>;
 
     //######################### protected properties #########################
 
@@ -189,7 +189,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      */
     protected get input(): HTMLInputElement
     {
-        return this.inputElement!.nativeElement;
+        return this.inputElement.nativeElement;
     }
 
     //######################### constructor #########################
@@ -262,7 +262,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      * Handles gaining of focus
      * @internal
      */
-    public handleFocus()
+    public handleFocus(): void
     {
         this._pickerRequest.next(true);
 
@@ -299,7 +299,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      * Handles blur on input
      * @internal
      */
-    public handleBlur()
+    public handleBlur(): void
     {
         this._pickerRequest.next(false);
     }
@@ -308,7 +308,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      * Handles user input
      * @internal
      */
-    public handleInput()
+    public handleInput(): void
     {
         //empty value
         if(!this.currentValue)
@@ -328,7 +328,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      * Handles selection of text inside of input
      * @internal
      */
-    public handleSelect()
+    public handleSelect(): void
     {
         //handles when all text is selected
         if(this.currentValue && this.input.selectionStart == 0 && this.input.selectionEnd == this.input.value.length)
@@ -344,7 +344,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      * Handles click event inside of input
      * @internal
      */
-    public handleClick()
+    public handleClick(): void
     {
         this._pickerRequest.next(true);
 
@@ -365,7 +365,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      * @param input - Html input element that holds current value and selection
      * @internal
      */
-    public handleKeyboard(event: KeyboardEvent)
+    public handleKeyboard(event: KeyboardEvent): void
     {
         if(!this._dateApiValue?.isValid())
         {
@@ -464,7 +464,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     /**
      * Shows current value in input
      */
-    protected _show()
+    protected _show(): void
     {
         if(this._isValid)
         {
@@ -505,7 +505,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     /**
      * Clears current value
      */
-    protected _clearValue()
+    protected _clearValue(): void
     {
         this._dateApiValue = null;
         this._isValid = true;
@@ -517,7 +517,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      * @param part - Part of date that should be changed
      * @param increment - Indication whether value should be incremented or decremented
      */
-    protected _stepChangeValue(part: string, increment: boolean)
+    protected _stepChangeValue(part: string, increment: boolean): void
     {
         if(!this._dateApiValue?.isValid())
         {

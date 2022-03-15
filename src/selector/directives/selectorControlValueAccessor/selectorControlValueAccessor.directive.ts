@@ -56,7 +56,7 @@ export class DateTimeSelectorControlValueAccessor<TDate> implements ControlValue
     /**
      * Called when component is destroyed
      */
-    public ngOnDestroy()
+    public ngOnDestroy(): void
     {
         this._subscriptions?.unsubscribe();
     }
@@ -117,7 +117,7 @@ export class DateTimeSelectorControlValueAccessor<TDate> implements ControlValue
      * Used for emitting value that was changed
      * @param fn - Function that is used for emitting changed value
      */
-    protected _emitValue(fn: (value: string|DateTimeValue<TDate>|TDate|null) => any)
+    protected _emitValue(fn: (value: string|DateTimeValue<TDate>|TDate|null) => any): void
     {
         if(this.range)
         {

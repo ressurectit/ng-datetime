@@ -65,22 +65,22 @@ export interface DateTimePickerOptions<TPicker = any>
     /**
      * Order of pickers, it's possible use less pickers as is defined in pickerPeriodsDefinition for example 'month,year'
      */
-    pickerPeriodsOrder?: string[] | string
+    pickerPeriodsOrder: string[] | string
 
     /**
      * Definition of types for each period type for picker
      */
-    pickerPeriodsDefinition?: Dictionary<Type<TPicker>>;
+    pickerPeriodsDefinition: Dictionary<Type<TPicker>>;
 
     /**
      * Name of default period for picker that is displayed
      */
-    defaultPeriod?: string;
+    defaultPeriod: string;
 
     /**
      * Css classes for date time picker
      */
-    cssClasses?: DateTimePickerCssClasses;
+    cssClasses: DateTimePickerCssClasses;
 }
 
 /**

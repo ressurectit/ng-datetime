@@ -27,10 +27,18 @@ export class DateTimeRelativeParser<TDate = any>
     /**
      * Tries to parse relative value and returns parsed TDate, otherwise returns input value
      * @param value - Value to be parsed
+     * 
+     * @summary
+     * i - for minutes
+     * h - for hours
+     * d - for days
+     * w - for weeks
+     * m - for months
+     * y - for years
      */
     public parse(value: TDate|DateValue): TDate|DateValue
     {
-        const regex = /([+-])\s*(\d+)\s*([hdwmy])/;
+        const regex = /([+-])\s*(\d+)\s*([ihdwmy])/;
 
         //relative date provided
         if(isString(value) && regex.test(value))
@@ -44,8 +52,16 @@ export class DateTimeRelativeParser<TDate = any>
 
             switch(period)
             {
+                case 'i':
+                {
+                    operation == '+' ? now.addMinutes(+amount).endOfMinute() : now.subtractMinutes(+amount).startOfMinute();
+
+                    break;
+                }
                 case 'h':
                 {
+                    operation == '+' ? now.addHours(+amount).endOfHour() : now.subtractHours(+amount).startOfHour();
+
                     break;
                 }
                 case 'd':

@@ -18,7 +18,18 @@ export const FORMAT_PROVIDER: InjectionToken<FormatProvider> = new InjectionToke
                                                                                                           return {
                                                                                                               date: 'yyyy-MM-dd',
                                                                                                               dateTime: 'yyyy-MM-dd HH:mm',
-                                                                                                              time: 'HH:mm'
+                                                                                                              time: 'HH:mm',
+                                                                                                              year: 'yyyy',
+                                                                                                              month: 'MM',
+                                                                                                              week: 'ww',
+                                                                                                              day: 'dd',
+                                                                                                              hour: 'HH',
+                                                                                                              minute: 'mm',
+                                                                                                              second: 'ss',
+                                                                                                              dayName: 'cccc',
+                                                                                                              dayNameShort: 'cccccc',
+                                                                                                              monthName: 'LLLL',
+                                                                                                              monthNameShort: 'LLL'
                                                                                                           };
                                                                                                       }
                                                                                                   });

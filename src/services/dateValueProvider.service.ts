@@ -27,7 +27,7 @@ export class DateValueProvider<TDate = any>
         const val = this._dateApi.getValue(value, format);
         const fullFormat = this._dateApi.getFormat(format);
         let start: TDate = value;
-        let end: TDate;
+        let end: TDate = value;
 
         //day
         if(fullFormat.indexOf('d') >= 0 || fullFormat.indexOf('D') >= 0)
@@ -56,7 +56,7 @@ export class DateValueProvider<TDate = any>
 
         return {
             from: start,
-            to: end!
+            to: end
         };
     }
 }

@@ -17,12 +17,12 @@ export interface DateTimeSelectorOptions<TSelector = any, TPicker = any> extends
     /**
      * Indication whether close picker on value selection
      */
-    pickerCloseOnValueSelect?: boolean;
+    pickerCloseOnValueSelect: boolean;
 
     /**
      * Indication whether picker is disabled
      */
-    pickerDisabled?: boolean;
+    pickerDisabled: boolean;
 }
 
 /**
@@ -38,7 +38,7 @@ export interface DateTimeSelector<TDate = any>
     /**
      * Placeholder that is displayed when there is no value selected
      */
-    placeholder?: string;
+    placeholder: string|null;
 
     /**
      * Gets current value of datetime

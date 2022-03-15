@@ -19,7 +19,18 @@ export const DATEFNS_FORMAT_PROVIDER: FactoryProvider =
         return <FormatProvider>{
             date: 'P',
             dateTime: 'Pp',
-            time: 'p'
+            time: 'p',
+            year: 'yyyy',
+            month: 'MM',
+            week: 'ww',
+            day: 'dd',
+            hour: 'HH',
+            minute: 'mm',
+            second: 'ss',
+            dayName: 'cccc',
+            dayNameShort: 'cccccc',
+            monthName: 'LLLL',
+            monthNameShort: 'LLL'
         };
     }
 };

@@ -17,10 +17,25 @@
     - new `endOfMinute` method, that updates value to end date and time of current minute
     - new `addMinutes` method, that add minutes, if count not specified adds 1 minute
     - new `subtractMinutes` method, that minutes, if count not specified subtract 1 minute
+- `DateTimeRelativeParser` now supports *hours* and *minutes* as relative values
+- `FormatProvider` interface
+    - new `year` property, that is format token for displaying full year
+    - new `month` property, that is format token for displaying month double digit number
+    - new `week` property, that is format token for displaying week double digit number
+    - new `day` property, that is format token for displaying day double digit number
+    - new `hour` property, that is format token for displaying hour (24h format) double digit number
+    - new `minute` property, that is format token for displaying minute double digit number
+    - new `second` property, that is format token for displaying second double digit number
+    - new `dayName` property, that is format token for displaying standalone day full name 
+    - new `dayNameShort` property, that is format token for displaying standalone day short name
+    - new `monthName` property, that is format token for displaying standalone month full name
+    - new `monthNameShort` property, that is format token for displaying standalone month short name
 - *subpackage* `@anglr/datetime/moment`
     - updated `MomentDateApiObject` to correspond with `DateApiObject` interface
+    - updated `MOMENT_FORMAT_PROVIDER` to correspond with `FormatProvider` interface
 - *subpackage* `@anglr/datetime/date-fns`
     - updated `DateFnsDateApiObject` to correspond with `DateApiObject` interface
+    - updated `DATEFNS_FORMAT_PROVIDER` to correspond with `FormatProvider` interface
 
 ### BREAKING CHANGES
 

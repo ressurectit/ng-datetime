@@ -14,8 +14,10 @@ export interface DateTimeValue<TDate = any>
     to: TDate;
 }
 
+//TODO: remove when not necessary
+
 /**
- * Represents object that holds data for indentification of validity of date time
+ * Represents object that holds data for identification of validity of date time
  */
 export interface DateTimeValueObject<TDate = any>
 {

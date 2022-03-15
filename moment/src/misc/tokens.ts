@@ -12,7 +12,18 @@ export const MOMENT_FORMAT_PROVIDER: FactoryProvider =
         return <FormatProvider>{
             date: 'L',
             dateTime: 'L LT',
-            time: 'LT'
+            time: 'LT',
+            year: 'YYYY',
+            month: 'MM',
+            week: 'ww',
+            day: 'DD',
+            hour: 'HH',
+            minute: 'mm',
+            second: 'ss',
+            dayName: 'dddd',
+            dayNameShort: 'dd',
+            monthName: 'MMMM',
+            monthNameShort: 'MMM'
         };
     }
 };
