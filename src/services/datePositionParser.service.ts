@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {isBlank} from '@jscrpt/common';
 
 import {DatePositionParser, DatePositionParserResult} from './datePositionParser.interface';
 
@@ -55,8 +56,13 @@ export class DefaultDatePositionParser implements DatePositionParser
      * @param date - String date to be parsed
      * @param cursorPosition - Current cursor position
      */
-    public next(date: string, cursorPosition: number): null|DatePositionParserResult
+    public next(date: string|null|undefined, cursorPosition: number): null|DatePositionParserResult
     {
+        if(isBlank(date))
+        {
+            return null;
+        }
+
         //non strict format
         if(this._hasSeparator)
         {
@@ -108,8 +114,13 @@ export class DefaultDatePositionParser implements DatePositionParser
      * @param date - String date to be parsed
      * @param cursorPosition - Current cursor position
      */
-    public previous(date: string, cursorPosition: number): null|DatePositionParserResult
+    public previous(date: string|null|undefined, cursorPosition: number): null|DatePositionParserResult
     {
+        if(isBlank(date))
+        {
+            return null;
+        }
+
         //non strict format
         if(this._hasSeparator)
         {
@@ -161,8 +172,17 @@ export class DefaultDatePositionParser implements DatePositionParser
      * @param date - String date to be parsed
      * @param cursorPosition - Current cursor position
      */
-    public parse(date: string, cursorPosition: number): DatePositionParserResult
+    public parse(date: string|null|undefined, cursorPosition: number): DatePositionParserResult
     {
+        if(isBlank(date))
+        {
+            return {
+                part: '',
+                positionFrom: 0,
+                positionTo: 0
+            };
+        }
+
         //non strict format
         if(this._hasSeparator)
         {
@@ -257,7 +277,7 @@ export class DefaultDatePositionParser implements DatePositionParser
     /**
      * Initialize parser, process format
      */
-    protected _initialize()
+    protected _initialize(): void
     {
         this._hasSeparator = /[^yqmwdhs]/i.test(this._format);
 

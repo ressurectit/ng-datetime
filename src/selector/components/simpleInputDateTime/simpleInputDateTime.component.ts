@@ -249,7 +249,7 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
      * Handles gaining of focus
      * @internal
      */
-    public handleFocus()
+    public handleFocus(): void
     {
         this._pickerRequest.next(true);
 
@@ -281,7 +281,7 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
      * Handles blur on input
      * @internal
      */
-    public handleBlur()
+    public handleBlur(): void
     {
         this._pickerRequest.next(false);
     }
@@ -290,7 +290,7 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
      * Handles user input
      * @internal
      */
-    public handleInput()
+    public handleInput(): void
     {
         //empty value
         if(!this.currentValue)
@@ -310,7 +310,7 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
      * Handles click event inside of input
      * @internal
      */
-    public handleClick()
+    public handleClick(): void
     {
         this._pickerRequest.next(true);
     }
@@ -321,7 +321,7 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
      * @param input - Html input element that holds current value and selection
      * @internal
      */
-    public handleKeyboard(event: KeyboardEvent)
+    public handleKeyboard(event: KeyboardEvent): void
     {
         if(!this._dateApiValue?.isValid())
         {
@@ -375,7 +375,7 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
     /**
      * Clears current value
      */
-    protected _clearValue()
+    protected _clearValue(): void
     {
         this._dateApiValue = null;
         this._isValid = true;
@@ -395,7 +395,7 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
      * Runs code with check whether min max constrains was broken
      * @param code - Code that should be executed which can change current value
      */
-    protected _withMinMaxConstraint(code: () => void)
+    protected _withMinMaxConstraint(code: () => void): void
     {
         this._dateApiValue!.updateOriginal();
 
@@ -415,7 +415,7 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
     /**
      * Shows current value in input
      */
-    protected _show()
+    protected _show(): void
     {
         if(this._isValid)
         {

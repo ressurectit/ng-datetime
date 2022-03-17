@@ -124,7 +124,7 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
      * @param event - Event that occured
      * @internal
      */
-    public goUp(event: Event)
+    public goUp(event: Event): void
     {
         event.preventDefault();
 
@@ -142,7 +142,7 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
      * @param period - Selected period
      * @internal
      */
-    public select(event: Event, period: PeriodData<TDate>)
+    public select(event: Event, period: PeriodData<TDate>): void
     {
         event.preventDefault();
 
@@ -272,7 +272,7 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
      * @internal
      */
     @HostListener('mousedown', ['$event'])
-    public handleClick(event: Event)
+    public handleClick(event: Event): void
     {
         event.preventDefault();
     }
@@ -283,7 +283,7 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
      * Sets period as active
      * @param period - Period to be set as active
      */
-    protected _setPeriod(period: PeriodData<TDate>)
+    protected _setPeriod(period: PeriodData<TDate>): void
     {
         this.periodData.forEach(itm => itm.active = false);
 
@@ -293,7 +293,7 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
     /**
      * Updates minimal and maximal value for picker
      */
-    protected _updateMinMax()
+    protected _updateMinMax(): void
     {
         if(!this.periodData.length)
         {
