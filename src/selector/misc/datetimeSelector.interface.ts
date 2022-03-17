@@ -1,4 +1,5 @@
 import {Type} from '@angular/core';
+import {PositionOptions} from '@anglr/common';
 import {Observable} from 'rxjs';
 
 import {DateTimeValue} from '../../misc/datetime.interface';
@@ -23,6 +24,21 @@ export interface DateTimeSelectorOptions<TSelector = any, TPicker = any> extends
      * Indication whether picker is disabled
      */
     pickerDisabled: boolean;
+
+    /**
+     * Indication whether use absolute positioning of picker
+     */
+    pickerAbsolute: boolean;
+
+    /**
+     * Position options that are used in case of absolute picker
+     */
+    positionOptions: Partial<PositionOptions>;
+
+    /**
+     * Css selector for absolute picker container
+     */
+    pickerAbsoluteContainer: string;
 }
 
 /**

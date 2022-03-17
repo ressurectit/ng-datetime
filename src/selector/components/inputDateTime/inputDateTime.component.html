@@ -7,4 +7,4 @@
        (select)="handleSelect()"
        (keydown)="handleKeyboard($any($event))"
        [disabled]="disabled"
-       [placeholder]="placeholder">
+       [placeholder]="placeholder ?? ''">

@@ -1,4 +1,5 @@
-import {Component, ChangeDetectionStrategy, Input, Inject, Optional, Type, OnInit, OnDestroy, OnChanges, SimpleChanges, ChangeDetectorRef} from '@angular/core';
+import {Component, ChangeDetectionStrategy, Input, Inject, Optional, Type, OnInit, OnDestroy, OnChanges, SimpleChanges, ChangeDetectorRef, ElementRef} from '@angular/core';
+import {PositionPlacement} from '@anglr/common';
 import {extend, isBlank, isString, nameof} from '@jscrpt/common';
 import {Observable, Subject, Subscription} from 'rxjs';
 
@@ -24,7 +25,16 @@ const defaultConfiguration: DateTimeSelectorOptions<DateTimeSelector> =
     selectorComponent: InputDateTimeSelectorComponent,
     pickerCloseOnValueSelect: false,
     pickerDisabled: false,
+    pickerAbsolute: true,
+    pickerAbsoluteContainer: 'body',
+    positionOptions:
+    {
+        flip: true,
+        placement: PositionPlacement.BottomStart,
+        autoUpdate: true
+    },
     defaultPeriod: 'day',
+    pickerPeriodsOrder: null,
     pickerPeriodsDefinition:
     {
         'day': DateTimeDayPickerComponent,
@@ -167,7 +177,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
      * Currently active date time selector component type
      * @internal
      */
-    public activeSelectorComponent?: Type<DateTimeSelector<TDate>>;
+    public activeSelectorComponent!: Type<DateTimeSelector<TDate>>;
 
     /**
      * Indication whether is picker visible or not
@@ -207,7 +217,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
 
         if(this._activeSelector)
         {
-            this._activeSelector.placeholder = this._placeholder;
+            this._activeSelector.placeholder = this._placeholder ?? null;
 
             this._activeSelector.invalidateVisuals();
         }
@@ -217,11 +227,11 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
      * Current options used by selector
      */
     @Input()
-    public get options(): DateTimeSelectorOptions<DateTimeSelector<TDate>>
+    public get options(): Partial<DateTimeSelectorOptions<DateTimeSelector<TDate>>>
     {
         return this._options;
     }
-    public set options(value: DateTimeSelectorOptions<DateTimeSelector<TDate>>)
+    public set options(value: Partial<DateTimeSelectorOptions<DateTimeSelector<TDate>>>)
     {
         this._options = extend(true, this._options, value);
         // without deep-copy for this attribute
@@ -324,9 +334,10 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     }
 
     //######################### constructor #########################
-    constructor(@Optional() @Inject(DATE_TIME_SELECTOR_CONFIGURATION) configuration: DateTimeSelectorOptions<DateTimeSelector<TDate>>,
+    constructor(@Optional() @Inject(DATE_TIME_SELECTOR_CONFIGURATION) configuration: Partial<DateTimeSelectorOptions<DateTimeSelector<TDate>>>,
                 protected _valueProvider: DateValueProvider<TDate>,
                 protected _changeDetector: ChangeDetectorRef,
+                public element: ElementRef<HTMLElement>,
                 @Inject(DATE_API) protected _dateApi: DateApi<TDate>,
                 @Inject(FORMAT_PROVIDER) formatProvider: FormatProvider)
     {
@@ -344,7 +355,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     /**
      * Initialize component
      */
-    public ngOnInit()
+    public ngOnInit(): void
     {
         this.activeSelectorComponent = this._options.selectorComponent;
     }
@@ -368,7 +379,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     /**
      * Called when component is destroyed
      */
-    public ngOnDestroy()
+    public ngOnDestroy(): void
     {
         this._activeSelectorSubscriptions.unsubscribe();
 
@@ -386,7 +397,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
      * @param selector - Instance of selector or null
      * @internal
      */
-    public selectorCreated(selector: DateTimeSelector<TDate>)
+    public selectorCreated(selector: DateTimeSelector<TDate>): void
     {
         this._activeSelector = selector;
 
@@ -407,7 +418,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
         selector.setMinValue(this.min);
         selector.setValue(this._value);
         selector.setDisabled(this._disabled);
-        selector.placeholder = this._placeholder;
+        selector.placeholder = this._placeholder ?? null;
 
         selector.invalidateVisuals();
     }
@@ -417,7 +428,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
      * @param value - Value that was changed
      * @internal
      */
-    public pickerChangedValue(value: DateTimeValue<TDate>)
+    public pickerChangedValue(value: DateTimeValue<TDate>): void
     {
         this._activeSelector?.setValue(value);
         this._value = value;

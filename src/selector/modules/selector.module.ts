@@ -9,6 +9,7 @@ import {DateTimeSelectorControlValueAccessor} from '../directives/selectorContro
 import {DatetimeValidatorDirective} from '../directives/datetimeValidator/datetimeValidator.directive';
 import {DatetimeMinValidatorDirective} from '../directives/datetimeMinValidator/datetimeMinValidator.directive';
 import {DatetimeMaxValidatorDirective} from '../directives/datetimeMaxValidator/datetimeMaxValidator.directive';
+import {DateTimePickerRendererDirective} from '../directives/dateTimePickerRenderer/dateTimePickerRenderer.directive';
 
 /**
  * Angular module for date time selector components
@@ -28,7 +29,8 @@ import {DatetimeMaxValidatorDirective} from '../directives/datetimeMaxValidator/
         DateTimeSelectorControlValueAccessor,
         DatetimeValidatorDirective,
         DatetimeMinValidatorDirective,
-        DatetimeMaxValidatorDirective
+        DatetimeMaxValidatorDirective,
+        DateTimePickerRendererDirective,
     ],
     exports:
     [
@@ -36,7 +38,8 @@ import {DatetimeMaxValidatorDirective} from '../directives/datetimeMaxValidator/
         DateTimeSelectorControlValueAccessor,
         DatetimeValidatorDirective,
         DatetimeMinValidatorDirective,
-        DatetimeMaxValidatorDirective
+        DatetimeMaxValidatorDirective,
+        DateTimePickerRendererDirective,
     ]
 })
 export class DateTimeSelectorModule

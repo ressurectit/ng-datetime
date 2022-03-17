@@ -90,7 +90,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     /**
      * Gets or sets placeholder that is displayed when there is no value selected
      */
-    public placeholder: string|null;
+    public placeholder: string|null = null;
 
     /**
      * Gets current value of datetime
@@ -165,7 +165,7 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
      * @internal
      */
     @ViewChild('input', {static: true})
-    public inputElement: ElementRef<HTMLInputElement>;
+    public inputElement!: ElementRef<HTMLInputElement>;
 
     //######################### protected properties #########################
 

@@ -1,10 +1,11 @@
 # Changelog
 
-## Version 3.0.0 (2022-03-15)
+## Version 3.0.0 (2022-03-17)
 
 ### Bug Fixes
 
 - fixed date-fns bug with displaying *dateTime* format
+- fixed placeholder value of `undefined`
 
 ### Features
 
@@ -30,6 +31,20 @@
     - new `dayNameShort` property, that is format token for displaying standalone day short name
     - new `monthName` property, that is format token for displaying standalone month full name
     - new `monthNameShort` property, that is format token for displaying standalone month short name
+- `DateTimeSelectorOptions` interface
+    - now allows absolute positioning of picker, which is default
+    - new `pickerAbsolute` property, that is indication whether use absolute positioning of picker
+    - new `positionOptions` property, that is position options that are used in case of absolute picker
+    - new `pickerAbsoluteContainer` property, that is css selector for absolute picker container
+- new `DateTimePickerRendererDirective` directive, that is used for rendering datetime picker in selector
+    - *inputs*
+        - `options` current options used by selector
+        - `dateTimePicker` current selected value
+        - `minValue` gets or sets minimal possible value for picker, that can be picked
+        - `maxValue` gets or sets maximal possible value for picker, that can be picked
+        - `selectorElement` selector element which is used during absolute positioning of picker
+    - *outputs*
+        - `valueChange` occurs when value changes
 - *subpackage* `@anglr/datetime/moment`
     - updated `MomentDateApiObject` to correspond with `DateApiObject` interface
     - updated `MOMENT_FORMAT_PROVIDER` to correspond with `FormatProvider` interface
@@ -41,6 +56,8 @@
 
 - minimal supported version of `@anglr/common` is `11.2.0`
 - removed `AsRequiredTypePipe` replaced with one from `@anglr/common`
+- strict null checks
+- both `DateTimePickerOptions` and `DateTimeSelectorOptions` have now all properties required, and options are now passed as `Partial`
 
 ## Version 2.0.1 (2022-02-22)
 

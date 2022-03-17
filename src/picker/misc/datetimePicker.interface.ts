@@ -65,7 +65,7 @@ export interface DateTimePickerOptions<TPicker = any>
     /**
      * Order of pickers, it's possible use less pickers as is defined in pickerPeriodsDefinition for example 'month,year'
      */
-    pickerPeriodsOrder: string[] | string
+    pickerPeriodsOrder: string[]|string|null;
 
     /**
      * Definition of types for each period type for picker

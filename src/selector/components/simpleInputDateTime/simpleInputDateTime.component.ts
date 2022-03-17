@@ -78,7 +78,7 @@ export class SimpleInputDateTimeSelectorComponent<TDate = any> implements DateTi
     /**
      * Gets or sets placeholder that is displayed when there is no value selected
      */
-    public placeholder: string|undefined;
+    public placeholder: string|null = null;
 
     /**
      * Gets current value of datetime

@@ -26,6 +26,7 @@ const defaultConfiguration: DateTimePickerOptions<DateTimePicker> =
         'month': DateTimeMonthPickerComponent,
         'year': DateTimeYearPickerComponent
     },
+    pickerPeriodsOrder: null,
     cssClasses:
     {
     }
@@ -38,7 +39,7 @@ const defaultConfiguration: DateTimePickerOptions<DateTimePicker> =
 {
     selector: 'date-time-picker',
     templateUrl: 'picker.component.html',
-    // styleUrls: ['picker.component.scss'],
+    styleUrls: ['picker.component.css'],
     animations: [scaleUpDownTrigger],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -111,11 +112,11 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
      * Current options used by picker
      */
     @Input()
-    public get options(): DateTimePickerOptions<DateTimePicker<TDate>>
+    public get options(): Partial<DateTimePickerOptions<DateTimePicker<TDate>>>
     {
         return this._options;
     }
-    public set options(value: DateTimePickerOptions<DateTimePicker<TDate>>)
+    public set options(value: Partial<DateTimePickerOptions<DateTimePicker<TDate>>>)
     {
         this._options = extend(true, this._options, value);
 
@@ -179,7 +180,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
     public valueChange: EventEmitter<DateTimeValue<TDate>> = new EventEmitter<DateTimeValue<TDate>>();
 
     //######################### constructor #########################
-    constructor(@Optional() @Inject(DATE_TIME_PICKER_CONFIGURATION) configuration: DateTimePickerOptions<DateTimePicker<TDate>>,
+    constructor(@Optional() @Inject(DATE_TIME_PICKER_CONFIGURATION) configuration: Partial<DateTimePickerOptions<DateTimePicker<TDate>>>,
                 @Inject(DATE_API) protected _dateApi: DateApi<TDate>,
                 protected _changeDetector: ChangeDetectorRef)
     {
@@ -196,7 +197,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
     /**
      * Initialize component
      */
-    public ngOnInit()
+    public ngOnInit(): void
     {
         if (this._options.pickerPeriodsOrder)
         {
@@ -241,7 +242,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
     /**
      * Called when component is destroyed
      */
-    public ngOnDestroy()
+    public ngOnDestroy(): void
     {
         this._display = undefined;
         this._activePickerSubscriptions.unsubscribe();
@@ -254,7 +255,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
      * @param picker - Instance of picker or null
      * @internal
      */
-    public pickerCreated(picker: DateTimePicker<TDate>)
+    public pickerCreated(picker: DateTimePicker<TDate>): void
     {
         if(picker == this._activePicker)
         {
@@ -312,7 +313,7 @@ export class DateTimePickerComponent<TDate = any> implements OnInit, OnDestroy
     /**
      * Sets picker css classes
      */
-    protected _setPickerCssClasses()
+    protected _setPickerCssClasses(): void
     {
         if(!this._activePicker)
         {
