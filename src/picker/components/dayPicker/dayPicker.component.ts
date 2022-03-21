@@ -18,7 +18,8 @@ const defaultStyles: DayPickerCssClasses =
     periodValue: 'period-value',
     periodData: 'period-data',
     periodDatum: 'period-datum clickable',
-    weekdayName: 'weekday'
+    weekdayName: 'weekday',
+    clickable: 'clickable'
 };
 
 /**
@@ -61,11 +62,31 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
     //######################### public methods - template bindings #########################
 
     /**
+     * Changes displayed period to "lower" period
+     * @param event - Event that occured
+     * @internal
+     */
+    public goDown(event: Event): void
+    {
+        event.preventDefault();
+
+        if(!this.canGoDown)
+        {
+            return;
+        }
+
+        if(this.displayDate)
+        {
+            this._scaleDown.next(this.displayDate.value);
+        }
+    }
+
+    /**
      * Changes displayed month to next month
      * @param event - Event that occured
      * @internal
      */
-    public nextMonth(event: Event)
+    public nextMonth(event: Event): void
     {
         event.preventDefault();
         this.displayDate!.addMonths(1);
@@ -78,7 +99,7 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
      * @param event - Event that occured
      * @internal
      */
-    public previousMonth(event: Event)
+    public previousMonth(event: Event): void
     {
         event.preventDefault();
         this.displayDate!.subtractMonths(1);
@@ -92,7 +113,7 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
      * @param day - Selects day 
      * @internal
      */
-    public override select(event: Event, day: DayData<TDate>)
+    public override select(event: Event, day: DayData<TDate>): void
     {
         event.preventDefault();
 
@@ -101,28 +122,20 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
             return;
         }
 
-        //handle selection of value
-        if(!this.canGoDown)
+        this._setPeriod(day);
+
+        this._value =
         {
-            this._setPeriod(day);
+            from: day.date,
+            to: this._endOfPeriod(day)
+        };
+        
+        this._valueChange.next();
 
-            this._value =
-            {
-                from: day.date,
-                to: this._endOfPeriod(day)
-            };
-            
-            this._valueChange.next();
-
-            if(day.otherMonth)
-            {
-                this.display(this._dateApi.getValue(day.date));
-            }
-
-            return;
+        if(day.otherMonth)
+        {
+            this.display(this._dateApi.getValue(day.date));
         }
-
-        this._scaleDown.next(day.date);
     }
 
     //######################### public methods - implementation of DateTimePicker #########################

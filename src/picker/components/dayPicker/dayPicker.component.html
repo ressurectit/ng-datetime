@@ -1,6 +1,6 @@
 <div [ngClass]="cssClasses?.periodSelection | asRequired">
     <div [ngClass]="cssClasses?.previousPeriod | asRequired" (mousedown)="previousMonth($event)"></div>
-    <div [ngClass]="cssClasses?.periodValue | asRequired" [class.clickable]="canGoUp" (mousedown)="goUp($event)">{{displayDate?.format('MMMM yyyy')}}</div>
+    <div [ngClass]="cssClasses?.periodValue | asRequired | mergeCssClasses: [{'clickable': canGoUp}]" (mousedown)="goUp($event)">{{displayDate?.format('MMMM yyyy')}}</div>
     <div [ngClass]="cssClasses?.nextPeriod | asRequired" (mousedown)="nextMonth($event)"></div>
 </div>
 
@@ -14,4 +14,8 @@
          [class.active]="day.active"
          [class.disabled]="day.disabled"
          (mousedown)="select($event, day)">{{day.day}}</div>
+</div>
+
+<div class="flex-row" style="justify-content: center; border-top: 1px solid #FFF;">
+    <div [class.clickable]="canGoDown" (mousedown)="goDown($event)">{{displayDate?.value | dateFormat: 'time'}}</div>
 </div>

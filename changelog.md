@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 3.0.0 (2022-03-17)
+## Version 3.0.0 (2022-03-21)
 
 ### Bug Fixes
 
@@ -18,7 +18,9 @@
     - new `startOfMinute` method, that updates value to start date and time of current minute
     - new `endOfMinute` method, that updates value to end date and time of current minute
     - new `addMinutes` method, that add minutes, if count not specified adds 1 minute
-    - new `subtractMinutes` method, that minutes, if count not specified subtract 1 minute
+    - new `subtractMinutes` method, that subtract minutes, if count not specified subtract 1 minute
+    - new `hour` method, that gets or sets hours zero based
+    - new `minute` method, that gets or sets minutes zero based
 - `DateTimeRelativeParser` now supports *hours* and *minutes* as relative values
 - `FormatProvider` interface
     - new `year` property, that is format token for displaying full year
@@ -37,6 +39,8 @@
     - new `pickerAbsolute` property, that is indication whether use absolute positioning of picker
     - new `positionOptions` property, that is position options that are used in case of absolute picker
     - new `pickerAbsoluteContainer` property, that is css selector for absolute picker container
+- new `PickerImplBaseComponent` abstract component, that is base class used as base for picker as base implementation of DateTimePicker interface
+- updated `PickerBaseComponent` now extends `PickerImplBaseComponent`
 - new `DateTimePickerRendererDirective` directive, that is used for rendering datetime picker in selector
     - *inputs*
         - `options` current options used by selector
@@ -46,6 +50,24 @@
         - `selectorElement` selector element which is used during absolute positioning of picker
     - *outputs*
         - `valueChange` occurs when value changes
+- `DateTimeDayPickerComponent` component now supports scaling down to *dateTime*
+- `CommonPickerCssClasses` interface
+    - new `clickable` property, that is name of css class that represents clickable items in picker
+- new `DateTimeRollerTimePickerComponent` component used for rendering roller time picker
+- new `RollerTimePickerCssClasses` interface, that holds specific css classes for roller time picker
+- new `LoopScrollDirective` directive that renders loop scroll for array of elements
+    - *selector* `"loopScroll"`
+    - *inputs*
+        - `loopScroll` value that is being set in loop scroll
+        - `open` indication whether is currently selection scroll open
+    - *outputs*
+        - `loopScrollChange` occurs when current value of loop scroll changes
+    - *ContentChildren* of `LoopScrollDataDirective`, that is array of items that are loop scrolled
+- new `LoopScrollData` interface, that represents data for LoopScrollDirective
+- new `LoopScrollDataDirective` directive, that is loop scroll data that are used inside LoopScrollDirective
+    - *selector* `"loopScrollData"`
+    - *inputs*
+        - `loopScrollData` data for loop
 - *subpackage* `@anglr/datetime/moment`
     - updated `MomentDateApiObject` to correspond with `DateApiObject` interface
     - updated `MOMENT_FORMAT_PROVIDER` to correspond with `FormatProvider` interface
@@ -59,6 +81,7 @@
 - removed `AsRequiredTypePipe` replaced with one from `@anglr/common`
 - strict null checks
 - both `DateTimePickerOptions` and `DateTimeSelectorOptions` have now all properties required, and options are now passed as `Partial`
+- updated `CommonPickerCssClasses` have now all properties required, and setting is now passed as `Partial`
 
 ## Version 2.0.1 (2022-02-22)
 

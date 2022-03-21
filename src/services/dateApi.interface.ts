@@ -268,6 +268,36 @@ export interface DateApiObject<TDate = any>
     dayOfWeek(day?: number): number|DateApiObject<TDate>;
 
     /**
+     * Gets hours zero based
+     */
+    hour(): number;
+    /**
+     * Sets hours zero
+     * @param hour - hour to be set
+     */
+    hour(hour: number): DateApiObject<TDate>;
+    /**
+     * Gets or sets hours zero
+     * @param hour - If specified, sets hour
+     */
+    hour(hour?: number): DateApiObject<TDate>|number;
+
+    /**
+     * Gets minutes zero based
+     */
+    minute(): number;
+    /**
+     * Sets minutes zero based
+     * @param minute - minutes to be set
+     */
+    minute(minute: number): DateApiObject<TDate>;
+    /**
+     * Gets or sets minutes zero based
+     * @param minute - If specified, sets minutes
+     */
+    minute(minute?: number): DateApiObject<TDate>|number;
+
+    /**
      * Gets indication whether current value is before 'date'
      * @param date - Date which is this date compared to
      */

@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser} from '@anglr/datetime';
 import {isBlank, isPresent, isString} from '@jscrpt/common';
-import {toDate, getDate, setDate, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, parseISO, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth, setISODay, getISODay, subHours, addHours, endOfHour, startOfHour, startOfMinute, endOfMinute, addMinutes, subMinutes} from 'date-fns';
+import {toDate, getDate, setDate, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, parseISO, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth, setISODay, getISODay, subHours, addHours, endOfHour, startOfHour, startOfMinute, endOfMinute, addMinutes, subMinutes, getHours, setHours, getMinutes, setMinutes} from 'date-fns';
 
 import {DATE_FNS_LOCALE} from '../misc/tokens';
 import {DateFnsLocale} from './dateFnsLocale.service';
@@ -118,7 +118,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
         return this;
     }
 
-     /**
+    /**
      * Updates value to start date and time of current year
      * @returns Itself for fluent API
      */
@@ -419,7 +419,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
     {
         if(isPresent(year))
         {
-            this._value = setYear(this._value, year!);
+            this._value = setYear(this._value, year);
 
             return this;
         }
@@ -444,7 +444,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
     {
         if(isPresent(month))
         {
-            this._value = setMonth(this._value, month!);
+            this._value = setMonth(this._value, month);
 
             return this;
         }
@@ -469,7 +469,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
     {
         if(isPresent(day))
         {
-            this._value = setDate(this._value, day!);
+            this._value = setDate(this._value, day);
 
             return this;
         }
@@ -500,6 +500,56 @@ class DateFnsDateApiObject implements DateApiObject<Date>
         }
 
         return getISODay(this._value) - 1;
+    }
+
+    /**
+     * Gets hours zero based
+     */
+    public hour(): number;
+    /**
+     * Sets hours zero based
+     * @param hour - hour to be set
+     */
+    public hour(hour: number): DateApiObject<Date>;
+    /**
+     * Gets or sets hours zero based
+     * @param hour - If specified, sets hour
+     */
+    public hour(hour?: number): DateApiObject<Date>|number
+    {
+        if(isPresent(hour))
+        {
+            this._value = setHours(this._value, hour);
+
+            return this;
+        }
+
+        return getHours(this._value);
+    }
+
+    /**
+     * Gets minutes zero based
+     */
+    public minute(): number;
+    /**
+     * Sets minutes zero based
+     * @param minute - minutes to be set
+     */
+    public minute(minute: number): DateApiObject<Date>;
+    /**
+     * Gets or sets minutes zero based
+     * @param minute - If specified, sets minutes
+     */
+    public minute(minute?: number): DateApiObject<Date>|number
+    {
+        if(isPresent(minute))
+        {
+            this._value = setMinutes(this._value, minute);
+
+            return this;
+        }
+
+        return getMinutes(this._value);
     }
 
     /**

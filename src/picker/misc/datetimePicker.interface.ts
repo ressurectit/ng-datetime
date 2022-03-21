@@ -13,32 +13,37 @@ export interface CommonPickerCssClasses
     /**
      * Period selection element wrapping displayed period and previous, next buttons
      */
-    periodSelection?: string;
+    periodSelection: string;
 
     /**
      * Element used for switching period to previous one
      */
-    previousPeriod?: string;
+    previousPeriod: string;
 
     /**
      * Element used for switching period to next one
      */
-    nextPeriod?: string;
+    nextPeriod: string;
 
     /**
      * Element representing currently displayed period
      */
-    periodValue?: string;
+    periodValue: string;
 
     /**
      * Element wrapping displayed period data
      */
-    periodData?: string;
+    periodData: string;
 
     /**
      * Element representing single datum for period item
      */
-    periodDatum?: string;
+    periodDatum: string;
+
+    /**
+     * Name of css class that represents clickable items in picker
+     */
+    clickable: string;
 }
 
 /**

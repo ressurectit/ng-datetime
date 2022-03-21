@@ -17,7 +17,8 @@ const defaultStyles: MonthPickerCssClasses =
     nextPeriod: 'fas fa-angle-right clickable',
     periodValue: 'period-value',
     periodData: 'period-data',
-    periodDatum: 'period-datum clickable'
+    periodDatum: 'period-datum clickable',
+    clickable: 'clickable'
 };
 
 /**

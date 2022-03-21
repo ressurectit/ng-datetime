@@ -400,7 +400,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
     {
         if(isPresent(year))
         {
-            this._value = moment(this._value).year(year!);
+            this._value = moment(this._value).year(year);
 
             return this;
         }
@@ -425,7 +425,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
     {
         if(isPresent(month))
         {
-            this._value = moment(this._value).month(month!);
+            this._value = moment(this._value).month(month);
 
             return this;
         }
@@ -450,7 +450,7 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
     {
         if(isPresent(day))
         {
-            this._value = moment(this._value).date(day!);
+            this._value = moment(this._value).date(day);
 
             return this;
         }
@@ -475,12 +475,62 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
     {
         if(isPresent(day))
         {
-            this._value = moment(this._value).weekday(day!);
+            this._value = moment(this._value).weekday(day);
 
             return this;
         }
 
         return this._value.weekday();
+    }
+
+    /**
+     * Gets hours zero based
+     */
+    public hour(): number;
+    /**
+     * Sets hours zero
+     * @param hour - hour to be set
+     */
+    public hour(hour: number): DateApiObject<moment.Moment>;
+    /**
+     * Gets or sets hours zero
+     * @param hour - If specified, sets hour
+     */
+    public hour(hour?: number): DateApiObject<moment.Moment>|number
+    {
+        if(isPresent(hour))
+        {
+            this._value = moment(this._value).hours(hour);
+
+            return this;
+        }
+
+        return this._value.hours();
+    }
+
+    /**
+     * Gets minutes zero based
+     */
+    public minute(): number;
+    /**
+     * Sets minutes zero based
+     * @param minute - minutes to be set
+     */
+    public minute(minute: number): DateApiObject<moment.Moment>;
+    /**
+     * Gets or sets minutes zero based
+     * @param minute - If specified, sets minutes
+     */
+    public minute(minute?: number): DateApiObject<moment.Moment>|number
+    {
+        if(isPresent(minute))
+        {
+            this._value = moment(this._value).minutes(minute);
+
+            return this;
+        }
+
+        return this._value.minutes();
     }
 
     /**

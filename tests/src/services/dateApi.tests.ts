@@ -292,6 +292,28 @@ export function dateApiTests<TDate>(dateApi: () => DateApi<TDate>)
         expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-02-22=00:20:20');
     });
 
+    test('hour method => get/set 00:20 => 22:20', () =>
+    {
+        const dateApiObj = dateApi().getValue('2021-02-25T00:20:20');
+
+        expect(dateApiObj.hour()).toBe(0);
+
+        dateApiObj.hour(22);
+
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-02-25=22:20:20');
+    });
+
+    test('minute method => get/set 00:20 => 00:48', () =>
+    {
+        const dateApiObj = dateApi().getValue('2021-02-25T00:20:20');
+
+        expect(dateApiObj.minute()).toBe(20);
+
+        dateApiObj.minute(48);
+
+        expect(dateApiObj.format(FULL_FORMAT_ISO)).toBe('2021-02-25=00:48:20');
+    });
+
     test('isBefore method => valid', () =>
     {
         const dateApiObj = dateApi().getValue('2021-02-25T00:20:20');
