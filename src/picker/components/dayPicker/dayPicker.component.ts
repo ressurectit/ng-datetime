@@ -124,11 +124,34 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
 
         this._setPeriod(day);
 
-        this._value =
+        //when time picker is enabled
+        if(this.canGoDown)
         {
-            from: day.date,
-            to: this._endOfPeriod(day)
-        };
+            const from = this._dateApi
+                .getValue(day.date)
+                .hour(this._originalHour)
+                .minute(this._originalMinute);
+
+            const to = this._dateApi
+                .getValue(this._endOfPeriod(day))
+                .hour(this._originalHour)
+                .minute(this._originalMinute);
+
+            this._value =
+            {
+                from: from.value,
+                to: to.value
+            };
+        }
+        //no time picker
+        else
+        {
+            this._value =
+            {
+                from: day.date,
+                to: this._endOfPeriod(day)
+            };
+        }
         
         this._valueChange.next();
 
@@ -188,6 +211,15 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
         while(this.displayDate.isSameMonth(currentMonthDate));
 
         this.displayDate.resetOriginal();
+
+        //can go down set minutes and hours
+        if(this.canGoDown)
+        {
+            this.displayDate
+                .minute(this._originalMinute)
+                .hour(this._originalHour);
+        }
+
         this._updateMinMax();
 
         //set value if exists

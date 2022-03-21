@@ -93,9 +93,8 @@ export class DateTimeRollerTimePickerComponent<TDate = any> extends PickerImplBa
     /**
      * @inheritdoc
      */
-    public setValue(value: DateTimeValue<TDate> | null): void
+    public setValue(_value: DateTimeValue<TDate> | null): void
     {
-        console.log('value', value);
     }
 
     //######################### public methods - template bindings #########################
@@ -115,6 +114,11 @@ export class DateTimeRollerTimePickerComponent<TDate = any> extends PickerImplBa
 
         event?.stopPropagation();
         event?.preventDefault();
+
+        if(this.hour == value as unknown as number)
+        {
+            return;
+        }
 
         this.hour = value as unknown as number;
         
@@ -150,6 +154,11 @@ export class DateTimeRollerTimePickerComponent<TDate = any> extends PickerImplBa
 
         event?.stopPropagation();
         event?.preventDefault();
+
+        if(this.minute == value as unknown as number)
+        {
+            return;
+        }
 
         this.minute = value as unknown as number;
         

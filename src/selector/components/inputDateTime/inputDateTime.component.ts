@@ -556,6 +556,18 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
 
                 break;
             }
+            case 'H':
+            {
+                this._withMinMaxConstraint(() => increment ? this._dateApiValue!.addHours(1) : this._dateApiValue!.subtractHours(1));
+
+                break;
+            }
+            case 'm':
+            {
+                this._withMinMaxConstraint(() => increment ? this._dateApiValue!.addMinutes(1) : this._dateApiValue!.subtractMinutes(1));
+
+                break;
+            }
         }
     }
 }

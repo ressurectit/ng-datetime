@@ -29,11 +29,17 @@ export class DateValueProvider<TDate = any>
         let start: TDate = value;
         let end: TDate = value;
 
-        //day
-        if(fullFormat.indexOf('d') >= 0 || fullFormat.indexOf('D') >= 0)
+        //minute
+        if(fullFormat.indexOf('m') >= 0)
         {
-            start = val.startOfDay().value;
-            end = val.endOfDay().value;
+            start = val.startOfMinute().value;
+            end = val.endOfMinute().value;
+        }
+        //hour
+        else if(fullFormat.indexOf('H') >= 0)
+        {
+            start = val.startOfHour().value;
+            end = val.endOfHour().value;
         }
         //week
         else if(fullFormat.indexOf('w') >= 0)

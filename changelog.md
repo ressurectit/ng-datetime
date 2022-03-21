@@ -68,6 +68,8 @@
     - *selector* `"loopScrollData"`
     - *inputs*
         - `loopScrollData` data for loop
+- updated `InputDateTimeSelectorComponent` now supports *hours* and *minutes*
+- updated `DateValueProvider` now supports *hours* and *minutes*
 - *subpackage* `@anglr/datetime/moment`
     - updated `MomentDateApiObject` to correspond with `DateApiObject` interface
     - updated `MOMENT_FORMAT_PROVIDER` to correspond with `FormatProvider` interface

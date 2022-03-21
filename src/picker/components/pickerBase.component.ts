@@ -12,6 +12,18 @@ import {PickerImplBaseComponent} from './pickerImplBase.component';
 @Directive()
 export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodData<TDate> = any, TCssClasses = object> extends PickerImplBaseComponent<TDate, TCssClasses> implements DateTimePicker<TDate, TCssClasses>
 {
+    //######################### protected fields #########################
+
+    /**
+     * Value of originaly set hour
+     */
+    protected _originalHour: number = 0;
+
+    /**
+     * Value of originaly set minute
+     */
+    protected _originalMinute: number = 0;
+
     //######################### public properties - template bindings #########################
 
     /**
@@ -92,6 +104,12 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
     public setValue(value: DateTimeValue<TDate>|null): void
     {
         this._value = value;
+
+        if(this._value)
+        {
+            this._originalHour = this._dateApi.getValue(this._value.from).hour();
+            this._originalMinute = this._dateApi.getValue(this._value.from).minute();
+        }
 
         //value is present
         if(this._value && this.displayDate)
