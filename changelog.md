@@ -7,6 +7,7 @@
 - fixed date-fns bug with displaying *dateTime* format
 - fixed placeholder value of `undefined`
 - fixed problem with occasionally error *cant access property length*
+- fixed not working setting *disabled* or *enabled* from code
 
 ### Features
 

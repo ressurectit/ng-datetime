@@ -16,6 +16,6 @@
          (mousedown)="select($event, day)">{{day.day}}</div>
 </div>
 
-<div class="flex-row" style="justify-content: center; border-top: 1px solid #FFF;">
+<div class="flex-row" style="justify-content: center; border-top: 1px solid #FFF;" *ngIf="canGoDown">
     <div [class.clickable]="canGoDown" (mousedown)="goDown($event)">{{displayDate?.value | dateFormat: 'time'}}</div>
 </div>

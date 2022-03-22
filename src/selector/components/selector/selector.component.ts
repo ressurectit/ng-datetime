@@ -450,6 +450,7 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
     {
         this._disabled = disabled;
         this._activeSelector?.setDisabled(disabled);
+        this._activeSelector?.invalidateVisuals();
     }
 
     /**
