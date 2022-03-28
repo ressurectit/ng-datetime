@@ -6,4 +6,5 @@ export * from './directives/datetimeMaxValidator/datetimeMaxValidator.directive'
 export * from './directives/datetimeMinValidator/datetimeMinValidator.directive';
 export * from './directives/datetimeValidator/datetimeValidator.directive';
 export * from './directives/selectorControlValueAccessor/selectorControlValueAccessor.directive';
+export * from './directives/dateTimePickerRenderer/dateTimePickerRenderer.directive';
 export * from './misc/tokens';
