@@ -13,9 +13,19 @@
              [loopScroll]="hour"
              [open]="hoursOpen"
              (loopScrollChange)="setHour(null, $event)"
-             (click)="hoursOpen = !hoursOpen" >
+             (click)="hoursOpen = !hoursOpen">
+            <div *ngFor="let hour of hours | slice: -9"
+                 [loopScrollData]="hour?.data"
+                 [clone]="true"
+                 (click)="setHour($event, hour?.data)">{{hour?.displayText}}</div>
+
             <div *ngFor="let hour of hours"
                  [loopScrollData]="hour?.data"
+                 (click)="setHour($event, hour?.data)">{{hour?.displayText}}</div>
+
+            <div *ngFor="let hour of hours | slice: 0: 9"
+                 [loopScrollData]="hour?.data"
+                 [clone]="true"
                  (click)="setHour($event, hour?.data)">{{hour?.displayText}}</div>
         </div>
     </div>
@@ -33,8 +43,18 @@
              [open]="minutesOpen"
              (loopScrollChange)="setMinute(null, $event)"
              (click)="minutesOpen = !minutesOpen">
+            <div *ngFor="let minute of minutes | slice: -15"
+                 [loopScrollData]="minute?.data"
+                 [clone]="true"
+                 (click)="setMinute($event, minute?.data)">{{minute?.displayText}}</div>
+
             <div *ngFor="let minute of minutes"
                  [loopScrollData]="minute?.data"
+                 (click)="setMinute($event, minute?.data)">{{minute?.displayText}}</div>
+
+            <div *ngFor="let minute of minutes | slice: 0: 15"
+                 [loopScrollData]="minute?.data"
+                 [clone]="true"
                  (click)="setMinute($event, minute?.data)">{{minute?.displayText}}</div>
         </div>
     </div>

@@ -17,6 +17,12 @@ export class LoopScrollDataDirective<TData = any>
     @Input('loopScrollData')
     public data!: TData;
 
+    /**
+     * Indication that this node is clone
+     */
+    @Input()
+    public clone: boolean = false;
+
     //######################### constructor #########################
     constructor(public element: ElementRef<HTMLElement>)
     {

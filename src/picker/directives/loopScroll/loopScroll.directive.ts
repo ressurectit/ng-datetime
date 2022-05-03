@@ -1,5 +1,5 @@
-import {AfterContentInit, ContentChildren, Directive, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, QueryList, SimpleChanges} from '@angular/core';
-import {BindThis, isBlank, DebounceCall, nameof} from '@jscrpt/common';
+import {AfterContentInit, ContentChildren, Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, QueryList, SimpleChanges} from '@angular/core';
+import {DebounceCall, isBlank, nameof} from '@jscrpt/common';
 
 import {LoopScrollDataDirective} from '../loopScrollData/loopScrollData.directive';
 
@@ -10,7 +10,7 @@ import {LoopScrollDataDirective} from '../loopScrollData/loopScrollData.directiv
 {
     selector: '[loopScroll]'
 })
-export class LoopScrollDirective<TData = any> implements OnChanges, AfterContentInit, OnDestroy
+export class LoopScrollDirective<TData = any> implements OnChanges, AfterContentInit
 {
     //######################### protected fields #########################
 
@@ -20,9 +20,14 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
     protected _itemHeight?: number;
 
     /**
-     * Array of elements and data for scrolled stuff
+     * Array of elements for scrolled stuff
      */
     protected _items?: LoopScrollDataDirective[];
+
+    /**
+     * Array of elements and data for scrolled stuff
+     */ 
+    protected _dataItems?: LoopScrollDataDirective[];
 
     /**
      * Indication whether is loop scroll initialized
@@ -30,9 +35,9 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
     protected _initialized: boolean = false;
 
     /**
-     * Indication whether is opening active
+     * Count of cloned elements before or after
      */
-    protected _opening: boolean = false;
+    protected _clonedCount: number = 0;
 
     //######################### public properties - inputs #########################
 
@@ -56,13 +61,13 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
     @Output('loopScrollChange')
     public valueChange: EventEmitter<TData> = new EventEmitter<TData>();
 
-    //######################### public properties - children #########################
+    //######################### protected properties - children #########################
 
     /**
      * Array of items that are loop scrolled
      */
     @ContentChildren(LoopScrollDataDirective)
-    public items?: QueryList<LoopScrollDataDirective>;
+    protected items?: QueryList<LoopScrollDataDirective>;
 
     //######################### constructor #########################
     constructor(protected _scrollElement: ElementRef<HTMLElement>)
@@ -85,33 +90,30 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
 
         if(nameof<LoopScrollDirective>('open') in changes)
         {
-            let scrollOffset = this._scrollElement.nativeElement.scrollTop + (2 * itemHeight);
+            if(this.open)
+            {
+                this._scrollElement.nativeElement.scrollTo({top: this._scrollElement.nativeElement.scrollTop - (2 * itemHeight), behavior: 'auto'});
+
+                return;
+            }
 
             if(nameof<LoopScrollDirective>('value') in changes)
             {
-                const selectedItem = this._items?.find(itm => itm.data == this.value);
+                const selectedItem = this._dataItems?.find(itm => itm.data == this.value);
 
                 if(!selectedItem)
                 {
                     throw new Error('No item selected in loop scroll');
                 }
 
-                const selectedIndex = this._items!.indexOf(selectedItem);
-                scrollOffset = selectedIndex * itemHeight;
-            }
+                const selectedIndex = this._dataItems!.indexOf(selectedItem);
 
-            if(this.open)
-            {
-                this._opening = true;
-
-                this._scrollElement.nativeElement.scrollTo({top: this._scrollElement.nativeElement.scrollTop - (2 * itemHeight), behavior: 'auto'});
+                this._scrollElement.nativeElement.scrollTo({top: (selectedIndex + this._clonedCount) * itemHeight, behavior: 'auto'});
             }
             else
             {
-                this._scrollElement.nativeElement.scrollTo({top: scrollOffset, behavior: 'auto'});
+                this._scrollElement.nativeElement.scrollTo({top: this._scrollElement.nativeElement.scrollTop + (2 * itemHeight), behavior: 'auto'});
             }
-
-            setTimeout(() => this._opening = false, 300);
         }
     }
 
@@ -123,12 +125,14 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
     public ngAfterContentInit(): void
     {
         this._items = this.items?.toArray();
+        this._dataItems = this._items?.filter(itm => !itm.clone);
 
-        if(!this._items?.length)
+        if(!this._dataItems?.length)
         {
             this.items?.changes.subscribe(() =>
             {
                 this._items = this.items?.toArray();
+                this._dataItems = this._items?.filter(itm => !itm.clone);
 
                 this._initialize();
             });
@@ -139,16 +143,6 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
         this._initialize();
     }
 
-    //######################### public methods - implementation of OnDestroy #########################
-    
-    /**
-     * Called when component is destroyed
-     */
-    public ngOnDestroy(): void
-    {
-        this._scrollElement.nativeElement.removeEventListener('scroll', this._handleScroll);
-    }
-
     //######################### protected methods #########################
 
     /**
@@ -156,12 +150,15 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
      */
     protected _initialize(): void
     {
-        if(!this._items?.length)
+        const cloned = this._items?.filter(itm => itm.clone) ?? [];
+        this._clonedCount = cloned.length / 2;
+
+        if(!this._dataItems?.length)
         {
             return;
         }
 
-        this._items.forEach(itm =>
+        this._dataItems.forEach(itm =>
         {
             if(isBlank(this._itemHeight))
             {
@@ -176,94 +173,49 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
             }
         });
 
-        this._centerActiveValue();
-        this._scrollElement.nativeElement.addEventListener('scroll', this._handleScroll);
+        this._scrollElement.nativeElement.scrollTo({top: this._itemHeight! * this._clonedCount});
         this._initialized = true;
-    }
-
-    /**
-     * Reorders items to make number of items around scroll view equally sized
-     */
-    protected _reorderItems(): void
-    {
-        const scrollOffset = this._scrollElement.nativeElement.scrollTop;
-        const scrollHeight = this._scrollElement.nativeElement.scrollHeight;
-        const scrollableHeight = scrollHeight - (5 * (this._itemHeight ?? 0));
-        const scrollMid = scrollableHeight / 2;
-        const threshold = scrollableHeight * .25;
-        let reorderOffset: number|null = null;
-
-        //reorder items
-        if(scrollOffset <= scrollMid - threshold ||
-           scrollOffset >= scrollMid + threshold)
-        {
-            reorderOffset = scrollMid - scrollOffset;
-        }
-        else
-        {
-            return;
-        }
-
-        //move end items to start
-        if(reorderOffset >= 0)
-        {
-            const numberOfItems = Math.floor(reorderOffset / (this._itemHeight ?? 1));
-            const movedItems = this._items?.splice(this._items.length - numberOfItems, numberOfItems);
-
-            movedItems?.reverse().forEach(itm =>
-            {
-                this._scrollElement.nativeElement.prepend(itm.element.nativeElement);
-                this._items?.unshift(itm);
-            });
-        }
-        //move start items to end
-        else
-        {
-            const numberOfItems = Math.floor((reorderOffset * -1) / (this._itemHeight ?? 1));
-            const movedItems = this._items?.splice(0, numberOfItems);
-
-            movedItems?.forEach(itm =>
-            {
-                this._scrollElement.nativeElement.append(itm.element.nativeElement);
-                this._items?.push(itm);
-            });
-        }
     }
 
     /**
      * Handles scroll event
      */
-    @BindThis
-    @DebounceCall(40)
+    @HostListener('scroll')
     protected _handleScroll(): void
     {
-        this._reorderItems();
-
-        const itemHeight = this._itemHeight ?? 1;
-        const index = Math.round(this._scrollElement.nativeElement.scrollTop / itemHeight);
-
-        this._scrollElement.nativeElement.scrollTo({top: index * itemHeight, behavior: 'auto'});
-
-        if(!this._opening)
+        requestAnimationFrame(() =>
         {
-            this.valueChange.emit(this._items?.[this.open ? (index + 2) : index].data);
-        }
+            if(!this._dataItems)
+            {
+                return;
+            }
+
+            const index = this._scrollElement.nativeElement.scrollTop / (this._itemHeight ?? 1);
+            const dataIndex = index + (this.open ? 2 : 0) - this._clonedCount;
+            const dataLength = (this._itemHeight ?? 1) * this._dataItems.length;
+
+            if(dataIndex <= -1)
+            {
+                this._updateScroll(dataLength, true, index);
+            }
+            else if(dataIndex >= (this._dataItems.length ?? 0))
+            {
+                this._updateScroll(dataLength, false, index);
+            }
+        });
     }
 
     /**
-     * Centers active value
+     * Updates scroll to be at full value of item
+     * @param dataLength - Length of all data
+     * @param add - Indication whether add or subtract length
+     * @param index - Current index
      */
-    protected _centerActiveValue(): void
+    @DebounceCall(18)
+    protected _updateScroll(dataLength: number, add: boolean, index: number): void
     {
-        const selectedItem = this._items?.find(itm => itm.data == this.value);
+        this._scrollElement.nativeElement.scrollTo({top: (Math.round(index) * (this._itemHeight ?? 1)) + (add ? dataLength : (dataLength * -1)), behavior: 'auto'});
 
-        if(!selectedItem)
-        {
-            throw new Error('No item selected in loop scroll');
-        }
-
-        selectedItem?.element.nativeElement.scrollIntoView({block: 'center'});
-        this._reorderItems();
-        selectedItem?.element.nativeElement.scrollIntoView({block: 'center'});
+        //TODO emit value change
     }
 }

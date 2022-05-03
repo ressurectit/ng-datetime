@@ -24,6 +24,18 @@
     background-color: #666666;
     transition: all 250ms;
     border-radius: 4px;
+    scroll-snap-type: y mandatory;
+    contain: content;
+}
+
+.roller-scroll::-webkit-scrollbar
+{
+    display: none;
+}
+
+.roller-scroll>div
+{
+    scroll-snap-align: start;
 }
 
 .roller-scroll.open
