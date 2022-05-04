@@ -2,7 +2,7 @@
 {
     display: flex;
     flex-direction: row;
-    padding: 48px 64px;
+    padding: 64px 64px;
     font-size: 32px;
 }
 
@@ -21,7 +21,6 @@
     overflow: scroll;
     scrollbar-width: none;
     top: 0;
-    background-color: #666666;
     transition: all 250ms;
     border-radius: 4px;
     scroll-snap-type: y mandatory;
@@ -36,6 +35,19 @@
 .roller-scroll>div
 {
     scroll-snap-align: start;
+}
+
+.roller-item
+{
+    opacity: 0.6;
+    transition: all 100ms;
+    font-weight: 300;
+}
+
+.roller-item.selected
+{
+    opacity: 1;
+    font-weight: bold;
 }
 
 .roller-scroll.open

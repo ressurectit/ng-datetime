@@ -173,7 +173,7 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
             }
         });
 
-        this._scrollElement.nativeElement.scrollTo({top: this._itemHeight! * this._clonedCount});
+        this._scrollElement.nativeElement.scrollTo({top: this._itemHeight! * (this._clonedCount + this._dataItems!.findIndex(itm => itm.data == this.value))});
         this._initialized = true;
     }
 
@@ -194,13 +194,22 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
             const dataIndex = index + (this.open ? 2 : 0) - this._clonedCount;
             const dataLength = (this._itemHeight ?? 1) * this._dataItems.length;
 
+            if(index % 1 <= .2 || index % 1 >= .8)
+            {
+                this._scrollElement.nativeElement.querySelector('.selected')?.classList?.remove('selected');
+
+                const roundIndex = Math.round(index);
+                this._items![roundIndex + (this.open ? 2 : 0)].element.nativeElement.classList.add('selected');
+                this._emitValue(dataIndex);
+            }
+
             if(dataIndex <= -1)
             {
-                this._updateScroll(dataLength, true, index);
+                this._updateScroll(dataLength, true, index, dataIndex);
             }
             else if(dataIndex >= (this._dataItems.length ?? 0))
             {
-                this._updateScroll(dataLength, false, index);
+                this._updateScroll(dataLength, false, index, dataIndex);
             }
         });
     }
@@ -210,12 +219,35 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
      * @param dataLength - Length of all data
      * @param add - Indication whether add or subtract length
      * @param index - Current index
+     * @param dataIndex - Current index of data 
      */
     @DebounceCall(18)
-    protected _updateScroll(dataLength: number, add: boolean, index: number): void
+    protected _updateScroll(dataLength: number, add: boolean, index: number, dataIndex: number): void
     {
         this._scrollElement.nativeElement.scrollTo({top: (Math.round(index) * (this._itemHeight ?? 1)) + (add ? dataLength : (dataLength * -1)), behavior: 'auto'});
 
-        //TODO emit value change
+        this._emitValue(dataIndex);
+    }
+
+    /**
+     * Emits value after scroll
+     * @param index - Index of currently selected data item
+     */
+    protected _emitValue(index: number): void
+    {
+        index = Math.round(index) % this._dataItems!.length;
+        
+        if(index < 0)
+        {
+            index = this._dataItems!.length + index;
+        }
+
+        const item = this._dataItems![index];
+
+        if(this.value != item.data)
+        {
+            this.value = item.data;
+            this.valueChange.next(this.value);
+        }
     }
 }

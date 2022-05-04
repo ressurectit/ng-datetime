@@ -14,18 +14,21 @@
              [open]="hoursOpen"
              (loopScrollChange)="setHour(null, $event)"
              (click)="hoursOpen = !hoursOpen">
-            <div *ngFor="let hour of hours | slice: -9"
+            <div *ngFor="let hour of hours | slice: -14"
                  [loopScrollData]="hour?.data"
                  [clone]="true"
+                 class="roller-item"
                  (click)="setHour($event, hour?.data)">{{hour?.displayText}}</div>
 
             <div *ngFor="let hour of hours"
                  [loopScrollData]="hour?.data"
+                 class="roller-item"
                  (click)="setHour($event, hour?.data)">{{hour?.displayText}}</div>
 
-            <div *ngFor="let hour of hours | slice: 0: 9"
+            <div *ngFor="let hour of hours | slice: 0: 14"
                  [loopScrollData]="hour?.data"
                  [clone]="true"
+                 class="roller-item"
                  (click)="setHour($event, hour?.data)">{{hour?.displayText}}</div>
         </div>
     </div>
@@ -43,18 +46,21 @@
              [open]="minutesOpen"
              (loopScrollChange)="setMinute(null, $event)"
              (click)="minutesOpen = !minutesOpen">
-            <div *ngFor="let minute of minutes | slice: -15"
+            <div *ngFor="let minute of minutes | slice: -14"
                  [loopScrollData]="minute?.data"
                  [clone]="true"
+                 class="roller-item"
                  (click)="setMinute($event, minute?.data)">{{minute?.displayText}}</div>
 
             <div *ngFor="let minute of minutes"
                  [loopScrollData]="minute?.data"
+                 class="roller-item"
                  (click)="setMinute($event, minute?.data)">{{minute?.displayText}}</div>
 
-            <div *ngFor="let minute of minutes | slice: 0: 15"
+            <div *ngFor="let minute of minutes | slice: 0: 14"
                  [loopScrollData]="minute?.data"
                  [clone]="true"
+                 class="roller-item"
                  (click)="setMinute($event, minute?.data)">{{minute?.displayText}}</div>
         </div>
     </div>

@@ -117,6 +117,8 @@ export class DateTimeRollerTimePickerComponent<TDate = any> extends PickerImplBa
 
         if(this.hour == value as unknown as number)
         {
+            this.hoursOpen = false;
+
             return;
         }
 
