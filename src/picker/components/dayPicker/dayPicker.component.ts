@@ -1,6 +1,7 @@
 import {Component, ChangeDetectionStrategy, Inject, ChangeDetectorRef} from '@angular/core';
 import {extend} from '@jscrpt/common';
 
+import {DateTimeValue} from '../../../misc/datetime.interface';
 import {DATE_API} from '../../../misc/tokens';
 import {DateApi, DateApiObject} from '../../../services/dateApi.interface';
 import {DateTimePicker, DayData, PeriodData} from '../../misc/datetimePicker.interface';
@@ -48,6 +49,14 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
      * @internal
      */
     public weekdays: string[] = [];
+
+    /**
+     * Value used for displaying time
+     */
+    public get timeValue(): DateTimeValue<TDate> | null
+    {
+        return this._value;
+    }
 
     //######################### constructor #########################
     constructor(@Inject(DATE_API) dateApi: DateApi<TDate>,

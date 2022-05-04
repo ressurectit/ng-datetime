@@ -163,7 +163,7 @@ export abstract class PickerImplBaseComponent<TDate = any, TCssClasses = any> im
     public abstract setValue(value: DateTimeValue<TDate>|null): void;
 
     /**
-     * Set displays date to be displayed
+     * Sets display date to be displayed
      * @param value - Value that identifies period that is going to be displayed
      */
     public abstract display(value: DateApiObject<TDate>): void;

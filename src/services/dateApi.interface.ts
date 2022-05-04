@@ -401,4 +401,10 @@ export interface DateApi<TDate = any>
      * Gets array of weekday names in short format, order of days is dependent on locale
      */
     weekdaysShort(): string[];
+
+    /**
+     * Tests whether is value TDate
+     * @param value - Value to be tested whether is TDate
+     */
+    isDate(value: unknown): value is TDate;
 }

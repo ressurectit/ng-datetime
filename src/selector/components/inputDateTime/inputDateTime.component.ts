@@ -1,4 +1,5 @@
 import {Component, ChangeDetectionStrategy, Inject, ChangeDetectorRef, ElementRef, ViewChild} from '@angular/core';
+import {isPresent} from '@jscrpt/common';
 import {Observable, Subject} from 'rxjs';
 
 import {DateTimeValue} from '../../../misc/datetime.interface';
@@ -78,6 +79,11 @@ export class InputDateTimeSelectorComponent<TDate = any> implements DateTimeSele
     }
     public set format(value: string)
     {
+        if(isPresent(value))
+        {
+            value = this._dateApi.getFormat(value);
+        }
+
         //only if format changes
         if(this._format != value)
         {

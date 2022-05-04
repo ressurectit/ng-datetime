@@ -716,4 +716,12 @@ export class MomentDateApi implements DateApi<moment.Moment>
     {
         return moment.weekdaysShort(true);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public isDate(value: unknown): value is moment.Moment
+    {
+        return value instanceof moment;
+    }
 }

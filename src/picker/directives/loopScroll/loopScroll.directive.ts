@@ -39,6 +39,11 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
      */
     protected _clonedCount: number = 0;
 
+    /**
+     * Indication whether ignore scroll handle
+     */
+    protected _ignoreScrollHandle: boolean = false;
+
     //######################### public properties - inputs #########################
 
     /**
@@ -115,6 +120,12 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
                 this._scrollElement.nativeElement.scrollTo({top: this._scrollElement.nativeElement.scrollTop + (2 * itemHeight), behavior: 'auto'});
             }
         }
+        else if(nameof<LoopScrollDirective>('value') in changes)
+        {
+            this._ignoreScrollHandle = true;
+            this._scrollElement.nativeElement.scrollTo({top: this._itemHeight! * (this._clonedCount + this._dataItems!.findIndex(itm => itm.data == this.value) + (this.open ? -2 : 0)), behavior: 'auto'});
+            this._ignoreScrollHandle = false;
+        }
     }
 
     //######################### public methods - implementation of AfterContentInit #########################
@@ -173,7 +184,7 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
             }
         });
 
-        this._scrollElement.nativeElement.scrollTo({top: this._itemHeight! * (this._clonedCount + this._dataItems!.findIndex(itm => itm.data == this.value))});
+        this._scrollElement.nativeElement.scrollTo({top: this._itemHeight! * (this._clonedCount + this._dataItems!.findIndex(itm => itm.data == this.value)), behavior: 'auto'});
         this._initialized = true;
     }
 
@@ -183,6 +194,11 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
     @HostListener('scroll')
     protected _handleScroll(): void
     {
+        if(this._ignoreScrollHandle)
+        {
+            return;
+        }
+
         requestAnimationFrame(() =>
         {
             if(!this._dataItems)

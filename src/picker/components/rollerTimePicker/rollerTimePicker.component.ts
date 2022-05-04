@@ -93,8 +93,12 @@ export class DateTimeRollerTimePickerComponent<TDate = any> extends PickerImplBa
     /**
      * @inheritdoc
      */
-    public setValue(_value: DateTimeValue<TDate> | null): void
+    public setValue(value: DateTimeValue<TDate> | null): void
     {
+        if(value)
+        {
+            this.displayDate = this._dateApi.getValue(value.from);
+        }
     }
 
     //######################### public methods - template bindings #########################

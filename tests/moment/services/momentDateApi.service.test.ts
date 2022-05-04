@@ -59,6 +59,16 @@ describe('MomentDateApi class', () =>
     {
         expect(dateApi.weekdaysShort()).toEqual(['po', 'ut', 'st', 'št', 'pi', 'so', 'ne']);
     });
+
+    test('isDate method => true', () =>
+    {
+        expect(dateApi.isDate(moment())).toBe(true);
+    });
+
+    test('isDate method => false', () =>
+    {
+        expect(dateApi.isDate('not date')).toBe(false);
+    });
 });
 
 describe('MomentDateApiObject class', () =>
