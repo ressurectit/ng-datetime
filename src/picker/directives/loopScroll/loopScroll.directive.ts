@@ -44,13 +44,31 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
      */
     protected _ignoreScrollHandle: boolean = false;
 
-    //######################### public properties - inputs #########################
+    /**
+     * Indication whether skip value change
+     */
+    protected _skipValueChange: boolean = false;
 
     /**
      * Value that is being set in loop scroll
      */
+    protected _value?: TData;
+
+    //######################### public properties - inputs #########################
+
+    /**
+     * Gets or sets value that is being set in loop scroll
+     */
     @Input('loopScroll')
-    public value?: TData;
+    public get value(): TData
+    {
+        return this._value;
+    }
+    public set value(value: TData)
+    {
+        this._skipValueChange = this._value == value;
+        this._value = value;
+    }
 
     /**
      * Indication whether is currently selection scroll open
@@ -122,10 +140,15 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
         }
         else if(nameof<LoopScrollDirective>('value') in changes)
         {
-            this._ignoreScrollHandle = true;
-            this._scrollElement.nativeElement.scrollTo({top: this._itemHeight! * (this._clonedCount + this._dataItems!.findIndex(itm => itm.data == this.value) + (this.open ? -2 : 0)), behavior: 'auto'});
-            this._ignoreScrollHandle = false;
+            if(!this._skipValueChange)
+            {
+                this._ignoreScrollHandle = true;
+                this._scrollElement.nativeElement.scrollTo({top: this._itemHeight! * (this._clonedCount + this._dataItems!.findIndex(itm => itm.data == this.value) + (this.open ? -2 : 0)), behavior: 'auto'});
+                this._ignoreScrollHandle = false;
+            }
         }
+
+        this._skipValueChange = false;
     }
 
     //######################### public methods - implementation of AfterContentInit #########################

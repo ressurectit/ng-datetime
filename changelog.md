@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 3.0.0 (2022-03-21)
+## Version 3.0.0 (2022-05-04)
 
 ### Bug Fixes
 
@@ -8,6 +8,7 @@
 - fixed placeholder value of `undefined`
 - fixed problem with occasionally error *cant access property length*
 - fixed not working setting *disabled* or *enabled* from code
+- fixed problem with writing date manually into input
 
 ### Features
 
@@ -23,6 +24,8 @@
     - new `hour` method, that gets or sets hours zero based
     - new `minute` method, that gets or sets minutes zero based
 - `DateTimeRelativeParser` now supports *hours* and *minutes* as relative values
+- updated `DateApi` interface
+    - new `isDate` method, that tests whether is value TDate
 - `FormatProvider` interface
     - new `year` property, that is format token for displaying full year
     - new `month` property, that is format token for displaying month double digit number
@@ -51,7 +54,7 @@
         - `selectorElement` selector element which is used during absolute positioning of picker
     - *outputs*
         - `valueChange` occurs when value changes
-- `DateTimeDayPickerComponent` component now supports scaling down to *dateTime*
+- `DateTimeDayPickerComponent` component now supports scaling down to *time*
 - `CommonPickerCssClasses` interface
     - new `clickable` property, that is name of css class that represents clickable items in picker
 - new `DateTimeRollerTimePickerComponent` component used for rendering roller time picker
@@ -69,12 +72,14 @@
     - *selector* `"loopScrollData"`
     - *inputs*
         - `loopScrollData` data for loop
+        - `clone` indication that this node is clone
 - updated `InputDateTimeSelectorComponent` now supports *hours* and *minutes*
 - updated `DateValueProvider` now supports *hours* and *minutes*
 - *subpackage* `@anglr/datetime/moment`
     - updated `MomentDateApiObject` to correspond with `DateApiObject` interface
     - updated `MOMENT_FORMAT_PROVIDER` to correspond with `FormatProvider` interface
 - *subpackage* `@anglr/datetime/date-fns`
+    - updated `DateFnsDateApi` to correspond with `DateApi` interface
     - updated `DateFnsDateApiObject` to correspond with `DateApiObject` interface
     - updated `DATEFNS_FORMAT_PROVIDER` to correspond with `FormatProvider` interface
 
