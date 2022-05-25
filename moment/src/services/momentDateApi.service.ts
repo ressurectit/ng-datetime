@@ -6,7 +6,7 @@ import moment, {LongDateFormatKey} from 'moment';
 /**
  * Instance of object wrapping TDate, allowing manipulation with it
  */
-class MomentDateApiObject implements DateApiObject<moment.Moment>
+export class MomentDateApiObject implements DateApiObject<moment.Moment>
 {
     //######################### protected fields #########################
 

@@ -11,11 +11,18 @@
         - now creates `DateApiObject` using `DATE_API_OBJECT_TYPE`
     - new `momentDateApiObjectType` type that represents creation of DateApiObject for moment
     - new `MOMENT_DATE_API_OBJECT_TYPE` injection token used for injecting type that creates instance of DateApiObject for moment
+    - `MomentDateApiObject` made part of public API
 - *subpackage* `@anglr/datetime/date-fns`
     - updated `DateFnsDateApi` 
         - now creates `DateApiObject` using `DATE_API_OBJECT_TYPE`
     - new `dateFnsDateApiObjectType` type that represents creation of DateApiObject for date-fns
     - new `DATE_FNS_DATE_API_OBJECT_TYPE` injection token used for injecting type that creates instance of DateApiObject for date-fns
+    - `DateFnsDateApiObject` made part of public API
+
+### BREAKING CHANGES
+
+- updated `DateFnsDateApi` constructor has new parameter `DATE_API_OBJECT_TYPE`
+- renamed `DATEFNS_FORMAT_PROVIDER` to `DATE_FNS_FORMAT_PROVIDER`
 
 ## Version 3.0.0 (2022-05-04)
 
@@ -110,7 +117,6 @@
 - strict null checks
 - both `DateTimePickerOptions` and `DateTimeSelectorOptions` have now all properties required, and options are now passed as `Partial`
 - updated `CommonPickerCssClasses` have now all properties required, and setting is now passed as `Partial`
-- updated `DateFnsDateApi` constructor has new parameter `DATE_API_OBJECT_TYPE`
 
 ## Version 2.0.1 (2022-02-22)
 

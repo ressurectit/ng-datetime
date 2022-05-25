@@ -9,7 +9,7 @@ import {DateFnsLocale} from './dateFnsLocale.service';
 /**
  * Instance of object wrapping TDate, allowing manipulation with it
  */
-class DateFnsDateApiObject implements DateApiObject<Date>
+export class DateFnsDateApiObject implements DateApiObject<Date>
 {
     //######################### protected fields #########################
 
