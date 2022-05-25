@@ -6,6 +6,8 @@
 
 - new `DateApiObjectCtor` interface that, is definition of type, that is used for creating instance of DateApiObject
 - new `DATE_API_OBJECT_TYPE` injection token used for injecting type that creates instance of DateApiObject
+- updated `DateApi` interface
+    - new generic parameter `TDateApiObject` which allows to get specific `DateApiObject` implementation
 - *subpackage* `@anglr/datetime/moment`
     - updated `MomentDateApi` 
         - now creates `DateApiObject` using `DATE_API_OBJECT_TYPE`

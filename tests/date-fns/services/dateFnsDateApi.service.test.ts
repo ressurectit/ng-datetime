@@ -1,5 +1,5 @@
 import {DateApi, DateTimeRelativeParser, FormatProvider} from '@anglr/datetime';
-import {DateFnsDateApi, DATEFNS_FORMAT_PROVIDER} from '@anglr/datetime/date-fns';
+import {DateFnsDateApi, DATE_FNS_FORMAT_PROVIDER} from '@anglr/datetime/date-fns';
 import {sk} from 'date-fns/locale';
 
 import {dateApiTests} from '../../src/services/dateApi.tests';
@@ -33,7 +33,7 @@ describe('DateFnsDateApi class', () =>
     beforeAll(() =>
     {
         dateApi = initialize();
-        formatProvider = DATEFNS_FORMAT_PROVIDER.useFactory();
+        formatProvider = DATE_FNS_FORMAT_PROVIDER.useFactory();
     });
 
     test('weekStartsOnMonday method', () =>

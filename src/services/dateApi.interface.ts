@@ -380,19 +380,19 @@ export interface DateApiObject<TDate = any>
 /**
  * Date api abstraction, used for obtaining DateApi wrapper object
  */
-export interface DateApi<TDate = any>
+export interface DateApi<TDate = any, TDateApiObject extends DateApiObject<TDate> = any>
 {
     /**
      * Gets wrapping object used for manipulation
      * @param value - Value to be converted (parsed) and used for manipulation
      * @param format - Format string used for parsing string value
      */
-    getValue(value: DateValue|TDate, format?: string): DateApiObject<TDate>;
+    getValue(value: DateValue|TDate, format?: string): TDateApiObject;
 
     /**
      * Gets wrapping object used for manipulation instantiated to current date and time
      */
-    now(): DateApiObject<TDate>;
+    now(): TDateApiObject;
 
     /**
      * Gets format string using pseudo format
