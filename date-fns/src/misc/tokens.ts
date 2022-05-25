@@ -1,7 +1,8 @@
-import {FactoryProvider, InjectionToken} from '@angular/core';
-import {FormatProvider, FORMAT_PROVIDER} from '@anglr/datetime';
+import {ClassProvider, FactoryProvider, InjectionToken} from '@angular/core';
+import {DATE_API_OBJECT_TYPE, FormatProvider, FORMAT_PROVIDER} from '@anglr/datetime';
 
 import {DateFnsLocale} from '../services/dateFnsLocale.service';
+import {dateFnsDateApiObjectType} from '../services/dateFnsDateApi.service';
 
 /**
  * Injection token used for obtaining Date fns locale service
@@ -11,7 +12,7 @@ export const DATE_FNS_LOCALE: InjectionToken<DateFnsLocale> = new InjectionToken
 /**
  * Injection token used for obtaining date-fns FormatProvider implementation
  */
-export const DATEFNS_FORMAT_PROVIDER: FactoryProvider =
+export const DATE_FNS_FORMAT_PROVIDER: FactoryProvider =
 {
     provide: FORMAT_PROVIDER,
     useFactory: () =>
@@ -33,4 +34,13 @@ export const DATEFNS_FORMAT_PROVIDER: FactoryProvider =
             monthNameShort: 'LLL'
         };
     }
+};
+
+/**
+ * Injection token used for injecting type that creates instance of DateApiObject for date-fns
+ */
+export const DATE_FNS_DATE_API_OBJECT_TYPE: ClassProvider =
+{
+    provide: DATE_API_OBJECT_TYPE,
+    useClass: dateFnsDateApiObjectType
 };

@@ -1,6 +1,11 @@
 import {InjectionToken} from '@angular/core';
 
-import {DateApi, FormatProvider} from '../services';
+import {DateApi, DateApiObjectCtor, FormatProvider} from '../services';
+
+/**
+ * Injection token used for injecting type that creates instance of DateApiObject
+ */
+export const DATE_API_OBJECT_TYPE: InjectionToken<DateApiObjectCtor> = new InjectionToken<DateApiObjectCtor>('DATE_API_OBJECT_TYPE');
 
 /**
  * Injection token used for obtaining DateApi implementation

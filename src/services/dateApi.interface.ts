@@ -4,6 +4,14 @@
 export type DateValue = Date|string|number;
 
 /**
+ * Definition of type, that is used for creating instance of DateApiObject
+ */
+export interface DateApiObjectCtor<TObject extends DateApiObject<TDate> = any, TDate = any>
+{
+    new (value: TDate|DateValue, format?: string, ...additionalParams: any[]): TObject;
+}
+
+/**
  * Instance of object wrapping TDate, allowing manipulation with it
  */
 export interface DateApiObject<TDate = any>

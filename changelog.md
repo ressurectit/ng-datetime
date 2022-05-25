@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 3.0.0 (2022-05-04)
+## Version 3.0.0 (2022-05-25)
 
 ### Bug Fixes
 
@@ -73,15 +73,26 @@
     - *inputs*
         - `loopScrollData` data for loop
         - `clone` indication that this node is clone
+- new `DateApiObjectCtor` interface that, is definition of type, that is used for creating instance of DateApiObject
+- new `DATE_API_OBJECT_TYPE` injection token used for injecting type that creates instance of DateApiObject
 - updated `InputDateTimeSelectorComponent` now supports *hours* and *minutes*
 - updated `DateValueProvider` now supports *hours* and *minutes*
 - *subpackage* `@anglr/datetime/moment`
+    - updated `MomentDateApi` 
+        - to correspond with `DateApi` interface
+        - now creates `DateApiObject` using `DATE_API_OBJECT_TYPE`
     - updated `MomentDateApiObject` to correspond with `DateApiObject` interface
     - updated `MOMENT_FORMAT_PROVIDER` to correspond with `FormatProvider` interface
+    - new `momentDateApiObjectType` type that represents creation of DateApiObject for moment
+    - new `MOMENT_DATE_API_OBJECT_TYPE` injection token used for injecting type that creates instance of DateApiObject for moment
 - *subpackage* `@anglr/datetime/date-fns`
-    - updated `DateFnsDateApi` to correspond with `DateApi` interface
+    - updated `DateFnsDateApi` 
+        - to correspond with `DateApi` interface
+        - now creates `DateApiObject` using `DATE_API_OBJECT_TYPE`
     - updated `DateFnsDateApiObject` to correspond with `DateApiObject` interface
     - updated `DATEFNS_FORMAT_PROVIDER` to correspond with `FormatProvider` interface
+    - new `dateFnsDateApiObjectType` type that represents creation of DateApiObject for date-fns
+    - new `DATE_FNS_DATE_API_OBJECT_TYPE` injection token used for injecting type that creates instance of DateApiObject for date-fns
 
 ### BREAKING CHANGES
 
@@ -90,6 +101,7 @@
 - strict null checks
 - both `DateTimePickerOptions` and `DateTimeSelectorOptions` have now all properties required, and options are now passed as `Partial`
 - updated `CommonPickerCssClasses` have now all properties required, and setting is now passed as `Partial`
+- updated `DateFnsDateApi` constructor has new parameter `DATE_API_OBJECT_TYPE`
 
 ## Version 2.0.1 (2022-02-22)
 

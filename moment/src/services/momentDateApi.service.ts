@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser} from '@anglr/datetime';
+import {Inject, Injectable} from '@angular/core';
+import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser, DateApiObjectCtor, DATE_API_OBJECT_TYPE} from '@anglr/datetime';
 import {isBlank, isPresent} from '@jscrpt/common';
 import moment, {LongDateFormatKey} from 'moment';
 
@@ -8,17 +8,17 @@ import moment, {LongDateFormatKey} from 'moment';
  */
 class MomentDateApiObject implements DateApiObject<moment.Moment>
 {
-    //######################### private fields #########################
+    //######################### protected fields #########################
 
     /**
      * Original value that is not changed unless 'updateOriginal' is called
      */
-    private _originalValue: moment.Moment;
+    protected _originalValue: moment.Moment;
 
     /**
      * Instance of date
      */
-    private _value: moment.Moment;
+    protected _value: moment.Moment;
 
     //######################### public properties - implementation of DateApiObject #########################
 
@@ -663,7 +663,8 @@ class MomentDateApiObject implements DateApiObject<moment.Moment>
 export class MomentDateApi implements DateApi<moment.Moment>
 {
     //######################### constructor #########################
-    constructor(protected _relativeParser: DateTimeRelativeParser<moment.Moment>)
+    constructor(protected _relativeParser: DateTimeRelativeParser<moment.Moment>,
+                @Inject(DATE_API_OBJECT_TYPE) protected _dateApiObjecType: DateApiObjectCtor<MomentDateApiObject, moment.Moment>)
     {
     }
 
@@ -676,7 +677,7 @@ export class MomentDateApi implements DateApi<moment.Moment>
      */
     public getValue(value: DateValue|moment.Moment, format?: string): DateApiObject<moment.Moment>
     {
-        return new MomentDateApiObject(this._relativeParser.parse(value), format);
+        return new this._dateApiObjecType(this._relativeParser.parse(value), format);
     }
 
     /**
@@ -684,7 +685,7 @@ export class MomentDateApi implements DateApi<moment.Moment>
      */
     public now(): DateApiObject<moment.Moment>
     {
-        return new MomentDateApiObject(moment());
+        return new this._dateApiObjecType(moment());
     }
 
     /**
@@ -725,3 +726,8 @@ export class MomentDateApi implements DateApi<moment.Moment>
         return value instanceof moment;
     }
 }
+
+/**
+ * Type that represents creation of DateApiObject for moment
+ */
+export const momentDateApiObjectType: DateApiObjectCtor<MomentDateApiObject, moment.Moment> = MomentDateApiObject;

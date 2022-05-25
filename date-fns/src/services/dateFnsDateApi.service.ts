@@ -1,5 +1,5 @@
 import {Inject, Injectable} from '@angular/core';
-import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser} from '@anglr/datetime';
+import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser, DateApiObjectCtor, DATE_API_OBJECT_TYPE} from '@anglr/datetime';
 import {isBlank, isPresent, isString} from '@jscrpt/common';
 import {toDate, getDate, setDate, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, parseISO, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth, setISODay, getISODay, subHours, addHours, endOfHour, startOfHour, startOfMinute, endOfMinute, addMinutes, subMinutes, getHours, setHours, getMinutes, setMinutes, isDate} from 'date-fns';
 
@@ -11,17 +11,17 @@ import {DateFnsLocale} from './dateFnsLocale.service';
  */
 class DateFnsDateApiObject implements DateApiObject<Date>
 {
-    //######################### private fields #########################
+    //######################### protected fields #########################
 
     /**
      * Original value that is not changed unless 'updateOriginal' is called
      */
-    private _originalValue: Date;
+    protected _originalValue: Date;
 
     /**
      * Instance of date
      */
-    private _value: Date;
+    protected _value: Date;
 
     //######################### public properties - implementation of DateApiObject #########################
 
@@ -43,8 +43,8 @@ class DateFnsDateApiObject implements DateApiObject<Date>
 
     //######################### constructor #########################
     constructor(value: DateValue|Date,
-                protected _localeSvc: DateFnsLocale,
-                format?: string)
+                format: string|null|undefined,
+                protected _localeSvc: DateFnsLocale)
     {
         if(isString(value))
         {
@@ -633,7 +633,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
      */
     public clone(): DateApiObject<Date>
     {
-        return new DateFnsDateApiObject(new Date(this._value), this._localeSvc);
+        return new DateFnsDateApiObject(new Date(this._value), null, this._localeSvc);
     }
 
     /**
@@ -641,7 +641,7 @@ class DateFnsDateApiObject implements DateApiObject<Date>
      */
     public cloneOriginal(): DateApiObject<Date>
     {
-        return new DateFnsDateApiObject(new Date(this._originalValue), this._localeSvc);
+        return new DateFnsDateApiObject(new Date(this._originalValue), null, this._localeSvc);
     }
 
     /**
@@ -683,7 +683,8 @@ export class DateFnsDateApi implements DateApi<Date>
 {
     //######################### constructor #########################
     constructor(@Inject(DATE_FNS_LOCALE) protected _localeSvc: DateFnsLocale,
-                protected _relativeParser: DateTimeRelativeParser<Date>)
+                protected _relativeParser: DateTimeRelativeParser<Date>,
+                @Inject(DATE_API_OBJECT_TYPE) protected _dateApiObjecType: DateApiObjectCtor<DateFnsDateApiObject, Date>)
     {
     }
 
@@ -696,7 +697,7 @@ export class DateFnsDateApi implements DateApi<Date>
      */
     public getValue(value: DateValue|Date, format?: string): DateApiObject<Date>
     {
-        return new DateFnsDateApiObject(this._relativeParser.parse(value), this._localeSvc, format);
+        return new this._dateApiObjecType(this._relativeParser.parse(value), format, this._localeSvc);
     }
 
     /**
@@ -704,7 +705,7 @@ export class DateFnsDateApi implements DateApi<Date>
      */
     public now(): DateApiObject<Date>
     {
-        return new DateFnsDateApiObject(new Date(), this._localeSvc);
+        return new this._dateApiObjecType(new Date(), null, this._localeSvc);
     }
 
     /**
@@ -782,3 +783,8 @@ export class DateFnsDateApi implements DateApi<Date>
         return isDate(value);
     }
 }
+
+/**
+ * Type that represents creation of DateApiObject for date-fns
+ */
+export const dateFnsDateApiObjectType: DateApiObjectCtor<DateFnsDateApiObject, Date> = DateFnsDateApiObject;
