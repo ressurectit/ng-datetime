@@ -1,4 +1,4 @@
-import {Inject, Injectable} from '@angular/core';
+import {ClassProvider, Inject, Injectable} from '@angular/core';
 import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser, DateApiObjectCtor, DATE_API_OBJECT_TYPE} from '@anglr/datetime';
 import {isBlank, isPresent, isString} from '@jscrpt/common';
 import {toDate, getDate, setDate, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, parseISO, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth, setISODay, getISODay, subHours, addHours, endOfHour, startOfHour, startOfMinute, endOfMinute, addMinutes, subMinutes, getHours, setHours, getMinutes, setMinutes, isDate} from 'date-fns';
@@ -788,3 +788,12 @@ export class DateFnsDateApi implements DateApi<Date>
  * Type that represents creation of DateApiObject for date-fns
  */
 export const dateFnsDateApiObjectType: DateApiObjectCtor<DateFnsDateApiObject, Date> = DateFnsDateApiObject;
+
+/**
+ * Injection token used for injecting type that creates instance of DateApiObject for date-fns
+ */
+export const DATE_FNS_DATE_API_OBJECT_TYPE: ClassProvider =
+{
+    provide: DATE_API_OBJECT_TYPE,
+    useClass: dateFnsDateApiObjectType
+};

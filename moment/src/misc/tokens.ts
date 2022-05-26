@@ -1,7 +1,5 @@
-import {ClassProvider, FactoryProvider} from '@angular/core';
-import {DATE_API_OBJECT_TYPE, FormatProvider, FORMAT_PROVIDER} from '@anglr/datetime';
-
-import {momentDateApiObjectType} from '../services/momentDateApi.service';
+import {FactoryProvider} from '@angular/core';
+import {FormatProvider, FORMAT_PROVIDER} from '@anglr/datetime';
 
 /**
  * Injection token used for obtaining moment FormatProvider implementation
@@ -28,13 +26,4 @@ export const MOMENT_FORMAT_PROVIDER: FactoryProvider =
             monthNameShort: 'MMM'
         };
     }
-};
-
-/**
- * Injection token used for injecting type that creates instance of DateApiObject for moment
- */
-export const MOMENT_DATE_API_OBJECT_TYPE: ClassProvider =
-{
-    provide: DATE_API_OBJECT_TYPE,
-    useClass: momentDateApiObjectType
 };
