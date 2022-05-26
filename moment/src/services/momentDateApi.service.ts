@@ -1,4 +1,4 @@
-import {ClassProvider, Inject, Injectable} from '@angular/core';
+import {Inject, Injectable, ValueProvider} from '@angular/core';
 import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser, DateApiObjectCtor, DATE_API_OBJECT_TYPE} from '@anglr/datetime';
 import {isBlank, isPresent} from '@jscrpt/common';
 import moment, {LongDateFormatKey} from 'moment';
@@ -735,8 +735,8 @@ export const momentDateApiObjectType: DateApiObjectCtor<MomentDateApiObject, mom
 /**
  * Injection token used for injecting type that creates instance of DateApiObject for moment
  */
-export const MOMENT_DATE_API_OBJECT_TYPE: ClassProvider =
+export const MOMENT_DATE_API_OBJECT_TYPE: ValueProvider =
 {
     provide: DATE_API_OBJECT_TYPE,
-    useClass: momentDateApiObjectType
+    useValue: momentDateApiObjectType
 };
