@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 4.0.0 (2022-05-25)
+## Version 4.0.0 (2022-10-13)
 
 ### Features
 
@@ -23,6 +23,7 @@
 
 ### BREAKING CHANGES
 
+- updated `DateConvertPipe` now returns `DateApiObject<TDate>` instead of `TDate`
 - updated `DateFnsDateApi` constructor has new parameter `DATE_API_OBJECT_TYPE`
 - renamed `DATEFNS_FORMAT_PROVIDER` to `DATE_FNS_FORMAT_PROVIDER`
 

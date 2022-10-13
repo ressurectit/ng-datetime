@@ -1,7 +1,7 @@
 import {Inject, Pipe, PipeTransform} from '@angular/core';
 
 import {DATE_API} from '../misc/tokens';
-import {DateApi, DateValue} from '../services';
+import {DateApi, DateApiObject, DateValue} from '../services';
 
 /**
  * Pipe that is used for converting date
@@ -21,13 +21,13 @@ export class DateConvertPipe<TDate = any> implements PipeTransform
      * @param value - value to be transformed
      * @param parseFormat - format used for parsing string date
      */
-    public transform(value: TDate|DateValue, parseFormat?: string): TDate|null
+    public transform(value: TDate|DateValue, parseFormat?: string): DateApiObject<TDate>|null
     {
         const dateObj = this._dateApi.getValue(value, parseFormat);
 
         if(dateObj.isValid())
         {
-            return dateObj.value;
+            return dateObj;
         }
 
         return null;

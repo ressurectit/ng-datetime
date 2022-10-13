@@ -2,7 +2,7 @@ import {Injectable, Injector} from '@angular/core';
 import {isString} from '@jscrpt/common';
 
 import {DATE_API} from '../misc/tokens';
-import {DateApi, DateValue} from './dateApi.interface';
+import {DateApi, DateApiObject, DateValue} from './dateApi.interface';
 
 /**
  * Service used for parsing relative date time strings
@@ -15,7 +15,7 @@ export class DateTimeRelativeParser<TDate = any>
     /**
      * Date api for handling
      */
-    protected _dateApi?: DateApi<TDate>;
+    protected _dateApi?: DateApi<TDate, DateApiObject>;
 
     //######################### constructor #########################
     constructor(protected _injector: Injector)

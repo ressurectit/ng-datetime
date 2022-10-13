@@ -1,5 +1,5 @@
 import {DateApi, DateTimeRelativeParser, FormatProvider} from '@anglr/datetime';
-import {MomentDateApi, MOMENT_FORMAT_PROVIDER} from '@anglr/datetime/moment';
+import {MomentDateApi, momentDateApiObjectType, MOMENT_FORMAT_PROVIDER} from '@anglr/datetime/moment';
 import moment from 'moment';
 
 import {dateApiTests} from '../../src/services/dateApi.tests';
@@ -21,7 +21,7 @@ function initialize(): DateApi<moment.Moment>
         }
     };
 
-    return new MomentDateApi(parser);
+    return new MomentDateApi(parser, momentDateApiObjectType);
 }
 
 describe('MomentDateApi class', () =>

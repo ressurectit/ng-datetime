@@ -1,5 +1,5 @@
 import {DateApi, DateTimeRelativeParser, FormatProvider} from '@anglr/datetime';
-import {DateFnsDateApi, DATE_FNS_FORMAT_PROVIDER} from '@anglr/datetime/date-fns';
+import {DateFnsDateApi, dateFnsDateApiObjectType, DATE_FNS_FORMAT_PROVIDER} from '@anglr/datetime/date-fns';
 import {sk} from 'date-fns/locale';
 
 import {dateApiTests} from '../../src/services/dateApi.tests';
@@ -22,7 +22,8 @@ function initialize(): DateApi<Date>
     return new DateFnsDateApi({
                                   locale: sk
                               },
-                              parser);
+                              parser,
+                              dateFnsDateApiObjectType);
 }
 
 describe('DateFnsDateApi class', () =>

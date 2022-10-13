@@ -380,7 +380,7 @@ export interface DateApiObject<TDate = any>
 /**
  * Date api abstraction, used for obtaining DateApi wrapper object
  */
-export interface DateApi<TDate = any, TDateApiObject extends DateApiObject<TDate> = any>
+export interface DateApi<TDate = any, TDateApiObject extends DateApiObject<TDate> = DateApiObject<TDate>>
 {
     /**
      * Gets wrapping object used for manipulation
