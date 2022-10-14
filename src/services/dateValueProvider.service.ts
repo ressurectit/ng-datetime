@@ -41,6 +41,12 @@ export class DateValueProvider<TDate = any>
             start = val.startOfHour().value;
             end = val.endOfHour().value;
         }
+        //day
+        else if(fullFormat.indexOf('d') >= 0)
+        {
+            start = val.startOfDay().value;
+            end = val.endOfDay().value;
+        }
         //week
         else if(fullFormat.indexOf('w') >= 0)
         {

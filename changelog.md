@@ -1,6 +1,10 @@
 # Changelog
 
-## Version 4.0.0 (2022-10-13)
+## Version 4.0.0 (2022-10-14)
+
+### Bug Fixes
+
+- updated `DateValueProvider` service, now correctly returns start of day for format with day
 
 ### Features
 
