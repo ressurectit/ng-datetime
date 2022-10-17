@@ -3,7 +3,7 @@ import {Dictionary} from '@jscrpt/common';
 import {Observable} from 'rxjs';
 
 import {DateTimeValue} from '../../../interfaces/dateTime/datetime.interface';
-import {DateApiObject} from '../../../services/dateApi.interface';
+import {DateApiObject} from '../../../services/dateApi/dateApi.interface';
 
 /**
  * Shared css classes for all pickers

@@ -3,7 +3,7 @@ import {NG_VALIDATORS, AbstractControl, Validator, ValidatorFn, ValidationErrors
 
 import {Validators} from '../../../../misc/validators';
 import {DateTimeSelectorComponent} from '../../components/selector/selector.component';
-import {DateApi} from '../../../../services/dateApi.interface';
+import {DateApi} from '../../../../services/dateApi/dateApi.interface';
 import {DATE_API} from '../../../../misc/tokens';
 
 /**

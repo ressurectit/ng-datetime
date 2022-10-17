@@ -43,6 +43,11 @@ export interface DateApiObject<TDate = any>
     format(format: string): string;
 
     /**
+     * Gets value of date time as unix timestamp
+     */
+    unixTimestamp(): number;
+
+    /**
      * Updates value to start date and time of current decade
      * @returns Itself for fluent API
      */

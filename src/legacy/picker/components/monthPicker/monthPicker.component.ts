@@ -2,7 +2,7 @@ import {Component, ChangeDetectionStrategy, Inject, ChangeDetectorRef} from '@an
 import {extend} from '@jscrpt/common';
 
 import {DATE_API} from '../../../../misc/tokens';
-import {DateApi, DateApiObject} from '../../../../services/dateApi.interface';
+import {DateApi, DateApiObject} from '../../../../services/dateApi/dateApi.interface';
 import {DateTimePicker, MonthData, PeriodData} from '../../misc/datetimePicker.interface';
 import {PickerBaseComponent} from '../pickerBase.component';
 import {MonthPickerCssClasses} from './monthPicker.interfaces';

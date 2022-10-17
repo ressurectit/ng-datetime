@@ -1,7 +1,7 @@
 import {Directive, ElementRef, EventEmitter, ExistingProvider, forwardRef, Input, OnDestroy} from '@angular/core';
 import {BindThis} from '@jscrpt/common';
 
-import {DateTimeInput, DateTimeValue} from '../../../../interfaces';
+import {DateTimeInput, DateTimeValue, FormatProvider} from '../../../../interfaces';
 import {DATE_TIME_INPUT} from '../../../../misc/tokens';
 
 /**
@@ -81,6 +81,12 @@ export class DateTimeInputDirective<TDate = unknown> implements DateTimeInput, O
     @Input()
     public formatted: boolean = false;
 
+    /**
+     * 
+     */
+    @Input()
+    public format: keyof FormatProvider|string = 'date';
+
     //######################### constructors #########################
     constructor(protected element: ElementRef<HTMLInputElement>,)
     {
@@ -105,13 +111,10 @@ export class DateTimeInputDirective<TDate = unknown> implements DateTimeInput, O
 
     /**
      * Handles input event on input
-     * @param event - Event that occured
      */
     @BindThis
-    protected handleInput(event: Event): void
+    protected handleInput(): void
     {
-        console.log(event);
-
         this.valueChange.next();
     }
 

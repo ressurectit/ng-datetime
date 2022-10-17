@@ -6,12 +6,12 @@ export interface DateTimeValue<TDate = any>
     /**
      * Starting date and time of period
      */
-    from: TDate;
+    from: TDate|undefined|null;
 
     /**
      * Ending date and time of period
      */
-    to: TDate;
+    to: TDate|undefined|null;
 }
 
 //TODO: remove when not necessary

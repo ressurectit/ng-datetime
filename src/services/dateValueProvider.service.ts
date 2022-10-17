@@ -2,7 +2,7 @@ import {Inject, Injectable} from '@angular/core';
 
 import {DateTimeValue} from '../interfaces/dateTime/datetime.interface';
 import {DATE_API} from '../misc/tokens';
-import {DateApi} from './dateApi.interface';
+import {DateApi} from './dateApi/dateApi.interface';
 
 /**
  * Class used for obtaining DateTimeValue for various formats

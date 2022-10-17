@@ -2,8 +2,9 @@ import {Directive, ExistingProvider, forwardRef, Inject, OnDestroy} from '@angul
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Subscription} from 'rxjs';
 
-import {DateTimeInput, DateTimeValue} from '../../../../interfaces';
+import {DateTimeInput} from '../../../../interfaces';
 import {DATE_TIME_INPUT} from '../../../../misc/tokens';
+import {DateTimeInputOutputValue} from '../../../../misc/types';
 
 /**
  * Control value accessor that is used for getting and setting value for date time
@@ -50,7 +51,7 @@ export class DateTimeControlValueAccessorDirective<TDate = unknown> implements C
     /**
      * @inheritdoc
      */
-    public writeValue(value: string|DateTimeValue<TDate>|TDate|undefined|null): void
+    public writeValue(value: DateTimeInputOutputValue<TDate>|undefined|null): void
     {
         this.input.value = value;
     }
@@ -58,7 +59,7 @@ export class DateTimeControlValueAccessorDirective<TDate = unknown> implements C
     /**
      * @inheritdoc
      */
-    public registerOnChange(fn: (data: string|DateTimeValue<TDate>|TDate|undefined|null) => void): void
+    public registerOnChange(fn: (data: DateTimeInputOutputValue<TDate>|undefined|null) => void): void
     {
         this.initSubscriptions.add(this.input.valueChange.subscribe(() => fn(this.input.value)));
     }

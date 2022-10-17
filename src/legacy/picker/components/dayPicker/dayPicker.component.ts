@@ -3,7 +3,7 @@ import {extend} from '@jscrpt/common';
 
 import {DateTimeValue} from '../../../../interfaces/dateTime/datetime.interface';
 import {DATE_API} from '../../../../misc/tokens';
-import {DateApi, DateApiObject} from '../../../../services/dateApi.interface';
+import {DateApi, DateApiObject} from '../../../../services/dateApi/dateApi.interface';
 import {DateTimePicker, DayData, PeriodData} from '../../misc/datetimePicker.interface';
 import {PickerBaseComponent} from '../pickerBase.component';
 import {DayPickerCssClasses} from './dayPicker.interfaces';

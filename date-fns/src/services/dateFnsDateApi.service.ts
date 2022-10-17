@@ -1,7 +1,7 @@
 import {Inject, Injectable, ValueProvider} from '@angular/core';
 import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser, DateApiObjectCtor, DATE_API_OBJECT_TYPE} from '@anglr/datetime';
 import {isBlank, isPresent, isString} from '@jscrpt/common';
-import {toDate, getDate, setDate, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, parseISO, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth, setISODay, getISODay, subHours, addHours, endOfHour, startOfHour, startOfMinute, endOfMinute, addMinutes, subMinutes, getHours, setHours, getMinutes, setMinutes, isDate} from 'date-fns';
+import {toDate, getDate, setDate, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, parseISO, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth, setISODay, getISODay, subHours, addHours, endOfHour, startOfHour, startOfMinute, endOfMinute, addMinutes, subMinutes, getHours, setHours, getMinutes, setMinutes, isDate, getUnixTime} from 'date-fns';
 
 import {DATE_FNS_LOCALE} from '../misc/tokens';
 import {DateFnsLocale} from './dateFnsLocale.service';
@@ -94,6 +94,14 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     public format(formatString: string): string
     {
         return format(this._value, formatString, {locale: this._localeSvc.locale});
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public unixTimestamp(): number
+    {
+        return getUnixTime(this._value);
     }
 
     /**
@@ -705,7 +713,7 @@ export class DateFnsDateApi implements DateApi<Date>
      */
     public now(): DateApiObject<Date>
     {
-        return new this._dateApiObjecType(new Date(), null, this._localeSvc);
+        return new this._dateApiObjecType(new Date(), null ?? undefined, this._localeSvc);
     }
 
     /**

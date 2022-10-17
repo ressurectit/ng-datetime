@@ -1,6 +1,6 @@
 import {EventEmitter} from '@angular/core';
 
-import {DateTimeValue} from '../dateTime/datetime.interface';
+import {DateTimeInputOutputValue} from '../../misc/types';
 
 /**
  * Defines date time input and communication API for it
@@ -15,7 +15,7 @@ export interface DateTimeInput<TDate = unknown>
     /**
      * Current value of date time, could be string, TDate object, or ranged DateTimeValue
      */
-    value: string|DateTimeValue<TDate>|TDate|undefined|null;
+    value: DateTimeInputOutputValue<TDate>|undefined|null;
 
     /**
      * Indication whether is date time disabled

@@ -29,7 +29,24 @@
         - `OnDestroy`
     - **provides**
         - `NG_VALUE_ACCESSOR` providing self
-    
+- new `DateTimeValueFormat` enum, that represents available formats for date time value
+    - `DateInstance` instance of date
+    - `UnixTimestamp` numeric unix timestamp in seconds
+    - `FormattedString` formatted date as string value
+    - `RangeOfDateInstances` range of date instances from, to
+- new `DateTimeObjectValue` type that represents parsed date value or values in case of range
+- new `DateTimeInputOutputValue` type that represents input output types that can be processed by date time
+- new `parseDateTime` function, that parses date time input output value
+- new `formatDateTime` function, that formats value into specified format of date time
+- new `isDateTimeValue` function, that tests whether value is `DateTimeValue`
+- updated `DateApiObject` interface
+    - new `unixTimestamp` method, that gets value of date time as unix timestamp
+- *subpackage* `@anglr/datetime/moment`
+    - updated `MomentDateApi`
+        - now implements also new `unixTimestamp`
+- *subpackage* `@anglr/datetime/date-fns`
+    - updated `DateFnsDateApi` 
+        - now implements also new `unixTimestamp`
 
 ### BREAKING CHANGES
 
@@ -43,6 +60,9 @@
 - minimal supported version of `date-fns` is now `2.29.3`
 - dropped dependency `positions`
 - all previous selectors, pickers and everything is now deprecated and marked as legacy
+- updated `DateTimeValue` interface
+    - `from` can now also be `undefined` or `null`
+    - `to` can now also be `undefined` or `null`
 
 ## Version 4.0.0 (2022-10-14)
 
