@@ -62,7 +62,7 @@ export class LoopScrollDirective<TData = any> implements OnChanges, AfterContent
     @Input('loopScroll')
     public get value(): TData
     {
-        return this._value;
+        return this._value!;
     }
     public set value(value: TData)
     {

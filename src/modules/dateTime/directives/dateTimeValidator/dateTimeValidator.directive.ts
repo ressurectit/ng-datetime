@@ -10,7 +10,7 @@ import {DateApi} from '../../../../services';
  */
 @Directive(
 {
-    selector: 'input[dateTime][validate]',
+    selector: '[dateTime][validate]',
     providers:
     [
         <ExistingProvider>

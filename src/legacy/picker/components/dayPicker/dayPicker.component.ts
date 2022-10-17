@@ -232,7 +232,7 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
         this._updateMinMax();
 
         //set value if exists
-        if(this._value && (this.displayDate.isSameMonth(this._value.from) || this.displayDate.isSameMonth(this._value.to)))
+        if(this._value && (this.displayDate.isSameMonth(this._value.from!) || this.displayDate.isSameMonth(this._value.to!)))
         {
             this.setValue(this._value);
         }

@@ -137,7 +137,7 @@ export class DateTimeSelectorControlValueAccessor<TDate> implements ControlValue
             }
             else
             {
-                fn(value.from);
+                fn(value.from!);
             }
         }
     }

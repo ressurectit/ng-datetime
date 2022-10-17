@@ -118,7 +118,7 @@ export class DateTimeYearPickerComponent<TDate = any> extends PickerBaseComponen
         this.period = `${this.displayDate.year()} - ${this.displayDate.year() + 10}`;
 
         //set value if exists
-        if(this._value && (this.displayDate.isSameDecade(this._value.from) || this.displayDate.isSameDecade(this._value.to)))
+        if(this._value && (this.displayDate.isSameDecade(this._value.from!) || this.displayDate.isSameDecade(this._value.to!)))
         {
             this.setValue(this._value);
         }

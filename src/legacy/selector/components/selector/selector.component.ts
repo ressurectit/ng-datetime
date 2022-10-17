@@ -464,6 +464,6 @@ export class DateTimeSelectorComponent<TDate = any> implements OnInit, OnChanges
             return null;
         }
 
-        return this._value.from;
+        return this._value.from!;
     }
 }

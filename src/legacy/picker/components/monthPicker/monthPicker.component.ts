@@ -100,7 +100,7 @@ export class DateTimeMonthPickerComponent<TDate = any> extends PickerBaseCompone
         this._updateMinMax();
 
         //set value if exists
-        if(this._value && (this.displayDate.isSameYear(this._value.from) || this.displayDate.isSameYear(this._value.to)))
+        if(this._value && (this.displayDate.isSameYear(this._value.from!) || this.displayDate.isSameYear(this._value.to!)))
         {
             this.setValue(this._value);
         }

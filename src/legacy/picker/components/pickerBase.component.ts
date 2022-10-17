@@ -107,14 +107,14 @@ export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodD
 
         if(this._value)
         {
-            this._originalHour = this._dateApi.getValue(this._value.from).hour();
-            this._originalMinute = this._dateApi.getValue(this._value.from).minute();
+            this._originalHour = this._dateApi.getValue(this._value.from!).hour();
+            this._originalMinute = this._dateApi.getValue(this._value.from!).minute();
         }
 
         //value is present
         if(this._value && this.displayDate)
         {
-            const val = this._dateApi.getValue(this._value.from);
+            const val = this._dateApi.getValue(this._value.from!);
 
             //change picker to value
             if(!this._isSamePeriodAsDisplayed(val))

@@ -97,7 +97,7 @@ export class DateTimeRollerTimePickerComponent<TDate = any> extends PickerImplBa
     {
         if(value)
         {
-            this.displayDate = this._dateApi.getValue(value.from);
+            this.displayDate = this._dateApi.getValue(value.from!);
         }
     }
 
