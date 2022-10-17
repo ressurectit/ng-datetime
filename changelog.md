@@ -1,5 +1,49 @@
 # Changelog
 
+## Version 5.0.0 (2022-10-17)
+
+### Features
+
+- new `DateTimeInput` interface, which defines date time input and communication API for it
+    - **properties**
+        - `rawValue` value of date time, raw string value which is visible to user
+        - `value` current value of date time, could be string, TDate object, or ranged DateTimeValue
+        - `disabled` indication whether is date time disabled
+        - `valueChange` occurs when value changes
+        - `focus` occurs when input gains focus
+        - `blur` occurs when input loses focus
+- new `DateTimeModule` module for basic date time directives, components, pipes
+    - **exports**
+        - `DateTimeControlValueAccessorDirective`
+        - `DateTimeInputDirective`
+- new `DATE_TIME_INPUT` injection token, that is used for injecting type that represents date time input
+- new `DateTimeInputDirective` directive, that is used for setting up date time input
+    - **implements**
+        - `DateTimeInput`
+        - `OnDestroy`
+    - **provides**
+        - `DATE_TIME_INPUT` providing self
+- new `DateTimeControlValueAccessorDirective` directive, that is control value accessor that is used for getting and setting value for date time
+    - **implements**
+        - `ControlValueAccessor`
+        - `OnDestroy`
+    - **provides**
+        - `NG_VALUE_ACCESSOR` providing self
+    
+
+### BREAKING CHANGES
+
+- dropped support of `Node.js` version `12`
+- minimal supported version of `@angular` is now `14.2.6`
+- minimal supported version of `rxjs` is now `7.5.6`
+- minimal supported version of `@jscrpt/common` is now `3.1.0`
+- minimal supported version of `@anglr/common` is now `14.1.0`
+- minimal supported version of `tslib` is now `2.4.0`
+- minimal supported version of `moment` is now `2.29.4`
+- minimal supported version of `date-fns` is now `2.29.3`
+- dropped dependency `positions`
+- all previous selectors, pickers and everything is now deprecated and marked as legacy
+
 ## Version 4.0.0 (2022-10-14)
 
 ### Bug Fixes

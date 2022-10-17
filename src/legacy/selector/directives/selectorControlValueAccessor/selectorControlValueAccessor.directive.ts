@@ -2,7 +2,7 @@ import {Directive, ExistingProvider, forwardRef, Input, OnDestroy} from '@angula
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
 import {Subscription} from 'rxjs';
 
-import {DateTimeValue} from '../../../../misc/datetime.interface';
+import {DateTimeValue} from '../../../../interfaces/dateTime/datetime.interface';
 import {DateTimeSelectorComponent} from '../../components/selector/selector.component';
 
 /**

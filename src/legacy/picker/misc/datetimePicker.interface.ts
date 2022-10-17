@@ -2,7 +2,7 @@ import {Type} from '@angular/core';
 import {Dictionary} from '@jscrpt/common';
 import {Observable} from 'rxjs';
 
-import {DateTimeValue} from '../../../misc/datetime.interface';
+import {DateTimeValue} from '../../../interfaces/dateTime/datetime.interface';
 import {DateApiObject} from '../../../services/dateApi.interface';
 
 /**

@@ -1,7 +1,7 @@
 import {AbstractControl, ValidationErrors, ValidatorFn} from '@angular/forms';
 
 import {DateApi} from '../services';
-import {DateTimeValueObject} from './datetime.interface';
+import {DateTimeValueObject} from '../interfaces/dateTime/datetime.interface';
 
 /**
  * Validations functions for datetime

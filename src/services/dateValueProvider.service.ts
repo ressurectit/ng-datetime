@@ -1,6 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 
-import {DateTimeValue} from '../misc/datetime.interface';
+import {DateTimeValue} from '../interfaces/dateTime/datetime.interface';
 import {DATE_API} from '../misc/tokens';
 import {DateApi} from './dateApi.interface';
 

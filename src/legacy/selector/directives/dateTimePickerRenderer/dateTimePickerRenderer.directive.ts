@@ -3,7 +3,7 @@ import {DOCUMENT} from '@angular/common';
 import {POSITION, Position, applyPositionResult} from '@anglr/common';
 import {Subscription} from 'rxjs';
 
-import {DateTimeValue} from '../../../../misc/datetime.interface';
+import {DateTimeValue} from '../../../../interfaces/dateTime/datetime.interface';
 import {DateTimeSelector, DateTimeSelectorOptions} from '../../interfaces';
 import {DateTimePickerComponent} from '../../../picker/types';
 

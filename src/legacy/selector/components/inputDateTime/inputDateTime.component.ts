@@ -2,7 +2,7 @@ import {Component, ChangeDetectionStrategy, Inject, ChangeDetectorRef, ElementRe
 import {isPresent} from '@jscrpt/common';
 import {Observable, Subject} from 'rxjs';
 
-import {DateTimeValue} from '../../../../misc/datetime.interface';
+import {DateTimeValue} from '../../../../interfaces/dateTime/datetime.interface';
 import {DATE_API} from '../../../../misc/tokens';
 import {DateApi, DateApiObject, DatePositionParser} from '../../../../services';
 import {DatePositionParserService} from '../../../../services/datePositionParser.service';

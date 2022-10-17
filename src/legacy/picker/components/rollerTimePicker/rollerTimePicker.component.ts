@@ -1,6 +1,6 @@
 import {Component, ChangeDetectionStrategy} from '@angular/core';
 
-import {DateTimeValue} from '../../../../misc/datetime.interface';
+import {DateTimeValue} from '../../../../interfaces/dateTime/datetime.interface';
 import {DateApiObject} from '../../../../services';
 import {LoopScrollData} from '../../directives';
 import {DateTimePicker} from '../../interfaces';

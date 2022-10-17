@@ -3,7 +3,7 @@ import {PositionPlacement} from '@anglr/common';
 import {extend, isBlank, isString, nameof} from '@jscrpt/common';
 import {Observable, Subject, Subscription} from 'rxjs';
 
-import {DateTimeValue} from '../../../../misc/datetime.interface';
+import {DateTimeValue} from '../../../../interfaces/dateTime/datetime.interface';
 import {DATE_API, FORMAT_PROVIDER} from '../../../../misc/tokens';
 import {DateTimeDayPickerComponent} from '../../../picker/components/dayPicker/dayPicker.component';
 import {DateTimeMonthPickerComponent} from '../../../picker/components/monthPicker/monthPicker.component';

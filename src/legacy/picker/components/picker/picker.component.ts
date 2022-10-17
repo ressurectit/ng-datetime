@@ -2,7 +2,7 @@ import {Component, ChangeDetectionStrategy, Optional, Inject, Input, Type, OnIni
 import {extend} from '@jscrpt/common';
 import {Subscription} from 'rxjs';
 
-import {DateTimeValue} from '../../../../misc/datetime.interface';
+import {DateTimeValue} from '../../../../interfaces/dateTime/datetime.interface';
 import {DATE_API} from '../../../../misc/tokens';
 import {DateApi} from '../../../../services';
 import {DateTimePicker, DateTimePickerOptions} from '../../misc/datetimePicker.interface';
