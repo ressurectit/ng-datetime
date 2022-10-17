@@ -16,6 +16,7 @@
     - **exports**
         - `DateTimeControlValueAccessorDirective`
         - `DateTimeInputDirective`
+        - `DateTimeValidatorDirective`
 - new `DATE_TIME_INPUT` injection token, that is used for injecting type that represents date time input
 - new `DateTimeInputDirective` directive, that is used for setting up date time input
     - **implements**
@@ -23,12 +24,21 @@
         - `OnDestroy`
     - **provides**
         - `DATE_TIME_INPUT` providing self
+    - **inputs**
+        - `valueFormat` gets or sets date time value format which is being worked with in this date time
+        - `format` gets or sets format of string representation of date
+        - `customFormat` custom format string representation of date
 - new `DateTimeControlValueAccessorDirective` directive, that is control value accessor that is used for getting and setting value for date time
     - **implements**
         - `ControlValueAccessor`
         - `OnDestroy`
     - **provides**
         - `NG_VALUE_ACCESSOR` providing self
+- new `DateTimeValidatorDirective` directive, that applies validator for date time
+    - **implements**
+        - `Validator`
+    - **provides**
+        - `NG_VALIDATORS` providing self
 - new `DateTimeValueFormat` enum, that represents available formats for date time value
     - `DateInstance` instance of date
     - `UnixTimestamp` numeric unix timestamp in seconds
@@ -39,6 +49,7 @@
 - new `parseDateTime` function, that parses date time input output value
 - new `formatDateTime` function, that formats value into specified format of date time
 - new `isDateTimeValue` function, that tests whether value is `DateTimeValue`
+- new `datetimeValidator` function, that is date time validator factory function, creates validator for checking validity of datetime
 - updated `DateApiObject` interface
     - new `unixTimestamp` method, that gets value of date time as unix timestamp
 - *subpackage* `@anglr/datetime/moment`

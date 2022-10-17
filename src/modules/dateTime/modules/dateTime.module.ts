@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 
-import {DateTimeControlValueAccessorDirective, DateTimeInputDirective} from '../directives';
+import {DateTimeControlValueAccessorDirective, DateTimeInputDirective, DateTimeValidatorDirective} from '../directives';
 
 /**
  * Module for basic date time directives, components, pipes
@@ -11,11 +11,13 @@ import {DateTimeControlValueAccessorDirective, DateTimeInputDirective} from '../
     [
         DateTimeControlValueAccessorDirective,
         DateTimeInputDirective,
+        DateTimeValidatorDirective,
     ],
     exports:
     [
         DateTimeControlValueAccessorDirective,
         DateTimeInputDirective,
+        DateTimeValidatorDirective,
     ],
 })
 export class DateTimeModule
