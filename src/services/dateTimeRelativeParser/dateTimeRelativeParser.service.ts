@@ -1,8 +1,8 @@
 import {Injectable, Injector} from '@angular/core';
 import {isString} from '@jscrpt/common';
 
-import {DATE_API} from '../misc/tokens';
-import {DateApi, DateApiObject, DateValue} from './dateApi/dateApi.interface';
+import {DATE_API} from '../../misc/tokens';
+import {DateApi, DateApiObject, DateValue} from '../dateApi/dateApi.interface';
 
 /**
  * Service used for parsing relative date time strings

@@ -4,8 +4,7 @@ import {Observable, Subject} from 'rxjs';
 
 import {DateTimeValue} from '../../../../interfaces/dateTime/datetime.interface';
 import {DATE_API} from '../../../../misc/tokens';
-import {DateApi, DateApiObject} from '../../../../services';
-import {DateValueProvider} from '../../../../services/dateValueProvider.service';
+import {DateApi, DateApiObject, DateValueProvider} from '../../../../services';
 import {DateTimeSelector} from '../../misc/datetimeSelector.interface';
 
 /**

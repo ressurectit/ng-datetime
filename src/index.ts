@@ -15,8 +15,5 @@ export * from './misc/utils';
 export * from './misc/validators';
 export * from './modules';
 export * from './services';
-export * from './services/datePositionParser.service';
-export * from './services/dateTimeRelativeParser.service';
-export * from './services/dateValueProvider.service';
 export * from './pipes/dateConvert.pipe';
 export * from './pipes/dateFormat.pipe';
