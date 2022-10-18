@@ -5,7 +5,7 @@ import {FormatProvider} from '../../../../interfaces';
 import {DATE_API, FORMAT_PROVIDER} from '../../../../misc/tokens';
 import {datetimeMaxValidator, datetimeValidator} from '../../../../misc/validators';
 import {DateApi} from '../../../../services';
-import {DateTimeBase} from '../dateTimeBase';
+import {DateTimeRestrictedBase} from '../dateTimeRestrictedBase';
 
 /**
  * Applies validator for date time max value
@@ -23,7 +23,7 @@ import {DateTimeBase} from '../dateTimeBase';
         },
     ],
 })
-export class DateTimeMaxValidatorDirective<TDate = unknown> extends DateTimeBase<TDate>  implements Validator, OnInit
+export class DateTimeMaxValidatorDirective<TDate = unknown> extends DateTimeRestrictedBase<TDate>  implements Validator, OnInit
 {
     //######################### private fields #########################
 
@@ -47,7 +47,7 @@ export class DateTimeMaxValidatorDirective<TDate = unknown> extends DateTimeBase
      */
     public ngOnInit(): void
     {
-        this._validator = datetimeMaxValidator(this.dateApi, this.valueFormat, this.customFormat);
+        this._validator = datetimeMaxValidator(this.dateApi, this.maxDateTime, this.valueFormat, this.customFormat);
     }
 
     //######################### public methods - implementation of Validator #########################
@@ -60,5 +60,15 @@ export class DateTimeMaxValidatorDirective<TDate = unknown> extends DateTimeBase
     public validate(control: AbstractControl): ValidationErrors|null
     {
         return this._validator(control);
+    }
+
+    //######################### protected methods - overrides #########################
+
+    /**
+     * @inheritdoc
+     */
+    protected override onMaxDateTimeChange(): void
+    {
+        this._validator = datetimeMaxValidator(this.dateApi, this.maxDateTime, this.valueFormat, this.customFormat);
     }
 }

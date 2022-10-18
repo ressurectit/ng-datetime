@@ -9,7 +9,7 @@ export enum DateTimeValueFormat
     DateInstance,
 
     /**
-     * Numeric unix timestamp in seconds
+     * Numeric unix timestamp in miliseconds
      */
     UnixTimestamp,
 

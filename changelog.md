@@ -1,32 +1,40 @@
 # Changelog
 
-## Version 5.0.0 (2022-10-17)
+## Version 5.0.0 (2022-10-18)
 
 ### Features
 
+- new `DateTimeInputValue` interface, which defines date time input value API
+    - **properties**
+        - `value` current value of date time, could be string, unix timestamp, Date, TDate object, or ranged DateTimeValue
+        - `valueChange` occurs when value changes
 - new `DateTimeInput` interface, which defines date time input and communication API for it
+    - **extends**
+        - `DateTimeInputValue`
     - **properties**
         - `rawValue` value of date time, raw string value which is visible to user
-        - `value` current value of date time, could be string, unix timestamp, TDate object, or ranged DateTimeValue
         - `disabled` indication whether is date time disabled
-        - `valueChange` occurs when value changes
         - `focus` occurs when input gains focus
         - `blur` occurs when input loses focus
 - new `DateTimeModule` module for basic date time directives, components, pipes
     - **exports**
         - `DateTimeControlValueAccessorDirective`
         - `DateTimeInputDirective`
+        - `DateTimeMaxValidatorDirective`
+        - `DateTimeMinValidatorDirective`
         - `DateTimeValidatorDirective`
 - new `DATE_TIME_INPUT` injection token, that is used for injecting type that represents date time input
 - new `DateTimeBase` class, that is base class for date time directives, contains basic shared data
-    - **properties**
-        - `value` current value of date time, could be string, unix timestamp, TDate object, or ranged DateTimeValue
+    - **implements**
+        - `DateTimeInputValue`
     - **inputs**
         - `valueFormat` gets or sets date time value format which is being worked with in this date time
         - `format` gets or sets format of string representation of date
         - `customFormat` custom format string representation of date
 - new `DateTimeRestrictedBase` class, that is base class for date time directives with value restrictions
     - **extends** `DateTimeBase`
+    - **implements**
+        - `OnDestroy`
     - **inputs**
         - `maxDateTime` gets or sets max allowed date for date time
         - `minDateTime` gets or sets min allowed date for date time
@@ -51,14 +59,14 @@
     - **provides**
         - `NG_VALIDATORS` providing self
 - new `DateTimeMaxValidatorDirective` directive, that applies validator for date time max value
-    - **extends** `DateTimeBase`
+    - **extends** `DateTimeRestrictedBase`
     - **implements**
         - `Validator`
         - `OnInit`
     - **provides**
         - `NG_VALIDATORS` providing self
 - new `DateTimeMinValidatorDirective` directive, that applies validator for date time min value
-    - **extends** `DateTimeBase`
+    - **extends** `DateTimeRestrictedBase`
     - **implements**
         - `Validator`
         - `OnInit`
@@ -66,7 +74,7 @@
         - `NG_VALIDATORS` providing self
 - new `DateTimeValueFormat` enum, that represents available formats for date time value
     - `DateInstance` instance of date
-    - `UnixTimestamp` numeric unix timestamp in seconds
+    - `UnixTimestamp` numeric unix timestamp in miliseconds
     - `FormattedString` formatted date as string value
     - `RangeOfDateInstances` range of date instances from, to
 - new `DateTimeObjectValue` type that represents parsed date value or values in case of range
@@ -74,6 +82,7 @@
 - new `parseDateTime` function, that parses date time input output value
 - new `formatDateTime` function, that formats value into specified format of date time
 - new `isDateTimeValue` function, that tests whether value is `DateTimeValue`
+- new `getSingleDateTimeValue` function, that gets single date time value, use in places where ranged date time can not be used
 - new `datetimeValidator` function, that is date time validator factory function, creates validator for checking validity of datetime
 - new `datetimeMaxValidator` function, that is date time validator factory function, creates validator for checking validity of datetime max value
 - new `datetimeMinValidator` function, that is date time validator factory function, creates validator for checking validity of datetime min value

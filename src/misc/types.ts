@@ -9,4 +9,4 @@ export type DateTimeObjectValue<TDate = unknown> = DateApiObject<TDate>|[DateApi
 /**
  * Type that represents input output types that can be processed by date time
  */
-export type DateTimeInputOutputValue<TDate = unknown> = string|number|DateTimeValue<TDate>|TDate;
+export type DateTimeInputOutputValue<TDate = unknown> = string|number|DateTimeValue<TDate>|TDate|Date;

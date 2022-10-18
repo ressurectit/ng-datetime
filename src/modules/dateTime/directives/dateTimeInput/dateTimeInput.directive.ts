@@ -24,6 +24,7 @@ import {DateTimeBase} from '../dateTimeBase';
             useExisting: forwardRef(() => DateTimeInputDirective),
         },
     ],
+    exportAs: 'dateTime',
 })
 export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate> implements DateTimeInput, OnDestroy
 {
@@ -84,11 +85,6 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
     {
         this.element.nativeElement.disabled = value;
     }
-
-    /**
-     * @inheritdoc
-     */
-    public valueChange: EventEmitter<void> = new EventEmitter<void>();
 
     /**
      * @inheritdoc

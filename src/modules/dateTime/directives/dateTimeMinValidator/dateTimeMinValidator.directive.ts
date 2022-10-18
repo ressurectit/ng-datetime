@@ -1,11 +1,11 @@
-import {Directive, ExistingProvider, forwardRef, Inject} from '@angular/core';
+import {Directive, ExistingProvider, forwardRef, Inject, OnInit} from '@angular/core';
 import {AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, ValidatorFn} from '@angular/forms';
 
 import {FormatProvider} from '../../../../interfaces';
 import {DATE_API, FORMAT_PROVIDER} from '../../../../misc/tokens';
-import {datetimeValidator} from '../../../../misc/validators';
+import {datetimeMinValidator} from '../../../../misc/validators';
 import {DateApi} from '../../../../services';
-import {DateTimeBase} from '../dateTimeBase';
+import {DateTimeRestrictedBase} from '../dateTimeRestrictedBase';
 
 /**
  * Applies validator for date time min value
@@ -23,7 +23,7 @@ import {DateTimeBase} from '../dateTimeBase';
         },
     ],
 })
-export class DateTimeMinValidatorDirective<TDate = unknown> extends DateTimeBase<TDate>  implements Validator
+export class DateTimeMinValidatorDirective<TDate = unknown> extends DateTimeRestrictedBase<TDate>  implements Validator, OnInit
 {
     //######################### private fields #########################
 
@@ -37,7 +37,16 @@ export class DateTimeMinValidatorDirective<TDate = unknown> extends DateTimeBase
                 @Inject(FORMAT_PROVIDER) formatProvider: FormatProvider,)
     {
         super(dateApi, formatProvider);
-        this._validator = datetimeValidator(dateApi, null, null);
+    }
+
+    //######################### public methods - implementation of OnInit #########################
+    
+    /**
+     * Initialize component
+     */
+    public ngOnInit(): void
+    {
+        this._validator = datetimeMinValidator(this.dateApi, this.minDateTime, this.valueFormat, this.customFormat);
     }
 
     //######################### public methods - implementation of Validator #########################
@@ -50,5 +59,15 @@ export class DateTimeMinValidatorDirective<TDate = unknown> extends DateTimeBase
     public validate(control: AbstractControl): ValidationErrors|null
     {
         return this._validator(control);
+    }
+
+    //######################### protected methods - overrides #########################
+
+    /**
+     * @inheritdoc
+     */
+    protected override onMinDateTimeChange(): void
+    {
+        this._validator = datetimeMinValidator(this.dateApi, this.minDateTime, this.valueFormat, this.customFormat);
     }
 }

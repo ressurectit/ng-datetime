@@ -1,7 +1,7 @@
-import {Directive, Input} from '@angular/core';
+import {Directive, EventEmitter, Input} from '@angular/core';
 import {isString} from '@jscrpt/common';
 
-import {FormatProvider} from '../../../interfaces';
+import {DateTimeInputValue, FormatProvider} from '../../../interfaces';
 import {DateTimeValueFormat} from '../../../misc/enums';
 import {DateTimeInputOutputValue} from '../../../misc/types';
 import {DateApi} from '../../../services';
@@ -10,7 +10,7 @@ import {DateApi} from '../../../services';
  * Base class for date time directives, contains basic shared data
  */
 @Directive()
-export class DateTimeBase<TDate = unknown>
+export class DateTimeBase<TDate = unknown> implements DateTimeInputValue<TDate>
 {
     //######################### protected properties #########################
 
@@ -25,14 +25,14 @@ export class DateTimeBase<TDate = unknown>
     protected ɵFormat: keyof FormatProvider = 'date';
 
     /**
-     * Current value of date time, could be string, unix timestamp, TDate object, or ranged DateTimeValue
+     * Current value of date time, could be string, unix timestamp, Date, TDate object, or ranged DateTimeValue
      */
     protected ɵValue: DateTimeInputOutputValue<TDate>|undefined|null;
 
-    //######################### public properties #########################
+    //######################### public properties - implementation of DateTimeInputValue #########################
 
     /**
-     * Current value of date time, could be string, unix timestamp, TDate object, or ranged DateTimeValue
+     * @inheritdoc
      */
     public get value(): DateTimeInputOutputValue<TDate>|undefined|null
     {
@@ -42,6 +42,11 @@ export class DateTimeBase<TDate = unknown>
     {
         this.ɵValue = value;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public valueChange: EventEmitter<void> = new EventEmitter<void>();
 
     //######################### public properties - inputs #########################
 

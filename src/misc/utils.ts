@@ -143,3 +143,17 @@ export function isDateTimeValue<TDate = unknown>(value: unknown): value is DateT
            nameof<DateTimeValue>('from') in value &&
            nameof<DateTimeValue>('to') in value;
 }
+
+/**
+ * Gets single date time value, use in places where ranged date time can not be used
+ * @param value - Value to be examined
+ */
+export function getSingleDateTimeValue<TDate>(value: DateTimeInputOutputValue<TDate>|undefined|null): string|number|Date|TDate|null|undefined
+{
+    if(isDateTimeValue(value))
+    {
+        throw new Error('DateTime: Unable to apply ranged date time input as value restriction!');
+    }
+
+    return value;
+}

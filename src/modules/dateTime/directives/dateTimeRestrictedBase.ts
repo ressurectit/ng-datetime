@@ -1,17 +1,29 @@
-import {Directive, Input} from '@angular/core';
-import {isBlank} from '@jscrpt/common';
+import {Directive, Input, OnDestroy} from '@angular/core';
+import {Action1, BindThis, isBlank} from '@jscrpt/common';
+import {Subscription} from 'rxjs';
 
-import {DateTimeInput} from '../../../interfaces';
 import {DateTimeInputOutputValue} from '../../../misc/types';
-import {isDateTimeValue} from '../../../misc/utils';
+import {getSingleDateTimeValue} from '../../../misc/utils';
 import {DateTimeBase} from './dateTimeBase';
 
 /**
  * Base class for date time directives with value restrictions
  */
 @Directive()
-export class DateTimeRestrictedBase<TDate = unknown> extends DateTimeBase<TDate>
+export class DateTimeRestrictedBase<TDate = unknown> extends DateTimeBase<TDate> implements OnDestroy
 {
+    //######################### private fields #########################
+
+    /**
+     * Subscription for max date instance value changes
+     */
+    private _maxDateInstanceChange: Subscription|undefined|null;
+
+    /**
+     * Subscription for min date instance value changes
+     */
+    private _minDateInstanceChange: Subscription|undefined|null;
+
     //######################### protected properties #########################
 
     /**
@@ -36,9 +48,12 @@ export class DateTimeRestrictedBase<TDate = unknown> extends DateTimeBase<TDate>
     }
     public set maxDateTime(value: TDate|undefined|null)
     {
+        this._maxDateInstanceChange?.unsubscribe();
+        this._maxDateInstanceChange = null;
+
         if(isBlank(value))
         {
-            this.ɵMaxDateTime = value;
+            this.maxDateSet(value);
 
             return;
         }
@@ -47,20 +62,33 @@ export class DateTimeRestrictedBase<TDate = unknown> extends DateTimeBase<TDate>
 
         if(value instanceof DateTimeBase<TDate>)
         {
-            if(isDateTimeValue(value.value))
+            this._maxDateInstanceChange = value.valueChange.subscribe(() =>
             {
-                throw new Error('DateTime: Unable to apply ranged date time input as value restriction!');
+                const val = getSingleDateTimeValue<TDate>(value.value);
+
+                if(isBlank(val))
+                {
+                    this.maxDateSet(null);
+
+                    return;
+                }
+
+                this.setMinMaxValue(val, this.maxDateSet);
+            });
+
+            const v = getSingleDateTimeValue<TDate>(value.value);
+
+            if(isBlank(v))
+            {
+                this.maxDateSet(null);
+
+                return;
             }
 
-            val = value.value as string|number|TDate;
+            val = v;
         }
         
-        const maxDateTime = this.dateApi.getValue(val, this.customFormat);
-
-        if(maxDateTime.isValid())
-        {
-            this.ɵMaxDateTime = maxDateTime.value;
-        }
+        this.setMinMaxValue(val, this.maxDateSet);
     }
 
     /**
@@ -73,9 +101,12 @@ export class DateTimeRestrictedBase<TDate = unknown> extends DateTimeBase<TDate>
     }
     public set minDateTime(value: TDate|undefined|null)
     {
+        this._minDateInstanceChange?.unsubscribe();
+        this._minDateInstanceChange = null;
+
         if(isBlank(value))
         {
-            this.ɵMinDateTime = value;
+            this.minDateSet(value);
 
             return;
         }
@@ -84,19 +115,103 @@ export class DateTimeRestrictedBase<TDate = unknown> extends DateTimeBase<TDate>
 
         if(value instanceof DateTimeBase<TDate>)
         {
-            if(isDateTimeValue(value.value))
+            this._minDateInstanceChange = value.valueChange.subscribe(() =>
             {
-                throw new Error('DateTime: Unable to apply ranged date time input as value restriction!');
+                const val = getSingleDateTimeValue<TDate>(value.value);
+
+                if(isBlank(val))
+                {
+                    this.minDateSet(null);
+
+                    return;
+                }
+
+                this.setMinMaxValue(val, this.minDateSet);
+            });
+
+            const v = getSingleDateTimeValue<TDate>(value.value);
+
+            if(isBlank(v))
+            {
+                this.minDateSet(null);
+
+                return;
             }
 
-            val = value.value as string|number|TDate;
+            val = v;
         }
-        
-        const minDateTime = this.dateApi.getValue(val, this.customFormat);
 
-        if(minDateTime.isValid())
+        this.setMinMaxValue(val, this.minDateSet);
+    }
+
+    //######################### public methods - implementation of OnDestroy #########################
+    
+    /**
+     * Called when component is destroyed
+     */
+    public ngOnDestroy(): void
+    {
+        this._maxDateInstanceChange?.unsubscribe();
+        this._maxDateInstanceChange = null;
+
+        this._minDateInstanceChange?.unsubscribe();
+        this._minDateInstanceChange = null;
+    }
+
+    //######################### protected methods #########################
+
+    /**
+     * Called whenever max date time restriction changes
+     */
+    protected onMaxDateTimeChange(): void
+    {
+    }
+
+    /**
+     * Called whenever min date time restriction changes
+     */
+    protected onMinDateTimeChange(): void
+    {
+    }
+
+    /**
+     * Sets min date time and notifies about changes
+     * @param value - Value to be set
+     */
+    @BindThis
+    protected minDateSet(value: TDate|undefined|null): void
+    {
+        this.ɵMinDateTime = value;
+        this.onMinDateTimeChange();
+    }
+
+    /**
+     * Sets max date time and notifies about changes
+     * @param value - Value to be set
+     */
+    @BindThis
+    protected maxDateSet(value: TDate|undefined|null): void
+    {
+        this.ɵMaxDateTime = value;
+        this.onMaxDateTimeChange();
+    }
+
+    /**
+     * Sets min or max date time value
+     * @param value - Value to be set
+     * @param setter - Action used for setting value
+     */
+    protected setMinMaxValue(value: string|number|TDate|Date, setter: Action1<TDate|undefined|null>): void
+    {
+        const val = this.dateApi.getValue(value, this.customFormat);
+
+        if(val.isValid())
         {
-            this.ɵMinDateTime = minDateTime.value;
+            setter(val.value);
+        }
+        else
+        {
+            setter(null);
         }
     }
 
@@ -105,10 +220,10 @@ export class DateTimeRestrictedBase<TDate = unknown> extends DateTimeBase<TDate>
     /**
      * Custom input type for `maxDateTime` input
      */
-    public static ngAcceptInputType_maxDateTime: string|number|DateTimeInput|Date;
+    public static ngAcceptInputType_maxDateTime: string|number|DateTimeBase|Date;
 
     /**
      * Custom input type for `minDateTime` input
      */
-    public static ngAcceptInputType_minDateTime: string|number|DateTimeInput|Date;
+    public static ngAcceptInputType_minDateTime: string|number|DateTimeBase|Date;
 }
