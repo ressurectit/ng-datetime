@@ -4,6 +4,8 @@ import {DateTimeValue} from '../../interfaces/dateTime/datetime.interface';
 import {DATE_API} from '../../misc/tokens';
 import {DateApi} from '../dateApi/dateApi.interface';
 
+//TODO: change to unknown when legacy stuff is removed
+
 /**
  * Class used for obtaining DateTimeValue for various formats
  */
@@ -36,7 +38,7 @@ export class DateValueProvider<TDate = any>
             end = val.endOfMinute().value;
         }
         //hour
-        else if(fullFormat.indexOf('H') >= 0)
+        else if(fullFormat.indexOf('H') >= 0 || fullFormat.indexOf('h') >= 0)
         {
             start = val.startOfHour().value;
             end = val.endOfHour().value;

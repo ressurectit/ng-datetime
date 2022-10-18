@@ -1,11 +1,11 @@
 import {Directive, ElementRef, EventEmitter, ExistingProvider, forwardRef, Inject, OnDestroy} from '@angular/core';
-import {BindThis} from '@jscrpt/common';
+import {BindThis, isBlank} from '@jscrpt/common';
 
 import {DateTimeInput, FormatProvider} from '../../../../interfaces';
 import {DATE_API, DATE_TIME_INPUT, FORMAT_PROVIDER} from '../../../../misc/tokens';
 import {DateTimeInputOutputValue, DateTimeObjectValue} from '../../../../misc/types';
 import {formatDateTime, parseDateTime} from '../../../../misc/utils';
-import {DateApi} from '../../../../services';
+import {DateApi, DateValueProvider} from '../../../../services';
 import {DateTimeBase} from '../dateTimeBase';
 
 //TODO: range is unimplemented
@@ -58,10 +58,9 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
     }
     public override set value(value: DateTimeInputOutputValue<TDate>|undefined|null)
     {
-        this.ɵValue = value;
-
         //accepts all available formats
-        this.internalValue = parseDateTime(value, this.dateApi, null, this.customFormat);
+        this.setInternalValue(value);
+        this.ɵValue = formatDateTime(this.internalValue, this.valueFormat, this.customFormat);
         
         //not range value
         if(!Array.isArray(this.internalValue))
@@ -99,7 +98,8 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
     //######################### constructors #########################
     constructor(protected element: ElementRef<HTMLInputElement>,
                 @Inject(DATE_API) dateApi: DateApi<TDate>,
-                @Inject(FORMAT_PROVIDER) formatProvider: FormatProvider,)
+                @Inject(FORMAT_PROVIDER) formatProvider: FormatProvider,
+                protected valueProvider: DateValueProvider<TDate>,)
     {
         super(dateApi, formatProvider);
 
@@ -123,6 +123,55 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
     //######################### protected methods #########################
 
     /**
+     * Sets internal value and fix lowest time difference
+     * @param value - Value to be set
+     */
+    protected setInternalValue(value: DateTimeInputOutputValue<TDate>|undefined|null): void
+    {
+        this.internalValue = parseDateTime(value, this.dateApi, null, this.customFormat);
+
+        if(isBlank(this.internalValue))
+        {
+            return;
+        }
+
+        //ranged value
+        if(Array.isArray(this.internalValue))
+        {
+            const [from, to] = this.internalValue;
+
+            if(from)
+            {
+                const val = this.valueProvider.getValue(from.value, this.customFormat).from;
+
+                if(val)
+                {
+                    this.internalValue[0] = this.dateApi.getValue(val, this.customFormat);
+                }
+            }
+
+            if(to)
+            {
+                const val = this.valueProvider.getValue(to.value, this.customFormat).to;
+
+                if(val)
+                {
+                    this.internalValue[1] = this.dateApi.getValue(val, this.customFormat);
+                }
+            }
+        }
+        else
+        {
+            const val = this.valueProvider.getValue(this.internalValue.value, this.customFormat).from;
+
+            if(val)
+            {
+                this.internalValue = this.dateApi.getValue(val, this.customFormat);
+            }
+        }
+    }
+
+    /**
      * Handles input event on input
      */
     @BindThis
@@ -138,7 +187,7 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
             return;
         }
 
-        this.internalValue = parseDateTime(this.rawValue, this.dateApi, this.valueFormat, this.customFormat);
+        this.setInternalValue(this.rawValue);
         this.ɵValue = formatDateTime(this.internalValue, this.valueFormat, this.customFormat);
 
         this.valueChange.next();

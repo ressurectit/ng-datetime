@@ -38,7 +38,7 @@ export class DateTimeRelativeParser<TDate = any>
      */
     public parse(value: TDate|DateValue): TDate|DateValue
     {
-        const regex = /([+-])\s*(\d+)\s*([hmdwMy])/;
+        const regex = /([+-])\s*(\d+)\s*([hHmdwMy])/;
         let matches: RegExpExecArray | null = null;
 
         //relative date provided
@@ -58,6 +58,7 @@ export class DateTimeRelativeParser<TDate = any>
 
                     break;
                 }
+                case 'H':
                 case 'h':
                 {
                     operation == '+' ? now.addHours(+amount).endOfHour() : now.subtractHours(+amount).startOfHour();
