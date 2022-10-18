@@ -1,11 +1,12 @@
 import {AbstractControl, ValidationErrors, ValidatorFn} from '@angular/forms';
-import {isBlank} from '@jscrpt/common';
+import {isBlank, isJsObject, isPresent} from '@jscrpt/common';
 
 import {DateApi} from '../services';
 import {DateTimeValueObject} from '../interfaces/dateTime/datetime.interface';
-import {parseDateTime} from './utils';
+import {isDateTimeValue, parseDateTime} from './utils';
 import {DateTimeValueFormat} from './enums';
 import {DateTimeInputOutputValue} from './types';
+import {DateTimeInput} from '../interfaces';
 
 /**
  * Date time validator factory function, creates validator for checking validity of datetime
@@ -36,7 +37,127 @@ export function datetimeValidator<TDate = unknown>(dateApi: DateApi<TDate>,
             if(!parsedValue.isValid())
             {
                 return {
-                    'datetime': true
+                    'datetime': stringFormat
+                };
+            }
+        }
+        else
+        {
+            //TODO: support for ranges
+        }
+
+        return null;
+    };
+}
+
+/**
+ * Date time validator factory function, creates validator for checking validity of datetime max value
+ * @param dateApi - Date api used for parsing date time
+ * @param maxValue - Maximal date time value that should be used for validation against
+ * @param valueFormat - Optional required format
+ * @param stringFormat - Optional string format of value
+ */
+export function datetimeMaxValidator<TDate = unknown>(dateApi: DateApi<TDate>,
+                                                      maxValue: string|number|TDate|DateTimeInput<TDate>,
+                                                      valueFormat: DateTimeValueFormat|undefined|null,
+                                                      stringFormat: string|undefined|null,): ValidatorFn
+{
+    return (control: AbstractControl<DateTimeInputOutputValue<TDate>>): ValidationErrors|null =>
+    {
+        if(isBlank(control.value))
+        {
+            return null;
+        }
+
+        const dateTimeInput = maxValue as DateTimeInput<TDate>;
+
+        if(isJsObject(dateTimeInput) && isPresent(dateTimeInput.value))
+        {
+            const value = dateTimeInput.value;
+
+            if(isDateTimeValue(value))
+            {
+                throw new Error('DateTime: Unable to apply ranged date time input as value restriction!');
+            }
+
+            maxValue = dateTimeInput.value as string|number|TDate;
+        }
+        
+        const parsedValue = parseDateTime(control.value, dateApi, valueFormat, stringFormat);
+
+        if(!parsedValue)
+        {
+            return null;
+        }
+
+        const maxDateTime = dateApi.getValue(maxValue as string|number|TDate, stringFormat ?? undefined);
+
+        if(!Array.isArray(parsedValue))
+        {
+            if(!parsedValue.isBefore(maxDateTime.value))
+            {
+                return {
+                    'datetimemax': true
+                };
+            }
+        }
+        else
+        {
+            //TODO: support for ranges
+        }
+
+        return null;
+    };
+}
+
+/**
+ * Date time validator factory function, creates validator for checking validity of datetime min value
+ * @param dateApi - Date api used for parsing date time
+ * @param minValue - Minimal date time value that should be used for validation against
+ * @param valueFormat - Optional required format
+ * @param stringFormat - Optional string format of value
+ */
+export function datetimeMinValidator<TDate = unknown>(dateApi: DateApi<TDate>,
+                                                      minValue: string|number|TDate|DateTimeInput<TDate>,
+                                                      valueFormat: DateTimeValueFormat|undefined|null,
+                                                      stringFormat: string|undefined|null,): ValidatorFn
+{
+    return (control: AbstractControl<DateTimeInputOutputValue<TDate>>): ValidationErrors|null =>
+    {
+        if(isBlank(control.value))
+        {
+            return null;
+        }
+
+        const dateTimeInput = minValue as DateTimeInput<TDate>;
+
+        if(isJsObject(dateTimeInput) && isPresent(dateTimeInput.value))
+        {
+            const value = dateTimeInput.value;
+
+            if(isDateTimeValue(value))
+            {
+                throw new Error('DateTime: Unable to apply ranged date time input as value restriction!');
+            }
+
+            minValue = dateTimeInput.value as string|number|TDate;
+        }
+        
+        const parsedValue = parseDateTime(control.value, dateApi, valueFormat, stringFormat);
+
+        if(!parsedValue)
+        {
+            return null;
+        }
+
+        const minDateTime = dateApi.getValue(minValue as string|number|TDate, stringFormat ?? undefined);
+
+        if(!Array.isArray(parsedValue))
+        {
+            if(!parsedValue.isAfter(minDateTime.value))
+            {
+                return {
+                    'datetimemin': true
                 };
             }
         }

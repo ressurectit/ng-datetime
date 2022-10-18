@@ -1,4 +1,4 @@
-import {Directive, ExistingProvider, forwardRef, Inject, OnInit} from '@angular/core';
+import {Directive, ExistingProvider, forwardRef, Inject} from '@angular/core';
 import {AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, ValidatorFn} from '@angular/forms';
 
 import {FormatProvider} from '../../../../interfaces';
@@ -8,22 +8,22 @@ import {DateApi} from '../../../../services';
 import {DateTimeBase} from '../dateTimeBase';
 
 /**
- * Applies validator for date time
+ * Applies validator for date time min value
  */
 @Directive(
 {
-    selector: '[dateTime][validate]',
+    selector: '[dateTime][minDateTime][validate]',
     providers:
     [
         <ExistingProvider>
         {
             provide: NG_VALIDATORS,
-            useExisting: forwardRef(() => DateTimeValidatorDirective),
+            useExisting: forwardRef(() => DateTimeMinValidatorDirective),
             multi: true
         },
     ],
 })
-export class DateTimeValidatorDirective<TDate = unknown> extends DateTimeBase<TDate> implements Validator, OnInit
+export class DateTimeMinValidatorDirective<TDate = unknown> extends DateTimeBase<TDate>  implements Validator
 {
     //######################### private fields #########################
 
@@ -37,16 +37,7 @@ export class DateTimeValidatorDirective<TDate = unknown> extends DateTimeBase<TD
                 @Inject(FORMAT_PROVIDER) formatProvider: FormatProvider,)
     {
         super(dateApi, formatProvider);
-    }
-
-    //######################### public methods - implementation of OnInit #########################
-    
-    /**
-     * Initialize component
-     */
-    public ngOnInit(): void
-    {
-        this._validator = datetimeValidator(this.dateApi, this.valueFormat, this.customFormat);
+        this._validator = datetimeValidator(dateApi, null, null);
     }
 
     //######################### public methods - implementation of Validator #########################

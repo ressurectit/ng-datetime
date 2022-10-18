@@ -3,27 +3,27 @@ import {AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, ValidatorFn
 
 import {FormatProvider} from '../../../../interfaces';
 import {DATE_API, FORMAT_PROVIDER} from '../../../../misc/tokens';
-import {datetimeValidator} from '../../../../misc/validators';
+import {datetimeMaxValidator, datetimeValidator} from '../../../../misc/validators';
 import {DateApi} from '../../../../services';
 import {DateTimeBase} from '../dateTimeBase';
 
 /**
- * Applies validator for date time
+ * Applies validator for date time max value
  */
 @Directive(
 {
-    selector: '[dateTime][validate]',
+    selector: '[dateTime][maxDateTime][validate]',
     providers:
     [
         <ExistingProvider>
         {
             provide: NG_VALIDATORS,
-            useExisting: forwardRef(() => DateTimeValidatorDirective),
+            useExisting: forwardRef(() => DateTimeMaxValidatorDirective),
             multi: true
         },
     ],
 })
-export class DateTimeValidatorDirective<TDate = unknown> extends DateTimeBase<TDate> implements Validator, OnInit
+export class DateTimeMaxValidatorDirective<TDate = unknown> extends DateTimeBase<TDate>  implements Validator, OnInit
 {
     //######################### private fields #########################
 
@@ -37,6 +37,7 @@ export class DateTimeValidatorDirective<TDate = unknown> extends DateTimeBase<TD
                 @Inject(FORMAT_PROVIDER) formatProvider: FormatProvider,)
     {
         super(dateApi, formatProvider);
+        this._validator = datetimeValidator(dateApi, null, null);
     }
 
     //######################### public methods - implementation of OnInit #########################
@@ -46,7 +47,7 @@ export class DateTimeValidatorDirective<TDate = unknown> extends DateTimeBase<TD
      */
     public ngOnInit(): void
     {
-        this._validator = datetimeValidator(this.dateApi, this.valueFormat, this.customFormat);
+        this._validator = datetimeMaxValidator(this.dateApi, this.valueFormat, this.customFormat);
     }
 
     //######################### public methods - implementation of Validator #########################

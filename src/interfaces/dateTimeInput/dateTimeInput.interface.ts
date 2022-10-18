@@ -13,7 +13,7 @@ export interface DateTimeInput<TDate = unknown>
     rawValue: string|undefined|null;
 
     /**
-     * Current value of date time, could be string, TDate object, or ranged DateTimeValue
+     * Current value of date time, could be string, unix timestamp, TDate object, or ranged DateTimeValue
      */
     value: DateTimeInputOutputValue<TDate>|undefined|null;
 

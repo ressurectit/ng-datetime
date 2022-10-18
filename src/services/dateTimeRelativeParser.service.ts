@@ -29,30 +29,30 @@ export class DateTimeRelativeParser<TDate = any>
      * @param value - Value to be parsed
      * 
      * @summary
-     * i - for minutes
+     * m - for minutes
      * h - for hours
      * d - for days
      * w - for weeks
-     * m - for months
+     * M - for months
      * y - for years
      */
     public parse(value: TDate|DateValue): TDate|DateValue
     {
-        const regex = /([+-])\s*(\d+)\s*([ihdwmy])/;
+        const regex = /([+-])\s*(\d+)\s*([hmdwMy])/;
+        let matches: RegExpExecArray | null = null;
 
         //relative date provided
-        if(isString(value) && regex.test(value))
+        if(isString(value) && (matches = regex.exec(value)))
         {
-            const matches = regex.exec(value);
-            const operation = matches![1];
-            const amount = matches![2];
-            const period = matches![3];
+            const operation = matches[1];
+            const amount = matches[2];
+            const period = matches[3];
             this._dateApi = this._dateApi ?? this._injector.get(DATE_API);
             const now = this._dateApi.now();
 
             switch(period)
             {
-                case 'i':
+                case 'm':
                 {
                     operation == '+' ? now.addMinutes(+amount).endOfMinute() : now.subtractMinutes(+amount).startOfMinute();
 
@@ -76,7 +76,7 @@ export class DateTimeRelativeParser<TDate = any>
 
                     break;
                 }
-                case 'm':
+                case 'M':
                 {
                     operation == '+' ? now.addMonths(+amount).endOfDay() : now.subtractMonths(+amount).startOfDay();
 

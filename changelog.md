@@ -7,7 +7,7 @@
 - new `DateTimeInput` interface, which defines date time input and communication API for it
     - **properties**
         - `rawValue` value of date time, raw string value which is visible to user
-        - `value` current value of date time, could be string, TDate object, or ranged DateTimeValue
+        - `value` current value of date time, could be string, unix timestamp, TDate object, or ranged DateTimeValue
         - `disabled` indication whether is date time disabled
         - `valueChange` occurs when value changes
         - `focus` occurs when input gains focus
@@ -18,16 +18,25 @@
         - `DateTimeInputDirective`
         - `DateTimeValidatorDirective`
 - new `DATE_TIME_INPUT` injection token, that is used for injecting type that represents date time input
+- new `DateTimeBase` class, that is base class for date time directives, contains basic shared data
+    - **properties**
+        - `value` current value of date time, could be string, unix timestamp, TDate object, or ranged DateTimeValue
+    - **inputs**
+        - `valueFormat` gets or sets date time value format which is being worked with in this date time
+        - `format` gets or sets format of string representation of date
+        - `customFormat` custom format string representation of date
+- new `DateTimeRestrictedBase` class, that is base class for date time directives with value restrictions
+    - **extends** `DateTimeBase`
+    - **inputs**
+        - `maxDateTime` gets or sets max allowed date for date time
+        - `minDateTime` gets or sets min allowed date for date time
 - new `DateTimeInputDirective` directive, that is used for setting up date time input
+    - **extends** `DateTimeBase`
     - **implements**
         - `DateTimeInput`
         - `OnDestroy`
     - **provides**
         - `DATE_TIME_INPUT` providing self
-    - **inputs**
-        - `valueFormat` gets or sets date time value format which is being worked with in this date time
-        - `format` gets or sets format of string representation of date
-        - `customFormat` custom format string representation of date
 - new `DateTimeControlValueAccessorDirective` directive, that is control value accessor that is used for getting and setting value for date time
     - **implements**
         - `ControlValueAccessor`
@@ -35,8 +44,24 @@
     - **provides**
         - `NG_VALUE_ACCESSOR` providing self
 - new `DateTimeValidatorDirective` directive, that applies validator for date time
+    - **extends** `DateTimeBase`
     - **implements**
         - `Validator`
+        - `OnInit`
+    - **provides**
+        - `NG_VALIDATORS` providing self
+- new `DateTimeMaxValidatorDirective` directive, that applies validator for date time max value
+    - **extends** `DateTimeBase`
+    - **implements**
+        - `Validator`
+        - `OnInit`
+    - **provides**
+        - `NG_VALIDATORS` providing self
+- new `DateTimeMinValidatorDirective` directive, that applies validator for date time min value
+    - **extends** `DateTimeBase`
+    - **implements**
+        - `Validator`
+        - `OnInit`
     - **provides**
         - `NG_VALIDATORS` providing self
 - new `DateTimeValueFormat` enum, that represents available formats for date time value
@@ -50,6 +75,8 @@
 - new `formatDateTime` function, that formats value into specified format of date time
 - new `isDateTimeValue` function, that tests whether value is `DateTimeValue`
 - new `datetimeValidator` function, that is date time validator factory function, creates validator for checking validity of datetime
+- new `datetimeMaxValidator` function, that is date time validator factory function, creates validator for checking validity of datetime max value
+- new `datetimeMinValidator` function, that is date time validator factory function, creates validator for checking validity of datetime min value
 - updated `DateApiObject` interface
     - new `unixTimestamp` method, that gets value of date time as unix timestamp
 - *subpackage* `@anglr/datetime/moment`
@@ -74,6 +101,8 @@
 - updated `DateTimeValue` interface
     - `from` can now also be `undefined` or `null`
     - `to` can now also be `undefined` or `null`
+- updated `DateTimeRelativeParser` service
+    - now `m` means minutes and `M` means months
 
 ## Version 4.0.0 (2022-10-14)
 
