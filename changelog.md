@@ -86,6 +86,14 @@
 - new `datetimeValidator` function, that is date time validator factory function, creates validator for checking validity of datetime
 - new `datetimeMaxValidator` function, that is date time validator factory function, creates validator for checking validity of datetime max value
 - new `datetimeMinValidator` function, that is date time validator factory function, creates validator for checking validity of datetime min value
+- new `DateTimeValidationArgs` interface, that represents validations arguments for date time validators for model based forms
+    - **properties**
+        - `valueFormat` format of validated value
+        - `stringFormat` format of string value
+        - `maxValue` max allowed value
+        - `minValue` min allowed value
+- new `dateTimeModelValidatorFactory` function, that is factory function that creates validator function factory
+- new `DateTime` decorator, that sets date time validator to property on which is used
 - updated `DateApiObject` interface
     - new `unixTimestamp` method, that gets value of date time as unix timestamp
 - *subpackage* `@anglr/datetime/moment`
