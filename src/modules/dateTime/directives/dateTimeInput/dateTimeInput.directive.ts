@@ -128,6 +128,16 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
     @BindThis
     protected handleInput(): void
     {
+        if(!this.rawValue)
+        {
+            this.internalValue = null;
+            this.ɵValue = null;
+
+            this.valueChange.next();
+
+            return;
+        }
+
         this.internalValue = parseDateTime(this.rawValue, this.dateApi, this.valueFormat, this.customFormat);
         this.ɵValue = formatDateTime(this.internalValue, this.valueFormat, this.customFormat);
 
