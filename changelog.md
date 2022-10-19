@@ -16,6 +16,7 @@
         - `disabled` indication whether is date time disabled
         - `focus` occurs when input gains focus
         - `blur` occurs when input loses focus
+        - `element` html element that represents input itself
 - new `DateTimeModule` module for basic date time directives, components, pipes
     - **exports**
         - `DateTimeControlValueAccessorDirective`
@@ -111,8 +112,10 @@
     - **implements**
         - `DateTimeInputValue`
         - `OnChanges`
+        - `OnDestroy`
     - **inputs**
         - `value` docs from `DateTimeInputValue`
+        - `options` options for date time picker
     - **outputs**
         - `valueChange` docs from `DateTimeInputValue`
 - new `DateTimePicker` interface, which describes date time picker API for each date time period
@@ -128,13 +131,20 @@
 - new `DateTimePickerDirectiveOptions` directive, which is defintion of date time picker directive options
     - **properties**
         - `closeOnValueSelect` indication whether close picker on value selection
-        - `closeOnBlur` indication whether close picker on date time input blur
         - `showOnFocus` indication whether display picker when date time input gets focus
         - `alwaysVisible` indication whether is picker always visible, mostly used for debugging
         - `disabled` indication whether picker is disabled, if true, you cant display picker
         - `absolute` indication whether use absolute global positioning of picker
         - `positionOptions` position options that are used to position picker
 - new `DATE_TIME_PICKER_DIRECTIVE_OPTIONS` injection token for global options for date time picker directive
+- new `DATE_TIME_PICKER_OPTIONS` injection token for global options for date time picker component
+- new `DateTimePeriodPickerBase` class, which is base abstract class for each date time period picker
+    - **implements**
+        - `DateTimePicker`
+- new `DateTimePickerOptions` interface, that is defintion of date time picker component options
+    - **properties**
+        - `periodsDefinition` definition of types for each period type for picker
+        - `defaultPeriod` name of default period for picker that is displayed after opening
 - updated `DateApiObject` interface
     - new `unixTimestamp` method, that gets value of date time as unix timestamp
 - *subpackage* `@anglr/datetime/moment`
@@ -164,6 +174,7 @@
 - updated `DateTimePickerModule` renamed to `DateTimeLegacyPickerModule`
 - updated `DateTimePickerComponent` renamed to `DateTimePickerLegacyComponent`
 - updated `DateTimePicker` renamed to `DateTimeLegacyPicker`
+- updated `DateTimePickerOptions` renamed to `DateTimePickerLegacyOptions`
 
 ## Version 4.0.0 (2022-10-14)
 

@@ -65,7 +65,7 @@ export interface DateTimePickerCssClasses
 /**
  * Defintion of datetime picker component options
  */
-export interface DateTimePickerOptions<TPicker = any>
+export interface DateTimePickerLegacyOptions<TPicker = any>
 {
     /**
      * Order of pickers, it's possible use less pickers as is defined in pickerPeriodsDefinition for example 'month,year'

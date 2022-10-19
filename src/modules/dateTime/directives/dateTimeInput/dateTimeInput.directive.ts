@@ -42,11 +42,11 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
      */
     public get rawValue(): string|undefined|null
     {
-        return this.element.nativeElement.value;
+        return this.elementRef.nativeElement.value;
     }
     public set rawValue(value: string|undefined|null)
     {
-        this.element.nativeElement.value = value ?? '';
+        this.elementRef.nativeElement.value = value ?? '';
     }
 
     /**
@@ -78,11 +78,19 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
      */
     public get disabled(): boolean
     {
-        return this.element.nativeElement.disabled;
+        return this.elementRef.nativeElement.disabled;
     }
     public set disabled(value: boolean)
     {
-        this.element.nativeElement.disabled = value;
+        this.elementRef.nativeElement.disabled = value;
+    }
+
+    /**
+     * Html element that represents input itself
+     */
+    public get element(): HTMLElement
+    {
+        return this.elementRef.nativeElement;
     }
 
     /**
@@ -96,16 +104,16 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
     public blur: EventEmitter<FocusEvent> = new EventEmitter<FocusEvent>();
 
     //######################### constructors #########################
-    constructor(protected element: ElementRef<HTMLInputElement>,
+    constructor(protected elementRef: ElementRef<HTMLInputElement>,
                 @Inject(DATE_API) dateApi: DateApi<TDate>,
                 @Inject(FORMAT_PROVIDER) formatProvider: FormatProvider,
                 protected valueProvider: DateValueProvider<TDate>,)
     {
         super(dateApi, formatProvider);
 
-        this.element.nativeElement.addEventListener('input', this.handleInput);
-        this.element.nativeElement.addEventListener('focus', this.handleFocus);
-        this.element.nativeElement.addEventListener('blur', this.handleBlur);
+        this.elementRef.nativeElement.addEventListener('input', this.handleInput);
+        this.elementRef.nativeElement.addEventListener('focus', this.handleFocus);
+        this.elementRef.nativeElement.addEventListener('blur', this.handleBlur);
     }
 
     //######################### public methods - implementation of OnDestroy #########################
@@ -115,9 +123,9 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
      */
     public ngOnDestroy(): void
     {
-        this.element.nativeElement.removeEventListener('input', this.handleInput);
-        this.element.nativeElement.removeEventListener('focus', this.handleFocus);
-        this.element.nativeElement.removeEventListener('blur', this.handleBlur);
+        this.elementRef.nativeElement.removeEventListener('input', this.handleInput);
+        this.elementRef.nativeElement.removeEventListener('focus', this.handleFocus);
+        this.elementRef.nativeElement.removeEventListener('blur', this.handleBlur);
     }
 
     //######################### protected methods #########################

@@ -15,7 +15,7 @@ export interface DateTimeInputValue<TDate = unknown>
     /**
      * Occurs when value changes
      */
-    valueChange: EventEmitter<void>;
+    readonly valueChange: EventEmitter<void>;
 }
 /**
  * Defines date time input and communication API for it
@@ -25,7 +25,7 @@ export interface DateTimeInput<TDate = unknown> extends DateTimeInputValue<TDate
     /**
      * Value of date time, raw string value which is visible to user
      */
-    rawValue: string|undefined|null;
+    readonly rawValue: string|undefined|null;
 
     /**
      * Indication whether is date time disabled
@@ -35,10 +35,15 @@ export interface DateTimeInput<TDate = unknown> extends DateTimeInputValue<TDate
     /**
      * Occurs when input gains focus
      */
-    focus: EventEmitter<FocusEvent>;
+    readonly focus: EventEmitter<FocusEvent>;
 
     /**
      * Occurs when input loses focus
      */
-    blur: EventEmitter<FocusEvent>;
+    readonly blur: EventEmitter<FocusEvent>;
+
+    /**
+     * Html element that represents input itself
+     */
+    readonly element: HTMLElement;
 }

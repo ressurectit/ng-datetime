@@ -1,7 +1,7 @@
 import {ComponentRef, Directive, ElementRef, EmbeddedViewRef, Inject, Input, OnDestroy, OnInit, Optional, ViewContainerRef} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {Position, POSITION, applyPositionResult, PositionPlacement} from '@anglr/common';
-import {extend, nameof} from '@jscrpt/common';
+import {extend, nameof, isDescendant, BindThis} from '@jscrpt/common';
 import {lastValueFrom, Subscription} from 'rxjs';
 
 import {DateTimeInput} from '../../../../interfaces';
@@ -17,7 +17,6 @@ const defaultOptions: DateTimePickerDirectiveOptions =
 {
     absolute: true,
     alwaysVisible: false,
-    closeOnBlur: true,
     closeOnValueSelect: true,
     disabled: false,
     positionOptions: PositionPlacement.BottomStart,
@@ -35,6 +34,11 @@ const defaultOptions: DateTimePickerDirectiveOptions =
 export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestroy
 {
     //######################### protected properties #########################
+
+    /**
+     * Indication whether is value changes disabled
+     */
+    protected valueChangeDisabled: boolean = false;
 
     /**
      * Options for date time picker directive
@@ -60,6 +64,11 @@ export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestr
      * Instance of date time picker element
      */
     protected componentElement: HTMLElement|undefined|null;
+
+    /**
+     * Subscription for value changes in picker
+     */
+    protected valueChangeSubscription: Subscription|undefined|null;
 
     //######################### public properties - inputs #########################
 
@@ -94,9 +103,20 @@ export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestr
      */
     public async ngOnInit(): Promise<void>
     {
-        this.showPicker();
+        if(this.withPickerOptions.alwaysVisible)
+        {
+            this.showPicker();
+        }
 
         this.initSubscriptions.add(this.input.valueChange.subscribe(() => this.setPickerValue()));
+
+        this.initSubscriptions.add(this.input.focus.subscribe(() =>
+        {
+            if(this.withPickerOptions.showOnFocus)
+            {
+                this.showPicker();
+            }
+        }));
     }
 
     //######################### public methods - implementation of OnDestroy #########################
@@ -117,25 +137,39 @@ export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestr
      */
     public async showPicker(): Promise<void>
     {
-        if(!this.componentRef)
+        if(this.withPickerOptions.disabled || this.componentRef)
         {
-            this.componentRef = this.viewContainer.createComponent(DateTimePickerComponent<TDate>);
-            this.componentElement = (this.componentRef?.hostView as EmbeddedViewRef<DateTimePickerComponent<TDate>>).rootNodes[0] as HTMLElement;
-            this.component = this.componentRef.instance;
+            return;
+        }
 
+        this.componentRef = this.viewContainer.createComponent(DateTimePickerComponent<TDate>);
+        this.componentElement = (this.componentRef?.hostView as EmbeddedViewRef<DateTimePickerComponent<TDate>>).rootNodes[0] as HTMLElement;
+        this.component = this.componentRef.instance;
+
+        if(this.withPickerOptions.absolute)
+        {
             this.document.body.append(this.componentElement);
         }
 
-        if(this.componentElement)
+        this.valueChangeSubscription = this.component.valueChange.subscribe(() =>
         {
-            const result = await lastValueFrom(this.position.placeElement(this.componentElement, this.element.nativeElement,
+            if(this.component)
             {
-                placement: PositionPlacement.BottomStart,
-            }));
+                this.valueChangeDisabled = true;
+                this.input.value = this.component.value;
+                this.input.valueChange.emit();
+                this.valueChangeDisabled = false;
+            }
+        });
 
-            applyPositionResult(result);
-        }
+        this.document.addEventListener('click', this.handleClickOutside);
 
+        const result = await lastValueFrom(this.position.placeElement(this.componentElement, this.element.nativeElement,
+        {
+            placement: this.withPickerOptions.positionOptions,
+        }));
+
+        applyPositionResult(result);
         this.setPickerValue();
     }
 
@@ -144,11 +178,23 @@ export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestr
      */
     public hidePicker(): void
     {
+        if(this.withPickerOptions.alwaysVisible)
+        {
+            return;
+        }
+
+        this.valueChangeSubscription?.unsubscribe();
+        this.valueChangeSubscription = null;
+
         this.component = null;
+
         this.componentRef?.destroy();
         this.componentRef = null;
+
         this.componentElement?.remove();
         this.componentElement = null;
+
+        this.document.removeEventListener('click', this.handleClickOutside);
     }
 
     //######################### protected methods #########################
@@ -158,9 +204,37 @@ export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestr
      */
     protected setPickerValue(): void
     {
+        if(this.valueChangeDisabled)
+        {
+            return;
+        }
+
         if(this.componentRef)
         {
             this.componentRef.setInput(nameof<DateTimePickerComponent>('value'), this.input.value);
+            // this.componentRef.changeDetectorRef.markForCheck();
+            this.componentRef.changeDetectorRef.detectChanges();
+        }
+    }
+
+    /**
+     * Handles clicking outside of picker
+     * @param event - Event that occured
+     */
+    @BindThis
+    protected handleClickOutside(event: MouseEvent): void
+    {
+        if(!this.componentElement)
+        {
+            return;
+        }
+
+        if(this.componentElement != event.target &&
+           !isDescendant(this.componentElement, event.target as HTMLElement) &&
+           (!this.input.element || (this.input.element != event.target &&
+                                    !isDescendant(this.input.element, event.target as HTMLElement))))
+        {
+            this.hidePicker();
         }
     }
 }

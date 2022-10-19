@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs';
 import {DateTimeValue} from '../../../../interfaces/dateTime/datetime.interface';
 import {DATE_API} from '../../../../misc/tokens';
 import {DateApi} from '../../../../services';
-import {DateTimeLegacyPicker, DateTimePickerOptions} from '../../misc/datetimePicker.interface';
+import {DateTimeLegacyPicker, DateTimePickerLegacyOptions} from '../../misc/datetimePicker.interface';
 import {DATE_TIME_PICKER_CONFIGURATION} from '../../misc/tokens';
 import {DateTimeDayPickerComponent} from '../dayPicker/dayPicker.component';
 import {DateTimeMonthPickerComponent} from '../monthPicker/monthPicker.component';
@@ -17,7 +17,7 @@ import {scaleUpDownTrigger} from './picker.component.animations';
 /**
  * Default configuration for picker
  */
-const defaultConfiguration: DateTimePickerOptions<DateTimeLegacyPicker> =
+const defaultConfiguration: DateTimePickerLegacyOptions<DateTimeLegacyPicker> =
 {
     defaultPeriod: 'day',
     pickerPeriodsDefinition:
@@ -90,7 +90,7 @@ export class DateTimePickerLegacyComponent<TDate = any> implements OnInit, OnDes
     /**
      * Current options used by picker
      */
-    protected _options: DateTimePickerOptions<DateTimeLegacyPicker<TDate>>;
+    protected _options: DateTimePickerLegacyOptions<DateTimeLegacyPicker<TDate>>;
 
     //######################### public properties - template bindings #########################
 
@@ -112,11 +112,11 @@ export class DateTimePickerLegacyComponent<TDate = any> implements OnInit, OnDes
      * Current options used by picker
      */
     @Input()
-    public get options(): Partial<DateTimePickerOptions<DateTimeLegacyPicker<TDate>>>
+    public get options(): Partial<DateTimePickerLegacyOptions<DateTimeLegacyPicker<TDate>>>
     {
         return this._options;
     }
-    public set options(value: Partial<DateTimePickerOptions<DateTimeLegacyPicker<TDate>>>)
+    public set options(value: Partial<DateTimePickerLegacyOptions<DateTimeLegacyPicker<TDate>>>)
     {
         this._options = extend(true, this._options, value);
 
@@ -180,7 +180,7 @@ export class DateTimePickerLegacyComponent<TDate = any> implements OnInit, OnDes
     public valueChange: EventEmitter<DateTimeValue<TDate>> = new EventEmitter<DateTimeValue<TDate>>();
 
     //######################### constructor #########################
-    constructor(@Optional() @Inject(DATE_TIME_PICKER_CONFIGURATION) configuration: Partial<DateTimePickerOptions<DateTimeLegacyPicker<TDate>>>,
+    constructor(@Optional() @Inject(DATE_TIME_PICKER_CONFIGURATION) configuration: Partial<DateTimePickerLegacyOptions<DateTimeLegacyPicker<TDate>>>,
                 @Inject(DATE_API) protected _dateApi: DateApi<TDate>,
                 protected _changeDetector: ChangeDetectorRef)
     {

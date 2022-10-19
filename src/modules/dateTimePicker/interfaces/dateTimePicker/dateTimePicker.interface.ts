@@ -15,12 +15,12 @@ export interface DateTimePicker<TDate = unknown, TOptions = unknown>
     /**
      * Options for date time picker period
      */
-    options: TOptions;
+    options: TOptions|undefined|null;
 
     /**
      * Date that describes which date should be displayed
      */
-    display: TDate;
+    display: TDate|undefined|null;
 
     /**
      * Indication whether picker can display lower granularity picker
@@ -35,15 +35,15 @@ export interface DateTimePicker<TDate = unknown, TOptions = unknown>
     /**
      * Occurs when date time picker value changes
      */
-    valueChange: Observable<void>;    
+    readonly valueChange: Observable<void>;    
 
     /**
      * Occurs when period with lower granularity should be displayed
      */
-    goUp: Observable<TDate>;
+    readonly goUp: Observable<TDate>;
 
     /**
      * Occurs when period with higher granularity should be displayed
      */
-    goDown: Observable<TDate>;
+    readonly goDown: Observable<TDate>;
 }

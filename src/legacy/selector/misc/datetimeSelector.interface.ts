@@ -3,12 +3,12 @@ import {PositionOptions} from '@anglr/common';
 import {Observable} from 'rxjs';
 
 import {DateTimeValue} from '../../../interfaces/dateTime/datetime.interface';
-import {DateTimePickerOptions} from '../../picker/misc/datetimePicker.interface';
+import {DateTimePickerLegacyOptions} from '../../picker/misc/datetimePicker.interface';
 
 /**
  * Defintion of datetime selector component options
  */
-export interface DateTimeSelectorOptions<TSelector = any, TPicker = any> extends DateTimePickerOptions<TPicker>
+export interface DateTimeSelectorOptions<TSelector = any, TPicker = any> extends DateTimePickerLegacyOptions<TPicker>
 {
     /**
      * Definition of type that is used for selector

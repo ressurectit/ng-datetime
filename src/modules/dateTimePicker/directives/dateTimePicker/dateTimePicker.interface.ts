@@ -11,11 +11,6 @@ export interface DateTimePickerDirectiveOptions
     closeOnValueSelect: boolean;
 
     /**
-     * Indication whether close picker on date time input blur
-     */
-    closeOnBlur: boolean;
-
-    /**
      * Indication whether display picker when date time input gets focus
      */
     showOnFocus: boolean;
