@@ -1,6 +1,7 @@
 import {Observable, Subject} from 'rxjs';
 
 import {DateTimeObjectValue} from '../../../misc/types';
+import {DateApiObject} from '../../../services';
 import {DateTimePicker} from '../interfaces';
 
 /**
@@ -16,14 +17,19 @@ export abstract class DateTimePeriodPickerBase<TDate = unknown, TOptions = unkno
     protected valueChangeSubject: Subject<void> = new Subject<void>();
 
     /**
-     * Subject used for emitting of go up
+     * Subject used for scaling up
      */
-    protected goUpSubject: Subject<TDate> = new Subject<TDate>();
+    protected scaleUpSubject: Subject<TDate> = new Subject<TDate>();
 
     /**
-     * Subject used for emitting of go down
+     * Subject used for scaling down
      */
-    protected goDownSubject: Subject<TDate> = new Subject<TDate>();
+    protected scaleDownSubject: Subject<TDate> = new Subject<TDate>();
+
+    /**
+     * Date api instance for displayed date
+     */
+    protected displayDate: DateApiObject<TDate>|undefined|null;
 
     //######################### public properties - implementation of DateTimePicker #########################
 
@@ -45,12 +51,22 @@ export abstract class DateTimePeriodPickerBase<TDate = unknown, TOptions = unkno
     /**
      * @inheritdoc
      */
-    public canGoUp: boolean = false;
+    public maxDate: TDate|undefined|null;
 
     /**
      * @inheritdoc
      */
-    public canGoDown: boolean = false;
+    public minDate: TDate|undefined|null;
+
+    /**
+     * @inheritdoc
+     */
+    public canScaleUp: boolean = false;
+
+    /**
+     * @inheritdoc
+     */
+    public canScaleDown: boolean = false;
 
     /**
      * @inheritdoc
@@ -63,16 +79,16 @@ export abstract class DateTimePeriodPickerBase<TDate = unknown, TOptions = unkno
     /**
      * @inheritdoc
      */
-    public get goUp(): Observable<TDate>
+    public get scaleUp(): Observable<TDate>
     {
-        return this.goUpSubject.asObservable();
+        return this.scaleUpSubject.asObservable();
     }
 
     /**
      * @inheritdoc
      */
-    public get goDown(): Observable<TDate>
+    public get scaleDown(): Observable<TDate>
     {
-        return this.goDownSubject.asObservable();
+        return this.scaleDownSubject.asObservable();
     }
 }

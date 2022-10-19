@@ -23,14 +23,24 @@ export interface DateTimePicker<TDate = unknown, TOptions = unknown>
     display: TDate|undefined|null;
 
     /**
-     * Indication whether picker can display lower granularity picker
+     * Max allowed date
      */
-    canGoUp: boolean;
+    maxDate: TDate|undefined|null;
 
     /**
-     * Indication whether picker can display higher granularity picker
+     * Min allowed date to be selected
      */
-    canGoDown: boolean;
+    minDate: TDate|undefined|null;
+
+    /**
+     * Indication whether picker can display scale date time period up
+     */
+    canScaleUp: boolean;
+
+    /**
+     * Indication whether picker can display scale date time period down
+     */
+    canScaleDown: boolean;
 
     /**
      * Occurs when date time picker value changes
@@ -38,12 +48,12 @@ export interface DateTimePicker<TDate = unknown, TOptions = unknown>
     readonly valueChange: Observable<void>;    
 
     /**
-     * Occurs when period with lower granularity should be displayed
+     * Occurs when period should be scaled up
      */
-    readonly goUp: Observable<TDate>;
+    readonly scaleUp: Observable<TDate>;
 
     /**
-     * Occurs when period with higher granularity should be displayed
+     * Occurs when period should be scaled down
      */
-    readonly goDown: Observable<TDate>;
+    readonly scaleDown: Observable<TDate>;
 }

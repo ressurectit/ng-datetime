@@ -1,23 +1,21 @@
-<!-- <div [ngClass]="cssClasses.periodSelection | asRequired">
-    <div [ngClass]="cssClasses.previousPeriod | asRequired" (mousedown)="previousMonth($event)"></div>
-    <div [ngClass]="cssClasses.periodValue | asRequired | mergeCssClasses: [{'clickable': canGoUp}]" (mousedown)="goUp($event)">{{displayDate?.format('MMMM yyyy')}}</div>
-    <div [ngClass]="cssClasses.nextPeriod | asRequired" (mousedown)="nextMonth($event)"></div>
+<div class="period">
+    <div class="fas fa-angle-left clickable" (mousedown)="previousMonth($event)"></div>
+    <div class="period-value" [class.clickable]="canScaleUp" (mousedown)="$event.stopPropagation(); $event.preventDefault(); displayDate ? scaleUpSubject.next(displayDate.value) : undefined">{{displayDate?.value | dateFormat: 'monthName'}} {{displayDate?.value | dateFormat: 'year'}}</div>
+    <div class="fas fa-angle-right clickable" (mousedown)="nextMonth($event)"></div>
 </div>
 
-<div [ngClass]="cssClasses.periodData | asRequired">
-    <div [ngClass]="cssClasses.weekdayName | asRequired" *ngFor="let weekday of weekdays">{{weekday}}</div>
+<div class="period-data">
+    <div class="weekday" *ngFor="let weekday of weekdays">{{weekday}}</div>
     <div *ngFor="let day of periodData"
-         [ngClass]="cssClasses.periodDatum | asRequired"
+         class="period-datum clickable"
          [class.other-month]="day.otherMonth"
          [class.today]="day.today"
          [class.weekend]="day.weekend"
          [class.active]="day.active"
          [class.disabled]="day.disabled"
-         (mousedown)="select($event, day)">{{day.day}}</div>
+         (click)="$event.stopPropagation(); $event.preventDefault(); selectDay(day)">{{day.day}}</div>
 </div>
 
-<div class="flex-row" style="justify-content: center; border-top: 1px solid #FFF;" *ngIf="canGoDown">
-    <div [class.clickable]="canGoDown" (mousedown)="goDown($event)">{{timeValue?.from | dateFormat: 'time'}}</div>
-</div> -->
-
-DAY
+<div class="go-down-button" style="justify-content: center; border-top: 1px solid #FFF;" *ngIf="canScaleDown">
+    <!-- <div [class.clickable]="canScaleDown" (mousedown)="$event.stopPropagation(); $event.preventDefault(); displayDate ? goDownSubject.next(displayDate.value) : undefined">{{timeValue?.from | dateFormat: 'time'}}</div> -->
+</div>

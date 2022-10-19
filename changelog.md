@@ -109,6 +109,7 @@
         - `showPicker` hides date time picker
         - `hidePicker` shows date time picker
 - new `DateTimePickerComponent` directive, which is component used for displaying date time picker
+    - **extends** `DateTimeRestrictedBase`
     - **implements**
         - `DateTimeInputValue`
         - `OnChanges`
@@ -123,11 +124,13 @@
         - `value` value of date time picker
         - `options` options for date time picker period
         - `display` date that describes which date should be displayed
-        - `canGoUp` indication whether picker can display lower granularity picker
-        - `canGoDown` indication whether picker can display higher granularity picker
+        - `maxDate` max allowed date
+        - `minDate` min allowed date to be selected
+        - `canScaleUp` indication whether picker can display scale date time period up
+        - `canScaleDown` indication whether picker can display scale date time period down
         - `valueChange` occurs when date time picker value changes
-        - `goUp` occurs when period with lower granularity should be displayed
-        - `goDown` occurs when period with higher granularity should be displayed
+        - `scaleUp` occurs when period should be scaled up
+        - `scaleDown` occurs when period should be scaled down
 - new `DateTimePickerDirectiveOptions` directive, which is defintion of date time picker directive options
     - **properties**
         - `closeOnValueSelect` indication whether close picker on value selection
@@ -147,6 +150,8 @@
         - `defaultPeriod` name of default period for picker that is displayed after opening
 - updated `DateApiObject` interface
     - new `unixTimestamp` method, that gets value of date time as unix timestamp
+- updated `DateFormatPipe`
+    - improved typings for `transform`
 - *subpackage* `@anglr/datetime/moment`
     - updated `MomentDateApi`
         - now implements also new `unixTimestamp`
@@ -175,6 +180,8 @@
 - updated `DateTimePickerComponent` renamed to `DateTimePickerLegacyComponent`
 - updated `DateTimePicker` renamed to `DateTimeLegacyPicker`
 - updated `DateTimePickerOptions` renamed to `DateTimePickerLegacyOptions`
+- updated `DateFormatPipe`
+    - typings that allows custom format must use `customFormat` new parameter
 
 ## Version 4.0.0 (2022-10-14)
 

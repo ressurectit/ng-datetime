@@ -187,10 +187,6 @@ export interface PeriodData<TDate = any>
  */
 export interface DayData<TDate = any> extends PeriodData<TDate>
 {
-    /**
-     * Indication that range is selected and this day is between selected dates
-     */
-    betweenActive: boolean;
 
     /**
      * Indication that this day is out of currently selected month

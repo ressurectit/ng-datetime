@@ -3,16 +3,17 @@ import {Position, POSITION} from '@anglr/common';
 import {extend, isBlank, nameof} from '@jscrpt/common';
 import {Subscription} from 'rxjs';
 
-import {DateTimeInputValue} from '../../../../interfaces';
+import {DateTimeInputValue, FormatProvider} from '../../../../interfaces';
 import {DateTimeInputOutputValue} from '../../../../misc/types';
 import {DATE_TIME_PICKER_OPTIONS} from '../../misc/tokens';
 import {DayPickerSAComponent} from '../dayPicker/dayPicker.component';
 import {DateTimePickerOptions} from './dateTimePicker.interface';
 import {DateTimePicker} from '../../interfaces';
 import {DateApi} from '../../../../services';
-import {DATE_API} from '../../../../misc/tokens';
+import {DATE_API, FORMAT_PROVIDER} from '../../../../misc/tokens';
 import {formatDateTime, parseDateTime} from '../../../../misc/utils';
 import {DateTimeValueFormat} from '../../../../misc/enums';
+import {DateTimeRestrictedBase} from '../../../dateTime/directives/dateTimeRestrictedBase';
 
 /**
  * Text to be displayed when configuration, options are corrupted
@@ -40,7 +41,7 @@ const defaultOptions: DateTimePickerOptions =
     templateUrl: 'dateTimePicker.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DateTimePickerComponent<TDate = unknown> implements DateTimeInputValue<TDate>, OnChanges, OnDestroy
+export class DateTimePickerComponent<TDate = unknown> extends DateTimeRestrictedBase<TDate> implements DateTimeInputValue<TDate>, OnChanges, OnDestroy
 {
     //######################### protected properties #########################
     
@@ -83,7 +84,14 @@ export class DateTimePickerComponent<TDate = unknown> implements DateTimeInputVa
      * @inheritdoc
      */
     @Input()
-    public value: DateTimeInputOutputValue<TDate>|undefined|null;
+    public override get value(): DateTimeInputOutputValue<TDate>|undefined|null
+    {
+        return this.ɵValue;
+    }
+    public override set value(value: DateTimeInputOutputValue<TDate>|undefined|null)
+    {
+        this.ɵValue = value;
+    }
 
     /**
      * Options for date time picker
@@ -109,13 +117,16 @@ export class DateTimePickerComponent<TDate = unknown> implements DateTimeInputVa
      * @inheritdoc
      */
     @Output()
-    public valueChange: EventEmitter<void> = new EventEmitter<void>();
+    public override valueChange: EventEmitter<void> = new EventEmitter<void>();
 
     //######################### constructor #########################
     constructor(@Inject(POSITION) protected position: Position,
-                @Inject(DATE_API) protected dateApi: DateApi<TDate>,
+                @Inject(DATE_API) dateApi: DateApi<TDate>,
+                @Inject(FORMAT_PROVIDER) formatProvider: FormatProvider,
                 @Inject(DATE_TIME_PICKER_OPTIONS) @Optional() options?: DateTimePickerOptions<TDate>,)
     {
+        super(dateApi, formatProvider);
+
         this.ɵOptions = extend(true, {}, defaultOptions, options);
         
         if(options?.periodsDefinition)
@@ -159,8 +170,10 @@ export class DateTimePickerComponent<TDate = unknown> implements DateTimeInputVa
     /**
      * Called when component is destroyed
      */
-    public ngOnDestroy(): void
+    public override ngOnDestroy(): void
     {
+        super.ngOnDestroy();
+
         this.component?.destroy();
         this.component = null;
 
@@ -203,14 +216,14 @@ export class DateTimePickerComponent<TDate = unknown> implements DateTimeInputVa
                 this.valueChange.emit();
             }));
 
-            this.periodChangesSubscription.add(this.component.instance.goUp.subscribe(date => this.showPicker(this.getUpperType(), date)));
-            this.periodChangesSubscription.add(this.component.instance.goDown.subscribe(date => this.showPicker(this.getLowerType(), date)));
+            this.periodChangesSubscription.add(this.component.instance.scaleUp.subscribe(date => this.showPicker(this.getUpperType(), date)));
+            this.periodChangesSubscription.add(this.component.instance.scaleDown.subscribe(date => this.showPicker(this.getLowerType(), date)));
         }
 
         const component = this.component.instance;
 
-        component.canGoDown = false,
-        component.canGoUp = false;
+        component.canScaleDown = false,
+        component.canScaleUp = false;
         component.display = displayDate;
         // component.options
         //TODO: maybe add support for format!

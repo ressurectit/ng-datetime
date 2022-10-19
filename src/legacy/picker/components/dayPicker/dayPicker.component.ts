@@ -199,7 +199,6 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
                 {
                     active: false,
                     disabled: false,
-                    betweenActive: false,
                     date: this.displayDate.value,
                     otherMonth: otherMonth,
                     today: this.displayDate.isSameDay(today),

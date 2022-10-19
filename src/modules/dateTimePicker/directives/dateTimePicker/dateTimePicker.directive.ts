@@ -108,7 +108,11 @@ export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestr
             this.showPicker();
         }
 
-        this.initSubscriptions.add(this.input.valueChange.subscribe(() => this.setPickerValue()));
+        this.initSubscriptions.add(this.input.valueChange.subscribe(() =>
+        {
+            this.setPickerValue();
+            this.componentRef?.changeDetectorRef.detectChanges();
+        }));
 
         this.initSubscriptions.add(this.input.focus.subscribe(() =>
         {
@@ -171,6 +175,10 @@ export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestr
 
         applyPositionResult(result);
         this.setPickerValue();
+        // this.componentRef.setInput(nameof<DateTimePickerComponent>('valueFormat'), this.input.);
+        // this.componentRef.setInput(nameof<DateTimePickerComponent>('value'), this.input.value);
+        // this.componentRef.setInput(nameof<DateTimePickerComponent>('value'), this.input.value);
+        this.componentRef.changeDetectorRef.detectChanges();
     }
 
     /**
@@ -212,8 +220,6 @@ export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestr
         if(this.componentRef)
         {
             this.componentRef.setInput(nameof<DateTimePickerComponent>('value'), this.input.value);
-            // this.componentRef.changeDetectorRef.markForCheck();
-            this.componentRef.changeDetectorRef.detectChanges();
         }
     }
 
