@@ -4,7 +4,7 @@ import {extend} from '@jscrpt/common';
 import {DateTimeValue} from '../../../../interfaces/dateTime/datetime.interface';
 import {DATE_API} from '../../../../misc/tokens';
 import {DateApi, DateApiObject} from '../../../../services/dateApi/dateApi.interface';
-import {DateTimePicker, DayData, PeriodData} from '../../misc/datetimePicker.interface';
+import {DateTimeLegacyPicker, DayData, PeriodData} from '../../misc/datetimePicker.interface';
 import {PickerBaseComponent} from '../pickerBase.component';
 import {DayPickerCssClasses} from './dayPicker.interfaces';
 
@@ -33,7 +33,7 @@ const defaultStyles: DayPickerCssClasses =
     styleUrls: ['dayPicker.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent<TDate, DayData<TDate>, DayPickerCssClasses> implements DateTimePicker<TDate, DayPickerCssClasses>
+export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent<TDate, DayData<TDate>, DayPickerCssClasses> implements DateTimeLegacyPicker<TDate, DayPickerCssClasses>
 {
     //######################### protected fields #########################
 

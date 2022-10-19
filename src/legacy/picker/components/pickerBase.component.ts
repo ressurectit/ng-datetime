@@ -3,14 +3,14 @@ import {ChangeDetectorRef, Directive, Inject} from '@angular/core';
 import {DateTimeValue} from '../../../interfaces/dateTime/datetime.interface';
 import {DATE_API} from '../../../misc/tokens';
 import {DateApi, DateApiObject} from '../../../services/dateApi/dateApi.interface';
-import {DateTimePicker, PeriodData} from '../misc/datetimePicker.interface';
+import {DateTimeLegacyPicker, PeriodData} from '../misc/datetimePicker.interface';
 import {PickerImplBaseComponent} from './pickerImplBase.component';
 
 /**
  * Base class used as base for picker
  */
 @Directive()
-export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodData<TDate> = any, TCssClasses = object> extends PickerImplBaseComponent<TDate, TCssClasses> implements DateTimePicker<TDate, TCssClasses>
+export abstract class PickerBaseComponent<TDate = any, TDateData extends PeriodData<TDate> = any, TCssClasses = object> extends PickerImplBaseComponent<TDate, TCssClasses> implements DateTimeLegacyPicker<TDate, TCssClasses>
 {
     //######################### protected fields #########################
 

@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs';
 
 import {DateTimeValue} from '../../../../interfaces/dateTime/datetime.interface';
 import {DateTimeSelector, DateTimeSelectorOptions} from '../../interfaces';
-import {DateTimePickerComponent} from '../../../picker/types';
+import {DateTimePickerLegacyComponent} from '../../../picker/types';
 
 /**
  * Directive for rendering datetime picker in selector
@@ -21,7 +21,7 @@ export class DateTimePickerRendererDirective<TDate = any> implements OnInit, OnC
     /**
      * Instance of component used for rendering picker
      */
-    protected _pickerComponent?: ComponentRef<DateTimePickerComponent>;
+    protected _pickerComponent?: ComponentRef<DateTimePickerLegacyComponent>;
 
     /**
      * Instance of HTML element for picker
@@ -159,7 +159,7 @@ export class DateTimePickerRendererDirective<TDate = any> implements OnInit, OnC
 
         // 1. Create a component reference from the component
         this._pickerComponent = this._viewContainer
-            .createComponent(DateTimePickerComponent,
+            .createComponent(DateTimePickerLegacyComponent,
                              {
                                  injector: this._injector
                              });

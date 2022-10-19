@@ -5,13 +5,13 @@ import {Observable, Subject} from 'rxjs';
 import {DateTimeValue} from '../../../interfaces/dateTime/datetime.interface';
 import {DATE_API} from '../../../misc/tokens';
 import {DateApi, DateApiObject} from '../../../services/dateApi/dateApi.interface';
-import {DateTimePicker} from '../misc/datetimePicker.interface';
+import {DateTimeLegacyPicker} from '../misc/datetimePicker.interface';
 
 /**
  * Base class used as base for picker as base implementation of DateTimePicker interface
  */
 @Directive()
-export abstract class PickerImplBaseComponent<TDate = any, TCssClasses = any> implements DateTimePicker<TDate, TCssClasses>
+export abstract class PickerImplBaseComponent<TDate = any, TCssClasses = any> implements DateTimeLegacyPicker<TDate, TCssClasses>
 {
     //######################### protected fields #########################
 

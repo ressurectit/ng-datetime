@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 5.0.0 (2022-10-18)
+## Version 5.0.0 (2022-10-19)
 
 ### Features
 
@@ -94,6 +94,47 @@
         - `minValue` min allowed value
 - new `dateTimeModelValidatorFactory` function, that is factory function that creates validator function factory
 - new `DateTime` decorator, that sets date time validator to property on which is used
+- new `DateTimePickerModule` module, that is module for components that are used as date time picker
+    - **exports**
+        - `DateTimePickerComponent`
+        - `DateTimePickerDirective`
+- new `DateTimePickerDirective` directive, that is directive that is used for displaying and attaching date time picker
+    - **implements**
+        - `OnInit`
+        - `OnDestroy`
+    - **inputs**
+        - `withPickerOptions` gets or sets options for date time picker directive
+    - **methods**
+        - `showPicker` hides date time picker
+        - `hidePicker` shows date time picker
+- new `DateTimePickerComponent` directive, which is component used for displaying date time picker
+    - **implements**
+        - `DateTimeInputValue`
+        - `OnChanges`
+    - **inputs**
+        - `value` docs from `DateTimeInputValue`
+    - **outputs**
+        - `valueChange` docs from `DateTimeInputValue`
+- new `DateTimePicker` interface, which describes date time picker API for each date time period
+    - **properties**
+        - `value` value of date time picker
+        - `options` options for date time picker period
+        - `display` date that describes which date should be displayed
+        - `canGoUp` indication whether picker can display lower granularity picker
+        - `canGoDown` indication whether picker can display higher granularity picker
+        - `valueChange` occurs when date time picker value changes
+        - `goUp` occurs when period with lower granularity should be displayed
+        - `goDown` occurs when period with higher granularity should be displayed
+- new `DateTimePickerDirectiveOptions` directive, which is defintion of date time picker directive options
+    - **properties**
+        - `closeOnValueSelect` indication whether close picker on value selection
+        - `closeOnBlur` indication whether close picker on date time input blur
+        - `showOnFocus` indication whether display picker when date time input gets focus
+        - `alwaysVisible` indication whether is picker always visible, mostly used for debugging
+        - `disabled` indication whether picker is disabled, if true, you cant display picker
+        - `absolute` indication whether use absolute global positioning of picker
+        - `positionOptions` position options that are used to position picker
+- new `DATE_TIME_PICKER_DIRECTIVE_OPTIONS` injection token for global options for date time picker directive
 - updated `DateApiObject` interface
     - new `unixTimestamp` method, that gets value of date time as unix timestamp
 - *subpackage* `@anglr/datetime/moment`
@@ -120,6 +161,9 @@
     - `to` can now also be `undefined` or `null`
 - updated `DateTimeRelativeParser` service
     - now `m` means minutes and `M` means months
+- updated `DateTimePickerModule` renamed to `DateTimeLegacyPickerModule`
+- updated `DateTimePickerComponent` renamed to `DateTimePickerLegacyComponent`
+- updated `DateTimePicker` renamed to `DateTimeLegacyPicker`
 
 ## Version 4.0.0 (2022-10-14)
 

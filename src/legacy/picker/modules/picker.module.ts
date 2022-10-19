@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule as AngularCommonModule} from '@angular/common';
 import {CommonDynamicModule, CastPipesModule, ClickOutsideModule, CommonUtilsModule} from '@anglr/common';
 
-import {DateTimePickerComponent} from '../components/picker/picker.component';
+import {DateTimePickerLegacyComponent} from '../components/picker/picker.component';
 import {DateTimeDayPickerComponent} from '../components/dayPicker/dayPicker.component';
 import {DateTimeMonthPickerComponent} from '../components/monthPicker/monthPicker.component';
 import {DateTimeYearPickerComponent} from '../components/yearPicker/yearPicker.component';
@@ -26,7 +26,7 @@ import {LoopScrollDataDirective, LoopScrollDirective} from '../directives';
     ],
     declarations:
     [
-        DateTimePickerComponent,
+        DateTimePickerLegacyComponent,
         DateTimeRollerTimePickerComponent,
         DateTimeDayPickerComponent,
         DateTimeMonthPickerComponent,
@@ -36,9 +36,9 @@ import {LoopScrollDataDirective, LoopScrollDirective} from '../directives';
     ],
     exports:
     [
-        DateTimePickerComponent
+        DateTimePickerLegacyComponent
     ]
 })
-export class DateTimePickerModule
+export class DateTimeLegacyPickerModule
 {
 }

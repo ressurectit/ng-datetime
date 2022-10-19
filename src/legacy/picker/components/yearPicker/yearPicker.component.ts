@@ -3,7 +3,7 @@ import {extend} from '@jscrpt/common';
 
 import {DATE_API} from '../../../../misc/tokens';
 import {DateApi, DateApiObject} from '../../../../services/dateApi/dateApi.interface';
-import {DateTimePicker, PeriodData, YearData} from '../../misc/datetimePicker.interface';
+import {DateTimeLegacyPicker, PeriodData, YearData} from '../../misc/datetimePicker.interface';
 import {PickerBaseComponent} from '../pickerBase.component';
 import {YearPickerCssClasses} from './yearPicker.interfaces';
 
@@ -31,7 +31,7 @@ const defaultStyles: YearPickerCssClasses =
     styleUrls: ['yearPicker.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DateTimeYearPickerComponent<TDate = any> extends PickerBaseComponent<TDate, YearData<TDate>, YearPickerCssClasses> implements DateTimePicker<TDate, YearPickerCssClasses>
+export class DateTimeYearPickerComponent<TDate = any> extends PickerBaseComponent<TDate, YearData<TDate>, YearPickerCssClasses> implements DateTimeLegacyPicker<TDate, YearPickerCssClasses>
 {
     //######################### public properties - template bindings #########################
 

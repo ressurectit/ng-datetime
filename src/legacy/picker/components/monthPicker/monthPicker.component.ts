@@ -3,7 +3,7 @@ import {extend} from '@jscrpt/common';
 
 import {DATE_API} from '../../../../misc/tokens';
 import {DateApi, DateApiObject} from '../../../../services/dateApi/dateApi.interface';
-import {DateTimePicker, MonthData, PeriodData} from '../../misc/datetimePicker.interface';
+import {DateTimeLegacyPicker, MonthData, PeriodData} from '../../misc/datetimePicker.interface';
 import {PickerBaseComponent} from '../pickerBase.component';
 import {MonthPickerCssClasses} from './monthPicker.interfaces';
 
@@ -31,7 +31,7 @@ const defaultStyles: MonthPickerCssClasses =
     styleUrls: ['monthPicker.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DateTimeMonthPickerComponent<TDate = any> extends PickerBaseComponent<TDate, MonthData<TDate>, MonthPickerCssClasses> implements DateTimePicker<TDate, MonthPickerCssClasses>
+export class DateTimeMonthPickerComponent<TDate = any> extends PickerBaseComponent<TDate, MonthData<TDate>, MonthPickerCssClasses> implements DateTimeLegacyPicker<TDate, MonthPickerCssClasses>
 {
     //######################### constructor #########################
     constructor(@Inject(DATE_API) dateApi: DateApi<TDate>,

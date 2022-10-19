@@ -91,7 +91,7 @@ export interface DateTimePickerOptions<TPicker = any>
 /**
  * Describes datetime picker component used for displaying and selecting value
  */
-export interface DateTimePicker<TDate = any, TCssClasses = object>
+export interface DateTimeLegacyPicker<TDate = any, TCssClasses = object>
 {
     /**
      * Gets current value of datetime

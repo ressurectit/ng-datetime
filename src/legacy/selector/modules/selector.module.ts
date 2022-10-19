@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule as AngularCommonModule} from '@angular/common';
 import {CommonDynamicModule} from '@anglr/common';
 
-import {DateTimePickerModule} from '../../picker/modules/picker.module';
+import {DateTimeLegacyPickerModule} from '../../picker/modules/picker.module';
 import {DateTimeSelectorComponent} from '../components/selector/selector.component';
 import {InputDateTimeSelectorComponent} from '../components/inputDateTime/inputDateTime.component';
 import {DateTimeSelectorControlValueAccessor} from '../directives/selectorControlValueAccessor/selectorControlValueAccessor.directive';
@@ -20,7 +20,7 @@ import {DateTimePickerRendererDirective} from '../directives/dateTimePickerRende
     [
         AngularCommonModule,
         CommonDynamicModule,
-        DateTimePickerModule,
+        DateTimeLegacyPickerModule,
     ],
     declarations:
     [

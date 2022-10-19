@@ -1,0 +1,199 @@
+%hidden
+{
+    display: none;
+}
+
+%bold
+{
+    font-weight: bold;
+}
+
+%semi-bold
+{
+    font-weight: 500;
+}
+
+%flex-row
+{
+    display: flex;
+    flex-direction: row;
+}
+
+%flex-column
+{
+    display: flex;
+    flex-direction: column;
+}
+
+%flex-end
+{
+    justify-content: flex-end;
+}
+
+%flex-1
+{
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+}
+
+%align-self-center
+{
+    align-self: center;
+}
+
+%align-items-center
+{
+    align-items: center;
+}
+
+%text-uppercase
+{
+    text-transform: uppercase;
+}
+
+%text-spread
+{
+    letter-spacing: 1px;
+}
+
+%text-small-caps
+{
+    font-variant-caps: small-caps;
+}
+
+%small-text
+{
+    font-size: 0.9em;
+}
+
+@mixin misc
+{
+    .date-time-hidden
+    {
+        @extend %hidden;
+    }
+
+    .date-time-bold
+    {
+        @extend %bold;
+    }
+
+    .date-time-semi-bold
+    {
+        @extend %semi-bold;
+    }
+
+    .date-time-flex-row
+    {
+        @extend %flex-row;
+    }
+
+    .date-time-flex-column
+    {
+        @extend %flex-column;
+    }
+
+    .date-time-flex-end
+    {
+        @extend %flex-end;
+    }
+
+    .date-time-flex-1
+    {
+        @extend %flex-1;
+    }
+
+    .date-time-align-self-center
+    {
+        @extend %align-self-center;
+    }
+
+    .date-time-align-items-center
+    {
+        @extend %align-items-center;
+    }
+
+    .date-time-text-uppercase
+    {
+        @extend %text-uppercase;
+    }
+
+    .date-time-text-spread
+    {
+        @extend %text-spread;
+    }
+
+    .date-time-text-small-caps
+    {
+        @extend %text-small-caps;
+    }
+
+    .date-time-small-text
+    {
+        @extend %small-text;
+    }
+}
+
+@mixin thin-scrollbar($thinScrollbarColorVar)
+{
+    .date-time-thin-scrollbar
+    {
+        scrollbar-width: thin;
+        scrollbar-color: var(#{$thinScrollbarColorVar}) transparent;
+    }
+
+    .date-time-thin-scrollbar::-webkit-scrollbar-thumb
+    {
+        background-color: var(#{$thinScrollbarColorVar});
+    }
+    
+    .date-time-thin-scrollbar::-webkit-scrollbar
+    {
+        width: 6px;
+        background-color: transparent;
+    }
+}
+
+@mixin generate-margin-padding($type, $sizes)
+{
+    @each $sizeType, $size in $sizes
+    {
+        .date-time-#{$type}-#{$sizeType}
+        {
+            #{$type}: $size;
+        }
+
+        .date-time-#{$type}-right-#{$sizeType}
+        {
+            #{$type}-right: $size;
+        }
+
+        .date-time-#{$type}-left-#{$sizeType}
+        {
+            #{$type}-left: $size;
+        }
+
+        .date-time-#{$type}-top-#{$sizeType}
+        {
+            #{$type}-top: $size;
+        }
+
+        .date-time-#{$type}-bottom-#{$sizeType}
+        {
+            #{$type}-bottom: $size;
+        }
+
+        .date-time-#{$type}-horizontal-#{$sizeType}
+        {
+            #{$type}-left: $size;
+            #{$type}-right: $size;
+        }
+
+        .date-time-#{$type}-vertical-#{$sizeType}
+        {
+            #{$type}-top: $size;
+            #{$type}-bottom: $size;
+        }
+    }
+}

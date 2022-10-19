@@ -1,0 +1,23 @@
+@use 'sass:meta';
+@use 'sass:map';
+
+@use 'misc';
+@use '../components/date-time-picker' as dateTimePicker;
+
+@mixin buildThemeColors($theme)
+{
+}
+
+@mixin buildThemeCss
+{
+    @include misc.misc;
+    @include misc.generate-margin-padding('margin', (none: 0, extra-small: 4px, small: 10px, medium: 15px, big: 20px));
+    // @include misc.thin-scrollbar('--dynamic-thin-scrollbar');
+    @include dateTimePicker.css;
+}
+
+@mixin buildTheme($theme)
+{
+    @include buildThemeColors($theme);
+    @include buildThemeCss;
+}

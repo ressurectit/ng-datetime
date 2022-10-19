@@ -3,7 +3,7 @@ import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {DateTimeValue} from '../../../../interfaces/dateTime/datetime.interface';
 import {DateApiObject} from '../../../../services';
 import {LoopScrollData} from '../../directives';
-import {DateTimePicker} from '../../interfaces';
+import {DateTimeLegacyPicker} from '../../interfaces';
 import {PickerImplBaseComponent} from '../pickerImplBase.component';
 import {hours, minutes} from './rollerTimePicker.data';
 import {RollerTimePickerCssClasses} from './rollerTimePicker.interface';
@@ -18,7 +18,7 @@ import {RollerTimePickerCssClasses} from './rollerTimePicker.interface';
     styleUrls: ['rollerTimePicker.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DateTimeRollerTimePickerComponent<TDate = any> extends PickerImplBaseComponent<TDate, RollerTimePickerCssClasses> implements DateTimePicker<TDate, RollerTimePickerCssClasses>
+export class DateTimeRollerTimePickerComponent<TDate = any> extends PickerImplBaseComponent<TDate, RollerTimePickerCssClasses> implements DateTimeLegacyPicker<TDate, RollerTimePickerCssClasses>
 {
     //######################### public properties - template bindings #########################
 

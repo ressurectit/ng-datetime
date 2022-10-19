@@ -119,6 +119,12 @@
         "./package.json": {
             "default": "./package.json"
         },
+        "./styles": {
+            "sass": "./styles/index.scss"
+        },
+        "./styles/themes/*": {
+            "sass": "./styles/themes/*.scss"
+        },
         "./src/theme.scss": {
             "sass": "./src/theme.scss"
         },
