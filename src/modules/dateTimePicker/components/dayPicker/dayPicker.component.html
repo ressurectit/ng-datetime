@@ -1,7 +1,7 @@
 <div class="period">
-    <div class="fas fa-angle-left clickable" (mousedown)="previousMonth($event)"></div>
-    <div class="period-value" [class.clickable]="canScaleUp" (mousedown)="$event.stopPropagation(); $event.preventDefault(); displayDate ? scaleUpSubject.next(displayDate.value) : undefined">{{displayDate?.value | dateFormat: 'monthName'}} {{displayDate?.value | dateFormat: 'year'}}</div>
-    <div class="fas fa-angle-right clickable" (mousedown)="nextMonth($event)"></div>
+    <div class="fas fa-angle-left clickable" (mousedown)="previousMonth()"></div>
+    <div class="period-value" [class.clickable]="canScaleUp" (mousedown)="displayDate ? scaleUpSubject.next(displayDate.value) : undefined">{{displayDate?.value | dateFormat: 'monthName'}} {{displayDate?.value | dateFormat: 'year'}}</div>
+    <div class="fas fa-angle-right clickable" (mousedown)="nextMonth()"></div>
 </div>
 
 <div class="period-data">
@@ -13,9 +13,9 @@
          [class.weekend]="day.weekend"
          [class.active]="day.active"
          [class.disabled]="day.disabled"
-         (click)="$event.stopPropagation(); $event.preventDefault(); selectDay(day)">{{day.day}}</div>
+         (mousedown)="selectDay(day)">{{day.day}}</div>
 </div>
 
 <div class="go-down-button" style="justify-content: center; border-top: 1px solid #FFF;" *ngIf="canScaleDown">
-    <!-- <div [class.clickable]="canScaleDown" (mousedown)="$event.stopPropagation(); $event.preventDefault(); displayDate ? goDownSubject.next(displayDate.value) : undefined">{{timeValue?.from | dateFormat: 'time'}}</div> -->
+    <!-- <div [class.clickable]="canScaleDown" (mousedown)="displayDate ? goDownSubject.next(displayDate.value) : undefined">{{timeValue?.from | dateFormat: 'time'}}</div> -->
 </div>

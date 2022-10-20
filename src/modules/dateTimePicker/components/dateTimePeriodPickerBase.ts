@@ -1,7 +1,9 @@
+import {ChangeDetectorRef, inject} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 
+import {DATE_API} from '../../../misc/tokens';
 import {DateTimeObjectValue} from '../../../misc/types';
-import {DateApiObject} from '../../../services';
+import {DateApi, DateApiObject} from '../../../services';
 import {DateTimePicker} from '../interfaces';
 
 /**
@@ -31,6 +33,16 @@ export abstract class DateTimePeriodPickerBase<TDate = unknown, TOptions = unkno
      */
     protected displayDate: DateApiObject<TDate>|undefined|null;
 
+    /**
+     * Change detector instance
+     */
+    protected changeDetector: ChangeDetectorRef = inject(ChangeDetectorRef);
+
+    /**
+     * Instance of date api for manipulation with date time
+     */
+    protected dateApi: DateApi<TDate> = inject(DATE_API);
+
     //######################### public properties - implementation of DateTimePicker #########################
 
     /**
@@ -46,7 +58,21 @@ export abstract class DateTimePeriodPickerBase<TDate = unknown, TOptions = unkno
     /**
      * @inheritdoc
      */
-    public display: TDate|undefined|null;
+    public get display(): TDate|undefined|null
+    {
+        return this.displayDate?.value;
+    }
+    public set display(value: TDate|undefined|null)
+    {
+        if(!value)
+        {
+            this.displayDate = null;
+
+            return;
+        }
+
+        this.displayDate = this.dateApi.getValue(value);
+    }
 
     /**
      * @inheritdoc
@@ -90,5 +116,26 @@ export abstract class DateTimePeriodPickerBase<TDate = unknown, TOptions = unkno
     public get scaleDown(): Observable<TDate>
     {
         return this.scaleDownSubject.asObservable();
+    }
+
+    //######################### public methods - implementation of invalidatable #########################
+
+    /**
+     * @inheritdoc
+     */
+    public invalidateVisuals(): void
+    {
+        this.onRender();
+
+        this.changeDetector.detectChanges();
+    }
+
+    //######################### protected methods #########################
+
+    /**
+     * Method that is being called to render changes
+     */
+    protected onRender(): void
+    {
     }
 }

@@ -7,8 +7,10 @@ import {lastValueFrom, Subscription} from 'rxjs';
 import {DateTimeInput} from '../../../../interfaces';
 import {DATE_TIME_INPUT} from '../../../../misc/tokens';
 import {DateTimePickerComponent} from '../../components';
+import {DateTimePickerOptions} from '../../components/dateTimePicker/dateTimePicker.interface';
 import {DateTimePickerDirectiveOptions} from './dateTimePicker.interface';
 import {DATE_TIME_PICKER_DIRECTIVE_OPTIONS} from '../../misc/tokens';
+import {DateTimeBase} from '../../../dateTime/directives';
 
 /**
  * Default options for date time picker directive
@@ -18,9 +20,11 @@ const defaultOptions: DateTimePickerDirectiveOptions =
     absolute: true,
     alwaysVisible: false,
     closeOnValueSelect: true,
+    closeOnBlur: true,
     disabled: false,
     positionOptions: PositionPlacement.BottomStart,
     showOnFocus: true,
+    pickerCssClass: null,
 };
 
 /**
@@ -31,7 +35,7 @@ const defaultOptions: DateTimePickerDirectiveOptions =
     selector: '[dateTime][withPicker]',
     exportAs: 'dateTimePicker'
 })
-export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestroy
+export class DateTimePickerDirective<TDate = unknown> extends DateTimeBase<TDate> implements OnInit, OnDestroy
 {
     //######################### protected properties #########################
 
@@ -44,11 +48,6 @@ export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestr
      * Options for date time picker directive
      */
     protected ɵWithPickerOptions: DateTimePickerDirectiveOptions;
-
-    /**
-     * Subscriptions created during initialization
-     */
-    protected initSubscriptions: Subscription = new Subscription();
 
     /**
      * Date time picker component reference
@@ -85,14 +84,23 @@ export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestr
         this.ɵWithPickerOptions = extend(true, {}, this.ɵWithPickerOptions, value);
     }
 
+    /**
+     * Options for date time picker component
+     */
+    @Input()
+    public pickerOptions: Partial<DateTimePickerOptions<TDate>>|undefined|null;
+
     //######################### constructor #########################
     constructor(protected viewContainer: ViewContainerRef,
                 protected element: ElementRef<HTMLElement>,
                 @Inject(DATE_TIME_INPUT) protected input: DateTimeInput<TDate>,
                 @Inject(DOCUMENT) protected document: Document,
                 @Inject(POSITION) protected position: Position,
+
                 @Inject(DATE_TIME_PICKER_DIRECTIVE_OPTIONS) @Optional() options?: DateTimePickerDirectiveOptions,)
     {
+        super();
+
         this.ɵWithPickerOptions = extend(true, {}, defaultOptions, options);
     }
 
@@ -121,6 +129,14 @@ export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestr
                 this.showPicker();
             }
         }));
+
+        this.initSubscriptions.add(this.input.blur.subscribe(() =>
+        {
+            if(this.withPickerOptions.closeOnBlur)
+            {
+                this.hidePicker();
+            }
+        }));
     }
 
     //######################### public methods - implementation of OnDestroy #########################
@@ -128,8 +144,10 @@ export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestr
     /**
      * Called when component is destroyed
      */
-    public ngOnDestroy(): void
+    public override ngOnDestroy(): void
     {
+        super.ngOnDestroy();
+
         this.hidePicker();
         this.initSubscriptions.unsubscribe();
     }
@@ -167,6 +185,12 @@ export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestr
         });
 
         this.document.addEventListener('click', this.handleClickOutside);
+        this.componentElement.addEventListener('mousedown', this.handleClickInside);
+
+        if(this.ɵWithPickerOptions.pickerCssClass)
+        {
+            this.componentElement.classList.add(this.ɵWithPickerOptions.pickerCssClass);
+        }
 
         const result = await lastValueFrom(this.position.placeElement(this.componentElement, this.element.nativeElement,
         {
@@ -175,9 +199,12 @@ export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestr
 
         applyPositionResult(result);
         this.setPickerValue();
-        // this.componentRef.setInput(nameof<DateTimePickerComponent>('valueFormat'), this.input.);
-        // this.componentRef.setInput(nameof<DateTimePickerComponent>('value'), this.input.value);
-        // this.componentRef.setInput(nameof<DateTimePickerComponent>('value'), this.input.value);
+        this.componentRef.setInput(nameof<DateTimePickerComponent>('options'), this.pickerOptions);
+        this.componentRef.setInput(nameof<DateTimePickerComponent>('valueFormat'), this.dateTimeData.valueFormat);
+        this.componentRef.setInput(nameof<DateTimePickerComponent>('format'), this.dateTimeData.format);
+        this.componentRef.setInput(nameof<DateTimePickerComponent>('customFormat'), this.dateTimeData.customFormat);
+        this.componentRef.setInput(nameof<DateTimePickerComponent>('minDateTime'), this.dateTimeData.minDateTime);
+        this.componentRef.setInput(nameof<DateTimePickerComponent>('maxDateTime'), this.dateTimeData.maxDateTime);
         this.componentRef.changeDetectorRef.detectChanges();
     }
 
@@ -190,10 +217,12 @@ export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestr
         {
             return;
         }
-
+        
+        this.componentElement?.removeEventListener('mousedown', this.handleClickInside);
+        
         this.valueChangeSubscription?.unsubscribe();
         this.valueChangeSubscription = null;
-
+        
         this.component = null;
 
         this.componentRef?.destroy();
@@ -242,5 +271,46 @@ export class DateTimePickerDirective<TDate = unknown> implements OnInit, OnDestr
         {
             this.hidePicker();
         }
+    }
+
+    /**
+     * Handles clicking inside of picker element
+     * @param event - Event that occured
+     */
+    @BindThis
+    protected handleClickInside(event: MouseEvent): void
+    {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    //######################### protected methods - overrides #########################
+
+    /**
+     * @inheritdoc
+     */
+    protected override onMaxDateTimeChange(): void
+    {
+        if(!this.componentRef)
+        {
+            return;
+        }
+
+        this.componentRef.setInput(nameof<DateTimePickerComponent>('maxDateTime'), this.dateTimeData.maxDateTime);
+        this.componentRef.changeDetectorRef.detectChanges();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected override onMinDateTimeChange(): void
+    {
+        if(!this.componentRef)
+        {
+            return;
+        }
+
+        this.componentRef.setInput(nameof<DateTimePickerComponent>('minDateTime'), this.dateTimeData.minDateTime);
+        this.componentRef.changeDetectorRef.detectChanges();
     }
 }

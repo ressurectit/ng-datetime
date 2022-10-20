@@ -1,12 +1,10 @@
-import {Component, ChangeDetectionStrategy, Inject} from '@angular/core';
+import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {DateTimePicker} from '../../interfaces';
 import {DateTimePeriodPickerBase} from '../dateTimePeriodPickerBase';
 import {DatePipesModule} from '../../../datePipes.module';
 import {DayData} from '../../../../legacy/picker/interfaces';
-import {DATE_API} from '../../../../misc/tokens';
-import {DateApi} from '../../../../services';
 
 /**
  * Component used for displaying day picker
@@ -29,6 +27,13 @@ import {DateApi} from '../../../../services';
 })
 export class DayPickerSAComponent<TDate = unknown> extends DateTimePeriodPickerBase<TDate> implements DateTimePicker<TDate>
 {
+    //######################### protected fields #########################
+
+    /**
+     * Stored this picker month data
+     */
+    protected thisMonthData: DayData<TDate>[] = [];
+
     //######################### protected properties - template bindings #########################
 
     /**
@@ -43,7 +48,7 @@ export class DayPickerSAComponent<TDate = unknown> extends DateTimePeriodPickerB
     public periodData: DayData<TDate>[] = [];
 
     //######################### constructor #########################
-    constructor(@Inject(DATE_API) protected dateApi: DateApi<TDate>,)
+    constructor()
     {
         super();
     }
@@ -69,27 +74,105 @@ export class DayPickerSAComponent<TDate = unknown> extends DateTimePeriodPickerB
 
     /**
      * Changes displayed month to next month
-     * @param event - Event that occured
      */
-    protected nextMonth(event: Event): void
+    protected nextMonth(): void
     {
-        event.preventDefault();
-        event.stopPropagation();
-        this.displayDate?.addMonths(1);
+        this.displayDate?.addMonths(1).updateOriginal();
 
-        // this.display(this.displayDate);
+        this.render();
     }
 
     /**
      * Changes displayed month to previous month
-     * @param event - Event that occured
      */
-    protected previousMonth(event: Event): void
+    protected previousMonth(): void
     {
-        event.preventDefault();
-        event.stopPropagation();
-        this.displayDate?.subtractMonths(1);
+        this.displayDate?.subtractMonths(1).updateOriginal();
 
-        // this.display(this.displayDate!);
+        this.render();
+    }
+
+    //######################### protected methods #########################
+
+    /**
+     * Renders current day picker data
+     */
+    protected render(): void
+    {
+        this.periodData = [];
+        this.thisMonthData = [];
+
+        if(!this.displayDate)
+        {
+            return;
+        }
+
+        const currentMonthDate = this.displayDate.value;
+        const today = this.dateApi.now().value;
+
+        this.displayDate
+            .startOfMonth()
+            .updateOriginal()
+            .startOfWeek();
+
+        do
+        {
+            for(let x = 0; x < 7; x++)
+            {
+                const day = this.displayDate.dayOfMonth();
+                const otherMonth = !this.displayDate.isSameMonth(currentMonthDate);
+
+                const data = 
+                {
+                    active: false,
+                    disabled: false,
+                    date: this.displayDate.value,
+                    otherMonth: otherMonth,
+                    today: this.displayDate.isSameDay(today),
+                    weekend: this.displayDate.isWeekend(),
+                    day: day
+                };
+
+                this.periodData.push(data);
+
+                if(!otherMonth)
+                {
+                    this.thisMonthData.push(data);
+                }
+
+                this.displayDate.addDays(1);
+            }
+        }
+        while(this.displayDate.isSameMonth(currentMonthDate));
+
+        console.log(this.periodData, this.thisMonthData);
+
+        this.displayDate.resetOriginal();
+
+        // //can go down set minutes and hours
+        // if(this.canGoDown)
+        // {
+        //     this.displayDate
+        //         .minute(this._originalMinute)
+        //         .hour(this._originalHour);
+        // }
+
+        // this._updateMinMax();
+
+        // //set value if exists
+        // if(this._value && (this.displayDate.isSameMonth(this._value.from!) || this.displayDate.isSameMonth(this._value.to!)))
+        // {
+        //     this.setValue(this._value);
+        // }
+    }
+
+    //######################### protected methods - overrides #########################
+
+    /**
+     * @inheritdoc
+     */
+    protected override onRender(): void
+    {
+        this.render();
     }
 }

@@ -11,6 +11,11 @@ export interface DateTimePickerDirectiveOptions
     closeOnValueSelect: boolean;
 
     /**
+     * Indication whether close picker when date time input loses focus
+     */
+    closeOnBlur: boolean;
+
+    /**
      * Indication whether display picker when date time input gets focus
      */
     showOnFocus: boolean;
@@ -34,4 +39,9 @@ export interface DateTimePickerDirectiveOptions
      * Position options that are used to position picker
      */
     positionOptions: Partial<PositionPlacement>;
+
+    /**
+     * Custom css class that is being added to picker component
+     */
+    pickerCssClass: string|undefined|null;
 }

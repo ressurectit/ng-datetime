@@ -1,3 +1,4 @@
+import {Invalidatable} from '@jscrpt/common';
 import {Observable} from 'rxjs';
 
 import {DateTimeObjectValue} from '../../../../misc/types';
@@ -5,7 +6,7 @@ import {DateTimeObjectValue} from '../../../../misc/types';
 /**
  * Describes date time picker API for each date time period
  */
-export interface DateTimePicker<TDate = unknown, TOptions = unknown>
+export interface DateTimePicker<TDate = unknown, TOptions = unknown> extends Invalidatable
 {
     /**
      * Value of date time picker

@@ -1,17 +1,19 @@
-import {Component, ChangeDetectionStrategy, ViewChild, ViewContainerRef, Type, EventEmitter, Output, Input, OnChanges, SimpleChanges, Inject, Optional, OnDestroy, ComponentRef} from '@angular/core';
+import {Component, ChangeDetectionStrategy, ViewChild, ViewContainerRef, Type, EventEmitter, Output, Input, OnChanges, SimpleChanges, Inject, Optional, OnDestroy, ComponentRef, OnInit} from '@angular/core';
 import {Position, POSITION} from '@anglr/common';
 import {extend, isBlank, nameof} from '@jscrpt/common';
 import {Subscription} from 'rxjs';
 
 import {DateTimeInputValue} from '../../../../interfaces';
-import {DateTimeInputOutputValue} from '../../../../misc/types';
+import {DateTimeInputOutputValue, DateTimeObjectValue} from '../../../../misc/types';
 import {DATE_TIME_PICKER_OPTIONS} from '../../misc/tokens';
 import {DayPickerSAComponent} from '../dayPicker/dayPicker.component';
 import {DateTimePickerOptions} from './dateTimePicker.interface';
 import {DateTimePicker} from '../../interfaces';
 import {formatDateTime, parseDateTime} from '../../../../misc/utils';
-import {DateTimeValueFormat} from '../../../../misc/enums';
 import {DateTimeDirective} from '../../../dateTime/directives';
+import {DateValueProvider} from '../../../../services';
+
+//TODO: use mixin for set internal
 
 /**
  * Text to be displayed when configuration, options are corrupted
@@ -39,9 +41,19 @@ const defaultOptions: DateTimePickerOptions =
     templateUrl: 'dateTimePicker.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<TDate> implements DateTimeInputValue<TDate>, OnChanges, OnDestroy
+export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<TDate> implements DateTimeInputValue<TDate>, OnInit, OnChanges, OnDestroy
 {
     //######################### protected properties #########################
+
+    /**
+     * Current value of date time, could be string, unix timestamp, Date, TDate object, or ranged DateTimeValue
+     */
+    protected ɵValue: DateTimeInputOutputValue<TDate>|undefined|null;
+
+    /**
+     * Internal representation of current date time value
+     */
+    protected internalValue: DateTimeObjectValue<TDate>|undefined|null;
     
     /**
      * Subscription for changes in date time period picker
@@ -82,7 +94,16 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
      * @inheritdoc
      */
     @Input()
-    public value: DateTimeInputOutputValue<TDate>|undefined|null;
+    public get value(): DateTimeInputOutputValue<TDate>|undefined|null
+    {
+        return this.ɵValue;
+    }
+    public set value(value: DateTimeInputOutputValue<TDate>|undefined|null)
+    {
+        //accepts all available formats
+        this.setInternalValue(value);
+        this.ɵValue = formatDateTime(this.internalValue, this.valueFormat, this.customFormat);
+    }
 
     /**
      * Options for date time picker
@@ -112,6 +133,7 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
 
     //######################### constructor #########################
     constructor(@Inject(POSITION) protected position: Position,
+                protected valueProvider: DateValueProvider<TDate>,
                 @Inject(DATE_TIME_PICKER_OPTIONS) @Optional() options?: DateTimePickerOptions<TDate>,)
     {
         super();
@@ -132,6 +154,28 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
         }
     }
 
+    //######################### public methods - implementation of OnInit #########################
+    
+    /**
+     * Initialize component
+     */
+    public ngOnInit(): void
+    {
+        //empty value show now
+        if(isBlank(this.value))
+        {
+            const now = this.dateApi.now();
+
+            this.showPicker(this.displayedPeriodType, now.value);
+        }
+        else
+        {
+            const val = (Array.isArray(this.internalValue) ? this.internalValue[0] : this.internalValue) ?? this.dateApi.now();
+
+            this.showPicker(this.displayedPeriodType, val.value);
+        }
+    }
+
     //######################### public methods - implementation of OnChanges #########################
     
     /**
@@ -139,18 +183,14 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
      */
     public ngOnChanges(changes: SimpleChanges): void
     {
-        if(nameof<DateTimePickerComponent>('value') in changes)
+        if(nameof<DateTimePickerComponent>('maxDateTime') in changes ||
+           nameof<DateTimePickerComponent>('minDateTime') in changes ||
+           nameof<DateTimePickerComponent>('value') in changes)
         {
-            //empty value show now
-            if(isBlank(this.value))
+            if(this.component)
             {
-                const now = this.dateApi.now();
-
-                this.showPicker(this.displayedPeriodType, now.value);
-
-                return;
+                this.component.changeDetectorRef.detectChanges();
             }
-
         }
     }
 
@@ -171,6 +211,55 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
     }
 
     //######################### protected methods #########################
+
+    /**
+     * Sets internal value and fix lowest time difference
+     * @param value - Value to be set
+     */
+    protected setInternalValue(value: DateTimeInputOutputValue<TDate>|undefined|null): void
+    {
+        this.internalValue = parseDateTime(value, this.dateApi, null, this.customFormat);
+
+        if(isBlank(this.internalValue))
+        {
+            return;
+        }
+
+        //ranged value
+        if(Array.isArray(this.internalValue))
+        {
+            const [from, to] = this.internalValue;
+
+            if(from)
+            {
+                const val = this.valueProvider.getValue(from.value, this.customFormat).from;
+
+                if(val)
+                {
+                    this.internalValue[0] = this.dateApi.getValue(val, this.customFormat);
+                }
+            }
+
+            if(to)
+            {
+                const val = this.valueProvider.getValue(to.value, this.customFormat).to;
+
+                if(val)
+                {
+                    this.internalValue[1] = this.dateApi.getValue(val, this.customFormat);
+                }
+            }
+        }
+        else
+        {
+            const val = this.valueProvider.getValue(this.internalValue.value, this.customFormat).from;
+
+            if(val)
+            {
+                this.internalValue = this.dateApi.getValue(val, this.customFormat);
+            }
+        }
+    }
 
     /**
      * Shows picker
@@ -201,7 +290,16 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
                     return;
                 }
 
-                this.value = formatDateTime(component.value, DateTimeValueFormat.DateInstance, null);
+                if(!Array.isArray(component.value))
+                {
+                    this.setInternalValue(component.value?.value);
+                }
+                else
+                {
+                    //TODO: handle ranges
+                }
+
+                this.value = formatDateTime(this.internalValue, this.valueFormat, this.customFormat);
                 this.valueChange.emit();
             }));
 
@@ -215,8 +313,10 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
         component.canScaleUp = false;
         component.display = displayDate;
         // component.options
-        //TODO: maybe add support for format!
-        component.value = parseDateTime(this.value, this.dateApi, null, null);
+        component.maxDate = this.maxDateTime;
+        component.minDate = this.minDateTime;
+        component.value = this.internalValue;
+        component.invalidateVisuals();
     }
 
     /**

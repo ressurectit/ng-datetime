@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 5.0.0 (2022-10-19)
+## Version 5.0.0 (2022-10-20)
 
 ### Features
 
@@ -91,6 +91,7 @@
         - `DateTimePickerComponent`
         - `DateTimePickerDirective`
 - new `DateTimePickerDirective` directive, that is directive that is used for displaying and attaching date time picker
+    - **extends** `DateTimeBase`
     - **implements**
         - `OnInit`
         - `OnDestroy`
@@ -105,12 +106,15 @@
         - `DateTimeInputValue`
         - `OnChanges`
         - `OnDestroy`
+        - `OnInit`
     - **inputs**
         - `value` docs from `DateTimeInputValue`
         - `options` options for date time picker
     - **outputs**
         - `valueChange` docs from `DateTimeInputValue`
 - new `DateTimePicker` interface, which describes date time picker API for each date time period
+    - **extends**
+        - `Invalidatable`
     - **properties**
         - `value` value of date time picker
         - `options` options for date time picker period
@@ -125,11 +129,13 @@
 - new `DateTimePickerDirectiveOptions` directive, which is defintion of date time picker directive options
     - **properties**
         - `closeOnValueSelect` indication whether close picker on value selection
+        - `closeOnBlur` indication whether close picker when date time input loses focus
         - `showOnFocus` indication whether display picker when date time input gets focus
         - `alwaysVisible` indication whether is picker always visible, mostly used for debugging
         - `disabled` indication whether picker is disabled, if true, you cant display picker
         - `absolute` indication whether use absolute global positioning of picker
         - `positionOptions` position options that are used to position picker
+        - `pickerCssClass` custom css class that is being added to picker component
 - new `DATE_TIME_PICKER_DIRECTIVE_OPTIONS` injection token for global options for date time picker directive
 - new `DATE_TIME_PICKER_OPTIONS` injection token for global options for date time picker component
 - new `DateTimePeriodPickerBase` class, which is base abstract class for each date time period picker
