@@ -1,33 +1,32 @@
-import {Directive, EventEmitter, Input} from '@angular/core';
-import {isString} from '@jscrpt/common';
+import {Directive, EventEmitter, inject, OnDestroy} from '@angular/core';
+import {Subscription} from 'rxjs';
 
-import {DateTimeInputValue, FormatProvider} from '../../../interfaces';
-import {DateTimeValueFormat} from '../../../misc/enums';
+import {DateTimeInputValue} from '../../../interfaces';
 import {DateTimeInputOutputValue} from '../../../misc/types';
-import {DateApi} from '../../../services';
+import {DateTimeDirective} from './dateTime/dateTime.directive';
 
 /**
  * Base class for date time directives, contains basic shared data
  */
 @Directive()
-export class DateTimeBase<TDate = unknown> implements DateTimeInputValue<TDate>
+export class DateTimeBase<TDate = unknown> implements DateTimeInputValue<TDate>, OnDestroy
 {
     //######################### protected properties #########################
 
     /**
-     * Date time value format which is being worked with in this date time
+     * Subscriptions created during initialization
      */
-    protected ɵValueFormat: DateTimeValueFormat = DateTimeValueFormat.DateInstance;
-
-    /**
-     * Format of string representation of date
-     */
-    protected ɵFormat: keyof FormatProvider = 'date';
+    protected initSubscriptions: Subscription = new Subscription();
 
     /**
      * Current value of date time, could be string, unix timestamp, Date, TDate object, or ranged DateTimeValue
      */
     protected ɵValue: DateTimeInputOutputValue<TDate>|undefined|null;
+
+    /**
+     * Instance of date time shared data, like formats and restrictions
+     */
+    protected dateTimeData: DateTimeDirective<TDate> = inject(DateTimeDirective<TDate>);
 
     //######################### public properties - implementation of DateTimeInputValue #########################
 
@@ -48,58 +47,36 @@ export class DateTimeBase<TDate = unknown> implements DateTimeInputValue<TDate>
      */
     public valueChange: EventEmitter<void> = new EventEmitter<void>();
 
-    //######################### public properties - inputs #########################
-
-    /**
-     * Gets or sets date time value format which is being worked with in this date time
-     */
-    @Input()
-    public get valueFormat(): DateTimeValueFormat
+    //######################### constructor #########################
+    constructor()
     {
-        return this.ɵValueFormat;
-    }
-    public set valueFormat(value: DateTimeValueFormat)
-    {
-        if(isString(value))
-        {
-            this.ɵValueFormat = DateTimeValueFormat[value] as unknown as DateTimeValueFormat;
-
-            return;
-        }
-
-        this.ɵValueFormat = value;
+        this.initSubscriptions.add(this.dateTimeData.maxDateTimeChanges.subscribe(() => this.onMaxDateTimeChange()));
+        this.initSubscriptions.add(this.dateTimeData.minDateTimeChanges.subscribe(() => this.onMinDateTimeChange()));
     }
 
-    /**
-     * Gets or sets format of string representation of date
-     */
-    @Input()
-    public get format(): keyof FormatProvider
-    {
-        return this.ɵFormat;
-    }
-    public set format(value: keyof FormatProvider)
-    {
-        this.ɵFormat = value;
-        this.customFormat = this.dateApi.getFormat(this.formatProvider[value]);
-    }
-
-    /**
-     * Custom format string representation of date
-     */
-    @Input()
-    public customFormat: string = this.dateApi.getFormat(this.formatProvider[this.ɵFormat]);
-
-    //######################### constructors #########################
-    constructor(protected dateApi: DateApi<TDate>,
-                protected formatProvider: FormatProvider,)
-    {
-    }
-
-    //######################### ng language server #########################
+    //######################### public methods - implementation of OnDestroy #########################
     
     /**
-     * Custom input type for `valueFormat` input
+     * Called when component is destroyed
      */
-    public static ngAcceptInputType_valueFormat: keyof typeof DateTimeValueFormat|DateTimeValueFormat;
+    public ngOnDestroy(): void
+    {
+        this.initSubscriptions.unsubscribe();
+    }
+
+    //######################### protected methods #########################
+
+    /**
+     * Called whenever max date time restriction changes
+     */
+    protected onMaxDateTimeChange(): void
+    {
+    }
+
+    /**
+     * Called whenever min date time restriction changes
+     */
+    protected onMinDateTimeChange(): void
+    {
+    }
 }

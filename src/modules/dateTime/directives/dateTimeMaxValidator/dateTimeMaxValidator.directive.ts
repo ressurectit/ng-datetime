@@ -1,11 +1,10 @@
 import {Directive, ExistingProvider, forwardRef, Inject, OnInit} from '@angular/core';
 import {AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, ValidatorFn} from '@angular/forms';
 
-import {FormatProvider} from '../../../../interfaces';
-import {DATE_API, FORMAT_PROVIDER} from '../../../../misc/tokens';
-import {datetimeMaxValidator, datetimeValidator} from '../../../../misc/validators';
+import {DATE_API} from '../../../../misc/tokens';
+import {datetimeMaxValidator} from '../../../../misc/validators';
 import {DateApi} from '../../../../services';
-import {DateTimeRestrictedBase} from '../dateTimeRestrictedBase';
+import {DateTimeBase} from '../dateTimeBase';
 
 /**
  * Applies validator for date time max value
@@ -23,7 +22,7 @@ import {DateTimeRestrictedBase} from '../dateTimeRestrictedBase';
         },
     ],
 })
-export class DateTimeMaxValidatorDirective<TDate = unknown> extends DateTimeRestrictedBase<TDate>  implements Validator, OnInit
+export class DateTimeMaxValidatorDirective<TDate = unknown> extends DateTimeBase<TDate>  implements Validator, OnInit
 {
     //######################### private fields #########################
 
@@ -33,11 +32,9 @@ export class DateTimeMaxValidatorDirective<TDate = unknown> extends DateTimeRest
     private _validator: ValidatorFn = () => null;
 
     //######################### constructor #########################
-    constructor(@Inject(DATE_API) dateApi: DateApi<TDate>,
-                @Inject(FORMAT_PROVIDER) formatProvider: FormatProvider,)
+    constructor(@Inject(DATE_API) protected dateApi: DateApi<TDate>,)
     {
-        super(dateApi, formatProvider);
-        this._validator = datetimeValidator(dateApi, null, null);
+        super();
     }
 
     //######################### public methods - implementation of OnInit #########################
@@ -47,7 +44,7 @@ export class DateTimeMaxValidatorDirective<TDate = unknown> extends DateTimeRest
      */
     public ngOnInit(): void
     {
-        this._validator = datetimeMaxValidator(this.dateApi, this.maxDateTime, this.valueFormat, this.customFormat);
+        this._validator = datetimeMaxValidator(this.dateApi, this.dateTimeData.maxDateTime, this.dateTimeData.valueFormat, this.dateTimeData.customFormat);
     }
 
     //######################### public methods - implementation of Validator #########################
@@ -69,6 +66,6 @@ export class DateTimeMaxValidatorDirective<TDate = unknown> extends DateTimeRest
      */
     protected override onMaxDateTimeChange(): void
     {
-        this._validator = datetimeMaxValidator(this.dateApi, this.maxDateTime, this.valueFormat, this.customFormat);
+        this._validator = datetimeMaxValidator(this.dateApi, this.dateTimeData.maxDateTime, this.dateTimeData.valueFormat, this.dateTimeData.customFormat);
     }
 }

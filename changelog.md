@@ -19,6 +19,7 @@
         - `element` html element that represents input itself
 - new `DateTimeModule` module for basic date time directives, components, pipes
     - **exports**
+        - `DateTimeDirective,`
         - `DateTimeControlValueAccessorDirective`
         - `DateTimeInputDirective`
         - `DateTimeMaxValidatorDirective`
@@ -28,17 +29,7 @@
 - new `DateTimeBase` class, that is base class for date time directives, contains basic shared data
     - **implements**
         - `DateTimeInputValue`
-    - **inputs**
-        - `valueFormat` gets or sets date time value format which is being worked with in this date time
-        - `format` gets or sets format of string representation of date
-        - `customFormat` custom format string representation of date
-- new `DateTimeRestrictedBase` class, that is base class for date time directives with value restrictions
-    - **extends** `DateTimeBase`
-    - **implements**
         - `OnDestroy`
-    - **inputs**
-        - `maxDateTime` gets or sets max allowed date for date time
-        - `minDateTime` gets or sets min allowed date for date time
 - new `DateTimeInputDirective` directive, that is used for setting up date time input
     - **extends** `DateTimeBase`
     - **implements**
@@ -60,14 +51,14 @@
     - **provides**
         - `NG_VALIDATORS` providing self
 - new `DateTimeMaxValidatorDirective` directive, that applies validator for date time max value
-    - **extends** `DateTimeRestrictedBase`
+    - **extends** `DateTimeBase`
     - **implements**
         - `Validator`
         - `OnInit`
     - **provides**
         - `NG_VALIDATORS` providing self
 - new `DateTimeMinValidatorDirective` directive, that applies validator for date time min value
-    - **extends** `DateTimeRestrictedBase`
+    - **extends** `DateTimeBase`
     - **implements**
         - `Validator`
         - `OnInit`
@@ -109,7 +100,7 @@
         - `showPicker` hides date time picker
         - `hidePicker` shows date time picker
 - new `DateTimePickerComponent` directive, which is component used for displaying date time picker
-    - **extends** `DateTimeRestrictedBase`
+    - **extends** `DateTimeDirective`
     - **implements**
         - `DateTimeInputValue`
         - `OnChanges`
@@ -148,6 +139,18 @@
     - **properties**
         - `periodsDefinition` definition of types for each period type for picker
         - `defaultPeriod` name of default period for picker that is displayed after opening
+- new `DateTimeDirective` directive, that holds shared data for date time, like formats, restrictions
+    - **implements**
+        - `OnDestroy`
+    - **properties**
+        - `maxDateTimeChanges` occurs when there are changes in max date time value
+        - `minDateTimeChanges` occurs when there are changes in min date time value
+    - **inputs**
+        - `valueFormat` gets or sets date time value format which is being worked with in this date time
+        - `format` gets or sets format of string representation of date
+        - `customFormat` custom format string representation of date
+        - `maxDateTime` gets or sets max allowed date for date time
+        - `minDateTime` gets or sets min allowed date for date time
 - updated `DateApiObject` interface
     - new `unixTimestamp` method, that gets value of date time as unix timestamp
 - updated `DateFormatPipe`

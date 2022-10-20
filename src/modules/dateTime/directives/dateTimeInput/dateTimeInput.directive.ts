@@ -1,8 +1,8 @@
 import {Directive, ElementRef, EventEmitter, ExistingProvider, forwardRef, Inject, OnDestroy} from '@angular/core';
 import {BindThis, isBlank} from '@jscrpt/common';
 
-import {DateTimeInput, FormatProvider} from '../../../../interfaces';
-import {DATE_API, DATE_TIME_INPUT, FORMAT_PROVIDER} from '../../../../misc/tokens';
+import {DateTimeInput} from '../../../../interfaces';
+import {DATE_API, DATE_TIME_INPUT} from '../../../../misc/tokens';
 import {DateTimeInputOutputValue, DateTimeObjectValue} from '../../../../misc/types';
 import {formatDateTime, parseDateTime} from '../../../../misc/utils';
 import {DateApi, DateValueProvider} from '../../../../services';
@@ -60,12 +60,12 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
     {
         //accepts all available formats
         this.setInternalValue(value);
-        this.ɵValue = formatDateTime(this.internalValue, this.valueFormat, this.customFormat);
+        this.ɵValue = formatDateTime(this.internalValue, this.dateTimeData.valueFormat, this.dateTimeData.customFormat);
         
         //not range value
         if(!Array.isArray(this.internalValue))
         {
-            this.rawValue = this.internalValue?.format(this.customFormat);
+            this.rawValue = this.internalValue?.format(this.dateTimeData.customFormat);
         }
         else
         {
@@ -105,11 +105,10 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
 
     //######################### constructors #########################
     constructor(protected elementRef: ElementRef<HTMLInputElement>,
-                @Inject(DATE_API) dateApi: DateApi<TDate>,
-                @Inject(FORMAT_PROVIDER) formatProvider: FormatProvider,
+                @Inject(DATE_API) protected dateApi: DateApi<TDate>,
                 protected valueProvider: DateValueProvider<TDate>,)
     {
-        super(dateApi, formatProvider);
+        super();
 
         this.elementRef.nativeElement.addEventListener('input', this.handleInput);
         this.elementRef.nativeElement.addEventListener('focus', this.handleFocus);
@@ -121,8 +120,10 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
     /**
      * Called when component is destroyed
      */
-    public ngOnDestroy(): void
+    public override ngOnDestroy(): void
     {
+        super.ngOnDestroy();
+
         this.elementRef.nativeElement.removeEventListener('input', this.handleInput);
         this.elementRef.nativeElement.removeEventListener('focus', this.handleFocus);
         this.elementRef.nativeElement.removeEventListener('blur', this.handleBlur);
@@ -136,7 +137,7 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
      */
     protected setInternalValue(value: DateTimeInputOutputValue<TDate>|undefined|null): void
     {
-        this.internalValue = parseDateTime(value, this.dateApi, null, this.customFormat);
+        this.internalValue = parseDateTime(value, this.dateApi, null, this.dateTimeData.customFormat);
 
         if(isBlank(this.internalValue))
         {
@@ -150,31 +151,31 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
 
             if(from)
             {
-                const val = this.valueProvider.getValue(from.value, this.customFormat).from;
+                const val = this.valueProvider.getValue(from.value, this.dateTimeData.customFormat).from;
 
                 if(val)
                 {
-                    this.internalValue[0] = this.dateApi.getValue(val, this.customFormat);
+                    this.internalValue[0] = this.dateApi.getValue(val, this.dateTimeData.customFormat);
                 }
             }
 
             if(to)
             {
-                const val = this.valueProvider.getValue(to.value, this.customFormat).to;
+                const val = this.valueProvider.getValue(to.value, this.dateTimeData.customFormat).to;
 
                 if(val)
                 {
-                    this.internalValue[1] = this.dateApi.getValue(val, this.customFormat);
+                    this.internalValue[1] = this.dateApi.getValue(val, this.dateTimeData.customFormat);
                 }
             }
         }
         else
         {
-            const val = this.valueProvider.getValue(this.internalValue.value, this.customFormat).from;
+            const val = this.valueProvider.getValue(this.internalValue.value, this.dateTimeData.customFormat).from;
 
             if(val)
             {
-                this.internalValue = this.dateApi.getValue(val, this.customFormat);
+                this.internalValue = this.dateApi.getValue(val, this.dateTimeData.customFormat);
             }
         }
     }
@@ -196,7 +197,7 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
         }
 
         this.setInternalValue(this.rawValue);
-        this.ɵValue = formatDateTime(this.internalValue, this.valueFormat, this.customFormat);
+        this.ɵValue = formatDateTime(this.internalValue, this.dateTimeData.valueFormat, this.dateTimeData.customFormat);
 
         this.valueChange.next();
     }

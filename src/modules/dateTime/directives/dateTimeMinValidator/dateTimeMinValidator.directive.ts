@@ -1,11 +1,10 @@
 import {Directive, ExistingProvider, forwardRef, Inject, OnInit} from '@angular/core';
 import {AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, ValidatorFn} from '@angular/forms';
 
-import {FormatProvider} from '../../../../interfaces';
-import {DATE_API, FORMAT_PROVIDER} from '../../../../misc/tokens';
+import {DATE_API} from '../../../../misc/tokens';
 import {datetimeMinValidator} from '../../../../misc/validators';
 import {DateApi} from '../../../../services';
-import {DateTimeRestrictedBase} from '../dateTimeRestrictedBase';
+import {DateTimeBase} from '../dateTimeBase';
 
 /**
  * Applies validator for date time min value
@@ -23,7 +22,7 @@ import {DateTimeRestrictedBase} from '../dateTimeRestrictedBase';
         },
     ],
 })
-export class DateTimeMinValidatorDirective<TDate = unknown> extends DateTimeRestrictedBase<TDate>  implements Validator, OnInit
+export class DateTimeMinValidatorDirective<TDate = unknown> extends DateTimeBase<TDate>  implements Validator, OnInit
 {
     //######################### private fields #########################
 
@@ -33,10 +32,9 @@ export class DateTimeMinValidatorDirective<TDate = unknown> extends DateTimeRest
     private _validator: ValidatorFn = () => null;
 
     //######################### constructor #########################
-    constructor(@Inject(DATE_API) dateApi: DateApi<TDate>,
-                @Inject(FORMAT_PROVIDER) formatProvider: FormatProvider,)
+    constructor(@Inject(DATE_API) protected dateApi: DateApi<TDate>,)
     {
-        super(dateApi, formatProvider);
+        super();
     }
 
     //######################### public methods - implementation of OnInit #########################
@@ -46,7 +44,7 @@ export class DateTimeMinValidatorDirective<TDate = unknown> extends DateTimeRest
      */
     public ngOnInit(): void
     {
-        this._validator = datetimeMinValidator(this.dateApi, this.minDateTime, this.valueFormat, this.customFormat);
+        this._validator = datetimeMinValidator(this.dateApi, this.dateTimeData.minDateTime, this.dateTimeData.valueFormat, this.dateTimeData.customFormat);
     }
 
     //######################### public methods - implementation of Validator #########################
@@ -68,6 +66,6 @@ export class DateTimeMinValidatorDirective<TDate = unknown> extends DateTimeRest
      */
     protected override onMinDateTimeChange(): void
     {
-        this._validator = datetimeMinValidator(this.dateApi, this.minDateTime, this.valueFormat, this.customFormat);
+        this._validator = datetimeMinValidator(this.dateApi, this.dateTimeData.minDateTime, this.dateTimeData.valueFormat, this.dateTimeData.customFormat);
     }
 }

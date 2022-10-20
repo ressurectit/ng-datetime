@@ -1,8 +1,7 @@
 import {Directive, ExistingProvider, forwardRef, Inject, OnInit} from '@angular/core';
 import {AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, ValidatorFn} from '@angular/forms';
 
-import {FormatProvider} from '../../../../interfaces';
-import {DATE_API, FORMAT_PROVIDER} from '../../../../misc/tokens';
+import {DATE_API} from '../../../../misc/tokens';
 import {datetimeValidator} from '../../../../misc/validators';
 import {DateApi} from '../../../../services';
 import {DateTimeBase} from '../dateTimeBase';
@@ -33,10 +32,9 @@ export class DateTimeValidatorDirective<TDate = unknown> extends DateTimeBase<TD
     private _validator: ValidatorFn = () => null;
 
     //######################### constructor #########################
-    constructor(@Inject(DATE_API) dateApi: DateApi<TDate>,
-                @Inject(FORMAT_PROVIDER) formatProvider: FormatProvider,)
+    constructor(@Inject(DATE_API) protected dateApi: DateApi<TDate>,)
     {
-        super(dateApi, formatProvider);
+        super();
     }
 
     //######################### public methods - implementation of OnInit #########################
@@ -46,7 +44,7 @@ export class DateTimeValidatorDirective<TDate = unknown> extends DateTimeBase<TD
      */
     public ngOnInit(): void
     {
-        this._validator = datetimeValidator(this.dateApi, this.valueFormat, this.customFormat);
+        this._validator = datetimeValidator(this.dateApi, this.dateTimeData.valueFormat, this.dateTimeData.customFormat);
     }
 
     //######################### public methods - implementation of Validator #########################

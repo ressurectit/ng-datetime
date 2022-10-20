@@ -3,17 +3,15 @@ import {Position, POSITION} from '@anglr/common';
 import {extend, isBlank, nameof} from '@jscrpt/common';
 import {Subscription} from 'rxjs';
 
-import {DateTimeInputValue, FormatProvider} from '../../../../interfaces';
+import {DateTimeInputValue} from '../../../../interfaces';
 import {DateTimeInputOutputValue} from '../../../../misc/types';
 import {DATE_TIME_PICKER_OPTIONS} from '../../misc/tokens';
 import {DayPickerSAComponent} from '../dayPicker/dayPicker.component';
 import {DateTimePickerOptions} from './dateTimePicker.interface';
 import {DateTimePicker} from '../../interfaces';
-import {DateApi} from '../../../../services';
-import {DATE_API, FORMAT_PROVIDER} from '../../../../misc/tokens';
 import {formatDateTime, parseDateTime} from '../../../../misc/utils';
 import {DateTimeValueFormat} from '../../../../misc/enums';
-import {DateTimeRestrictedBase} from '../../../dateTime/directives/dateTimeRestrictedBase';
+import {DateTimeDirective} from '../../../dateTime/directives';
 
 /**
  * Text to be displayed when configuration, options are corrupted
@@ -41,7 +39,7 @@ const defaultOptions: DateTimePickerOptions =
     templateUrl: 'dateTimePicker.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DateTimePickerComponent<TDate = unknown> extends DateTimeRestrictedBase<TDate> implements DateTimeInputValue<TDate>, OnChanges, OnDestroy
+export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<TDate> implements DateTimeInputValue<TDate>, OnChanges, OnDestroy
 {
     //######################### protected properties #########################
     
@@ -84,14 +82,7 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeRestricted
      * @inheritdoc
      */
     @Input()
-    public override get value(): DateTimeInputOutputValue<TDate>|undefined|null
-    {
-        return this.ɵValue;
-    }
-    public override set value(value: DateTimeInputOutputValue<TDate>|undefined|null)
-    {
-        this.ɵValue = value;
-    }
+    public value: DateTimeInputOutputValue<TDate>|undefined|null;
 
     /**
      * Options for date time picker
@@ -117,15 +108,13 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeRestricted
      * @inheritdoc
      */
     @Output()
-    public override valueChange: EventEmitter<void> = new EventEmitter<void>();
+    public valueChange: EventEmitter<void> = new EventEmitter<void>();
 
     //######################### constructor #########################
     constructor(@Inject(POSITION) protected position: Position,
-                @Inject(DATE_API) dateApi: DateApi<TDate>,
-                @Inject(FORMAT_PROVIDER) formatProvider: FormatProvider,
                 @Inject(DATE_TIME_PICKER_OPTIONS) @Optional() options?: DateTimePickerOptions<TDate>,)
     {
-        super(dateApi, formatProvider);
+        super();
 
         this.ɵOptions = extend(true, {}, defaultOptions, options);
         
