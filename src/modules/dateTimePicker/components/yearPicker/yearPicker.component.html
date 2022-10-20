@@ -1,0 +1,13 @@
+<div class="period">
+    <div class="fas fa-angle-left clickable" (mousedown)="previousDecade()"></div>
+    <div class="period-value" [class.clickable]="canScaleUp" (mousedown)="displayDate && canScaleUp ? scaleUpSubject.next(displayDate.value) : undefined">{{period}}</div>
+    <div class="fas fa-angle-right clickable" (mousedown)="nextDecade()"></div>
+</div>
+
+<div class="period-data">
+    <div *ngFor="let year of periodData"
+         class="period-datum clickable"
+         [class.active]="year.active"
+         [class.disabled]="year.disabled"
+         (mousedown)="canScaleDown && displayDate ? scaleDownSubject.next(year.dateObj.value) : selectYear(year)">{{year.value}}</div>
+</div>

@@ -13,6 +13,7 @@ import {DateTimePicker} from '../../interfaces';
 import {formatDateTime, parseDateTime} from '../../../../misc/utils';
 import {DateTimeDirective} from '../../../dateTime/directives';
 import {DateValueProvider} from '../../../../services';
+import {YearPickerSAComponent} from '../yearPicker/yearPicker.component';
 
 //TODO: use mixin for set internal
 
@@ -31,6 +32,7 @@ const defaultOptions: DateTimePickerOptions =
     {
         'day': DayPickerSAComponent,
         'month': MonthPickerSAComponent,
+        'year': YearPickerSAComponent,
     },
 };
 

@@ -164,6 +164,10 @@
     - **extends** `DateTimePeriodPickerBase`
     - **implements**
         - `DateTimePicker`
+- new `YearPickerSAComponent` component, which is used for displaying year picker
+    - **extends** `DateTimePeriodPickerBase`
+    - **implements**
+        - `DateTimePicker`
 - updated `DateApiObject` interface
     - new `unixTimestamp` method, that gets value of date time as unix timestamp
 - updated `DateFormatPipe`

@@ -1,21 +1,19 @@
-import {Component, ChangeDetectionStrategy, Inject} from '@angular/core';
+import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {DateTimePicker} from '../../interfaces';
 import {DateTimePeriodPickerBase} from '../dateTimePeriodPickerBase';
 import {DatePipesModule} from '../../../datePipes.module';
-import {MonthData} from '../../../../legacy/picker/interfaces';
+import {YearData} from '../../../../legacy/picker/interfaces';
 import {DateApiObject} from '../../../../services';
-import {FORMAT_PROVIDER} from '../../../../misc/tokens';
-import {FormatProvider} from '../../../../interfaces';
 
 /**
- * Component used for displaying month picker
+ * Component used for displaying year picker
  */
 @Component(
 {
-    selector: 'month-picker',
-    templateUrl: 'monthPicker.component.html',
+    selector: 'year-picker',
+    templateUrl: 'yearPicker.component.html',
     host:
     {
         '[class.date-time-period]': 'true',
@@ -28,23 +26,24 @@ import {FormatProvider} from '../../../../interfaces';
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MonthPickerSAComponent<TDate = unknown> extends DateTimePeriodPickerBase<MonthData<TDate>, TDate> implements DateTimePicker<TDate>
+export class YearPickerSAComponent<TDate = unknown> extends DateTimePeriodPickerBase<YearData<TDate>, TDate> implements DateTimePicker<TDate>
 {
-    //######################### constructor #########################
-    constructor(@Inject(FORMAT_PROVIDER) protected formatProvider: FormatProvider,)
-    {
-        super();
-    }
+    //######################### protected properties - template bindings #########################
+
+    /**
+     * Displayed decade period
+     */
+    protected period: string = '';
 
     //######################### protected methods - template bindings #########################
 
     /**
-     * Selects month as value of day time picker
-     * @param monthData - Month data that were selected
+     * Selects year as value of day time picker
+     * @param yearData - Year data that were selected
      */
-    protected selectMonth(monthData: MonthData<TDate>): void
+    protected selectYear(yearData: YearData<TDate>): void
     {
-        if(monthData.disabled)
+        if(yearData.disabled)
         {
             return;
         }
@@ -58,8 +57,7 @@ export class MonthPickerSAComponent<TDate = unknown> extends DateTimePeriodPicke
         //single value
         if(!Array.isArray(this.value))
         {
-            this.value.year(monthData.dateObj.year());
-            this.value.month(monthData.dateObj.month());
+            this.value.year(yearData.dateObj.year());
             this.value.updateOriginal();
 
             this.valueChangeSubject.next();
@@ -74,21 +72,21 @@ export class MonthPickerSAComponent<TDate = unknown> extends DateTimePeriodPicke
     }
 
     /**
-     * Changes displayed year to next year
+     * Changes displayed decade to next decade
      */
-    protected nextYear(): void
+    public nextDecade(): void
     {
-        this.displayDate?.addYears(1).updateOriginal();
+        this.displayDate?.addYears(10).updateOriginal();
 
         this.render();
     }
 
     /**
-     * Changes displayed year to previous year
+     * Changes displayed decade to previous decade
      */
-    protected previousYear(): void
+    public previousDecade(): void
     {
-        this.displayDate?.subtractYears(1).updateOriginal();
+        this.displayDate?.subtractYears(10).updateOriginal();
 
         this.render();
     }
@@ -100,8 +98,8 @@ export class MonthPickerSAComponent<TDate = unknown> extends DateTimePeriodPicke
      */
     protected render(): void
     {
-        //same year only data change
-        if(this.displayedDate && this.displayDate?.isSameYear(this.displayedDate))
+        //same decade only data change
+        if(this.displayedDate && this.displayDate?.isSameDecade(this.displayedDate))
         {
             this.setActive();
             this.updateMinMax();
@@ -117,23 +115,32 @@ export class MonthPickerSAComponent<TDate = unknown> extends DateTimePeriodPicke
             return;
         }
 
-        const monthOfYear = this.displayDate.startOfYear().updateOriginal();
+        let year = this.displayDate.startOfYear().year();
 
-        for(let x = 0; x < 12; x++)
+        while(year % 10 !== 0)
+        {
+            year--;
+        }
+
+        this.displayDate.year(year).updateOriginal();
+
+        for(let x = 0; x < 10; x++)
         {
             this.periodData.push(
             {
                 active: false,
                 disabled: false,
-                date: monthOfYear.value,
-                name: monthOfYear.format(this.dateApi.getFormat(this.formatProvider.monthNameShort)),
-                dateObj: monthOfYear.clone(),
+                date: this.displayDate.value,
+                value: year,
+                dateObj: this.displayDate.clone(),
             });
 
-            monthOfYear.addMonths(1);
+            year++;
+            this.displayDate.addYears(1);
         }
 
         this.displayDate.resetOriginal();
+        this.period = `${this.displayDate.year()} - ${this.displayDate.year() + 10}`;
         
         this.setActive();
         this.updateMinMax();
@@ -156,6 +163,6 @@ export class MonthPickerSAComponent<TDate = unknown> extends DateTimePeriodPicke
      */
     protected isSamePeriod(val: DateApiObject<TDate>, target: TDate): boolean
     {
-        return val.isSameMonth(target);
+        return val.isSameYear(target);
     }
 }

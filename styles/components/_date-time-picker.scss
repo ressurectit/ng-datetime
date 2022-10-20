@@ -103,6 +103,14 @@
             }
         }
 
+        year-picker
+        {
+            .period-data
+            {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
         month-picker
         {
             .period-data
