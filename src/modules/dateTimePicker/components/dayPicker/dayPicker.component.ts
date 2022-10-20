@@ -63,35 +63,33 @@ export class DayPickerSAComponent<TDate = unknown> extends DateTimePeriodPickerB
             return;
         }
 
-        //no value selected yet
-        if(!this.value)
-        {
-            this.value = this.displayDate?.clone() ?? this.dateApi.getValue(this.display ?? new Date());
-        }
-
         //single value
-        if(!Array.isArray(this.value))
+        if(!this.ranged)
         {
-            this.value.year(dayData.dateObj.year());
-            this.value.month(dayData.dateObj.month());
-            this.value.dayOfMonth(dayData.day);
+            //no value selected yet
+            if(!this.singleValue?.isValid())
+            {
+                this.singleValue = this.displayDate?.clone() ?? this.dateApi.getValue(new Date());
+            }
+
+            this.singleValue.year(dayData.dateObj.year());
+            this.singleValue.month(dayData.dateObj.month());
+            this.singleValue.dayOfMonth(dayData.day);
 
             //other month was selected
             if(dayData.otherMonth)
             {
-                this.value.month(dayData.dateObj.month());
                 this.displayDate?.month(dayData.dateObj.month());
             }
 
-            this.value.updateOriginal();
-
-            this.valueChangeSubject.next();
+            this.singleValue.updateOriginal();
         }
         else
         {
             //TODO: range
         }
 
+        this.valueChangeSubject.next();
         this.render();
         this.changeDetector.detectChanges();
     }
@@ -156,7 +154,7 @@ export class DayPickerSAComponent<TDate = unknown> extends DateTimePeriodPickerB
                 const day = this.displayDate.dayOfMonth();
                 const otherMonth = !this.displayDate.isSameMonth(currentMonthDate);
 
-                const data: DayData<TDate> = 
+                const data: DayData<TDate> =
                 {
                     active: false,
                     disabled: false,

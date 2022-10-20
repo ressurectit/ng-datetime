@@ -14,6 +14,7 @@ import {formatDateTime, parseDateTime} from '../../../../misc/utils';
 import {DateTimeDirective} from '../../../dateTime/directives';
 import {DateValueProvider} from '../../../../services';
 import {YearPickerSAComponent} from '../yearPicker/yearPicker.component';
+import {DateTimeValueFormat} from '../../../../misc/enums';
 
 //TODO: use mixin for set internal
 
@@ -176,7 +177,7 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
         {
             const val = (Array.isArray(this.internalValue) ? this.internalValue[0] : this.internalValue) ?? this.dateApi.now();
 
-            this.showPicker(this.displayedPeriodType, val.value);
+            this.showPicker(this.displayedPeriodType, val.isValid() ? val.value : this.dateApi.now().value);
         }
     }
 
@@ -338,10 +339,10 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
 
         const component = this.component.instance;
 
+        component.ranged = this.valueFormat === DateTimeValueFormat.RangeOfDateInstances;
         component.canScaleDown = this.canScaleDown(),
         component.canScaleUp = this.canScaleUp();
         component.display = displayDate;
-        // component.options
         component.maxDate = this.maxDateTime;
         component.minDate = this.minDateTime;
         component.value = this.internalValue;

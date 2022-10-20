@@ -49,26 +49,25 @@ export class MonthPickerSAComponent<TDate = unknown> extends DateTimePeriodPicke
             return;
         }
 
-        //no value selected yet
-        if(!this.value)
-        {
-            this.value = this.displayDate?.clone() ?? this.dateApi.getValue(this.display ?? new Date());
-        }
-
         //single value
-        if(!Array.isArray(this.value))
+        if(!this.ranged)
         {
-            this.value.year(monthData.dateObj.year());
-            this.value.month(monthData.dateObj.month());
-            this.value.updateOriginal();
+            //no value selected yet
+            if(!this.singleValue?.isValid())
+            {
+                this.singleValue = this.displayDate?.clone() ?? this.dateApi.getValue(new Date());
+            }
 
-            this.valueChangeSubject.next();
+            this.singleValue.year(monthData.dateObj.year());
+            this.singleValue.month(monthData.dateObj.month());
+            this.singleValue.updateOriginal();
         }
         else
         {
             //TODO: range
         }
 
+        this.valueChangeSubject.next();
         this.render();
         this.changeDetector.detectChanges();
     }
@@ -134,7 +133,7 @@ export class MonthPickerSAComponent<TDate = unknown> extends DateTimePeriodPicke
         }
 
         this.displayDate.resetOriginal();
-        
+
         this.setActive();
         this.updateMinMax();
     }

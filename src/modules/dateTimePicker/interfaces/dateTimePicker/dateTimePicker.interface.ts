@@ -39,6 +39,11 @@ export interface DateTimePicker<TDate = unknown> extends Invalidatable
     canScaleDown: boolean;
 
     /**
+     * Indication whether is value range of two values or single value
+     */
+    ranged: boolean;
+
+    /**
      * Occurs when date time picker value changes
      */
     readonly valueChange: Observable<void>;    

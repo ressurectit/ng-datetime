@@ -48,25 +48,24 @@ export class YearPickerSAComponent<TDate = unknown> extends DateTimePeriodPicker
             return;
         }
 
-        //no value selected yet
-        if(!this.value)
-        {
-            this.value = this.displayDate?.clone() ?? this.dateApi.getValue(this.display ?? new Date());
-        }
-
         //single value
-        if(!Array.isArray(this.value))
+        if(!this.ranged)
         {
-            this.value.year(yearData.dateObj.year());
-            this.value.updateOriginal();
+            //no value selected yet
+            if(!this.singleValue?.isValid())
+            {
+                this.singleValue = this.displayDate?.clone() ?? this.dateApi.getValue(new Date());
+            }
 
-            this.valueChangeSubject.next();
+            this.singleValue.year(yearData.dateObj.year());
+            this.singleValue.updateOriginal();
         }
         else
         {
             //TODO: range
         }
-
+        
+        this.valueChangeSubject.next();
         this.render();
         this.changeDetector.detectChanges();
     }
@@ -141,7 +140,7 @@ export class YearPickerSAComponent<TDate = unknown> extends DateTimePeriodPicker
 
         this.displayDate.resetOriginal();
         this.period = `${this.displayDate.year()} - ${this.displayDate.year() + 10}`;
-        
+
         this.setActive();
         this.updateMinMax();
     }

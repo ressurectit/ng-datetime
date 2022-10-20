@@ -122,6 +122,7 @@
         - `minDate` min allowed date to be selected
         - `canScaleUp` indication whether picker can display scale date time period up
         - `canScaleDown` indication whether picker can display scale date time period down
+        - `ranged` indication whether is value range of two values or single value
         - `valueChange` occurs when date time picker value changes
         - `scaleUp` occurs when period should be scaled up
         - `scaleDown` occurs when period should be scaled down

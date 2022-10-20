@@ -55,6 +55,40 @@ export abstract class DateTimePeriodPickerBase<TPeriod extends PeriodData<TDate>
     protected minDateObj: DateApiObject<TDate>|undefined|null;
 
     /**
+     * Gets or sets value as single value
+     */
+    protected get singleValue(): DateApiObject<TDate>|undefined|null
+    {
+        if(Array.isArray(this.value))
+        {
+            return null;
+        }
+
+        return this.value;
+    }
+    protected set singleValue(value: DateApiObject<TDate>|undefined|null)
+    {
+        this.value = value;
+    }
+
+    /**
+     * Gets or sets value as single value
+     */
+    protected get rangeValue(): [DateApiObject<TDate>|null, DateApiObject<TDate>|null]|undefined|null
+    {
+        if(!Array.isArray(this.value))
+        {
+            return null;
+        }
+
+        return this.value;
+    }
+    protected set rangeValue(value: [DateApiObject<TDate>|null, DateApiObject<TDate>|null]|undefined|null)
+    {
+        this.value = value;
+    }
+
+    /**
      * Change detector instance
      */
     protected changeDetector: ChangeDetectorRef = inject(ChangeDetectorRef);
@@ -137,6 +171,11 @@ export abstract class DateTimePeriodPickerBase<TPeriod extends PeriodData<TDate>
      * @inheritdoc
      */
     public canScaleDown: boolean = false;
+
+    /**
+     * @inheritdoc
+     */
+    public ranged: boolean = false;
 
     /**
      * @inheritdoc
@@ -235,11 +274,11 @@ export abstract class DateTimePeriodPickerBase<TPeriod extends PeriodData<TDate>
             return;
         }
         
-        if(!Array.isArray(this.value))
+        if(!this.ranged)
         {
-            if(this.value?.isValid())
+            if(this.singleValue?.isValid())
             {
-                const value = this.value;
+                const value = this.singleValue;
                 const data = this.periodData.find(itm => this.isSamePeriod(itm.dateObj, value.value));
 
                 if(data)
