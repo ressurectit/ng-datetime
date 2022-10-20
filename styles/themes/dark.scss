@@ -4,6 +4,16 @@
 
 $_darkDefaultTheme:
 (
+    dateTimePicker:
+    (
+        background: #111111,
+        border: #EAEAEA,
+        foreground: #FAFAFA,
+        disabled:
+        (
+            background: #5B5B5B,
+        ),
+    ),
 );
 
 @function defineTheme($colors: (), $font: 'Inter')

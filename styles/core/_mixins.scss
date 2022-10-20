@@ -6,6 +6,20 @@
 
 @mixin buildThemeColors($theme)
 {
+    @if $theme 
+    {
+        --datetime-date-time-picker-background: #{map.get(map.get($theme, 'dateTimePicker'), 'background')};
+        --datetime-date-time-picker-border: #{map.get(map.get($theme, 'dateTimePicker'), 'border')};
+        --datetime-date-time-picker-foreground: #{map.get(map.get($theme, 'dateTimePicker'), 'foreground')};
+        --datetime-date-time-picker-period-datum-border: #{map.get(map.get(map.get($theme, 'dateTimePicker'), 'periodDatum'), 'border')};
+        --datetime-date-time-picker-active-border: #{map.get(map.get(map.get($theme, 'dateTimePicker'), 'active'), 'border')};
+        --datetime-date-time-picker-active-background: #{map.get(map.get(map.get($theme, 'dateTimePicker'), 'active'), 'background')};
+        --datetime-date-time-picker-clickable-hover-background: #{map.get(map.get(map.get(map.get($theme, 'dateTimePicker'), 'clickable'), 'hover'), 'background')};
+        --datetime-date-time-picker-clickable-hover-border: #{map.get(map.get(map.get(map.get($theme, 'dateTimePicker'), 'clickable'), 'hover'), 'border')};
+        --datetime-date-time-picker-disabled-background: #{map.get(map.get(map.get($theme, 'dateTimePicker'), 'disabled'), 'background')};
+        --datetime-date-time-picker-today-border: #{map.get(map.get(map.get($theme, 'dateTimePicker'), 'today'), 'border')};
+        --datetime-day-picker-weekend-foreground: #{map.get(map.get(map.get($theme, 'dayPicker'), 'weekend'), 'foreground')};
+    }
 }
 
 @mixin buildThemeCss

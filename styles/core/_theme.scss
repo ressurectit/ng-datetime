@@ -1,3 +1,41 @@
 $defaultTheme:
 (
+    dateTimePicker:
+    (
+        background: #FFFFFF,
+        border: #333333,
+        foreground: #111111,
+        periodDatum:
+        (
+            border: transparent,
+        ),
+        active:
+        (
+            border: transparent,
+            background: #00c3ff,
+        ),
+        clickable:
+        (
+            hover:
+            (
+                background: #00e7ff,
+                border: transparent,
+            ),
+        ),
+        disabled:
+        (
+            background: #CFCFCF,
+        ),
+        today:
+        (
+            border: #0077ff,
+        ),
+    ),
+    dayPicker:
+    (
+        weekend:
+        (
+            foreground: #850000,
+        ),
+    ),
 );
