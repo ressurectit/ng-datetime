@@ -1,7 +1,7 @@
 import {isBlank, isJsObject, isPresent, isString, nameof} from '@jscrpt/common';
 
 import {DateTimeValue} from '../interfaces';
-import {DateApi, DateApiObject} from '../services';
+import {DateApi, DateApiObject, DateValue} from '../services';
 import {DateTimeValueFormat} from './enums';
 import {DateTimeInputOutputValue, DateTimeObjectValue} from './types';
 
@@ -148,7 +148,7 @@ export function isDateTimeValue<TDate = unknown>(value: unknown): value is DateT
  * Gets single date time value, use in places where ranged date time can not be used
  * @param value - Value to be examined
  */
-export function getSingleDateTimeValue<TDate>(value: DateTimeInputOutputValue<TDate>|undefined|null): string|number|Date|TDate|null|undefined
+export function getSingleDateTimeValue<TDate>(value: DateTimeInputOutputValue<TDate>|undefined|null): DateValue|TDate|null|undefined
 {
     if(isDateTimeValue(value))
     {

@@ -262,6 +262,7 @@ export class DateTimeDirective<TDate = unknown> implements OnDestroy
     {
         this.ɵMinDateTime = value;
         this.minDateTimeChangesSubject.next();
+        this.onMinDateTimeChange();
     }
 
     /**
@@ -273,6 +274,7 @@ export class DateTimeDirective<TDate = unknown> implements OnDestroy
     {
         this.ɵMaxDateTime = value;
         this.maxDateTimeChangesSubject.next();
+        this.onMaxDateTimeChange();
     }
 
     /**
@@ -280,7 +282,7 @@ export class DateTimeDirective<TDate = unknown> implements OnDestroy
      * @param value - Value to be set
      * @param setter - Action used for setting value
      */
-    protected setMinMaxValue(value: string|number|TDate|Date, setter: Action1<TDate|undefined|null>): void
+    protected setMinMaxValue(value: DateValue|TDate, setter: Action1<TDate|undefined|null>): void
     {
         const val = this.dateApi.getValue(value, this.customFormat);
 
@@ -292,6 +294,20 @@ export class DateTimeDirective<TDate = unknown> implements OnDestroy
         {
             setter(null);
         }
+    }
+
+    /**
+     * Called whenever max date time restriction changes
+     */
+    protected onMaxDateTimeChange(): void
+    {
+    }
+
+    /**
+     * Called whenever min date time restriction changes
+     */
+    protected onMinDateTimeChange(): void
+    {
     }
 
     //######################### ng language server #########################

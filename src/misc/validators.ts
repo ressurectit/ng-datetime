@@ -2,7 +2,7 @@ import {AbstractControl, ValidationErrors, ValidatorFn} from '@angular/forms';
 import {ModelPropertyMetadata, ValidatorFnFactory} from '@anglr/common/forms';
 import {isBlank, isNumber, isString} from '@jscrpt/common';
 
-import {DateApi} from '../services';
+import {DateApi, DateValue} from '../services';
 import {DateTimeValueObject} from '../interfaces/dateTime/datetime.interface';
 import {getSingleDateTimeValue, parseDateTime} from './utils';
 import {DateTimeValueFormat} from './enums';
@@ -30,12 +30,12 @@ export interface DateTimeValidationArgs<TDate = unknown>
     /**
      * Max allowed value
      */
-    maxValue?: string|number|TDate|Date|DateTimeBase<TDate>;
+    maxValue?: DateValue|TDate|DateTimeBase<TDate>;
 
     /**
      * Min allowed value
      */
-    minValue?: string|number|TDate|Date|DateTimeBase<TDate>;
+    minValue?: DateValue|TDate|DateTimeBase<TDate>;
 }
 
 /**
@@ -154,7 +154,7 @@ export function DateTime(valueFormatOrStringFormat?: DateTimeValueFormat|string|
  * @param stringFormat - Optional string format of value
  */
 export function datetimeMaxValidator<TDate = unknown>(dateApi: DateApi<TDate>,
-                                                      maxValue: string|number|TDate|Date|DateTimeBase<TDate>|undefined|null,
+                                                      maxValue: DateValue|TDate|DateTimeBase<TDate>|undefined|null,
                                                       valueFormat: DateTimeValueFormat|undefined|null,
                                                       stringFormat: string|undefined|null,): ValidatorFn
 {
@@ -185,7 +185,7 @@ export function datetimeMaxValidator<TDate = unknown>(dateApi: DateApi<TDate>,
             return null;
         }
 
-        const maxDateTime = dateApi.getValue(maxValue as string|number|TDate, stringFormat ?? undefined);
+        const maxDateTime = dateApi.getValue(maxValue, stringFormat ?? undefined);
 
         if(!Array.isArray(parsedValue))
         {
@@ -213,7 +213,7 @@ export function datetimeMaxValidator<TDate = unknown>(dateApi: DateApi<TDate>,
  * @param stringFormat - Optional string format of value
  */
 export function datetimeMinValidator<TDate = unknown>(dateApi: DateApi<TDate>,
-                                                      minValue: string|number|TDate|Date|DateTimeBase<TDate>|undefined|null,
+                                                      minValue: DateValue|TDate|DateTimeBase<TDate>|undefined|null,
                                                       valueFormat: DateTimeValueFormat|undefined|null,
                                                       stringFormat: string|undefined|null,): ValidatorFn
 {
@@ -244,7 +244,7 @@ export function datetimeMinValidator<TDate = unknown>(dateApi: DateApi<TDate>,
             return null;
         }
 
-        const minDateTime = dateApi.getValue(minValue as string|number|TDate, stringFormat ?? undefined);
+        const minDateTime = dateApi.getValue(minValue, stringFormat ?? undefined);
 
         if(!Array.isArray(parsedValue))
         {
