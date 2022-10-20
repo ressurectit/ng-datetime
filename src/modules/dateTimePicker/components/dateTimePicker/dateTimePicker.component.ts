@@ -73,12 +73,12 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
     /**
      * Currently displayed period type
      */
-    protected displayedPeriodType: Type<DateTimePicker<TDate>>;
+    protected displayedPeriodType!: Type<DateTimePicker<TDate>>;
 
     /**
      * Name of period which is currently displayed
      */
-    protected displayedPeriodName: string;
+    protected displayedPeriodName!: string;
 
     /**
      * Instance of created date time period picker
@@ -122,10 +122,7 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
     {
         this.ɵOptions = extend(true, {}, defaultOptions, value);
 
-        if(value?.periodsDefinition)
-        {
-            this.ɵOptions.periodsDefinition = value.periodsDefinition;
-        }
+        this.setOptions(value);
     }
 
     //######################### public properties - outputs #########################
@@ -139,19 +136,13 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
     //######################### constructor #########################
     constructor(@Inject(POSITION) protected position: Position,
                 protected valueProvider: DateValueProvider<TDate>,
-                @Inject(DATE_TIME_PICKER_OPTIONS) @Optional() options?: DateTimePickerOptions<TDate>,)
+                @Inject(DATE_TIME_PICKER_OPTIONS) @Optional() options?: Partial<DateTimePickerOptions<TDate>>,)
     {
         super();
 
         this.ɵOptions = extend(true, {}, defaultOptions, options);
         
-        if(options?.periodsDefinition)
-        {
-            this.ɵOptions.periodsDefinition = options.periodsDefinition;
-        }
-
-        this.displayedPeriodName = this.ɵOptions.defaultPeriod;
-        this.displayedPeriodType = this.ɵOptions.periodsDefinition[this.displayedPeriodName];
+        this.setOptions(options);
 
         if(!this.displayedPeriodType)
         {
@@ -429,5 +420,20 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
         this.displayedPeriodName = periods[index - 1];
 
         return this.ɵOptions.periodsDefinition[this.displayedPeriodName];
+    }
+
+    /**
+     * Sets options and use them to set parameters of component
+     * @param options - Options to be set
+     */
+    protected setOptions(options: Partial<DateTimePickerOptions<TDate>> | undefined): void
+    {
+        if(options?.periodsDefinition)
+        {
+            this.ɵOptions.periodsDefinition = options.periodsDefinition;
+        }
+
+        this.displayedPeriodName = this.ɵOptions.defaultPeriod;
+        this.displayedPeriodType = this.ɵOptions.periodsDefinition[this.displayedPeriodName];
     }
 }
