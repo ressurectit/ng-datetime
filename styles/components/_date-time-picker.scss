@@ -5,10 +5,11 @@
         display: block;
         position: absolute;
 
-        background-color: #fff;
-        border: 1px solid #000;
+        background-color: #FFFFFF;
+        border: 1px solid #333333;
         border-radius: 6px;
         z-index: 123;
+        padding: 4px 8px;
 
         .date-time-period
         {
@@ -80,6 +81,26 @@
             {
                 cursor: not-allowed;
             }
+
+            .today
+            {
+                border-color: #0077ff;
+            }
+
+            .active
+            {
+                background-color: #00c3ff;
+            }
+
+            .clickable:hover
+            {
+                background-color: #00e7ff;
+            }
+
+            .disabled:not(.active)
+            {
+                background-color: #CFCFCF;
+            }
         }
 
         day-picker
@@ -105,6 +126,11 @@
             .other-month
             {
                 opacity: 0.5;
+            }
+
+            .weekend
+            {
+                color: #850000;
             }
         }
     }

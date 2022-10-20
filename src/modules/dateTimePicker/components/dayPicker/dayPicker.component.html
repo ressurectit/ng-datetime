@@ -1,6 +1,6 @@
 <div class="period">
     <div class="fas fa-angle-left clickable" (mousedown)="previousMonth()"></div>
-    <div class="period-value" [class.clickable]="canScaleUp" (mousedown)="displayDate ? scaleUpSubject.next(displayDate.value) : undefined">{{displayDate?.value | dateFormat: 'monthName'}} {{displayDate?.value | dateFormat: 'year'}}</div>
+    <div class="period-value" [class.clickable]="canScaleUp" (mousedown)="displayDate && canScaleUp ? scaleUpSubject.next(displayDate.value) : undefined">{{displayDate?.value | dateFormat: 'monthName'}} {{displayDate?.value | dateFormat: 'year'}}</div>
     <div class="fas fa-angle-right clickable" (mousedown)="nextMonth()"></div>
 </div>
 

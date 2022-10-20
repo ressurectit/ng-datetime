@@ -183,14 +183,38 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
      */
     public ngOnChanges(changes: SimpleChanges): void
     {
-        if(nameof<DateTimePickerComponent>('maxDateTime') in changes ||
-           nameof<DateTimePickerComponent>('minDateTime') in changes ||
-           nameof<DateTimePickerComponent>('value') in changes)
+        if(!this.component)
         {
-            if(this.component)
-            {
-                this.component.changeDetectorRef.detectChanges();
-            }
+            return;
+        }
+
+        const component = this.component.instance;
+        let invalidate: boolean = false;
+
+        if(nameof<DateTimePickerComponent>('maxDateTime') in changes)
+        {
+            component.maxDate = this.maxDateTime;
+            invalidate = true;
+        }
+
+        if(nameof<DateTimePickerComponent>('minDateTime') in changes)
+        {
+            component.minDate = this.minDateTime;
+            invalidate = true;
+        }
+
+        if(nameof<DateTimePickerComponent>('value') in changes)
+        {
+            const val = (Array.isArray(this.internalValue) ? this.internalValue[0] : this.internalValue) ?? this.dateApi.now();
+
+            component.display = val.isValid() ? val.value : this.dateApi.now().value;
+            component.value = this.internalValue;
+            invalidate = true;
+        }
+
+        if(this.component && invalidate)
+        {
+            this.component.instance.invalidateVisuals();
         }
     }
 

@@ -203,7 +203,8 @@ export class DateTimeDayPickerComponent<TDate = any> extends PickerBaseComponent
                     otherMonth: otherMonth,
                     today: this.displayDate.isSameDay(today),
                     weekend: this.displayDate.isWeekend(),
-                    day: day
+                    day: day,
+                    dateObj: this.displayDate.clone(),
                 };
 
                 this.periodData.push(data);

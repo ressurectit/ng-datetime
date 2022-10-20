@@ -181,6 +181,11 @@ export class DateTimePickerDirective<TDate = unknown> extends DateTimeBase<TDate
                 this.input.value = this.component.value;
                 this.input.valueChange.emit();
                 this.valueChangeDisabled = false;
+
+                if(this.ɵWithPickerOptions.closeOnValueSelect)
+                {
+                    this.hidePicker();
+                }
             }
         });
 

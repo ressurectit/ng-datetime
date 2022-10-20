@@ -1,6 +1,7 @@
 import {ChangeDetectorRef, inject} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 
+import {PeriodData} from '../../../legacy/picker/interfaces';
 import {DATE_API} from '../../../misc/tokens';
 import {DateTimeObjectValue} from '../../../misc/types';
 import {DateApi, DateApiObject} from '../../../services';
@@ -9,9 +10,14 @@ import {DateTimePicker} from '../interfaces';
 /**
  * Base abstract class for each date time period picker
  */
-export abstract class DateTimePeriodPickerBase<TDate = unknown, TOptions = unknown> implements DateTimePicker<TDate, TOptions>
+export abstract class DateTimePeriodPickerBase<TPeriod extends PeriodData<TDate>, TDate = unknown, TOptions = unknown> implements DateTimePicker<TDate, TOptions>
 {
     //######################### protected properties #########################
+
+    /**
+     * Array of period data to be displayed
+     */
+    protected periodData: TPeriod[] = [];
 
     /**
      * Subject used for emitting of value changes
@@ -32,6 +38,16 @@ export abstract class DateTimePeriodPickerBase<TDate = unknown, TOptions = unkno
      * Date api instance for displayed date
      */
     protected displayDate: DateApiObject<TDate>|undefined|null;
+
+    /**
+     * Date api instance for max date
+     */
+    protected maxDateObj: DateApiObject<TDate>|undefined|null;
+
+    /**
+     * Date api instance for min date
+     */
+    protected minDateObj: DateApiObject<TDate>|undefined|null;
 
     /**
      * Change detector instance
@@ -77,12 +93,40 @@ export abstract class DateTimePeriodPickerBase<TDate = unknown, TOptions = unkno
     /**
      * @inheritdoc
      */
-    public maxDate: TDate|undefined|null;
+    public get maxDate(): TDate|undefined|null
+    {
+        return this.maxDateObj?.value;
+    }
+    public set maxDate(value: TDate|undefined|null)
+    {
+        if(!value)
+        {
+            this.maxDateObj = null;
+
+            return;
+        }
+
+        this.maxDateObj = this.dateApi.getValue(value);
+    }
 
     /**
      * @inheritdoc
      */
-    public minDate: TDate|undefined|null;
+    public get minDate(): TDate|undefined|null
+    {
+        return this.minDateObj?.value;
+    }
+    public set minDate(value: TDate|undefined|null)
+    {
+        if(!value)
+        {
+            this.minDateObj = null;
+
+            return;
+        }
+
+        this.minDateObj = this.dateApi.getValue(value);
+    }
 
     /**
      * @inheritdoc
@@ -135,7 +179,47 @@ export abstract class DateTimePeriodPickerBase<TDate = unknown, TOptions = unkno
     /**
      * Method that is being called to render changes
      */
-    protected onRender(): void
+    protected abstract onRender(): void;
+
+    /**
+     * Tests whether provided value is in same period target value
+     * @param val - Tested value
+     * @param target - Target value to be tested against
+     */
+    protected abstract isSamePeriod(val: DateApiObject<TDate>, target: TDate): boolean;
+
+    /**
+     * Updates minimal and maximal value for picker
+     */
+    protected updateMinMax(): void
     {
+        if(!this.periodData.length)
+        {
+            return;
+        }
+
+        //no min, no max
+        if(!this.minDateObj && !this.maxDateObj)
+        {
+            this.periodData.forEach(itm => itm.disabled = false);
+
+            return;
+        }
+
+        let restAfter = false;
+
+        for(const period of this.periodData)
+        {
+            if(this.minDateObj && this.minDateObj.isAfter(period.dateObj.value) && !this.isSamePeriod(this.minDateObj, period.dateObj.value))
+            {
+                period.disabled = true;
+            }
+
+            if(restAfter || (this.maxDateObj && this.maxDateObj.isBefore(period.dateObj.value) && !this.isSamePeriod(this.maxDateObj, period.dateObj.value)))
+            {
+                restAfter = true;
+                period.disabled = true;
+            }
+        }
     }
 }

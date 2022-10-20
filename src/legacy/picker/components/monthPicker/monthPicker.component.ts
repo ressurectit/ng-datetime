@@ -90,7 +90,8 @@ export class DateTimeMonthPickerComponent<TDate = any> extends PickerBaseCompone
                 active: false,
                 disabled: false,
                 date: monthOfYear.value,
-                name: monthOfYear.format('MMM')
+                name: monthOfYear.format('MMM'),
+                dateObj: monthOfYear.clone(),
             });
 
             monthOfYear.addMonths(1);

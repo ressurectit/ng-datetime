@@ -106,7 +106,8 @@ export class DateTimeYearPickerComponent<TDate = any> extends PickerBaseComponen
                 active: false,
                 disabled: false,
                 date: this.displayDate.value,
-                value: year
+                value: year,
+                dateObj: this.displayDate.clone(),
             });
 
             year++;

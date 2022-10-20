@@ -176,10 +176,17 @@ export interface PeriodData<TDate = any>
      */
     disabled: boolean;
 
+    //TODO: remove
+
     /**
      * Date for this period item
      */
     date: TDate;
+
+    /**
+     * Date for this period item as date api object
+     */
+    dateObj: DateApiObject<TDate>;
 }
 
 /**
