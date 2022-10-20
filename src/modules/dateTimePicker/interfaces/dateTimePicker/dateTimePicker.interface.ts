@@ -6,17 +6,12 @@ import {DateTimeObjectValue} from '../../../../misc/types';
 /**
  * Describes date time picker API for each date time period
  */
-export interface DateTimePicker<TDate = unknown, TOptions = unknown> extends Invalidatable
+export interface DateTimePicker<TDate = unknown> extends Invalidatable
 {
     /**
      * Value of date time picker
      */
     value: DateTimeObjectValue<TDate>|undefined|null;
-
-    /**
-     * Options for date time picker period
-     */
-    options: TOptions|undefined|null;
 
     /**
      * Date that describes which date should be displayed

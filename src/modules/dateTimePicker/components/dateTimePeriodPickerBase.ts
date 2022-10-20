@@ -10,7 +10,7 @@ import {DateTimePicker} from '../interfaces';
 /**
  * Base abstract class for each date time period picker
  */
-export abstract class DateTimePeriodPickerBase<TPeriod extends PeriodData<TDate>, TDate = unknown, TOptions = unknown> implements DateTimePicker<TDate, TOptions>
+export abstract class DateTimePeriodPickerBase<TPeriod extends PeriodData<TDate>, TDate = unknown> implements DateTimePicker<TDate>
 {
     //######################### protected properties #########################
 
@@ -40,6 +40,11 @@ export abstract class DateTimePeriodPickerBase<TPeriod extends PeriodData<TDate>
     protected displayDate: DateApiObject<TDate>|undefined|null;
 
     /**
+     * Currently displayed date
+     */
+    protected displayedDate: TDate|undefined|null;
+
+    /**
      * Date api instance for max date
      */
     protected maxDateObj: DateApiObject<TDate>|undefined|null;
@@ -65,11 +70,6 @@ export abstract class DateTimePeriodPickerBase<TPeriod extends PeriodData<TDate>
      * @inheritdoc
      */
     public value: DateTimeObjectValue<TDate>|undefined|null;
-
-    /**
-     * @inheritdoc
-     */
-    public options: TOptions|undefined|null;
 
     /**
      * @inheritdoc
@@ -210,16 +210,47 @@ export abstract class DateTimePeriodPickerBase<TPeriod extends PeriodData<TDate>
 
         for(const period of this.periodData)
         {
-            if(this.minDateObj && this.minDateObj.isAfter(period.dateObj.value) && !this.isSamePeriod(this.minDateObj, period.dateObj.value))
+            if(this.minDateObj?.isValid() && this.minDateObj.isAfter(period.dateObj.value) && !this.isSamePeriod(this.minDateObj, period.dateObj.value))
             {
                 period.disabled = true;
             }
 
-            if(restAfter || (this.maxDateObj && this.maxDateObj.isBefore(period.dateObj.value) && !this.isSamePeriod(this.maxDateObj, period.dateObj.value)))
+            if(restAfter || (this.maxDateObj?.isValid() && this.maxDateObj.isBefore(period.dateObj.value) && !this.isSamePeriod(this.maxDateObj, period.dateObj.value)))
             {
                 restAfter = true;
                 period.disabled = true;
             }
+        }
+    }
+
+    /**
+     * Sets active date
+     */
+    protected setActive(): void
+    {
+        this.periodData.forEach(itm => itm.active = false);
+
+        if(!this.value)
+        {
+            return;
+        }
+        
+        if(!Array.isArray(this.value))
+        {
+            if(this.value?.isValid())
+            {
+                const value = this.value;
+                const data = this.periodData.find(itm => this.isSamePeriod(itm.dateObj, value.value));
+
+                if(data)
+                {
+                    data.active = true;
+                }
+            }
+        }
+        else
+        {
+            //TODO: support range
         }
     }
 }

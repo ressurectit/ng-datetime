@@ -117,7 +117,6 @@
         - `Invalidatable`
     - **properties**
         - `value` value of date time picker
-        - `options` options for date time picker period
         - `display` date that describes which date should be displayed
         - `maxDate` max allowed date
         - `minDate` min allowed date to be selected
@@ -157,6 +156,14 @@
         - `customFormat` custom format string representation of date
         - `maxDateTime` gets or sets max allowed date for date time
         - `minDateTime` gets or sets min allowed date for date time
+- new `DayPickerSAComponent` component, which is used for displaying day picker
+    - **extends** `DateTimePeriodPickerBase`
+    - **implements**
+        - `DateTimePicker`
+- new `MonthPickerSAComponent` component, which is used for displaying month picker
+    - **extends** `DateTimePeriodPickerBase`
+    - **implements**
+        - `DateTimePicker`
 - updated `DateApiObject` interface
     - new `unixTimestamp` method, that gets value of date time as unix timestamp
 - updated `DateFormatPipe`

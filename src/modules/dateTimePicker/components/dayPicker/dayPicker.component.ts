@@ -35,11 +35,6 @@ export class DayPickerSAComponent<TDate = unknown> extends DateTimePeriodPickerB
      */
     protected thisMonthData: DayData<TDate>[] = [];
 
-    /**
-     * Currently displayed month
-     */
-    protected displayedMonth: TDate|undefined|null;
-
     //######################### protected properties - template bindings #########################
 
     /**
@@ -58,16 +53,17 @@ export class DayPickerSAComponent<TDate = unknown> extends DateTimePeriodPickerB
     //######################### protected methods - template bindings #########################
 
     /**
-     * 
+     * Selects day as value of date time picker
      * @param dayData - Day data that were selected
      */
-    protected selectDay(dayData: DayData): void
+    protected selectDay(dayData: DayData<TDate>): void
     {
         if(dayData.disabled)
         {
             return;
         }
 
+        //no value selected yet
         if(!this.value)
         {
             this.value = this.displayDate?.clone() ?? this.dateApi.getValue(this.display ?? new Date());
@@ -76,6 +72,8 @@ export class DayPickerSAComponent<TDate = unknown> extends DateTimePeriodPickerB
         //single value
         if(!Array.isArray(this.value))
         {
+            this.value.year(dayData.dateObj.year());
+            this.value.month(dayData.dateObj.month());
             this.value.dayOfMonth(dayData.day);
 
             //other month was selected
@@ -126,7 +124,7 @@ export class DayPickerSAComponent<TDate = unknown> extends DateTimePeriodPickerB
     protected render(): void
     {
         //same month only data change
-        if(this.displayedMonth && this.displayDate?.isSameMonth(this.displayedMonth))
+        if(this.displayedDate && this.displayDate?.isSameMonth(this.displayedDate))
         {
             this.setActive();
             this.updateMinMax();
@@ -134,6 +132,7 @@ export class DayPickerSAComponent<TDate = unknown> extends DateTimePeriodPickerB
             return;
         }
 
+        this.displayedDate = this.displayDate?.value;
         this.periodData = [];
         this.thisMonthData = [];
 
@@ -185,38 +184,6 @@ export class DayPickerSAComponent<TDate = unknown> extends DateTimePeriodPickerB
 
         this.setActive();
         this.updateMinMax();
-    }
-
-    /**
-     * Sets active date
-     */
-    protected setActive(): void
-    {
-        this.periodData.forEach(itm => itm.active = false);
-
-        if(!this.value)
-        {
-            return;
-        }
-
-        
-        if(!Array.isArray(this.value))
-        {
-            if(this.value)
-            {
-                const value = this.value;
-                const day = this.periodData.find(itm => itm.dateObj.isSameDay(value.value));
-
-                if(day)
-                {
-                    day.active = true;
-                }
-            }
-        }
-        else
-        {
-            //TODO: support range
-        }
     }
 
     //######################### protected methods - overrides #########################

@@ -7,6 +7,7 @@ import {DateTimeInputValue} from '../../../../interfaces';
 import {DateTimeInputOutputValue, DateTimeObjectValue} from '../../../../misc/types';
 import {DATE_TIME_PICKER_OPTIONS} from '../../misc/tokens';
 import {DayPickerSAComponent} from '../dayPicker/dayPicker.component';
+import {MonthPickerSAComponent} from '../monthPicker/monthPicker.component';
 import {DateTimePickerOptions} from './dateTimePicker.interface';
 import {DateTimePicker} from '../../interfaces';
 import {formatDateTime, parseDateTime} from '../../../../misc/utils';
@@ -29,6 +30,7 @@ const defaultOptions: DateTimePickerOptions =
     periodsDefinition:
     {
         'day': DayPickerSAComponent,
+        'month': MonthPickerSAComponent,
     },
 };
 
@@ -300,6 +302,7 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
         //create new component and destroy previous one
         if(!this.component || (this.component && type != this.displayedPeriodType))
         {
+            this.displayedPeriodType = type;
             this.periodChangesSubscription?.unsubscribe();
             this.periodChangesSubscription = new Subscription();
             this.component?.destroy();
@@ -333,14 +336,60 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
 
         const component = this.component.instance;
 
-        component.canScaleDown = false,
-        component.canScaleUp = false;
+        component.canScaleDown = this.canScaleDown(),
+        component.canScaleUp = this.canScaleUp();
         component.display = displayDate;
         // component.options
         component.maxDate = this.maxDateTime;
         component.minDate = this.minDateTime;
         component.value = this.internalValue;
         component.invalidateVisuals();
+    }
+
+    /**
+     * Gets indication whether current period can be scaled down
+     * @param periods - Array of defined period names
+     * @param index - Index of displayed period
+     */
+    protected canScaleDown(periods?: string[], index?: number): boolean
+    {
+        periods ??= Object.keys(this.ɵOptions.periodsDefinition);
+        index ??= periods.indexOf(this.displayedPeriodName);
+
+        if(index < 0)
+        {
+            throw new Error(CORRUPTED_CONFIG_TEXT);
+        }
+
+        if(index <= 0)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Gets indication whether current period can be scaled up
+     * @param periods - Array of defined period names
+     * @param index - Index of displayed period
+     */
+    protected canScaleUp(periods?: string[], index?: number): boolean
+    {
+        periods ??= Object.keys(this.ɵOptions.periodsDefinition);
+        index ??= periods.indexOf(this.displayedPeriodName);
+
+        if(index < 0)
+        {
+            throw new Error(CORRUPTED_CONFIG_TEXT);
+        }
+
+        if(index + 1 >= periods.length)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -351,20 +400,14 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
         const periods = Object.keys(this.ɵOptions.periodsDefinition);
         const index = periods.indexOf(this.displayedPeriodName);
 
-        if(index < 0)
-        {
-            throw new Error(CORRUPTED_CONFIG_TEXT);
-        }
-
-        if(index >= periods.length)
+        if(!this.canScaleUp(periods, index))
         {
             return this.displayedPeriodType;
         }
 
         this.displayedPeriodName = periods[index + 1];
-        this.displayedPeriodType = this.ɵOptions.periodsDefinition[this.displayedPeriodName];
 
-        return this.displayedPeriodType;
+        return this.ɵOptions.periodsDefinition[this.displayedPeriodName];
     }
 
     /**
@@ -375,19 +418,13 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
         const periods = Object.keys(this.ɵOptions.periodsDefinition);
         const index = periods.indexOf(this.displayedPeriodName);
 
-        if(index < 0)
-        {
-            throw new Error(CORRUPTED_CONFIG_TEXT);
-        }
-
-        if(index <= 0)
+        if(!this.canScaleDown(periods, index))
         {
             return this.displayedPeriodType;
         }
 
         this.displayedPeriodName = periods[index - 1];
-        this.displayedPeriodType = this.ɵOptions.periodsDefinition[this.displayedPeriodName];
 
-        return this.displayedPeriodType;
+        return this.ɵOptions.periodsDefinition[this.displayedPeriodName];
     }
 }

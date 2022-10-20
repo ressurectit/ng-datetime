@@ -103,6 +103,14 @@
             }
         }
 
+        month-picker
+        {
+            .period-data
+            {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
         day-picker
         {
             .period-data
