@@ -1,8 +1,8 @@
 import {ComponentRef, Directive, ElementRef, EmbeddedViewRef, Inject, Input, OnDestroy, OnInit, Optional, ViewContainerRef} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
-import {Position, POSITION, applyPositionResult, PositionPlacement} from '@anglr/common';
+import {Position, POSITION, applyPositionResult, PositionPlacement, PositionResult} from '@anglr/common';
 import {extend, nameof, isDescendant, BindThis} from '@jscrpt/common';
-import {lastValueFrom, Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 
 import {DateTimeInput} from '../../../../interfaces';
 import {DATE_TIME_INPUT} from '../../../../misc/tokens';
@@ -19,7 +19,7 @@ const defaultOptions: DateTimePickerDirectiveOptions =
 {
     absolute: true,
     alwaysVisible: false,
-    closeOnValueSelect: true,
+    closeOnValueSelect: false,
     closeOnBlur: true,
     disabled: false,
     positionOptions: PositionPlacement.BottomStart,
@@ -65,9 +65,9 @@ export class DateTimePickerDirective<TDate = unknown> extends DateTimeBase<TDate
     protected componentElement: HTMLElement|undefined|null;
 
     /**
-     * Subscription for value changes in picker
+     * Subscription for changes in picker
      */
-    protected valueChangeSubscription: Subscription|undefined|null;
+    protected pickerChangesSubscription: Subscription|undefined|null;
 
     //######################### public properties - inputs #########################
 
@@ -173,7 +173,8 @@ export class DateTimePickerDirective<TDate = unknown> extends DateTimeBase<TDate
             this.document.body.append(this.componentElement);
         }
 
-        this.valueChangeSubscription = this.component.valueChange.subscribe(() =>
+        this.pickerChangesSubscription = new Subscription();
+        this.pickerChangesSubscription.add(this.component.valueChange.subscribe(() =>
         {
             if(this.component)
             {
@@ -187,29 +188,26 @@ export class DateTimePickerDirective<TDate = unknown> extends DateTimeBase<TDate
                     this.hidePicker();
                 }
             }
-        });
+        }));
 
         this.document.addEventListener('click', this.handleClickOutside);
         this.componentElement.addEventListener('mousedown', this.handleClickInside);
+        this.componentElement.style.position = 'absolute';
 
         if(this.ɵWithPickerOptions.pickerCssClass)
         {
             this.componentElement.classList.add(this.ɵWithPickerOptions.pickerCssClass);
         }
 
-        const result = await lastValueFrom(this.position.placeElement(this.componentElement, this.element.nativeElement,
-        {
-            placement: this.withPickerOptions.positionOptions,
-        }));
+        this.pickerChangesSubscription.add(this.positionPicker(this.componentElement, true).subscribe(result => applyPositionResult(result)));
 
-        applyPositionResult(result);
-        this.setPickerValue();
         this.componentRef.setInput(nameof<DateTimePickerComponent>('options'), this.pickerOptions);
         this.componentRef.setInput(nameof<DateTimePickerComponent>('valueFormat'), this.dateTimeData.valueFormat);
         this.componentRef.setInput(nameof<DateTimePickerComponent>('format'), this.dateTimeData.format);
         this.componentRef.setInput(nameof<DateTimePickerComponent>('customFormat'), this.dateTimeData.customFormat);
         this.componentRef.setInput(nameof<DateTimePickerComponent>('minDateTime'), this.dateTimeData.minDateTime);
         this.componentRef.setInput(nameof<DateTimePickerComponent>('maxDateTime'), this.dateTimeData.maxDateTime);
+        this.setPickerValue();
         this.componentRef.changeDetectorRef.detectChanges();
     }
 
@@ -222,11 +220,11 @@ export class DateTimePickerDirective<TDate = unknown> extends DateTimeBase<TDate
         {
             return;
         }
-        
+
         this.componentElement?.removeEventListener('mousedown', this.handleClickInside);
         
-        this.valueChangeSubscription?.unsubscribe();
-        this.valueChangeSubscription = null;
+        this.pickerChangesSubscription?.unsubscribe();
+        this.pickerChangesSubscription = null;
         
         this.component = null;
 
@@ -287,6 +285,21 @@ export class DateTimePickerDirective<TDate = unknown> extends DateTimeBase<TDate
     {
         event.preventDefault();
         event.stopPropagation();
+    }
+
+    /**
+     * Runs placement of picker component
+     * @param componentElement - Element to be positioned
+     * @param watch - Indication whether watch for changes and update position
+     */
+    protected positionPicker(componentElement: HTMLElement, watch: boolean): Observable<PositionResult<HTMLElement>>
+    {
+        return this.position.placeElement(componentElement, this.element.nativeElement,
+        {
+            flip: true,
+            placement: this.withPickerOptions.positionOptions,
+            autoUpdate: watch,
+        });
     }
 
     //######################### protected methods - overrides #########################

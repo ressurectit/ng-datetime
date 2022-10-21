@@ -2,8 +2,7 @@
 {
     date-time-picker
     {
-        display: block;
-        position: absolute;
+        display: inline-block;
 
         background-color: var(--datetime-date-time-picker-background);
         border: 1px solid var(--datetime-date-time-picker-border);

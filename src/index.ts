@@ -1,3 +1,4 @@
+export * from './directives';
 export * from './interfaces';
 export * from './legacy/picker/directives';
 export * from './legacy/picker/interfaces';

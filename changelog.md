@@ -173,6 +173,8 @@
     - **extends** `DateTimePeriodPickerBase`
     - **implements**
         - `DateTimePicker`
+- new `WithTimeSADirective` directive, that sets up usage of date time picker to use time format and time picker
+- new `WithTodaySADirective` directive, that sets today as day for empty date time on focus
 - updated `DateApiObject` interface
     - new `unixTimestamp` method, that gets value of date time as unix timestamp
 - updated `DateFormatPipe`

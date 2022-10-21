@@ -17,5 +17,5 @@
 </div>
 
 <div class="go-down-button" *ngIf="canScaleDown">
-    <div [class.clickable]="canScaleDown" (mousedown)="displayDate ? scaleDownSubject.next(displayDate.value) : undefined">{{singleValue ? (singleValue.value | dateFormat: 'time') : '0:00'}}</div>
+    <div [class.clickable]="canScaleDown" (mousedown)="displayDate ? scaleDownSubject.next(displayDate.value) : undefined">{{singleValue?.isValid() ? (singleValue?.value | dateFormat: 'time') : '0:00'}}</div>
 </div>
