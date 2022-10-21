@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 5.0.0 (2022-10-20)
+## Version 5.0.0 (2022-10-21)
 
 ### Features
 
@@ -166,6 +166,10 @@
     - **implements**
         - `DateTimePicker`
 - new `YearPickerSAComponent` component, which is used for displaying year picker
+    - **extends** `DateTimePeriodPickerBase`
+    - **implements**
+        - `DateTimePicker`
+- new `RollerTimePickerSAComponent` component, which is used for rendering roller time picker
     - **extends** `DateTimePeriodPickerBase`
     - **implements**
         - `DateTimePicker`

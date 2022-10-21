@@ -16,6 +16,6 @@
          (mousedown)="selectDay(day)">{{day.day}}</div>
 </div>
 
-<div class="go-down-button" style="justify-content: center; border-top: 1px solid #FFF;" *ngIf="canScaleDown">
-    <!-- <div [class.clickable]="canScaleDown" (mousedown)="displayDate ? goDownSubject.next(displayDate.value) : undefined">{{timeValue?.from | dateFormat: 'time'}}</div> -->
+<div class="go-down-button" *ngIf="canScaleDown">
+    <div [class.clickable]="canScaleDown" (mousedown)="displayDate ? scaleDownSubject.next(displayDate.value) : undefined">{{singleValue ? (singleValue.value | dateFormat: 'time') : '0:00'}}</div>
 </div>

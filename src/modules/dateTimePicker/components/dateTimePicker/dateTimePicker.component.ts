@@ -9,11 +9,11 @@ import {DATE_TIME_PICKER_OPTIONS} from '../../misc/tokens';
 import {DayPickerSAComponent} from '../dayPicker/dayPicker.component';
 import {MonthPickerSAComponent} from '../monthPicker/monthPicker.component';
 import {DateTimePickerOptions} from './dateTimePicker.interface';
+import {YearPickerSAComponent} from '../yearPicker/yearPicker.component';
 import {DateTimePicker} from '../../interfaces';
 import {formatDateTime, parseDateTime} from '../../../../misc/utils';
 import {DateTimeDirective} from '../../../dateTime/directives';
 import {DateValueProvider} from '../../../../services';
-import {YearPickerSAComponent} from '../yearPicker/yearPicker.component';
 import {DateTimeValueFormat} from '../../../../misc/enums';
 
 //TODO: use mixin for set internal

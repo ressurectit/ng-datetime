@@ -36,7 +36,9 @@ import {LoopScrollDataDirective, LoopScrollDirective} from '../directives';
     ],
     exports:
     [
-        DateTimePickerLegacyComponent
+        DateTimePickerLegacyComponent,
+        LoopScrollDataDirective,
+        LoopScrollDirective,
     ]
 })
 export class DateTimeLegacyPickerModule
