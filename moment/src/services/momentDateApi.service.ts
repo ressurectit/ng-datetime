@@ -1,5 +1,5 @@
 import {Inject, Injectable, ValueProvider} from '@angular/core';
-import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser, DateApiObjectCtor, DATE_API_OBJECT_TYPE} from '@anglr/datetime';
+import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser, DateApiObjectCtor, DATE_API_OBJECT_TYPE, DateObject} from '@anglr/datetime';
 import {isBlank, isPresent} from '@jscrpt/common';
 import moment, {LongDateFormatKey} from 'moment';
 
@@ -71,6 +71,14 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     public format(format: string): string
     {
         return this._value.format(format.replace(/y/g, 'Y').replace(/d/g, 'D'));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public formatISO(): string
+    {
+        return this._value.format();
     }
 
     /**
@@ -545,8 +553,10 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
      * Gets indication whether current value is before 'date'
      * @param date - Date which is this date compared to
      */
-    public isBefore(date: moment.Moment): boolean
+    public isBefore(date: DateObject<moment.Moment>): boolean
     {
+        date = this.getDate(date);
+
         return this._value.isBefore(date);
     }
 
@@ -554,8 +564,10 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
      * Gets indication whether current value is after 'date'
      * @param date - Date which is this date compared to
      */
-    public isAfter(date: moment.Moment): boolean
+    public isAfter(date: DateObject<moment.Moment>): boolean
     {
+        date = this.getDate(date);
+
         return this._value.isAfter(date);
     }
 
@@ -563,8 +575,10 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
      * Gets number of days between this and provided date
      * @param date - Date which is used for computation of diff against
      */
-    public diffDays(date: moment.Moment): number
+    public diffDays(date: DateObject<moment.Moment>): number
     {
+        date = this.getDate(date);
+
         return moment(this._value).startOf('day').diff(moment(date).startOf('day'), 'days');
     }
 
@@ -572,8 +586,10 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
      * Compares whether this date is same week as provided date
      * @param date - Date which is used for comparison of same week
      */
-    public isSameWeek(date: moment.Moment): boolean
+    public isSameWeek(date: DateObject<moment.Moment>): boolean
     {
+        date = this.getDate(date);
+
         return this._value.isSame(date, 'week');
     }
 
@@ -581,8 +597,10 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
      * Compares whether this date is same decade as provided date
      * @param date - Date which is used for comparison of same decade
      */
-    public isSameDecade(date: moment.Moment): boolean
+    public isSameDecade(date: DateObject<moment.Moment>): boolean
     {
+        date = this.getDate(date);
+
         const year = this._value.year();
         const start = year - (year % 10);
         const end = start + 10;
@@ -594,8 +612,10 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
      * Compares whether this date is same year as provided date
      * @param date - Date which is used for comparison of same year
      */
-    public isSameYear(date: moment.Moment): boolean
+    public isSameYear(date: DateObject<moment.Moment>): boolean
     {
+        date = this.getDate(date);
+
         return this._value.isSame(date, 'year');
     }
 
@@ -603,8 +623,10 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
      * Compares whether this date is same month as provided date
      * @param date - Date which is used for comparison of same month
      */
-    public isSameMonth(date: moment.Moment): boolean
+    public isSameMonth(date: DateObject<moment.Moment>): boolean
     {
+        date = this.getDate(date);
+
         return this._value.isSame(date, 'month');
     }
 
@@ -612,9 +634,21 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
      * Compares whether this date is same day as provided date
      * @param date - Date which is used for comparison of same day
      */
-    public isSameDay(date: moment.Moment): boolean
+    public isSameDay(date: DateObject<moment.Moment>): boolean
     {
+        date = this.getDate(date);
+
         return this._value.isSame(date, 'day');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public isSame(date: DateObject<moment.Moment>): boolean
+    {
+        date = this.getDate(date);
+
+        return this._value.isSame(date);
     }
 
     /**
@@ -662,6 +696,22 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
 
         return this;
     }
+
+    //######################### protected methods #########################
+
+    /**
+     * Converts date object to date
+     * @param value - Value to be converted to date
+     */
+    protected getDate(value: DateObject<moment.Moment>): moment.Moment
+    {
+        if(value instanceof moment)
+        {
+            return value as moment.Moment;
+        }
+
+        return (value as DateApiObject<moment.Moment>).value;
+    }
 }
 
 /**
@@ -672,7 +722,7 @@ export class MomentDateApi implements DateApi<moment.Moment>
 {
     //######################### constructor #########################
     constructor(protected _relativeParser: DateTimeRelativeParser<moment.Moment>,
-                @Inject(DATE_API_OBJECT_TYPE) protected _dateApiObjecType: DateApiObjectCtor<MomentDateApiObject, moment.Moment>)
+                @Inject(DATE_API_OBJECT_TYPE) protected _dateApiObjecType: DateApiObjectCtor<moment.Moment, MomentDateApiObject>)
     {
     }
 
@@ -738,7 +788,7 @@ export class MomentDateApi implements DateApi<moment.Moment>
 /**
  * Type that represents creation of DateApiObject for moment
  */
-export const momentDateApiObjectType: DateApiObjectCtor<MomentDateApiObject, moment.Moment> = MomentDateApiObject;
+export const momentDateApiObjectType: DateApiObjectCtor<moment.Moment, MomentDateApiObject> = MomentDateApiObject;
 
 /**
  * Injection token used for injecting type that creates instance of DateApiObject for moment

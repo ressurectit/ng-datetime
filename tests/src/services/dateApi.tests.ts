@@ -1,6 +1,10 @@
 import {DateApi} from '../../../src/services/dateApi.interface';
 import {FULL_FORMAT_ISO} from '../../constants';
 
+//TODO: unixTimestamp add
+//TODO: isSame add
+//TODO: formatISO add
+
 export function dateApiTests<TDate>(dateApi: () => DateApi<TDate>)
 {
     test('isValid method => valid', () =>

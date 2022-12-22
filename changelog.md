@@ -1,5 +1,101 @@
 # Changelog
 
+## Version 6.0.0 (2022-12-22)
+
+### Features
+
+- new `DateObject` type, that represents date object, either as date api or plain
+- new `EventParser` service, that is used for parsing events into events to requested period
+    - **methods**
+        - `getEventsPerDay` gets events parsed per day
+- new `MonthCalendarComponent` component, that is used for displaying month calendar
+    - **implements**
+        - `OnInit`
+        - `OnChanges`
+    - **inputs**
+        - `showWeekNumber` indication that week number should be displayed
+        - `display` date that should be displayed in month calendar
+        - `weekDayName` format for displaying week day names
+        - `dayAspectRatio` aspect ratio for displayed calendar day cell
+        - `events` array of events that should be displayed
+    - **content children**
+        - **child** `CalendarDayTemplateDirective` 
+- new `CalendarDayTemplateContext` interface, that is context passed to template of calendar day
+    - **properties**
+        - `$implicit` data that are used for displaying calendar day
+- new `CalendarDayTemplateDirective` directive, that is used for obtaining custom calendar day template
+    - **properties**
+        - `template` template obtained by this structural directive
+- new `MonthCalendarModule` module, that is used for calendar displaying month
+    - **exports**
+        - `MonthCalendarComponent`
+        - `CalendarDayTemplateDirective`
+- new `CalendarDayAspectRatio` enum, that represents available aspect ratios for displaying calendar days
+    - `OneToOne` aspect ratio of width to height is 1:1 (square)
+    - `ThreeToTwo` aspect ratio of width to height is 3:2
+    - `FourToThree` aspect ratio of width to height is 4:3
+    - `SixteenToTen` aspect ratio of width to height is 16:10
+    - `SixteenToNine` aspect ratio of width to height is 16:9
+- new `MonthCalendarDayFormat` enum, that represents available day formats for calendar day
+    - `None` no week day name displayed
+    - `Short` short version of week day name
+    - `Full` full version of week day name
+- new `CalendarDayData` interface, that represents data for day for calendar
+    - **properties**
+        - `events` thin array of events array for day
+        - `date` date of day
+        - `day` number of day of month
+        - `isWeekend` indication whether is this day weekend day
+        - `isCurrentMonth` indication whether is this day for currently displayed month
+        - `week` week number of year for day
+- new `CalendarEventDayMetadata` interface, that represents event metadata for day
+    - **extends**
+        - `EventData`
+        - `WithDateApiFromTo`
+    - **properties**
+        - `allDay` indication whether is event all day event
+        - `onGoingFrom` indication that event is ongoing from previous date
+        - `onGoingTo` indication that event is ongoing to next date
+- new `EventData` interface, that represents data for event that are passed to calendar
+    - **properties**
+        - `data` data for event
+        - `dateFrom` date when event starts
+        - `dateTo` date when event ends
+- new `WithDateApiFromTo` interface, that represents object that holds date api object for dateFrom and dateTo
+    - **properties**
+        - `dateApiFrom` date api for date when event starts
+        - `dateApiTo` date api for date when event ends
+- updated `DateApiObject` interface
+    - new `isSame` method which, compares whether is date same as provided date
+    - new `formatISO` method which, formats date value as ISO string representation
+    - all following methods now accepts `DateObject<TDate>` instead of just `TDate` as argument
+        - `isBefore`
+        - `isAfter`
+        - `diffDays`
+        - `isSameWeek`
+        - `isSameDecade`
+        - `isSameYear`
+        - `isSameMonth`
+        - `isSameDay`
+- *subpackage* `@anglr/datetime/moment`
+    - updated `MomentDateApi`
+        - now implements also new `isSame` and `formatISO` methods, and supports new `DateObject<TDate>` argument
+- *subpackage* `@anglr/datetime/date-fns`
+    - updated `DateFnsDateApi` 
+        - now implements also new `isSame` and `formatISO` methods, and supports new `DateObject<TDate>` argument
+
+### BREAKING CHANGES
+
+- updated minimal version requirements for `Node.js` (`14.20.0` or `16.13.0` or `18.10.0`)
+- minimal supported version of `@angular` is now `15.0.4`
+- minimal supported version of `@jscrpt/common` is now `3.3.0`
+- minimal supported version of `@anglr/common` is now `15.0.1`
+- minimal supported version of `tslib` is now `2.4.1`
+- removed old stylings and themes
+- most of generic default `any` replaced by `unknown`
+- updated `DateApiObjectCtor` interface
+    - switched order of generic arguments
+
 ## Version 5.0.0 (2022-10-21)
 
 ### Features
@@ -218,7 +314,7 @@
 
 ### Features
 
-- new `DateApiObjectCtor` interface that, is definition of type, that is used for creating instance of DateApiObject
+- new `DateApiObjectCtor` interface, that is definition of type, that is used for creating instance of DateApiObject
 - new `DATE_API_OBJECT_TYPE` injection token used for injecting type that creates instance of DateApiObject
 - updated `DateApi` interface
     - new generic parameter `TDateApiObject` which allows to get specific `DateApiObject` implementation

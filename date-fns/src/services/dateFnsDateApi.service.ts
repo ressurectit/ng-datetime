@@ -1,7 +1,7 @@
 import {Inject, Injectable, ValueProvider} from '@angular/core';
-import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser, DateApiObjectCtor, DATE_API_OBJECT_TYPE} from '@anglr/datetime';
+import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser, DateApiObjectCtor, DATE_API_OBJECT_TYPE, DateObject} from '@anglr/datetime';
 import {isBlank, isPresent, isString} from '@jscrpt/common';
-import {toDate, getDate, setDate, isAfter, isBefore, differenceInCalendarDays, format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, parseISO, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth, setISODay, getISODay, subHours, addHours, endOfHour, startOfHour, startOfMinute, endOfMinute, addMinutes, subMinutes, getHours, setHours, getMinutes, setMinutes, isDate, getUnixTime} from 'date-fns';
+import {toDate, getDate, setDate, isAfter, isBefore, isEqual, differenceInCalendarDays, format, formatISO, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, parseISO, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth, setISODay, getISODay, subHours, addHours, endOfHour, startOfHour, startOfMinute, endOfMinute, addMinutes, subMinutes, getHours, setHours, getMinutes, setMinutes, isDate, getUnixTime} from 'date-fns';
 
 import {DATE_FNS_LOCALE} from '../misc/tokens';
 import {DateFnsLocale} from './dateFnsLocale.service';
@@ -99,6 +99,14 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     /**
      * @inheritdoc
      */
+    public formatISO(): string
+    {
+        return formatISO(this._value);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public unixTimestamp(): number
     {
         return getUnixTime(this._value);
@@ -111,7 +119,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     public startOfDecade(): DateApiObject<Date>
     {
         this._value = startOfDecade(this._value);
-        
+
         return this;
     }
 
@@ -122,7 +130,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     public endOfDecade(): DateApiObject<Date>
     {
         this._value = endOfDecade(this._value);
-        
+
         return this;
     }
 
@@ -502,7 +510,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     {
         if(isPresent(day))
         {
-            this._value = setISODay(this._value, day + 1!);
+            this._value = setISODay(this._value, day + 1);
 
             return this;
         }
@@ -564,8 +572,10 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
      * Gets indication whether current value is before 'date'
      * @param date - Date which is this date compared to
      */
-    public isBefore(date: Date): boolean
+    public isBefore(date: DateObject<Date>): boolean
     {
+        date = this.getDate(date);
+
         return isBefore(this._value, date);
     }
 
@@ -573,8 +583,10 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
      * Gets indication whether current value is after 'date'
      * @param date - Date which is this date compared to
      */
-    public isAfter(date: Date): boolean
+    public isAfter(date: DateObject<Date>): boolean
     {
+        date = this.getDate(date);
+
         return isAfter(this._value, date);
     }
 
@@ -582,8 +594,10 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
      * Gets number of days between this and provided date
      * @param date - Date which is used for computation of diff against
      */
-    public diffDays(date: Date): number
+    public diffDays(date: DateObject<Date>): number
     {
+        date = this.getDate(date);
+
         return differenceInCalendarDays(this._value, date);
     }
 
@@ -591,8 +605,10 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
      * Compares whether this date is same week as provided date
      * @param date - Date which is used for comparison of same week
      */
-    public isSameWeek(date: Date): boolean
+    public isSameWeek(date: DateObject<Date>): boolean
     {
+        date = this.getDate(date);
+
         return isSameWeek(this._value, date, {locale: this._localeSvc.locale});
     }
 
@@ -600,8 +616,10 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
      * Compares whether this date is same decade as provided date
      * @param date - Date which is used for comparison of same decade
      */
-    public isSameDecade(date: Date): boolean
+    public isSameDecade(date: DateObject<Date>): boolean
     {
+        date = this.getDate(date);
+
         const year = getYear(this._value);
         const start = year - (year % 10);
         const end = start + 10;
@@ -613,8 +631,10 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
      * Compares whether this date is same year as provided date
      * @param date - Date which is used for comparison of same year
      */
-    public isSameYear(date: Date): boolean
+    public isSameYear(date: DateObject<Date>): boolean
     {
+        date = this.getDate(date);
+
         return isSameYear(this._value, date);
     }
 
@@ -622,18 +642,31 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
      * Compares whether this date is same month as provided date
      * @param date - Date which is used for comparison of same month
      */
-    public isSameMonth(date: Date): boolean
+    public isSameMonth(date: DateObject<Date>): boolean
     {
+        date = this.getDate(date);
+
         return isSameMonth(this._value, date);
     }
 
     /**
-     * Compares whether this date is same day as provided date
-     * @param date - Date which is used for comparison of same day
+     * @inheritdoc
      */
-    public isSameDay(date: Date): boolean
+    public isSameDay(date: DateObject<Date>): boolean
     {
+        date = this.getDate(date);
+
         return isSameDay(this._value, date);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public isSame(date: DateObject<Date>): boolean
+    {
+        date = this.getDate(date);
+
+        return isEqual(this._value, date);
     }
 
     /**
@@ -665,7 +698,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
         }
         else
         {
-            this._value = this._originalValue = value!;
+            this._value = this._originalValue = value;
         }
 
         return this;
@@ -681,6 +714,22 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
 
         return this;
     }
+
+    //######################### protected methods #########################
+
+    /**
+     * Converts date object to date
+     * @param value - Value to be converted to date
+     */
+    protected getDate(value: DateObject<Date>): Date
+    {
+        if(value instanceof Date)
+        {
+            return value;
+        }
+
+        return value.value;
+    }
 }
 
 /**
@@ -692,7 +741,7 @@ export class DateFnsDateApi implements DateApi<Date>
     //######################### constructor #########################
     constructor(@Inject(DATE_FNS_LOCALE) protected _localeSvc: DateFnsLocale,
                 protected _relativeParser: DateTimeRelativeParser<Date>,
-                @Inject(DATE_API_OBJECT_TYPE) protected _dateApiObjecType: DateApiObjectCtor<DateFnsDateApiObject, Date>)
+                @Inject(DATE_API_OBJECT_TYPE) protected _dateApiObjecType: DateApiObjectCtor<Date, DateFnsDateApiObject>)
     {
     }
 
@@ -760,7 +809,7 @@ export class DateFnsDateApi implements DateApi<Date>
     }
 
     /**
-     * Gets information 
+     * Gets information
      */
     public weekStartsOnMonday(): boolean
     {
@@ -795,7 +844,7 @@ export class DateFnsDateApi implements DateApi<Date>
 /**
  * Type that represents creation of DateApiObject for date-fns
  */
-export const dateFnsDateApiObjectType: DateApiObjectCtor<DateFnsDateApiObject, Date> = DateFnsDateApiObject;
+export const dateFnsDateApiObjectType: DateApiObjectCtor<Date, DateFnsDateApiObject> = DateFnsDateApiObject;
 
 /**
  * Injection token used for injecting type that creates instance of DateApiObject for date-fns

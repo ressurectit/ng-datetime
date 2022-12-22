@@ -4,9 +4,14 @@
 export type DateValue = Date|string|number;
 
 /**
+ * Type that represents date object, either as date api or plain
+ */
+export type DateObject<TDate> = TDate|DateApiObject<TDate>;
+
+/**
  * Definition of type, that is used for creating instance of DateApiObject
  */
-export interface DateApiObjectCtor<TObject extends DateApiObject<TDate> = any, TDate = any>
+export interface DateApiObjectCtor<TDate = unknown, TObject extends DateApiObject<TDate> = DateApiObject<TDate>>
 {
     new (value: TDate|DateValue, format?: string, ...additionalParams: any[]): TObject;
 }
@@ -14,7 +19,7 @@ export interface DateApiObjectCtor<TObject extends DateApiObject<TDate> = any, T
 /**
  * Instance of object wrapping TDate, allowing manipulation with it
  */
-export interface DateApiObject<TDate = any>
+export interface DateApiObject<TDate = unknown>
 {
     /**
      * Original value that is not changed unless 'updateOriginal' is called
@@ -41,6 +46,11 @@ export interface DateApiObject<TDate = any>
      * @param format - Format token used for creating formatted string
      */
     format(format: string): string;
+
+    /**
+     * Formats date value as ISO string representation
+     */
+    formatISO(): string;
 
     /**
      * Gets value of date time as unix timestamp
@@ -314,49 +324,55 @@ export interface DateApiObject<TDate = any>
      * Gets indication whether current value is before 'date'
      * @param date - Date which is this date compared to
      */
-    isBefore(date: TDate): boolean;
+    isBefore(date: DateObject<TDate>): boolean;
 
     /**
      * Gets indication whether current value is after 'date'
      * @param date - Date which is this date compared to
      */
-    isAfter(date: TDate): boolean;
+    isAfter(date: DateObject<TDate>): boolean;
 
     /**
      * Gets number of days between this and provided date
      * @param date - Date which is used for computation of diff against
      */
-    diffDays(date: TDate): number;
+    diffDays(date: DateObject<TDate>): number;
 
     /**
      * Compares whether this date is same week as provided date
      * @param date - Date which is used for comparison of same week
      */
-    isSameWeek(date: TDate): boolean;
+    isSameWeek(date: DateObject<TDate>): boolean;
 
     /**
      * Compares whether this date is same decade as provided date
      * @param date - Date which is used for comparison of same decade
      */
-    isSameDecade(date: TDate): boolean;
+    isSameDecade(date: DateObject<TDate>): boolean;
 
     /**
      * Compares whether this date is same year as provided date
      * @param date - Date which is used for comparison of same year
      */
-    isSameYear(date: TDate): boolean;
+    isSameYear(date: DateObject<TDate>): boolean;
 
     /**
      * Compares whether this date is same month as provided date
      * @param date - Date which is used for comparison of same month
      */
-    isSameMonth(date: TDate): boolean;
+    isSameMonth(date: DateObject<TDate>): boolean;
 
     /**
      * Compares whether this date is same day as provided date
      * @param date - Date which is used for comparison of same day
      */
-    isSameDay(date: TDate): boolean;
+    isSameDay(date: DateObject<TDate>): boolean;
+
+    /**
+     * Compares whether is date same as provided date
+     * @param date - Date which is used for comparison whether is same date time
+     */
+    isSame(date: DateObject<TDate>): boolean;
 
     /**
      * Creates clone of this instance, value and originalValue have same value and are cloned from value
@@ -373,7 +389,7 @@ export interface DateApiObject<TDate = any>
      * @param value - Value to be set as original, or null (value will be used as value)
      * @returns Itself for fluent API
      */
-    updateOriginal(value?: TDate): DateApiObject<TDate>;
+    updateOriginal(value?: DateObject<TDate>): DateApiObject<TDate>;
 
     /**
      * Changes value to same value as originalValue
@@ -385,7 +401,7 @@ export interface DateApiObject<TDate = any>
 /**
  * Date api abstraction, used for obtaining DateApi wrapper object
  */
-export interface DateApi<TDate = any, TDateApiObject extends DateApiObject<TDate> = DateApiObject<TDate>>
+export interface DateApi<TDate = unknown, TDateApiObject extends DateApiObject<TDate> = DateApiObject<TDate>>
 {
     /**
      * Gets wrapping object used for manipulation

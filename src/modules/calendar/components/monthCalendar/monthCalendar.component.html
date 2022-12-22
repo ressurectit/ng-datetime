@@ -1,0 +1,15 @@
+<div *calendarDayTemplate="let data" class="default-calendar-day" [class.is-weekend]="data.isWeekend" [class.is-other-month]="!data.isCurrentMonth">{{data.day}}</div>
+
+<div></div>
+
+<div *ngFor="let dayName of weekDayNames" [class.week-day-name]="dayName">{{dayName}}</div>
+
+<ng-container *ngFor="let weekData of calendarData | keyvalue">
+    <div class="week-number">
+        <ng-container *ngIf="showWeekNumber">{{weekData.key}}</ng-container>
+    </div>
+    
+    <div *ngFor="let dayData of weekData.value" [style.padding-bottom.%]="dayAspectRatioValue" class="day-wrapper">
+        <div class="day-content"><ng-container *ngTemplateOutlet="calendarDayTemplate; context: {$implicit: dayData}"></ng-container></div>
+    </div>
+</ng-container>
