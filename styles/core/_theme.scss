@@ -38,4 +38,15 @@ $defaultTheme:
             foreground: #850000,
         ),
     ),
+    monthCalendar:
+    (
+        weekend:
+        (
+            foreground: #ff0000,
+        ),
+        otherMonth:
+        (
+            background: #00000033,
+        ),
+    ),
 );

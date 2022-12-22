@@ -16,7 +16,6 @@ import {FormatProvider} from '../../../../interfaces';
 {
     selector: 'month-calendar',
     templateUrl: 'monthCalendar.component.html',
-    styleUrls: ['monthCalendar.component.scss'],
     providers:
     [
         EventParser,

@@ -19,6 +19,8 @@
         --datetime-date-time-picker-disabled-background: #{map.get(map.get(map.get($theme, 'dateTimePicker'), 'disabled'), 'background')};
         --datetime-date-time-picker-today-border: #{map.get(map.get(map.get($theme, 'dateTimePicker'), 'today'), 'border')};
         --datetime-day-picker-weekend-foreground: #{map.get(map.get(map.get($theme, 'dayPicker'), 'weekend'), 'foreground')};
+        --datetime-month-calendar-weekend-foreground: #{map.get(map.get(map.get($theme, 'monthCalendar'), 'weekend'), 'foreground')};
+        --datetime-month-calendar-other-month-background: #{map.get(map.get(map.get($theme, 'monthCalendar'), 'otherMonth'), 'background')};
     }
 }
 
