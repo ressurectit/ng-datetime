@@ -2,7 +2,7 @@ import {Directive, Inject, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 
 import {DATE_API} from '../../misc/tokens';
-import {DateTimeInputDirective} from '../../modules';
+import {DateTimeInputSADirective} from '../../modules';
 import {DateApi} from '../../services';
 
 /**
@@ -23,7 +23,7 @@ export class WithTodaySADirective<TDate = unknown> implements OnDestroy
     private _initSubscriptions: Subscription = new Subscription();
 
     //######################### constructor #########################
-    constructor(input: DateTimeInputDirective<TDate>,
+    constructor(input: DateTimeInputSADirective<TDate>,
                 @Inject(DATE_API) dateApi: DateApi<TDate>,)
     {
         this._initSubscriptions.add(input.focus.subscribe(() =>

@@ -12,7 +12,7 @@ import {DateTimePickerOptions} from './dateTimePicker.interface';
 import {YearPickerSAComponent} from '../yearPicker/yearPicker.component';
 import {DateTimePicker} from '../../interfaces';
 import {formatDateTime, parseDateTime} from '../../../../misc/utils';
-import {DateTimeDirective} from '../../../dateTime/directives';
+import {DateTimeSADirective} from '../../../dateTime/directives';
 import {DateValueProvider} from '../../../../services';
 import {DateTimeValueFormat} from '../../../../misc/enums';
 
@@ -46,7 +46,7 @@ const defaultOptions: DateTimePickerOptions =
     templateUrl: 'dateTimePicker.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<TDate> implements DateTimeInputValue<TDate>, OnInit, OnChanges, OnDestroy
+export class DateTimePickerComponent<TDate = unknown> extends DateTimeSADirective<TDate> implements DateTimeInputValue<TDate>, OnInit, OnChanges, OnDestroy
 {
     //######################### protected properties #########################
 

@@ -15,9 +15,10 @@ import {DateTimeBase} from '../dateTimeBase';
  */
 @Directive(
 {
-    selector: '[dateTime]'
+    selector: '[dateTime]',
+    standalone: true,
 })
-export class DateTimeDirective<TDate = unknown> implements OnDestroy
+export class DateTimeSADirective<TDate = unknown> implements OnDestroy
 {
     //######################### protected properties #########################
 

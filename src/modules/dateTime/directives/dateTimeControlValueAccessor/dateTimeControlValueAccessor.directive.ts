@@ -17,12 +17,13 @@ import {DateTimeInputOutputValue} from '../../../../misc/types';
         <ExistingProvider>
         {
             provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => DateTimeControlValueAccessorDirective),
+            useExisting: forwardRef(() => DateTimeControlValueAccessorSADirective),
             multi: true,
         },
     ],
+    standalone: true,
 })
-export class DateTimeControlValueAccessorDirective<TDate = unknown> implements ControlValueAccessor, OnDestroy
+export class DateTimeControlValueAccessorSADirective<TDate = unknown> implements ControlValueAccessor, OnDestroy
 {
     //######################### protected properties #########################
 

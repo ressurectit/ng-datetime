@@ -33,9 +33,10 @@ const defaultOptions: DateTimePickerDirectiveOptions =
 @Directive(
 {
     selector: '[dateTime][withPicker]',
-    exportAs: 'dateTimePicker'
+    standalone: true,
+    exportAs: 'dateTimePicker',
 })
-export class DateTimePickerDirective<TDate = unknown> extends DateTimeBase<TDate> implements OnInit, OnDestroy
+export class DateTimePickerSADirective<TDate = unknown> extends DateTimeBase<TDate> implements OnInit, OnDestroy
 {
     //######################### protected properties #########################
 

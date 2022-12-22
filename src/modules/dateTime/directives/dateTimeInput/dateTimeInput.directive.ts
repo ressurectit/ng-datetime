@@ -21,12 +21,13 @@ import {DateTimeBase} from '../dateTimeBase';
         <ExistingProvider>
         {
             provide: DATE_TIME_INPUT,
-            useExisting: forwardRef(() => DateTimeInputDirective),
+            useExisting: forwardRef(() => DateTimeInputSADirective),
         },
     ],
+    standalone: true,
     exportAs: 'dateTime',
 })
-export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate> implements DateTimeInput, OnDestroy
+export class DateTimeInputSADirective<TDate = unknown> extends DateTimeBase<TDate> implements DateTimeInput, OnDestroy
 {
     //######################### protected properties #########################
 

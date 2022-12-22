@@ -77,6 +77,20 @@
         - `isSameYear`
         - `isSameMonth`
         - `isSameDay`
+- updated `DateTimeSADirective` directive
+    - now is standalone directive
+- updated `DateTimeControlValueAccessorSADirective` directive
+    - now is standalone directive
+- updated `DateTimeInputSADirective` directive
+    - now is standalone directive
+- updated `DateTimeMaxValidatorSADirective` directive
+    - now is standalone directive
+- updated `DateTimeMinValidatorSADirective` directive
+    - now is standalone directive
+- updated `DateTimeValidatorSADirective` directive
+    - now is standalone directive
+- updated `DateTimePickerSADirective` directive
+    - now is standalone directive
 - *subpackage* `@anglr/datetime/moment`
     - updated `MomentDateApi`
         - now implements also new `isSame` and `formatISO` methods, and supports new `DateObject<TDate>` argument
@@ -95,6 +109,13 @@
 - most of generic default `any` replaced by `unknown`
 - updated `DateApiObjectCtor` interface
     - switched order of generic arguments
+- renamed `DateTimeDirective` to `DateTimeSADirective` directive
+- renamed `DateTimeControlValueAccessorDirective` to `DateTimeControlValueAccessorSADirective` directive
+- renamed `DateTimeInputDirective` to `DateTimeInputSADirective` directive
+- renamed `DateTimeMaxValidatorDirective` to `DateTimeMaxValidatorSADirective` directive
+- renamed `DateTimeMinValidatorDirective` to `DateTimeMinValidatorSADirective` directive
+- renamed `DateTimeValidatorDirective` to `DateTimeValidatorSADirective` directive
+- renamed `DateTimePickerDirective` to `DateTimePickerSADirective` directive
 
 ## Version 5.0.0 (2022-10-21)
 
