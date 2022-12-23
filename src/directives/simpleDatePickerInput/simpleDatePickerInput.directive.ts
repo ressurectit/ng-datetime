@@ -1,9 +1,10 @@
 import {Directive} from '@angular/core';
 
 import {DateTimeInputSADirective, DateTimePickerSADirective} from '../../modules';
+import {SimpleDateTimeInputHandlerSADirective} from '../simpleDateTimeInputHandler/simpleDateTimeInputHandler.directive';
 
 /**
- * Directive that combines date picker with simple date time input
+ * Directive that combines date picker with simple date input
  */
 @Directive(
 {
@@ -22,8 +23,11 @@ import {DateTimeInputSADirective, DateTimePickerSADirective} from '../../modules
         {
             directive: DateTimeInputSADirective,
         },
+        {
+            directive: SimpleDateTimeInputHandlerSADirective,
+        },
     ],
 })
-export class DatePickerInputSADirective
+export class SimpleDatePickerInputSADirective
 {
 }

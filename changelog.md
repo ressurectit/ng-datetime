@@ -30,7 +30,9 @@
     - **exports**
         - `MonthCalendarComponent`
         - `CalendarDayTemplateDirective`
-- new `DatePickerInputSADirective` directive, that combines date picker with simple date input
+- new `SimpleDatePickerInputSADirective` directive, that combines date picker with simple date input
+- new `SimpleDateTimePickerInputSADirective` directive, that combines date time picker with simple date time input
+- new `SimpleDateTimeInputHandlerSADirective` directive, that adds simple handler for date time input, which allows simple navigation using keyboard
 - new `CalendarDayAspectRatio` enum, that represents available aspect ratios for displaying calendar days
     - `OneToOne` aspect ratio of width to height is 1:1 (square)
     - `ThreeToTwo` aspect ratio of width to height is 3:2
