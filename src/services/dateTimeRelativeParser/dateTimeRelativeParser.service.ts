@@ -8,14 +8,14 @@ import {DateApi, DateApiObject, DateValue} from '../dateApi/dateApi.interface';
  * Service used for parsing relative date time strings
  */
 @Injectable({providedIn: 'root'})
-export class DateTimeRelativeParser<TDate = any>
+export class DateTimeRelativeParser<TDate = unknown>
 {
     //######################### protected fields #########################
     
     /**
      * Date api for handling
      */
-    protected _dateApi?: DateApi<TDate, DateApiObject>;
+    protected _dateApi?: DateApi<TDate, DateApiObject<TDate>>;
 
     //######################### constructor #########################
     constructor(protected _injector: Injector)
@@ -47,7 +47,7 @@ export class DateTimeRelativeParser<TDate = any>
             const operation = matches[1];
             const amount = matches[2];
             const period = matches[3];
-            this._dateApi = this._dateApi ?? this._injector.get(DATE_API);
+            this._dateApi = this._dateApi ?? this._injector.get(DATE_API) as DateApi<TDate>;
             const now = this._dateApi.now();
 
             switch(period)

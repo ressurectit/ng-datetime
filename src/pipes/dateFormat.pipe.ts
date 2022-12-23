@@ -9,7 +9,7 @@ import {DateApi, DateValue} from '../services';
  * Pipe that is used for formatting date
  */
 @Pipe({name: 'dateFormat'})
-export class DateFormatPipe<TDate = any> implements PipeTransform
+export class DateFormatPipe<TDate = unknown> implements PipeTransform
 {
     //######################### constructors #########################
     constructor(@Inject(FORMAT_PROVIDER) private _formatProvider: FormatProvider,

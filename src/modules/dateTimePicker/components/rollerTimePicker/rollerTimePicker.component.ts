@@ -4,11 +4,9 @@ import {ClickOutsideModule} from '@anglr/common';
 
 import {DatePipesModule} from '../../../datePipes.module';
 import {hours, minutes} from './rollerTimePicker.data';
-import {DateTimePicker} from '../../interfaces';
+import {DateTimePicker, PeriodData} from '../../interfaces';
 import {DateTimePeriodPickerBase} from '../dateTimePeriodPickerBase';
-import {PeriodData} from '../../../../legacy/picker/interfaces';
-import {LoopScrollData} from '../../../../legacy/picker/directives';
-import {DateTimeLegacyPickerModule} from '../../../../legacy/picker/modules/picker.module';
+import {LoopScrollData, LoopScrollDataSADirective, LoopScrollSADirective} from '../../directives';
 
 /**
  * Component used for rendering roller time picker
@@ -27,11 +25,12 @@ import {DateTimeLegacyPickerModule} from '../../../../legacy/picker/modules/pick
         CommonModule,
         DatePipesModule,
         ClickOutsideModule,
-        DateTimeLegacyPickerModule,
+        LoopScrollDataSADirective,
+        LoopScrollSADirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RollerTimePickerSAComponent<TDate = any> extends DateTimePeriodPickerBase<PeriodData<TDate>, TDate>  implements DateTimePicker<TDate>
+export class RollerTimePickerSAComponent<TDate = unknown> extends DateTimePeriodPickerBase<PeriodData<TDate>, TDate>  implements DateTimePicker<TDate>
 {
     //######################### protected properties - template bindings #########################
 
@@ -99,7 +98,7 @@ export class RollerTimePickerSAComponent<TDate = any> extends DateTimePeriodPick
      * @param value - Value to be set as hour
      * @returns 
      */
-    protected setHour<TData = any>(event: MouseEvent|null, value: TData): void
+    protected setHour<TData = unknown>(event: MouseEvent|null, value: TData): void
     {
         if(!this.hoursOpen && event)
         {
@@ -130,7 +129,7 @@ export class RollerTimePickerSAComponent<TDate = any> extends DateTimePeriodPick
      * @param value - Value to be set as minute
      * @returns 
      */
-    protected setMinute<TData = any>(event: MouseEvent|null, value: TData): void
+    protected setMinute<TData = unknown>(event: MouseEvent|null, value: TData): void
     {
         if(!this.minutesOpen && event)
         {

@@ -65,7 +65,7 @@ export class DateTimeSADirective<TDate = unknown> implements OnDestroy
     /**
      * Date api instance, used for date time manipulation
      */
-    protected dateApi: DateApi<TDate> = inject(DATE_API);
+    protected dateApi: DateApi<TDate> = inject(DATE_API) as DateApi<TDate>;
 
     /**
      * Provider for available formats

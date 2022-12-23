@@ -68,6 +68,7 @@ export class DefaultDatePositionParser implements DatePositionParser
         {
             let useNext = false;
 
+            // eslint-disable-next-line no-constant-condition
             while(true)
             {
                 if(cursorPosition == date.length)
@@ -126,6 +127,7 @@ export class DefaultDatePositionParser implements DatePositionParser
         {
             let useNext = false;
 
+            // eslint-disable-next-line no-constant-condition
             while(true)
             {
                 if(cursorPosition < 0)

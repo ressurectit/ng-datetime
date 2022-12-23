@@ -10,7 +10,7 @@ import {DateApi} from '../dateApi/dateApi.interface';
  * Class used for obtaining DateTimeValue for various formats
  */
 @Injectable({providedIn: 'root'})
-export class DateValueProvider<TDate = any>
+export class DateValueProvider<TDate = unknown>
 {
     //######################### constructor #########################
     constructor(@Inject(DATE_API) protected _dateApi: DateApi<TDate>)

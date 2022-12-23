@@ -107,24 +107,7 @@ export class MonthCalendarComponent<TDate = unknown, TEvent = unknown> implement
      * Array of events that should be displayed
      */
     @Input()
-    public events: EventData<TDate, TEvent>[] = <any><EventData<string|Date, number>[]>
-    [
-        {
-            data: 10,
-            dateFrom: '2022-12-01T10:00:00',
-            dateTo: '2022-12-10T12:00:00',
-        },
-        {
-            data: 11,
-            dateFrom: '2022-11-28T10:00:00',
-            dateTo: '2022-12-01T08:00:00',
-        },
-        {
-            data: 12,
-            dateFrom: '2022-11-30T10:00:00',
-            dateTo: '2022-12-02T08:00:00',
-        }
-    ];
+    public events: EventData<TDate, TEvent>[] = [];
 
     //######################### constructor #########################
     constructor(@Inject(DATE_API) protected dateApi: DateApi<TDate>,

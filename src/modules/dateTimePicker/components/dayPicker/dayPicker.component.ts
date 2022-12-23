@@ -1,10 +1,9 @@
 import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {DateTimePicker} from '../../interfaces';
+import {DateTimePicker, DayData} from '../../interfaces';
 import {DateTimePeriodPickerBase} from '../dateTimePeriodPickerBase';
 import {DatePipesModule} from '../../../datePipes.module';
-import {DayData} from '../../../../legacy/picker/interfaces';
 import {DateApiObject} from '../../../../services';
 
 /**

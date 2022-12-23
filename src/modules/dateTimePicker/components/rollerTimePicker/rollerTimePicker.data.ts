@@ -1,4 +1,4 @@
-import {LoopScrollData} from '../../../../legacy/picker/directives/loopScroll/loopScroll.interface';
+import {LoopScrollData} from '../../directives/loopScroll/loopScroll.interface';
 
 /**
  * Loop scroll hours data

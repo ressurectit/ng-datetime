@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 6.0.0 (2022-12-22)
+## Version 6.0.0 (2022-12-23)
 
 ### Features
 
@@ -30,6 +30,7 @@
     - **exports**
         - `MonthCalendarComponent`
         - `CalendarDayTemplateDirective`
+- new `DatePickerInputSADirective` directive, that combines date picker with simple date input
 - new `CalendarDayAspectRatio` enum, that represents available aspect ratios for displaying calendar days
     - `OneToOne` aspect ratio of width to height is 1:1 (square)
     - `ThreeToTwo` aspect ratio of width to height is 3:2
@@ -116,6 +117,42 @@
 - renamed `DateTimeMinValidatorDirective` to `DateTimeMinValidatorSADirective` directive
 - renamed `DateTimeValidatorDirective` to `DateTimeValidatorSADirective` directive
 - renamed `DateTimePickerDirective` to `DateTimePickerSADirective` directive
+- renamed `LoopScrollDataDirective` to `LoopScrollDataSADirective` directive
+- renamed `LoopScrollDirective` to `LoopScrollSADirective` directive
+- removed `PickerBaseComponent` legacy component
+- removed `PickerImplBaseComponent` legacy component
+- removed `DateTimeDayPickerComponent` legacy component
+- removed `DayPickerCssClasses` legacy interface
+- removed `DateTimeMonthPickerComponent` legacy component
+- removed `MonthPickerCssClasses` legacy interface
+- removed `scaleUpDownTrigger` legacy animation
+- removed `DateTimePickerLegacyComponent` legacy component
+- removed `DateTimeRollerTimePickerComponent` legacy component
+- removed `RollerTimePickerCssClasses` legacy interface
+- removed `YearPickerCssClasses` legacy component
+- removed `CommonPickerCssClasses` legacy interface
+- removed `DateTimePickerCssClasses` legacy interface
+- removed `DateTimePickerLegacyOptions` legacy interface
+- removed `DateTimeLegacyPicker` legacy interface
+- removed `DATE_TIME_PICKER_CONFIGURATION` legacy token
+- removed `DateTimeLegacyPickerModule` legacy module
+- removed `enterLeaveAnimateChildTrigger` legacy animation
+- removed `DateTimeSelectorComponent` legacy component
+- removed `DatetimeMaxValidatorDirective` legacy directive
+- removed `DatetimeMinValidatorDirective` legacy directive
+- removed `DateTimePickerRendererDirective` legacy directive
+- removed `DatetimeValidatorDirective` legacy directive
+- removed `DateTimeSelectorControlValueAccessor` legacy directive
+- removed `DateTimeSelectorOptions` legacy interface
+- removed `DateTimeSelector` legacy interface
+- removed `DATE_TIME_SELECTOR_CONFIGURATION` legacy token
+- removed `DateTimeBasicSelectorModule` legacy module
+- removed `DateTimeSelectorModule` legacy module
+- removed `maxDatetime` legacy validator function
+- removed `minDatetime` legacy validator function
+- removed `datetime` legacy validator function
+- removed `Validators` legacy validators class
+- removed `DateTimeValueObject` legacy interface
 
 ## Version 5.0.0 (2022-10-21)
 

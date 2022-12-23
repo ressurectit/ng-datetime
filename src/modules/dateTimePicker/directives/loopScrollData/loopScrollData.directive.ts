@@ -5,9 +5,10 @@ import {Directive, ElementRef, Input} from '@angular/core';
  */
 @Directive(
 {
-    selector: '[loopScrollData]'
+    selector: '[loopScrollData]',
+    standalone: true,
 })
-export class LoopScrollDataDirective<TData = any>
+export class LoopScrollDataSADirective<TData = unknown>
 {
     //######################### public properties - inputs #########################
 
@@ -15,7 +16,7 @@ export class LoopScrollDataDirective<TData = any>
      * Data for loop
      */
     @Input('loopScrollData')
-    public data!: TData;
+    public data: TData|undefined|null;
 
     /**
      * Indication that this node is clone

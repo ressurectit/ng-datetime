@@ -1,11 +1,10 @@
 import {ChangeDetectorRef, inject} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 
-import {PeriodData} from '../../../legacy/picker/interfaces';
 import {DATE_API} from '../../../misc/tokens';
 import {DateTimeObjectValue} from '../../../misc/types';
 import {DateApi, DateApiObject} from '../../../services';
-import {DateTimePicker} from '../interfaces';
+import {DateTimePicker, PeriodData} from '../interfaces';
 
 /**
  * Base abstract class for each date time period picker
@@ -96,7 +95,7 @@ export abstract class DateTimePeriodPickerBase<TPeriod extends PeriodData<TDate>
     /**
      * Instance of date api for manipulation with date time
      */
-    protected dateApi: DateApi<TDate> = inject(DATE_API);
+    protected dateApi: DateApi<TDate> = inject(DATE_API) as DateApi<TDate>;
 
     //######################### public properties - implementation of DateTimePicker #########################
 

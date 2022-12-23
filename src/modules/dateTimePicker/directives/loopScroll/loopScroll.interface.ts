@@ -1,9 +1,7 @@
-//FIXME: not used for now, maybe will be removed
-
 /**
  * Represents data for LoopScrollDirective
  */
-export interface LoopScrollData<TData = any>
+export interface LoopScrollData<TData = unknown>
 {
     /**
      * Text to be displayed for item
