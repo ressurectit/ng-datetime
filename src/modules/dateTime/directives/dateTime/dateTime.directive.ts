@@ -33,6 +33,11 @@ export class DateTimeSADirective<TDate = unknown> implements OnDestroy
     protected minDateTimeChangesSubject: Subject<void> = new Subject<void>();
 
     /**
+     * Subject used for emitting changes in custom format value
+     */
+    protected customFormatChangesSubject: Subject<void> = new Subject<void>();
+
+    /**
      * Subscription for max date instance value changes
      */
     protected maxDateInstanceChange: Subscription|undefined|null;
@@ -45,22 +50,22 @@ export class DateTimeSADirective<TDate = unknown> implements OnDestroy
     /**
      * Max allowed value of date time
      */
-    protected ɵMaxDateTime: TDate|undefined|null;
+    protected ɵmaxDateTime: TDate|undefined|null;
 
     /**
      * Min allowed value of date time
      */
-    protected ɵMinDateTime: TDate|undefined|null;
+    protected ɵminDateTime: TDate|undefined|null;
 
     /**
      * Date time value format which is being worked with in this date time
      */
-    protected ɵValueFormat: DateTimeValueFormat = DateTimeValueFormat.DateInstance;
+    protected ɵvalueFormat: DateTimeValueFormat = DateTimeValueFormat.DateInstance;
 
     /**
      * Format of string representation of date
      */
-    protected ɵFormat: keyof FormatProvider = 'date';
+    protected ɵformat: keyof FormatProvider = 'date';
 
     /**
      * Date api instance, used for date time manipulation
@@ -71,6 +76,11 @@ export class DateTimeSADirective<TDate = unknown> implements OnDestroy
      * Provider for available formats
      */
     protected formatProvider: FormatProvider = inject(FORMAT_PROVIDER);
+
+    /**
+     * Custom format string representation of date
+     */
+    protected ɵcustomFormat: string = this.dateApi.getFormat(this.formatProvider[this.ɵformat]);
 
     //######################### public properties #########################
 
@@ -90,6 +100,14 @@ export class DateTimeSADirective<TDate = unknown> implements OnDestroy
         return this.minDateTimeChangesSubject.asObservable();
     }
 
+    /**
+     * Occurs when there are changes in custom format value
+     */
+    public get customFormatChanges(): Observable<void>
+    {
+        return this.customFormatChangesSubject.asObservable();
+    }
+
     //######################### public properties - inputs #########################
 
     /**
@@ -98,18 +116,18 @@ export class DateTimeSADirective<TDate = unknown> implements OnDestroy
     @Input()
     public get valueFormat(): DateTimeValueFormat
     {
-        return this.ɵValueFormat;
+        return this.ɵvalueFormat;
     }
     public set valueFormat(value: DateTimeValueFormat)
     {
         if(isString(value))
         {
-            this.ɵValueFormat = DateTimeValueFormat[value] as unknown as DateTimeValueFormat;
+            this.ɵvalueFormat = DateTimeValueFormat[value] as unknown as DateTimeValueFormat;
 
             return;
         }
 
-        this.ɵValueFormat = value;
+        this.ɵvalueFormat = value;
     }
 
     /**
@@ -118,19 +136,27 @@ export class DateTimeSADirective<TDate = unknown> implements OnDestroy
     @Input()
     public get format(): keyof FormatProvider
     {
-        return this.ɵFormat;
+        return this.ɵformat;
     }
     public set format(value: keyof FormatProvider)
     {
-        this.ɵFormat = value;
+        this.ɵformat = value;
         this.customFormat = this.dateApi.getFormat(this.formatProvider[value]);
     }
 
     /**
-     * Custom format string representation of date
+     * Gets or sets custom format string representation of date
      */
     @Input()
-    public customFormat: string = this.dateApi.getFormat(this.formatProvider[this.ɵFormat]);
+    public get customFormat(): string
+    {
+        return this.ɵcustomFormat;
+    }
+    public set customFormat(value: string)
+    {
+        this.ɵcustomFormat = value;
+        this.customFormatChangesSubject.next();
+    }
 
     /**
      * Gets or sets max allowed date for date time
@@ -138,7 +164,7 @@ export class DateTimeSADirective<TDate = unknown> implements OnDestroy
     @Input()
     public get maxDateTime(): TDate|undefined|null
     {
-        return this.ɵMaxDateTime;
+        return this.ɵmaxDateTime;
     }
     public set maxDateTime(value: TDate|undefined|null)
     {
@@ -191,7 +217,7 @@ export class DateTimeSADirective<TDate = unknown> implements OnDestroy
     @Input()
     public get minDateTime(): TDate|undefined|null
     {
-        return this.ɵMinDateTime;
+        return this.ɵminDateTime;
     }
     public set minDateTime(value: TDate|undefined|null)
     {
@@ -261,7 +287,7 @@ export class DateTimeSADirective<TDate = unknown> implements OnDestroy
     @BindThis
     protected minDateSet(value: TDate|undefined|null): void
     {
-        this.ɵMinDateTime = value;
+        this.ɵminDateTime = value;
         this.minDateTimeChangesSubject.next();
         this.onMinDateTimeChange();
     }
@@ -273,7 +299,7 @@ export class DateTimeSADirective<TDate = unknown> implements OnDestroy
     @BindThis
     protected maxDateSet(value: TDate|undefined|null): void
     {
-        this.ɵMaxDateTime = value;
+        this.ɵmaxDateTime = value;
         this.maxDateTimeChangesSubject.next();
         this.onMaxDateTimeChange();
     }

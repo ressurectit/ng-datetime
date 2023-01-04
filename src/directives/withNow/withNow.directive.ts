@@ -6,14 +6,14 @@ import {DateTimeInputSADirective} from '../../modules';
 import {DateApi} from '../../services';
 
 /**
- * Directive that sets today (start of a day) as day for empty date time on focus
+ * Directive that sets current date and time as day and time for empty date time on focus
  */
 @Directive(
 {
-    selector: '[dateTime][withToday]',
+    selector: '[dateTime][withNow]',
     standalone: true,
 })
-export class WithTodaySADirective<TDate = unknown> implements OnDestroy
+export class WithNowSADirective<TDate = unknown> implements OnDestroy
 {
     //######################### protected fields #########################
 
@@ -30,7 +30,7 @@ export class WithTodaySADirective<TDate = unknown> implements OnDestroy
         {
             if(!input.value)
             {
-                input.value = dateApi.now().startOfDay().value;
+                input.value = dateApi.now().value;
             }
         }));
     }

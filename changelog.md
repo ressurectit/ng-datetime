@@ -1,5 +1,24 @@
 # Changelog
 
+## Version 6.1.0 (2023-01-04)
+
+### Bug Fixes
+
+- fixed `WithTodaySADirective`
+    - now correctly sets value of date time to start of a current day
+
+### Features
+
+- new `WithNowSADirective` directive, that sets current date and time as day and time for empty date time on focus
+- new `DateTimeInputHandlerSADirective` directive, that adds handler for date time input, which allows navigation using keyboard and checking restriction of value
+- new `DatePickerInputSADirective` directive, that combines date picker with date input
+- new `DateTimePickerInputSADirective` directive, that combines date time picker with date time input
+- new `parseRawInput` function, that parses raw value into internal value and value
+- new `getInternalValue` function, gets internal value and fix lowest time difference
+- updated `DateTimeSADirective` directive
+    - **new properties**
+        - `customFormatChanges` occurs when there are changes in custom format value
+
 ## Version 6.0.0 (2022-12-23)
 
 ### Features

@@ -1,7 +1,8 @@
 import {isBlank, isJsObject, isPresent, isString, nameof} from '@jscrpt/common';
 
 import {DateTimeValue} from '../interfaces';
-import {DateApi, DateApiObject, DateValue} from '../services';
+import type {DateTimeSADirective} from '../modules/dateTime/directives/dateTime/dateTime.directive';
+import {DateApi, DateApiObject, DateValue, DateValueProvider} from '../services';
 import {DateTimeValueFormat} from './enums';
 import {DateTimeInputOutputValue, DateTimeObjectValue} from './types';
 
@@ -156,4 +157,86 @@ export function getSingleDateTimeValue<TDate>(value: DateTimeInputOutputValue<TD
     }
 
     return value;
+}
+
+/**
+ * Parses raw value into internal value and value
+ * @param rawValue - Raw value to be parsed
+ * @param dateApi - Date api for manipulation with date
+ * @param dateTimeData - Object storing information about format
+ * @param valueProvider - Provider used for obtaining rounded value according format
+ */
+export function parseRawInput<TDate>(rawValue: string, 
+                                     dateApi: DateApi<TDate>,
+                                     dateTimeData: DateTimeSADirective<TDate>,
+                                     valueProvider: DateValueProvider<TDate>,): [DateTimeObjectValue<TDate>|undefined|null, DateTimeInputOutputValue<TDate>|undefined|null]
+{
+    if(!rawValue)
+    {
+        return [null, null];
+    }
+
+    const internalValue = getInternalValue(rawValue, dateApi, dateTimeData, valueProvider);
+    const value = formatDateTime(internalValue, dateTimeData.valueFormat, dateTimeData.customFormat);
+
+    return [internalValue, value];
+}
+
+/**
+ * Gets internal value and fix lowest time difference
+ * @param value - Value to be get as internal value
+ * @param dateApi - Date api for manipulation with date
+ * @param dateTimeData - Object storing information about format
+ * @param valueProvider - Provider used for obtaining rounded value according format
+ */
+export function getInternalValue<TDate>(value: DateTimeInputOutputValue<TDate>|undefined|null,
+                                        dateApi: DateApi<TDate>,
+                                        dateTimeData: DateTimeSADirective<TDate>,
+                                        valueProvider: DateValueProvider<TDate>,): DateTimeObjectValue<TDate>|undefined|null
+{
+    let internalValue = parseDateTime(value, dateApi, null, dateTimeData.customFormat);
+
+    if(isBlank(internalValue))
+    {
+        return;
+    }
+
+    //update for specified format, round value
+
+    //ranged value
+    if(Array.isArray(internalValue))
+    {
+        const [from, to] = internalValue;
+
+        if(from)
+        {
+            const val = valueProvider.getValue(from.value, dateTimeData.customFormat).from;
+
+            if(val)
+            {
+                internalValue[0] = dateApi.getValue(val, dateTimeData.customFormat);
+            }
+        }
+
+        if(to)
+        {
+            const val = valueProvider.getValue(to.value, dateTimeData.customFormat).to;
+
+            if(val)
+            {
+                internalValue[1] = dateApi.getValue(val, dateTimeData.customFormat);
+            }
+        }
+    }
+    else
+    {
+        const val = valueProvider.getValue(internalValue.value, dateTimeData.customFormat).from;
+
+        if(val)
+        {
+            internalValue = dateApi.getValue(val, dateTimeData.customFormat);
+        }
+    }
+
+    return internalValue;
 }
