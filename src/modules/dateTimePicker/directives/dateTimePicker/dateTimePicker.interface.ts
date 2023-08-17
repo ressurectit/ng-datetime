@@ -36,6 +36,13 @@ export interface DateTimePickerDirectiveOptions
     absolute: boolean;
 
     /**
+     * String that defines element in which should be picker rendered, if not specified, body is used, working only with `absolute` set to `true`
+     * 
+     * Allows also css class to be specified (div.body-box)
+     */
+    targetElement: string|undefined|null;
+
+    /**
      * Position options that are used to position picker
      */
     positionOptions: Partial<PositionPlacement>;

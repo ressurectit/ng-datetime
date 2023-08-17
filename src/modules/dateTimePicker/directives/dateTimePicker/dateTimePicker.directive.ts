@@ -1,7 +1,7 @@
 import {ComponentRef, Directive, ElementRef, EmbeddedViewRef, Inject, Input, OnDestroy, OnInit, Optional, ViewContainerRef} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {Position, POSITION, applyPositionResult, PositionPlacement, PositionResult} from '@anglr/common';
-import {extend, nameof, isDescendant, BindThis} from '@jscrpt/common';
+import {extend, nameof, isDescendant, BindThis, renderToBody} from '@jscrpt/common';
 import {Observable, Subscription} from 'rxjs';
 
 import {DateTimeInput} from '../../../../interfaces';
@@ -24,6 +24,7 @@ const defaultOptions: DateTimePickerDirectiveOptions =
     disabled: false,
     positionOptions: PositionPlacement.BottomStart,
     showOnFocus: true,
+    targetElement: null,
     pickerCssClass: null,
 };
 
@@ -171,7 +172,7 @@ export class DateTimePickerSADirective<TDate = unknown> extends DateTimeBase<TDa
 
         if(this.withPickerOptions.absolute)
         {
-            this.document.body.append(this.componentElement);
+            renderToBody(this.document, this.componentElement, this.withPickerOptions.targetElement);
         }
 
         this.pickerChangesSubscription = new Subscription();

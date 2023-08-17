@@ -180,7 +180,7 @@ export class DateTimeSADirective<TDate = unknown> implements OnDestroy
 
         let val: DateTimeInputOutputValue<TDate> = value;
 
-        if(value instanceof DateTimeBase<TDate>)
+        if(value instanceof DateTimeBase)
         {
             this.maxDateInstanceChange = value.valueChange.subscribe(() =>
             {
@@ -233,7 +233,7 @@ export class DateTimeSADirective<TDate = unknown> implements OnDestroy
 
         let val: DateTimeInputOutputValue<TDate> = value;
 
-        if(value instanceof DateTimeBase<TDate>)
+        if(value instanceof DateTimeBase)
         {
             this.minDateInstanceChange = value.valueChange.subscribe(() =>
             {

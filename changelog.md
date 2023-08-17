@@ -1,5 +1,23 @@
 # Changelog
 
+## Version 7.0.0 (2023-08-17)
+
+### Features
+
+- updated `DateTimePickerDirectiveOptions` interface
+    - new **properties**
+        - `targetElement` string that defines element in which should be picker rendered, if not specified, body is used, working only with `absolute` set to `true`
+
+### BREAKING CHANGES
+
+- minimal supported version of `@angular` is `16.0.3`
+- minimal supported version of `@anglr/common` is `17.0.0`
+- minimal supported version of `@jscrpt/common` is `4.0.0`
+- minimal supported version of `@rxjs` is `7.5.7`
+- minimal supported version of `date-fns` is `2.30.0`
+- minimal supported version of `tslib` is `2.6.1`
+- dropped support of `NodeJs` lower than `16.14`
+
 ## Version 6.1.0 (2023-01-04)
 
 ### Bug Fixes
@@ -38,7 +56,7 @@
         - `dayAspectRatio` aspect ratio for displayed calendar day cell
         - `events` array of events that should be displayed
     - **content children**
-        - **child** `CalendarDayTemplateDirective` 
+        - **child** `CalendarDayTemplateDirective`
 - new `CalendarDayTemplateContext` interface, that is context passed to template of calendar day
     - **properties**
         - `$implicit` data that are used for displaying calendar day
@@ -117,7 +135,7 @@
     - updated `MomentDateApi`
         - now implements also new `isSame` and `formatISO` methods, and supports new `DateObject<TDate>` argument
 - *subpackage* `@anglr/datetime/date-fns`
-    - updated `DateFnsDateApi` 
+    - updated `DateFnsDateApi`
         - now implements also new `isSame` and `formatISO` methods, and supports new `DateObject<TDate>` argument
 
 ### BREAKING CHANGES
@@ -358,7 +376,7 @@
     - updated `MomentDateApi`
         - now implements also new `unixTimestamp`
 - *subpackage* `@anglr/datetime/date-fns`
-    - updated `DateFnsDateApi` 
+    - updated `DateFnsDateApi`
         - now implements also new `unixTimestamp`
 
 ### BREAKING CHANGES
@@ -398,13 +416,13 @@
 - updated `DateApi` interface
     - new generic parameter `TDateApiObject` which allows to get specific `DateApiObject` implementation
 - *subpackage* `@anglr/datetime/moment`
-    - updated `MomentDateApi` 
+    - updated `MomentDateApi`
         - now creates `DateApiObject` using `DATE_API_OBJECT_TYPE`
     - new `momentDateApiObjectType` type that represents creation of DateApiObject for moment
     - new `MOMENT_DATE_API_OBJECT_TYPE` injection token used for injecting type that creates instance of DateApiObject for moment
     - `MomentDateApiObject` made part of public API
 - *subpackage* `@anglr/datetime/date-fns`
-    - updated `DateFnsDateApi` 
+    - updated `DateFnsDateApi`
         - now creates `DateApiObject` using `DATE_API_OBJECT_TYPE`
     - new `dateFnsDateApiObjectType` type that represents creation of DateApiObject for date-fns
     - new `DATE_FNS_DATE_API_OBJECT_TYPE` injection token used for injecting type that creates instance of DateApiObject for date-fns
@@ -450,7 +468,7 @@
     - new `hour` property, that is format token for displaying hour (24h format) double digit number
     - new `minute` property, that is format token for displaying minute double digit number
     - new `second` property, that is format token for displaying second double digit number
-    - new `dayName` property, that is format token for displaying standalone day full name 
+    - new `dayName` property, that is format token for displaying standalone day full name
     - new `dayNameShort` property, that is format token for displaying standalone day short name
     - new `monthName` property, that is format token for displaying standalone month full name
     - new `monthNameShort` property, that is format token for displaying standalone month short name
@@ -492,12 +510,12 @@
 - updated `InputDateTimeSelectorComponent` now supports *hours* and *minutes*
 - updated `DateValueProvider` now supports *hours* and *minutes*
 - *subpackage* `@anglr/datetime/moment`
-    - updated `MomentDateApi` 
+    - updated `MomentDateApi`
         - to correspond with `DateApi` interface
     - updated `MomentDateApiObject` to correspond with `DateApiObject` interface
     - updated `MOMENT_FORMAT_PROVIDER` to correspond with `FormatProvider` interface
 - *subpackage* `@anglr/datetime/date-fns`
-    - updated `DateFnsDateApi` 
+    - updated `DateFnsDateApi`
         - to correspond with `DateApi` interface
     - updated `DateFnsDateApiObject` to correspond with `DateApiObject` interface
     - updated `DATEFNS_FORMAT_PROVIDER` to correspond with `FormatProvider` interface
@@ -554,7 +572,7 @@
     - `InputDateTimeSelectorComponent` component used for selecting datetime in input field, allowing splitting of value into period/parts
     - `SimpleInputDateTimeSelectorComponent` component used for selecting datetime in input field, simple input
     - `DateTimeSelectorControlValueAccessor` directive for enabling *Angular Forms* binding to selector, also allowing gaining value as string, or simple value or range value
-    - `DateTimeSelectorModule` module containing selector 
+    - `DateTimeSelectorModule` module containing selector
     - `DateTimeBasicSelectorModule` module containing simple input selector
 - customizable `DateTimePicker`, allowing to pick datetime value
     - `DateTimePickerCssClasses` css classes applied to datetime picker

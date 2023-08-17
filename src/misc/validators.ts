@@ -164,7 +164,7 @@ export function datetimeMaxValidator<TDate = unknown>(dateApi: DateApi<TDate>,
             return null;
         }
 
-        if(maxValue instanceof DateTimeBase<TDate>)
+        if(maxValue instanceof DateTimeBase)
         {
             const value = getSingleDateTimeValue(maxValue.value);
 
@@ -223,7 +223,7 @@ export function datetimeMinValidator<TDate = unknown>(dateApi: DateApi<TDate>,
             return null;
         }
 
-        if(minValue instanceof DateTimeBase<TDate>)
+        if(minValue instanceof DateTimeBase)
         {
             const value = getSingleDateTimeValue(minValue.value);
 

@@ -1,6 +1,6 @@
 import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ClickOutsideModule} from '@anglr/common';
+import {ClickOutsideSADirective} from '@anglr/common';
 
 import {DatePipesModule} from '../../../datePipes.module';
 import {hours, minutes} from './rollerTimePicker.data';
@@ -24,7 +24,7 @@ import {LoopScrollData, LoopScrollDataSADirective, LoopScrollSADirective} from '
     [
         CommonModule,
         DatePipesModule,
-        ClickOutsideModule,
+        ClickOutsideSADirective,
         LoopScrollDataSADirective,
         LoopScrollSADirective,
     ],
