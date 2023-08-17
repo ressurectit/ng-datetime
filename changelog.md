@@ -4,6 +4,19 @@
 
 ### Features
 
+- new `ButtonDateTimeInputSADirective` directive, that is used for setting up date time input for button
+    - **extends** `DateTimeBase`
+    - **implements**
+        - `DateTimeInput`
+        - `OnDestroy`
+    - **inputs**
+        - `value` current value of date time, could be string, unix timestamp, Date, TDate object, or ranged DateTimeValue
+    - **properties**
+        - `rawValue` value of date time, raw string value which is visible to user
+        - `disabled` indication whether is date time disabled1
+        - `element` html element that represents input itself
+        - `focus` occurs when input gains focus
+        - `blur` occurs when input loses focus
 - updated `DateTimePickerDirectiveOptions` interface
     - new **properties**
         - `targetElement` string that defines element in which should be picker rendered, if not specified, body is used, working only with `absolute` set to `true`
