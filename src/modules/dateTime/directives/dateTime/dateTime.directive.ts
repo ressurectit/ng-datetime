@@ -159,6 +159,12 @@ export class DateTimeSADirective<TDate = unknown> implements OnDestroy
     }
 
     /**
+     * Represents data format that is used as value of date time when `DateTimeValueFormat.DataString` is set to `valueFormat`
+     */
+    @Input()
+    public dataFormat: string|undefined|null;
+
+    /**
      * Gets or sets max allowed date for date time
      */
     @Input()
@@ -311,7 +317,7 @@ export class DateTimeSADirective<TDate = unknown> implements OnDestroy
      */
     protected setMinMaxValue(value: DateValue|TDate, setter: Action1<TDate|undefined|null>): void
     {
-        const val = this.dateApi.getValue(value, this.customFormat);
+        const val = this.dateApi.getValue(value, this.dataFormat ?? this.customFormat);
 
         if(val.isValid())
         {

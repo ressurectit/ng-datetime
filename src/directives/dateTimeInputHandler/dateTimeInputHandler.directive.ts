@@ -303,7 +303,7 @@ export class DateTimeInputHandlerSADirective<TDate = unknown> implements OnInit,
      */
     protected runWithValue(singleValueCode: Action1<DateApiObject<TDate>>, rangeValueCode: Action1<[DateApiObject<TDate> | null, DateApiObject<TDate> | null]>, parsedValueDefault?: DateTimeObjectValue<TDate>|undefined|null): void
     {
-        const parsedValue = parsedValueDefault ?? parseDateTime(this.input.value, this.dateApi, null, this.dateTimeData.customFormat);
+        const parsedValue = parsedValueDefault ?? parseDateTime(this.input.value, this.dateApi, null, this.dateTimeData.customFormat, this.dateTimeData.dataFormat);
 
         if(!parsedValue)
         {

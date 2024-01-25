@@ -14,9 +14,14 @@ export enum DateTimeValueFormat
     UnixTimestamp,
 
     /**
-     * Formatted date as string value
+     * Formatted date as string value, same string as displayed string
      */
     FormattedString,
+
+    /**
+     * Formatted date as string value, custom string format for date time value, different from displayed string format
+     */
+    DataString,
 
     /**
      * Range of date instances from, to

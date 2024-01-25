@@ -45,7 +45,7 @@ export class DateTimeMinValidatorSADirective<TDate = unknown> extends DateTimeBa
      */
     public ngOnInit(): void
     {
-        this._validator = datetimeMinValidator(this.dateApi, this.dateTimeData.minDateTime, this.dateTimeData.valueFormat, this.dateTimeData.customFormat);
+        this._validator = datetimeMinValidator(this.dateApi, this.dateTimeData.minDateTime, this.dateTimeData.valueFormat, this.dateTimeData.customFormat, this.dateTimeData.dataFormat);
     }
 
     //######################### public methods - implementation of Validator #########################
@@ -67,6 +67,6 @@ export class DateTimeMinValidatorSADirective<TDate = unknown> extends DateTimeBa
      */
     protected override onMinDateTimeChange(): void
     {
-        this._validator = datetimeMinValidator(this.dateApi, this.dateTimeData.minDateTime, this.dateTimeData.valueFormat, this.dateTimeData.customFormat);
+        this._validator = datetimeMinValidator(this.dateApi, this.dateTimeData.minDateTime, this.dateTimeData.valueFormat, this.dateTimeData.customFormat, this.dateTimeData.dataFormat);
     }
 }

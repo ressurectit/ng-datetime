@@ -54,7 +54,7 @@ export class SimpleDateTimeInputHandlerSADirective<TDate = unknown> implements O
     @BindThis
     public handleKeyboard(event: KeyboardEvent): void
     {
-        const parsedValue = parseDateTime(this.input.value, this.dateApi, null, this.dateTimeData.customFormat);
+        const parsedValue = parseDateTime(this.input.value, this.dateApi, null, this.dateTimeData.customFormat, this.dateTimeData.dataFormat);
         
         //no value do nothing
         if(!parsedValue)

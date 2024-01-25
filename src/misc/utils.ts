@@ -12,11 +12,13 @@ import {DateTimeInputOutputValue, DateTimeObjectValue} from './types';
  * @param dateApi - Date api used for obtaining result
  * @param dateTimeFormat - Date time format type, optional, if not specified autodetection of format will be used
  * @param stringFormat - String format for parsing string dates, required only for string dates
+ * @param dataFormat - String format for parsing string dates, required only for string dates, has higher priority than `stringFormat`
  */
 export function parseDateTime<TDate = unknown>(value: DateTimeInputOutputValue<TDate>|undefined|null,
                                                dateApi: DateApi<TDate>,
                                                dateTimeFormat: DateTimeValueFormat|undefined|null,
-                                               stringFormat: string|undefined|null,): DateTimeObjectValue<TDate>|undefined|null
+                                               stringFormat: string|undefined|null,
+                                               dataFormat: string|undefined|null,): DateTimeObjectValue<TDate>|undefined|null
 {
     if(isBlank(value))
     {
@@ -42,17 +44,24 @@ export function parseDateTime<TDate = unknown>(value: DateTimeInputOutputValue<T
             }
 
             return [
-                isBlank(value.from) ? null : parseDateTime(value.from, dateApi, DateTimeValueFormat.DateInstance, null) as DateApiObject<TDate>,
-                isBlank(value.to) ? null : parseDateTime(value.to, dateApi, DateTimeValueFormat.DateInstance, null) as DateApiObject<TDate>,
+                isBlank(value.from) ? null : parseDateTime(value.from, dateApi, DateTimeValueFormat.DateInstance, null, null) as DateApiObject<TDate>,
+                isBlank(value.to) ? null : parseDateTime(value.to, dateApi, DateTimeValueFormat.DateInstance, null, null) as DateApiObject<TDate>,
             ];
         }
 
         //value should be date instance, or number, or string, but it is not
         if(dateTimeFormat != DateTimeValueFormat.DateInstance &&
            dateTimeFormat != DateTimeValueFormat.FormattedString &&
-           dateTimeFormat != DateTimeValueFormat.UnixTimestamp)
+           dateTimeFormat != DateTimeValueFormat.UnixTimestamp &&
+           dateTimeFormat != DateTimeValueFormat.DataString)
         {
             throw new Error('DateTime: unable to get date time value, should be date instance, or string, or number!');
+        }
+
+        if(dateTimeFormat == DateTimeValueFormat.DataString)
+        {
+            //value is string, instance of date or unix timestamp
+            return dateApi.getValue(value, dataFormat ?? undefined);
         }
 
         //value is string, instance of date or unix timestamp
@@ -63,30 +72,32 @@ export function parseDateTime<TDate = unknown>(value: DateTimeInputOutputValue<T
     if(isDateTimeValue(value))
     {
         return [
-            isBlank(value.from) ? null : parseDateTime(value.from, dateApi, DateTimeValueFormat.DateInstance, null) as DateApiObject<TDate>,
-            isBlank(value.to) ? null : parseDateTime(value.to, dateApi, DateTimeValueFormat.DateInstance , null) as DateApiObject<TDate>,
+            isBlank(value.from) ? null : parseDateTime(value.from, dateApi, DateTimeValueFormat.DateInstance, null, null) as DateApiObject<TDate>,
+            isBlank(value.to) ? null : parseDateTime(value.to, dateApi, DateTimeValueFormat.DateInstance , null, null) as DateApiObject<TDate>,
         ];
     }
 
     //string format, but format string was not provided
-    if(isString(value) && isBlank(stringFormat))
+    if(isString(value) && isBlank(stringFormat) && isBlank(dataFormat))
     {
         throw new Error('DateTime: unable to parse string date, because format is missing!');
     }
 
     //value is string, instance of date or unix timestamp
-    return dateApi.getValue(value, stringFormat ?? undefined);
+    return dateApi.getValue(value, dataFormat ?? stringFormat ?? undefined);
 }
 
 /**
  * Formats value into specified format of date time
  * @param value - Value that should be converted to input output date time value
  * @param dateTimeFormat - Date time format type
- * @param stringFormat - String format for parsing string dates, required only for string dates
+ * @param stringFormat - String format for formatting string dates, required only for string dates
+ * @param dataFormat - String format for formatting string dates, required only for string dates, has higher priority than `stringFormat`
  */
 export function formatDateTime<TDate = unknown>(value: DateTimeObjectValue<TDate>|undefined|null,
                                                 dateTimeFormat: DateTimeValueFormat,
-                                                stringFormat: string|undefined|null): DateTimeInputOutputValue<TDate>|undefined|null
+                                                stringFormat: string|undefined|null,
+                                                dataFormat: string|undefined|null,): DateTimeInputOutputValue<TDate>|undefined|null
 {
     if(isBlank(value))
     {
@@ -112,6 +123,18 @@ export function formatDateTime<TDate = unknown>(value: DateTimeObjectValue<TDate
     if(dateTimeFormat == DateTimeValueFormat.RangeOfDateInstances)
     {
         throw new Error('DateTime: value is not array of values, but format is range!');
+    }
+
+    //data string date time
+    if(dateTimeFormat == DateTimeValueFormat.DataString)
+    {
+        //string format is missing for string date time
+        if(isBlank(dataFormat))
+        {
+            throw new Error('DateTime: missing data string format for string date time!');
+        }
+
+        return value.format(dataFormat);
     }
 
     //string date time
@@ -177,7 +200,7 @@ export function parseRawInput<TDate>(rawValue: string,
     }
 
     const internalValue = getInternalValue(rawValue, dateApi, dateTimeData, valueProvider);
-    const value = formatDateTime(internalValue, dateTimeData.valueFormat, dateTimeData.customFormat);
+    const value = formatDateTime(internalValue, dateTimeData.valueFormat, dateTimeData.customFormat, dateTimeData.dataFormat);
 
     return [internalValue, value];
 }
@@ -194,7 +217,7 @@ export function getInternalValue<TDate>(value: DateTimeInputOutputValue<TDate>|u
                                         dateTimeData: DateTimeSADirective<TDate>,
                                         valueProvider: DateValueProvider<TDate>,): DateTimeObjectValue<TDate>|undefined|null
 {
-    let internalValue = parseDateTime(value, dateApi, null, dateTimeData.customFormat);
+    let internalValue = parseDateTime(value, dateApi, null, dateTimeData.customFormat, dateTimeData.dataFormat);
 
     if(isBlank(internalValue))
     {
@@ -210,31 +233,31 @@ export function getInternalValue<TDate>(value: DateTimeInputOutputValue<TDate>|u
 
         if(from)
         {
-            const val = valueProvider.getValue(from.value, dateTimeData.customFormat).from;
+            const val = valueProvider.getValue(from.value, dateTimeData.dataFormat ?? dateTimeData.customFormat).from;
 
             if(val)
             {
-                internalValue[0] = dateApi.getValue(val, dateTimeData.customFormat);
+                internalValue[0] = dateApi.getValue(val, dateTimeData.dataFormat ?? dateTimeData.customFormat);
             }
         }
 
         if(to)
         {
-            const val = valueProvider.getValue(to.value, dateTimeData.customFormat).to;
+            const val = valueProvider.getValue(to.value, dateTimeData.dataFormat ?? dateTimeData.customFormat).to;
 
             if(val)
             {
-                internalValue[1] = dateApi.getValue(val, dateTimeData.customFormat);
+                internalValue[1] = dateApi.getValue(val, dateTimeData.dataFormat ?? dateTimeData.customFormat);
             }
         }
     }
     else
     {
-        const val = valueProvider.getValue(internalValue.value, dateTimeData.customFormat).from;
+        const val = valueProvider.getValue(internalValue.value, dateTimeData.dataFormat ?? dateTimeData.customFormat).from;
 
         if(val)
         {
-            internalValue = dateApi.getValue(val, dateTimeData.customFormat);
+            internalValue = dateApi.getValue(val, dateTimeData.dataFormat ?? dateTimeData.customFormat);
         }
     }
 

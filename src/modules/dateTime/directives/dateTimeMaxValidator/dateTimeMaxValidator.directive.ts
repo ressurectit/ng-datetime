@@ -45,7 +45,7 @@ export class DateTimeMaxValidatorSADirective<TDate = unknown> extends DateTimeBa
      */
     public ngOnInit(): void
     {
-        this._validator = datetimeMaxValidator(this.dateApi, this.dateTimeData.maxDateTime, this.dateTimeData.valueFormat, this.dateTimeData.customFormat);
+        this._validator = datetimeMaxValidator(this.dateApi, this.dateTimeData.maxDateTime, this.dateTimeData.valueFormat, this.dateTimeData.customFormat, this.dateTimeData.dataFormat);
     }
 
     //######################### public methods - implementation of Validator #########################
@@ -67,6 +67,6 @@ export class DateTimeMaxValidatorSADirective<TDate = unknown> extends DateTimeBa
      */
     protected override onMaxDateTimeChange(): void
     {
-        this._validator = datetimeMaxValidator(this.dateApi, this.dateTimeData.maxDateTime, this.dateTimeData.valueFormat, this.dateTimeData.customFormat);
+        this._validator = datetimeMaxValidator(this.dateApi, this.dateTimeData.maxDateTime, this.dateTimeData.valueFormat, this.dateTimeData.customFormat, this.dateTimeData.dataFormat);
     }
 }

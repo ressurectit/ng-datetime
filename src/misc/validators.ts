@@ -27,6 +27,11 @@ export interface DateTimeValidationArgs<TDate = unknown>
     stringFormat?: string|null;
 
     /**
+     * Format of data string value
+     */
+    dataFormat?: string|null;
+
+    /**
      * Max allowed value
      */
     maxValue?: DateValue|TDate|DateTimeBase<TDate>;
@@ -42,10 +47,12 @@ export interface DateTimeValidationArgs<TDate = unknown>
  * @param dateApi - Date api used for parsing date time
  * @param valueFormat - Optional required format
  * @param stringFormat - Optional string format of value
+ * @param dataFormat - Optional string data format of value
  */
 export function datetimeValidator<TDate = unknown>(dateApi: DateApi<TDate>,
                                                    valueFormat: DateTimeValueFormat|undefined|null,
-                                                   stringFormat: string|undefined|null,): ValidatorFn
+                                                   stringFormat: string|undefined|null,
+                                                   dataFormat: string|undefined|null,): ValidatorFn
 {
     return (control: AbstractControl<DateTimeInputOutputValue<TDate>>): ValidationErrors|null =>
     {
@@ -54,7 +61,7 @@ export function datetimeValidator<TDate = unknown>(dateApi: DateApi<TDate>,
             return null;
         }
 
-        const parsedValue = parseDateTime(control.value, dateApi, valueFormat, stringFormat);
+        const parsedValue = parseDateTime(control.value, dateApi, valueFormat, stringFormat, dataFormat);
 
         if(!parsedValue)
         {
@@ -94,7 +101,7 @@ export function dateTimeModelValidatorFactory<TDate = unknown>(args: DateTimeVal
             throw new Error('DateTime: missing DateApi! Please provide one.');
         }
 
-        return datetimeValidator(dateApi, args.valueFormat, args.stringFormat);
+        return datetimeValidator(dateApi, args.valueFormat, args.stringFormat, args.dataFormat);
     }, args);
 }
 
@@ -119,9 +126,16 @@ export function DateTime(stringFormat: string|null): PropertyDecorator
  */
 export function DateTime(valueFormat: DateTimeValueFormat, stringFormat: string): PropertyDecorator
 /**
+ * Sets date time validator
+ * @param valueFormat - Format of validated value
+ * @param stringFormat - Format of string value
+ * @param dataFormat - Format of data string value
+ */
+export function DateTime(valueFormat: DateTimeValueFormat, stringFormat: string|undefined|null, dataFormat: string): PropertyDecorator
+/**
  * Sets date time validator to property on which is used
  */
-export function DateTime(valueFormatOrStringFormat?: DateTimeValueFormat|string|null, stringFormat?: string|undefined|null): PropertyDecorator
+export function DateTime(valueFormatOrStringFormat?: DateTimeValueFormat|string|null, stringFormat?: string|undefined|null, dataFormat?: string|undefined|null): PropertyDecorator
 {
     let valueFormat: DateTimeValueFormat|undefined|null;
 
@@ -141,6 +155,7 @@ export function DateTime(valueFormatOrStringFormat?: DateTimeValueFormat|string|
         {
             stringFormat,
             valueFormat,
+            dataFormat,
         })]
     });
 }
@@ -151,11 +166,13 @@ export function DateTime(valueFormatOrStringFormat?: DateTimeValueFormat|string|
  * @param maxValue - Maximal date time value that should be used for validation against
  * @param valueFormat - Optional required format
  * @param stringFormat - Optional string format of value
+ * @param dataFormat - Optional string data format of value
  */
 export function datetimeMaxValidator<TDate = unknown>(dateApi: DateApi<TDate>,
                                                       maxValue: DateValue|TDate|DateTimeBase<TDate>|undefined|null,
                                                       valueFormat: DateTimeValueFormat|undefined|null,
-                                                      stringFormat: string|undefined|null,): ValidatorFn
+                                                      stringFormat: string|undefined|null,
+                                                      dataFormat: string|undefined|null,): ValidatorFn
 {
     return (control: AbstractControl<DateTimeInputOutputValue<TDate>>): ValidationErrors|null =>
     {
@@ -177,7 +194,7 @@ export function datetimeMaxValidator<TDate = unknown>(dateApi: DateApi<TDate>,
             maxValue = value;
         }
 
-        const parsedValue = parseDateTime(control.value, dateApi, valueFormat, stringFormat);
+        const parsedValue = parseDateTime(control.value, dateApi, valueFormat, stringFormat, dataFormat);
 
         if(!parsedValue)
         {
@@ -210,11 +227,13 @@ export function datetimeMaxValidator<TDate = unknown>(dateApi: DateApi<TDate>,
  * @param minValue - Minimal date time value that should be used for validation against
  * @param valueFormat - Optional required format
  * @param stringFormat - Optional string format of value
+ * @param dataFormat - Optional string data format of value
  */
 export function datetimeMinValidator<TDate = unknown>(dateApi: DateApi<TDate>,
                                                       minValue: DateValue|TDate|DateTimeBase<TDate>|undefined|null,
                                                       valueFormat: DateTimeValueFormat|undefined|null,
-                                                      stringFormat: string|undefined|null,): ValidatorFn
+                                                      stringFormat: string|undefined|null,
+                                                      dataFormat: string|undefined|null,): ValidatorFn
 {
     return (control: AbstractControl<DateTimeInputOutputValue<TDate>>): ValidationErrors|null =>
     {
@@ -236,7 +255,7 @@ export function datetimeMinValidator<TDate = unknown>(dateApi: DateApi<TDate>,
             minValue = value;
         }
 
-        const parsedValue = parseDateTime(control.value, dateApi, valueFormat, stringFormat);
+        const parsedValue = parseDateTime(control.value, dateApi, valueFormat, stringFormat, dataFormat);
 
         if(!parsedValue)
         {

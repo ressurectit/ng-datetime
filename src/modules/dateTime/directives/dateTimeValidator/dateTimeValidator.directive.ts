@@ -45,7 +45,7 @@ export class DateTimeValidatorSADirective<TDate = unknown> extends DateTimeBase<
      */
     public ngOnInit(): void
     {
-        this._validator = datetimeValidator(this.dateApi, this.dateTimeData.valueFormat, this.dateTimeData.customFormat);
+        this._validator = datetimeValidator(this.dateApi, this.dateTimeData.valueFormat, this.dateTimeData.customFormat, this.dateTimeData.dataFormat);
     }
 
     //######################### public methods - implementation of Validator #########################

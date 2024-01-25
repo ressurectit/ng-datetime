@@ -1,11 +1,11 @@
 import {Directive, ElementRef, EventEmitter, ExistingProvider, forwardRef, Inject, Input, OnDestroy} from '@angular/core';
-import {BindThis, isBlank} from '@jscrpt/common';
+import {BindThis} from '@jscrpt/common';
 
 import {DATE_API, DATE_TIME_INPUT} from '../../misc/tokens';
 import {DateTimeBase} from '../../modules/dateTime/directives/dateTimeBase';
 import {DateTimeInput} from '../../interfaces';
 import {DateTimeInputOutputValue, DateTimeObjectValue} from '../../misc/types';
-import {formatDateTime, parseDateTime} from '../../misc/utils';
+import {formatDateTime, getInternalValue} from '../../misc/utils';
 import {DateApi, DateValueProvider} from '../../services';
 
 /**
@@ -53,7 +53,7 @@ export class ButtonDateTimeInputSADirective<TDate = unknown> extends DateTimeBas
     {
         //accepts all available formats
         this.setInternalValue(value);
-        this.ɵValue = formatDateTime(this.internalValue, this.dateTimeData.valueFormat, this.dateTimeData.customFormat);
+        this.ɵValue = formatDateTime(this.internalValue, this.dateTimeData.valueFormat, this.dateTimeData.customFormat, this.dateTimeData.dataFormat);
         
         //not range value
         if(!Array.isArray(this.internalValue))
@@ -129,49 +129,7 @@ export class ButtonDateTimeInputSADirective<TDate = unknown> extends DateTimeBas
      */
     protected setInternalValue(value: DateTimeInputOutputValue<TDate>|undefined|null): void
     {
-        this.internalValue = parseDateTime(value, this.dateApi, null, this.dateTimeData.customFormat);
-
-        if(isBlank(this.internalValue))
-        {
-            return;
-        }
-
-        //update for specified format, round
-
-        //ranged value
-        if(Array.isArray(this.internalValue))
-        {
-            const [from, to] = this.internalValue;
-
-            if(from)
-            {
-                const val = this.valueProvider.getValue(from.value, this.dateTimeData.customFormat).from;
-
-                if(val)
-                {
-                    this.internalValue[0] = this.dateApi.getValue(val, this.dateTimeData.customFormat);
-                }
-            }
-
-            if(to)
-            {
-                const val = this.valueProvider.getValue(to.value, this.dateTimeData.customFormat).to;
-
-                if(val)
-                {
-                    this.internalValue[1] = this.dateApi.getValue(val, this.dateTimeData.customFormat);
-                }
-            }
-        }
-        else
-        {
-            const val = this.valueProvider.getValue(this.internalValue.value, this.dateTimeData.customFormat).from;
-
-            if(val)
-            {
-                this.internalValue = this.dateApi.getValue(val, this.dateTimeData.customFormat);
-            }
-        }
+        this.internalValue = getInternalValue(value, this.dateApi, this.dateTimeData, this.valueProvider);
     }
 
     /**

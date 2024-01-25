@@ -207,6 +207,7 @@ export class DateTimePickerSADirective<TDate = unknown> extends DateTimeBase<TDa
         this.componentRef.setInput(nameof<DateTimePickerComponent>('valueFormat'), this.dateTimeData.valueFormat);
         this.componentRef.setInput(nameof<DateTimePickerComponent>('format'), this.dateTimeData.format);
         this.componentRef.setInput(nameof<DateTimePickerComponent>('customFormat'), this.dateTimeData.customFormat);
+        this.componentRef.setInput(nameof<DateTimePickerComponent>('dataFormat'), this.dateTimeData.dataFormat);
         this.componentRef.setInput(nameof<DateTimePickerComponent>('minDateTime'), this.dateTimeData.minDateTime);
         this.componentRef.setInput(nameof<DateTimePickerComponent>('maxDateTime'), this.dateTimeData.maxDateTime);
         this.setPickerValue();

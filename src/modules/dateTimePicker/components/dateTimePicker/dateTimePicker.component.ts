@@ -11,7 +11,7 @@ import {MonthPickerSAComponent} from '../monthPicker/monthPicker.component';
 import {DateTimePickerOptions} from './dateTimePicker.interface';
 import {YearPickerSAComponent} from '../yearPicker/yearPicker.component';
 import {DateTimePicker} from '../../interfaces';
-import {formatDateTime, parseDateTime} from '../../../../misc/utils';
+import {formatDateTime, getInternalValue} from '../../../../misc/utils';
 import {DateTimeSADirective} from '../../../dateTime/directives';
 import {DateValueProvider} from '../../../../services';
 import {DateTimeValueFormat} from '../../../../misc/enums';
@@ -107,7 +107,7 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeSADirectiv
     {
         //accepts all available formats
         this.setInternalValue(value);
-        this.ɵValue = formatDateTime(this.internalValue, this.valueFormat, this.customFormat);
+        this.ɵValue = formatDateTime(this.internalValue, this.valueFormat, this.customFormat, this.dataFormat);
     }
 
     /**
@@ -238,47 +238,7 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeSADirectiv
      */
     protected setInternalValue(value: DateTimeInputOutputValue<TDate>|undefined|null): void
     {
-        this.internalValue = parseDateTime(value, this.dateApi, null, this.customFormat);
-
-        if(isBlank(this.internalValue))
-        {
-            return;
-        }
-
-        //ranged value
-        if(Array.isArray(this.internalValue))
-        {
-            const [from, to] = this.internalValue;
-
-            if(from)
-            {
-                const val = this.valueProvider.getValue(from.value, this.customFormat).from;
-
-                if(val)
-                {
-                    this.internalValue[0] = this.dateApi.getValue(val, this.customFormat);
-                }
-            }
-
-            if(to)
-            {
-                const val = this.valueProvider.getValue(to.value, this.customFormat).to;
-
-                if(val)
-                {
-                    this.internalValue[1] = this.dateApi.getValue(val, this.customFormat);
-                }
-            }
-        }
-        else
-        {
-            const val = this.valueProvider.getValue(this.internalValue.value, this.customFormat).from;
-
-            if(val)
-            {
-                this.internalValue = this.dateApi.getValue(val, this.customFormat);
-            }
-        }
+        this.internalValue = getInternalValue(value, this.dateApi, this, this.valueProvider);
     }
 
     /**
@@ -320,7 +280,7 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeSADirectiv
                     //TODO: handle ranges
                 }
 
-                this.value = formatDateTime(this.internalValue, this.valueFormat, this.customFormat);
+                this.value = formatDateTime(this.internalValue, this.valueFormat, this.customFormat, this.dataFormat);
                 this.valueChange.emit();
             }));
 

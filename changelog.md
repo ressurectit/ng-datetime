@@ -1,5 +1,39 @@
 # Changelog
 
+## Version 8.0.0 (2024-01-25)
+
+### Features
+
+- updated `DateTimeValueFormat` enum
+    - new value `DataString` formatted date as string value, custom string format for date time value, different from displayed string format
+- updated `DateTimeSADirective` directive
+    - **new inputs**
+        - `dataFormat` represents data format that is used as value of date time when `DateTimeValueFormat.DataString` is set to `valueFormat`
+- updated `DateTimeValidationArgs` interface
+    - **new properties**
+        - `dataFormat` format of data string value
+- updated `DateTime` decorator
+    - **new arguments**
+        - `dataFormat` format of data string value
+
+### BREAKING CHANGES
+
+- minimal supported version of `NodeJs` is `18.13`
+- minimal supported version of `@angular` is `17.0.1`
+- minimal supported version of `@jscrpt/common` is `6.0.0`
+- minimal supported version of `@anglr/common` is `19.0.0`
+- minimal supported version of `tslib` is `2.6.2`
+- updated `parseDateTime` function, has new argument
+    - `dataFormat` string format for parsing string dates, required only for string dates, has higher priority than `stringFormat`
+- updated `formatDateTime` function, has new argument
+    - `dataFormat` string format for formatting string dates, required only for string dates, has higher priority than `stringFormat`
+- updated `datetimeMaxValidator` validator function, has new argument
+    - `dataFormat` optional string data format of value
+- updated `datetimeMinValidator` validator function, has new argument
+    - `dataFormat` optional string data format of value
+- updated `datetimeValidator` validator function, has new argument
+    - `dataFormat` optional string data format of value
+
 ## Version 7.0.0 (2023-08-17)
 
 ### Features
