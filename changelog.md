@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 8.0.1 (2024-06-26)
+
+### Bug Fixes
+
+- fixed bug with parsing user input for `DataString` value type
+
 ## Version 8.0.0 (2024-01-25)
 
 ### Features

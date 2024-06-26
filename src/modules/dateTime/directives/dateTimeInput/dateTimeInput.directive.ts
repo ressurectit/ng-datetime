@@ -7,6 +7,7 @@ import {DateTimeInputOutputValue, DateTimeObjectValue} from '../../../../misc/ty
 import {formatDateTime, getInternalValue} from '../../../../misc/utils';
 import {DateApi, DateValueProvider} from '../../../../services';
 import {DateTimeBase} from '../dateTimeBase';
+import {DateTimeValueFormat} from '../../../../misc/enums';
 
 //TODO: range is unimplemented
 
@@ -135,10 +136,12 @@ export class DateTimeInputSADirective<TDate = unknown> extends DateTimeBase<TDat
     /**
      * Sets internal value and fix lowest time difference
      * @param value - Value to be set
+     * @param dateTimeFormat - Date time format type, optional, if not specified autodetection of format will be used, used when obtaining value from users input
      */
-    protected setInternalValue(value: DateTimeInputOutputValue<TDate>|undefined|null): void
+    protected setInternalValue(value: DateTimeInputOutputValue<TDate>|undefined|null,
+                               dateTimeFormat: DateTimeValueFormat|undefined|null = null,): void
     {
-        this.internalValue = getInternalValue(value, this.dateApi, this.dateTimeData, this.valueProvider);
+        this.internalValue = getInternalValue(value, this.dateApi, this.dateTimeData, this.valueProvider, dateTimeFormat);
     }
 
     /**
@@ -157,7 +160,7 @@ export class DateTimeInputSADirective<TDate = unknown> extends DateTimeBase<TDat
             return;
         }
 
-        this.setInternalValue(this.rawValue);
+        this.setInternalValue(this.rawValue, DateTimeValueFormat.FormattedString);
         this.ɵValue = formatDateTime(this.internalValue, this.dateTimeData.valueFormat, this.dateTimeData.customFormat, this.dateTimeData.dataFormat);
 
         this.valueChange.next();

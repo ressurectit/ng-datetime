@@ -211,13 +211,15 @@ export function parseRawInput<TDate>(rawValue: string,
  * @param dateApi - Date api for manipulation with date
  * @param dateTimeData - Object storing information about format
  * @param valueProvider - Provider used for obtaining rounded value according format
+ * @param dateTimeFormat - Date time format type, optional, if not specified autodetection of format will be used, used when obtaining value from users input
  */
 export function getInternalValue<TDate>(value: DateTimeInputOutputValue<TDate>|undefined|null,
                                         dateApi: DateApi<TDate>,
                                         dateTimeData: DateTimeSADirective<TDate>,
-                                        valueProvider: DateValueProvider<TDate>,): DateTimeObjectValue<TDate>|undefined|null
+                                        valueProvider: DateValueProvider<TDate>,
+                                        dateTimeFormat: DateTimeValueFormat|undefined|null = null,): DateTimeObjectValue<TDate>|undefined|null
 {
-    let internalValue = parseDateTime(value, dateApi, null, dateTimeData.customFormat, dateTimeData.dataFormat);
+    let internalValue = parseDateTime(value, dateApi, dateTimeFormat, dateTimeData.customFormat, dateTimeData.dataFormat);
 
     if(isBlank(internalValue))
     {
