@@ -37,7 +37,7 @@
 
 ### Bug Fixes
 
-- fixed bug with parsing user input for `DataString` value type
+- fixed bug with parsing user input for `DataString` value format
 
 ## Version 8.0.0 (2024-01-25)
 
