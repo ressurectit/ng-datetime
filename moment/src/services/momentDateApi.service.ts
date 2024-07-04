@@ -90,6 +90,14 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
+     * @inheritdoc
+     */
+    public timestamp(): number
+    {
+        return this._value.valueOf();
+    }
+
+    /**
      * Updates value to start date and time of current decade
      * @returns Itself for fluent API
      */

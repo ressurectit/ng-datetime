@@ -1,7 +1,7 @@
 import {Inject, Injectable, ValueProvider} from '@angular/core';
 import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser, DateApiObjectCtor, DATE_API_OBJECT_TYPE, DateObject} from '@anglr/datetime';
 import {isBlank, isPresent, isString} from '@jscrpt/common';
-import {toDate, getDate, setDate, isAfter, isBefore, isEqual, differenceInCalendarDays, format, formatISO, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, parseISO, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth, setISODay, getISODay, subHours, addHours, endOfHour, startOfHour, startOfMinute, endOfMinute, addMinutes, subMinutes, getHours, setHours, getMinutes, setMinutes, isDate, getUnixTime} from 'date-fns';
+import {toDate, getDate, setDate, isAfter, isBefore, isEqual, differenceInCalendarDays, format, formatISO, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, parseISO, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth, setISODay, getISODay, subHours, addHours, endOfHour, startOfHour, startOfMinute, endOfMinute, addMinutes, subMinutes, getHours, setHours, getMinutes, setMinutes, isDate, getUnixTime, getTime} from 'date-fns';
 
 import {DATE_FNS_LOCALE} from '../misc/tokens';
 import {DateFnsLocale} from './dateFnsLocale.service';
@@ -113,8 +113,15 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Updates value to start date and time of current decade
-     * @returns Itself for fluent API
+     * @inheritdoc
+     */
+    public timestamp(): number
+    {
+        return getTime(this._value);
+    }
+
+    /**
+     * @inheritdoc
      */
     public startOfDecade(): DateApiObject<Date>
     {
@@ -124,8 +131,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Updates value to end date and time of current decade
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public endOfDecade(): DateApiObject<Date>
     {
@@ -135,8 +141,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Updates value to start date and time of current year
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public startOfYear(): DateApiObject<Date>
     {
@@ -146,8 +151,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Updates value to end date and time of current year
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public endOfYear(): DateApiObject<Date>
     {
@@ -157,9 +161,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Add years, if count not specified adds 1 year
-     * @param count - Number of years count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public addYears(count?: number): DateApiObject<Date>
     {
@@ -169,9 +171,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Subtract years, if count not specified subtract 1 year
-     * @param count - Number of years count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public subtractYears(count?: number): DateApiObject<Date>
     {
@@ -181,8 +181,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Updates value to start date and time of current month
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public startOfMonth(): DateApiObject<Date>
     {
@@ -192,8 +191,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Updates value to end date and time of current month
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public endOfMonth(): DateApiObject<Date>
     {
@@ -203,9 +201,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Add months, if count not specified adds 1 month
-     * @param count - Number of months count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public addMonths(count?: number): DateApiObject<Date>
     {
@@ -215,9 +211,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Subtract months, if count not specified subtract 1 month
-     * @param count - Number of months count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public subtractMonths(count?: number): DateApiObject<Date>
     {
@@ -227,8 +221,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Updates value to start date and time of current week
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public startOfWeek(): DateApiObject<Date>
     {
@@ -238,8 +231,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Updates value to end date and time of current week
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public endOfWeek(): DateApiObject<Date>
     {
@@ -249,9 +241,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Add weeks, if count not specified adds 1 week
-     * @param count - Number of weeks count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public addWeeks(count?: number): DateApiObject<Date>
     {
@@ -261,9 +251,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Subtract weeks, if count not specified subtract 1 week
-     * @param count - Number of weeks count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public subtractWeeks(count?: number): DateApiObject<Date>
     {
@@ -273,8 +261,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Updates value to start date and time of current day
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public startOfDay(): DateApiObject<Date>
     {
@@ -284,8 +271,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Updates value to end date and time of current day
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public endOfDay(): DateApiObject<Date>
     {
@@ -295,9 +281,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Add days, if count not specified adds 1 day
-     * @param count - Number of days count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public addDays(count?: number): DateApiObject<Date>
     {
@@ -307,9 +291,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Subtract days, if count not specified subtract 1 day
-     * @param count - Number of days count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public subtractDays(count?: number): DateApiObject<Date>
     {
@@ -319,8 +301,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Updates value to start date and time of current hour
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public startOfHour(): DateApiObject<Date>
     {
@@ -330,8 +311,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Updates value to end date and time of current hour
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public endOfHour(): DateApiObject<Date>
     {
@@ -341,9 +321,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Add hours, if count not specified adds 1 hour
-     * @param count - Number of hours count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public addHours(count?: number): DateApiObject<Date>
     {
@@ -353,9 +331,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Subtract hours, if count not specified subtract 1 hour
-     * @param count - Number of hours count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public subtractHours(count?: number): DateApiObject<Date>
     {
@@ -365,8 +341,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Updates value to start date and time of current minute
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public startOfMinute(): DateApiObject<Date>
     {
