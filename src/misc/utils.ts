@@ -151,7 +151,8 @@ export function formatDateTime<TDate = unknown>(value: DateTimeObjectValue<TDate
 
     if(dateTimeFormat == DateTimeValueFormat.UnixTimestamp)
     {
-        value.unixTimestamp();
+        //TODO: fix this in "future"
+        return value.unixTimestamp() * 1000;
     }
 
     return value.value;

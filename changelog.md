@@ -1,6 +1,12 @@
 # Changelog
 
-## Version 8.0.1 (2024-06-26)
+## Version 8.0.2 (2024-07-04)
+
+### Bug Fixes
+
+- fixed bug with using *datetime* value format `UnixTimestamp`, incorrectly returned value as *DateTime*
+
+## Version 8.0.1 (2024-07-04)
 
 ### Bug Fixes
 
