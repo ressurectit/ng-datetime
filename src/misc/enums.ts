@@ -9,9 +9,14 @@ export enum DateTimeValueFormat
     DateInstance,
 
     /**
-     * Numeric unix timestamp in miliseconds
+     * Numeric unix timestamp in seconds (only works for ControlValueAccessor, internally its Timestamp)
      */
     UnixTimestamp,
+
+    /**
+     * Numeric timestamp in miliseconds
+     */
+    Timestamp,
 
     /**
      * Formatted date as string value, same string as displayed string

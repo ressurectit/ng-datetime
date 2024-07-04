@@ -1,5 +1,19 @@
 # Changelog
 
+## Version 8.1.0 (2024-07-04)
+
+### Features
+
+- updated `DateApiObject` interface
+    - **new methods**
+        - `timestamp` gets value of date time as timestamp (in miliseconds)
+- *subpackage* `@anglr/datetime/moment`
+    - updated `MomentDateApi`
+        - now implements also new `timestamp`
+- *subpackage* `@anglr/datetime/date-fns`
+    - updated `DateFnsDateApi`
+        - now implements also new `timestamp`
+
 ## Version 8.0.2 (2024-07-04)
 
 ### Bug Fixes

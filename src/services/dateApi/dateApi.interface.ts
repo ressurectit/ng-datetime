@@ -53,9 +53,14 @@ export interface DateApiObject<TDate = unknown>
     formatISO(): string;
 
     /**
-     * Gets value of date time as unix timestamp
+     * Gets value of date time as unix timestamp (in seconds)
      */
     unixTimestamp(): number;
+
+    /**
+     * Gets value of date time as timestamp (in miliseconds)
+     */
+    timestamp(): number;
 
     /**
      * Updates value to start date and time of current decade
