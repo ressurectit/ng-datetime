@@ -125,6 +125,11 @@ export function formatDateTime<TDate = unknown>(value: DateTimeObjectValue<TDate
         throw new Error('DateTime: value is not array of values, but format is range!');
     }
 
+    if(!value.isValid())
+    {
+        return;
+    }
+
     //data string date time
     if(dateTimeFormat == DateTimeValueFormat.DataString)
     {

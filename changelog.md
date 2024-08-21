@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 8.0.3 (2024-08-21)
+
+### Bug Fixes
+
+- fixed bug with entering invalid value as user input, when error is thrown
+
 ## Version 8.0.2 (2024-07-04)
 
 ### Bug Fixes
