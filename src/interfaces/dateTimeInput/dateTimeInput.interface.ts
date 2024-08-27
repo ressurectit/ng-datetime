@@ -16,6 +16,11 @@ export interface DateTimeInputValue<TDate = unknown>
      * Occurs when value changes
      */
     readonly valueChange: EventEmitter<void>;
+
+    /**
+     * Occurs when value is set, occurs everytime when value was set, even from code
+     */
+    readonly valueSet: EventEmitter<void>;
 }
 /**
  * Defines date time input and communication API for it

@@ -47,6 +47,11 @@ export class DateTimeBase<TDate = unknown> implements DateTimeInputValue<TDate>,
      */
     public valueChange: EventEmitter<void> = new EventEmitter<void>();
 
+    /**
+     * @inheritdoc
+     */
+    public valueSet: EventEmitter<void> = new EventEmitter<void>();
+
     //######################### constructor #########################
     constructor()
     {

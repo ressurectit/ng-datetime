@@ -64,6 +64,8 @@ export class ButtonDateTimeInputSADirective<TDate = unknown> extends DateTimeBas
         {
             //TODO: add support for ranges
         }
+
+        this.valueSet.next();
     }
 
     /**

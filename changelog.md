@@ -1,5 +1,26 @@
 # Changelog
 
+## Version 8.1.0 (2024-08-27)
+
+### Bug Fixes
+
+- fixed `DateTimeSADirective` directive, now handles initial set of value from `ControlValueAccessor` after initialization of this directive, which now correctly applies min/max restrictions
+
+### Features
+
+- updated `DateTimeInputValue` interface
+    - **new properties**
+        - `valueSet` occurs when value is set, occurs everytime when value was set, even from code
+- updated `DateTimeBase` class
+    - now correctly implements updated `DateTimeInputValue` interface
+- updated `DateTimePickerComponent` component
+    - now correctly implements updated `DateTimeInputValue` interface
+    - now correctly calls `valueSet` anytime value changes
+- updated `ButtonDateTimeInputSADirective` directive
+    - now correctly calls `valueSet` anytime value changes
+- updated `DateTimeInputSADirective` directive
+    - now correctly calls `valueSet` anytime value changes
+
 ## Version 8.0.3 (2024-08-21)
 
 ### Bug Fixes

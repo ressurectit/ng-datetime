@@ -1,6 +1,6 @@
 import {Directive, inject, Input, OnDestroy} from '@angular/core';
 import {Action1, BindThis, isBlank, isString} from '@jscrpt/common';
-import {Observable, Subject, Subscription} from 'rxjs';
+import {debounceTime, merge, Observable, Subject, Subscription} from 'rxjs';
 
 import {FormatProvider} from '../../../../interfaces';
 import {DateTimeValueFormat} from '../../../../misc/enums';
@@ -188,19 +188,21 @@ export class DateTimeSADirective<TDate = unknown> implements OnDestroy
 
         if(value instanceof DateTimeBase)
         {
-            this.maxDateInstanceChange = value.valueChange.subscribe(() =>
-            {
-                const val = getSingleDateTimeValue<TDate>(value.value);
-
-                if(isBlank(val))
+            this.maxDateInstanceChange = merge(value.valueChange, value.valueSet)
+                .pipe(debounceTime(10))
+                .subscribe(() =>
                 {
-                    this.maxDateSet(null);
+                    const val = getSingleDateTimeValue<TDate>(value.value);
 
-                    return;
-                }
+                    if(isBlank(val))
+                    {
+                        this.maxDateSet(null);
 
-                this.setMinMaxValue(val, this.maxDateSet);
-            });
+                        return;
+                    }
+
+                    this.setMinMaxValue(val, this.maxDateSet);
+                });
 
             const v = getSingleDateTimeValue<TDate>(value.value);
 
@@ -241,19 +243,21 @@ export class DateTimeSADirective<TDate = unknown> implements OnDestroy
 
         if(value instanceof DateTimeBase)
         {
-            this.minDateInstanceChange = value.valueChange.subscribe(() =>
-            {
-                const val = getSingleDateTimeValue<TDate>(value.value);
-
-                if(isBlank(val))
+            this.minDateInstanceChange = merge(value.valueChange, value.valueSet)
+                .pipe(debounceTime(10))
+                .subscribe(() =>
                 {
-                    this.minDateSet(null);
+                    const val = getSingleDateTimeValue<TDate>(value.value);
 
-                    return;
-                }
+                    if(isBlank(val))
+                    {
+                        this.minDateSet(null);
 
-                this.setMinMaxValue(val, this.minDateSet);
-            });
+                        return;
+                    }
+
+                    this.setMinMaxValue(val, this.minDateSet);
+                });
 
             const v = getSingleDateTimeValue<TDate>(value.value);
 

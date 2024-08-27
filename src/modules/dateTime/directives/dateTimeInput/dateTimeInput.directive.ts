@@ -73,6 +73,8 @@ export class DateTimeInputSADirective<TDate = unknown> extends DateTimeBase<TDat
         {
             //TODO: add support for ranges
         }
+
+        this.valueSet.next();
     }
 
     /**
@@ -155,6 +157,7 @@ export class DateTimeInputSADirective<TDate = unknown> extends DateTimeBase<TDat
             this.internalValue = null;
             this.ɵValue = null;
 
+            this.valueSet.next();
             this.valueChange.next();
 
             return;
@@ -163,6 +166,7 @@ export class DateTimeInputSADirective<TDate = unknown> extends DateTimeBase<TDat
         this.setInternalValue(this.rawValue, DateTimeValueFormat.FormattedString);
         this.ɵValue = formatDateTime(this.internalValue, this.dateTimeData.valueFormat, this.dateTimeData.customFormat, this.dateTimeData.dataFormat);
 
+        this.valueSet.next();
         this.valueChange.next();
     }
 

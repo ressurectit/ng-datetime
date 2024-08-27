@@ -108,6 +108,7 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeSADirectiv
         //accepts all available formats
         this.setInternalValue(value);
         this.ɵValue = formatDateTime(this.internalValue, this.valueFormat, this.customFormat, this.dataFormat);
+        this.valueSet.next();
     }
 
     /**
@@ -132,6 +133,12 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeSADirectiv
      */
     @Output()
     public valueChange: EventEmitter<void> = new EventEmitter<void>();
+
+    /**
+     * @inheritdoc
+     */
+    @Output()
+    public valueSet: EventEmitter<void> = new EventEmitter<void>();
 
     //######################### constructor #########################
     constructor(@Inject(POSITION) protected position: Position,
