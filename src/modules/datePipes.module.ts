@@ -8,7 +8,7 @@ import {DateFormatPipe} from '../pipes/dateFormat.pipe';
  */
 @NgModule(
 {
-    declarations:
+    imports:
     [
         DateFormatPipe,
         DateConvertPipe,

@@ -15,8 +15,6 @@ export interface PeriodData<TDate = unknown>
      */
     disabled: boolean;
 
-    //TODO: remove
-
     /**
      * Date for this period item
      */

@@ -8,7 +8,7 @@ import {DateApi, DateValue} from '../services';
 /**
  * Pipe that is used for formatting date
  */
-@Pipe({name: 'dateFormat'})
+@Pipe({name: 'dateFormat', standalone: true})
 export class DateFormatPipe<TDate = unknown> implements PipeTransform
 {
     //######################### constructors #########################

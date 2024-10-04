@@ -9,6 +9,16 @@
         - `timestamp` gets value of date time as timestamp (in miliseconds)
 - updated `DateTimeControlValueAccessorDirective` directive
     - now it can return also value as `DateTimeValueFormat.UnixTimestamp`
+- updated `DateFormatPipe` pipe
+    - is now `standalone`
+- updated `DateConvertPipe` pipe
+    - is now `standalone`
+- updated `MonthCalendarComponent` component
+    - is now `standalone`
+- updated `CalendarDayTemplateDirective` directive
+    - is now `standalone`
+- updated `DateTimePickerComponent` directive
+    - is now `standalone`
 - *subpackage* `@anglr/datetime/moment`
     - updated `MomentDateApi`
         - now implements also new `timestamp`

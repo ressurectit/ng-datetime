@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 
 import {MonthCalendarComponent} from '../components';
 import {CalendarDayTemplateDirective} from '../directives';
@@ -11,12 +10,8 @@ import {CalendarDayTemplateDirective} from '../directives';
 {
     imports:
     [
-        CommonModule,
-    ],
-    declarations:
-    [
-        MonthCalendarComponent,
         CalendarDayTemplateDirective,
+        MonthCalendarComponent,
     ],
     exports:
     [

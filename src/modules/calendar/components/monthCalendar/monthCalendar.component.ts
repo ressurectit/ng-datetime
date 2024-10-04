@@ -1,4 +1,5 @@
 import {Component, ChangeDetectionStrategy, Input, Inject, OnInit, ViewChild, TemplateRef, ContentChild, OnChanges, SimpleChanges} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {Dictionary, isString, nameof} from '@jscrpt/common';
 
 import {CalendarDayData, EventData} from '../../interfaces';
@@ -16,6 +17,12 @@ import {FormatProvider} from '../../../../interfaces';
 {
     selector: 'month-calendar',
     templateUrl: 'monthCalendar.component.html',
+    standalone: true,
+    imports:
+    [
+        CalendarDayTemplateDirective,
+        CommonModule,
+    ],
     providers:
     [
         EventParser,

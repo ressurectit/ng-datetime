@@ -44,6 +44,7 @@ const defaultOptions: DateTimePickerOptions =
 {
     selector: 'date-time-picker',
     templateUrl: 'dateTimePicker.component.html',
+    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<TDate> implements DateTimeInputValue<TDate>, OnInit, OnChanges, OnDestroy

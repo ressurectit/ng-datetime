@@ -11,9 +11,6 @@ import {DateTimePickerDirective} from '../directives';
     imports:
     [
         DateTimePickerDirective,
-    ],
-    declarations:
-    [
         DateTimePickerComponent,
     ],
     exports:

@@ -7,7 +7,8 @@ import {CalendarDayTemplateContext} from './calendarDayTemplate.context';
  */
 @Directive(
 {
-    selector: '[calendarDayTemplate]'
+    selector: '[calendarDayTemplate]',
+    standalone: true,
 })
 export class CalendarDayTemplateDirective<TDate = unknown, TEvent = unknown>
 {

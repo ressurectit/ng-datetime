@@ -4,8 +4,6 @@ import {DateTimeValue} from '../../interfaces/dateTime/datetime.interface';
 import {DATE_API} from '../../misc/tokens';
 import {DateApi} from '../dateApi/dateApi.interface';
 
-//TODO: change to unknown when legacy stuff is removed
-
 /**
  * Class used for obtaining DateTimeValue for various formats
  */
