@@ -22,13 +22,13 @@ import {DateTimeValueFormat} from '../../../../misc/enums';
         <ExistingProvider>
         {
             provide: DATE_TIME_INPUT,
-            useExisting: forwardRef(() => DateTimeInputSADirective),
+            useExisting: forwardRef(() => DateTimeInputDirective),
         },
     ],
     standalone: true,
     exportAs: 'dateTime',
 })
-export class DateTimeInputSADirective<TDate = unknown> extends DateTimeBase<TDate> implements DateTimeInput, OnDestroy
+export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate> implements DateTimeInput, OnDestroy
 {
     //######################### protected properties #########################
 

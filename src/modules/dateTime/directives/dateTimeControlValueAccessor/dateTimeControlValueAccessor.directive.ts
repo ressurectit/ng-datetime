@@ -1,10 +1,13 @@
 import {Directive, ExistingProvider, forwardRef, Inject, OnDestroy} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {isNumber} from '@jscrpt/common';
 import {Subscription} from 'rxjs';
 
 import {DateTimeInput} from '../../../../interfaces';
 import {DATE_TIME_INPUT} from '../../../../misc/tokens';
 import {DateTimeInputOutputValue} from '../../../../misc/types';
+import {DateTimeDirective} from '../dateTime/dateTime.directive';
+import {DateTimeValueFormat} from '../../../../misc/enums';
 
 /**
  * Control value accessor that is used for getting and setting value for date time
@@ -17,13 +20,13 @@ import {DateTimeInputOutputValue} from '../../../../misc/types';
         <ExistingProvider>
         {
             provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => DateTimeControlValueAccessorSADirective),
+            useExisting: forwardRef(() => DateTimeControlValueAccessorDirective),
             multi: true,
         },
     ],
     standalone: true,
 })
-export class DateTimeControlValueAccessorSADirective<TDate = unknown> implements ControlValueAccessor, OnDestroy
+export class DateTimeControlValueAccessorDirective<TDate = unknown> implements ControlValueAccessor, OnDestroy
 {
     //######################### protected properties #########################
 
@@ -33,12 +36,13 @@ export class DateTimeControlValueAccessorSADirective<TDate = unknown> implements
     protected initSubscriptions: Subscription = new Subscription();
 
     //######################### constructor #########################
-    constructor(@Inject(DATE_TIME_INPUT) protected input: DateTimeInput<TDate>)
+    constructor(@Inject(DATE_TIME_INPUT) protected input: DateTimeInput<TDate>,
+                protected dateTime: DateTimeDirective<TDate>,)
     {
     }
 
     //######################### public methods - implementation of OnDestroy #########################
-    
+
     /**
      * Called when component is destroyed
      */
@@ -54,6 +58,18 @@ export class DateTimeControlValueAccessorSADirective<TDate = unknown> implements
      */
     public writeValue(value: DateTimeInputOutputValue<TDate>|undefined|null): void
     {
+        if(this.dateTime.valueFormat == DateTimeValueFormat.UnixTimestamp)
+        {
+            if(!isNumber(value))
+            {
+                throw new Error('DateTimeControlValueAccessorDirective: value is not a number!');
+            }
+            else
+            {
+                value = value * 1000;
+            }
+        }
+
         this.input.value = value;
     }
 
@@ -62,7 +78,19 @@ export class DateTimeControlValueAccessorSADirective<TDate = unknown> implements
      */
     public registerOnChange(fn: (data: DateTimeInputOutputValue<TDate>|undefined|null) => void): void
     {
-        this.initSubscriptions.add(this.input.valueChange.subscribe(() => fn(this.input.value)));
+        this.initSubscriptions.add(this.input.valueChange.subscribe(() =>
+        {
+            const value = this.input.value;
+
+            if(this.dateTime.valueFormat == DateTimeValueFormat.UnixTimestamp && isNumber(value))
+            {
+                fn(value / 1000);
+            }
+            else
+            {
+                fn(this.input.value);
+            }
+        }));
     }
 
     /**

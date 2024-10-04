@@ -25,7 +25,7 @@ import {DateApiObject} from '../../../../services';
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class YearPickerSAComponent<TDate = unknown> extends DateTimePeriodPickerBase<YearData<TDate>, TDate> implements DateTimePicker<TDate>
+export class YearPickerComponent<TDate = unknown> extends DateTimePeriodPickerBase<YearData<TDate>, TDate> implements DateTimePicker<TDate>
 {
     //######################### protected properties - template bindings #########################
 

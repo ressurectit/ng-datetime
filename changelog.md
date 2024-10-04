@@ -1,18 +1,54 @@
 # Changelog
 
-## Version 9.0.0 (2024-07-04)
+## Version 9.0.0 (2024-10-04)
 
 ### Features
 
 - updated `DateApiObject` interface
     - **new methods**
         - `timestamp` gets value of date time as timestamp (in miliseconds)
+- updated `DateTimeControlValueAccessorDirective` directive
+    - now it can return also value as `DateTimeValueFormat.UnixTimestamp`
 - *subpackage* `@anglr/datetime/moment`
     - updated `MomentDateApi`
         - now implements also new `timestamp`
 - *subpackage* `@anglr/datetime/date-fns`
     - updated `DateFnsDateApi`
         - now implements also new `timestamp`
+
+### BREAKING CHANGES
+
+- minimal supported version of `@angular` is `18.2.6`
+- minimal supported version of `@jscrpt/common` is `6.2.1`
+- minimal supported version of `@anglr/common` is `21.2.0`
+- minimal supported version of `date-fns` is `4.1.0`
+- minimal supported version of `moment` is `2.30.1`
+- minimal supported version of `tslib` is `2.7.0`
+- updated all comments, fixed *unix timestamp* for *timestamp*
+- updated `DateTimeValueFormat` enum
+    - `UnixTimestamp` now returns value in seconds, use `Timestamp` to get value in miliseconds
+- renamed `ButtonDateTimeInputSADirective` to `ButtonDateTimeInputDirective`
+- renamed `DatePickerInputSADirective` to `DatePickerInputDirective`
+- renamed `DateTimeInputHandlerSADirective` to `DateTimeInputHandlerDirective`
+- renamed `DateTimePickerInputSADirective` to `DateTimePickerInputDirective`
+- renamed `SimpleDatePickerInputSADirective` to `SimpleDatePickerInputDirective`
+- renamed `SimpleDateTimeInputHandlerSADirective` to `SimpleDateTimeInputHandlerDirective`
+- renamed `SimpleDateTimePickerInputSADirective` to `SimpleDateTimePickerInputDirective`
+- renamed `WithNowSADirective` to `WithNowDirective`
+- renamed `WithTimeSADirective` to `WithTimeDirective`
+- renamed `WithTodaySADirective` to `WithTodayDirective`
+- renamed `DateTimeSADirective` to `DateTimeDirective`
+- renamed `DateTimeControlValueAccessorSADirective` to `DateTimeControlValueAccessorDirective`
+- renamed `DateTimeInputSADirective` to `DateTimeInputDirective`
+- renamed `DateTimeMaxValidatorSADirective` to `DateTimeMaxValidatorDirective`
+- renamed `DateTimeValidatorSADirective` to `DateTimeValidatorDirective`
+- renamed `DayPickerSAComponent` to `DayPickerComponent`
+- renamed `MonthPickerSAComponent` to `MonthPickerComponent`
+- renamed `RollerTimePickerSAComponent` to `RollerTimePickerComponent`
+- renamed `YearPickerSAComponent` to `YearPickerComponent`
+- renamed `DateTimePickerSADirective` to `DateTimePickerDirective`
+- renamed `LoopScrollDataSADirective` to `LoopScrollDataDirective`
+- renamed `LoopScrollSADirective` to `LoopScrollDirective`
 
 ## Version 8.1.0 (2024-08-27)
 

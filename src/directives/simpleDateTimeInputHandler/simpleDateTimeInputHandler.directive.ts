@@ -4,7 +4,7 @@ import {BindThis} from '@jscrpt/common';
 import {DateTimeInput} from '../../interfaces';
 import {DATE_TIME_INPUT, DATE_API} from '../../misc/tokens';
 import {parseDateTime} from '../../misc/utils';
-import {DateTimePickerSADirective, DateTimeSADirective} from '../../modules';
+import {DateTimePickerDirective, DateTimeDirective} from '../../modules';
 import {DateApi, DateApiObject} from '../../services';
 
 /**
@@ -15,13 +15,13 @@ import {DateApi, DateApiObject} from '../../services';
     selector: '[dateTime][withSimpleHandler]',
     standalone: true,
 })
-export class SimpleDateTimeInputHandlerSADirective<TDate = unknown> implements OnInit, OnDestroy
+export class SimpleDateTimeInputHandlerDirective<TDate = unknown> implements OnInit, OnDestroy
 {
     //######################### constructor #########################
     constructor(@Inject(DATE_TIME_INPUT) protected input: DateTimeInput<TDate>,
                 @Inject(DATE_API) protected dateApi: DateApi<TDate>,
-                protected dateTimeData: DateTimeSADirective<TDate>,
-                @Optional() protected picker?: DateTimePickerSADirective<TDate>,)
+                protected dateTimeData: DateTimeDirective<TDate>,
+                @Optional() protected picker?: DateTimePickerDirective<TDate>,)
     {
     }
 

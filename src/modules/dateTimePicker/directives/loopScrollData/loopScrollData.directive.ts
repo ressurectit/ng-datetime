@@ -8,7 +8,7 @@ import {Directive, ElementRef, Input} from '@angular/core';
     selector: '[loopScrollData]',
     standalone: true,
 })
-export class LoopScrollDataSADirective<TData = unknown>
+export class LoopScrollDataDirective<TData = unknown>
 {
     //######################### public properties - inputs #########################
 

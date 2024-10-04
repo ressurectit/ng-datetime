@@ -18,7 +18,7 @@ import {DateTimeBase} from '../dateTimeBase';
     selector: '[dateTime]',
     standalone: true,
 })
-export class DateTimeSADirective<TDate = unknown> implements OnDestroy
+export class DateTimeDirective<TDate = unknown> implements OnDestroy
 {
     //######################### protected properties #########################
 

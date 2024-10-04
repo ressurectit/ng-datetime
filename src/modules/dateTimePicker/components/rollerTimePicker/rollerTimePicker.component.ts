@@ -6,7 +6,7 @@ import {DatePipesModule} from '../../../datePipes.module';
 import {hours, minutes} from './rollerTimePicker.data';
 import {DateTimePicker, PeriodData} from '../../interfaces';
 import {DateTimePeriodPickerBase} from '../dateTimePeriodPickerBase';
-import {LoopScrollData, LoopScrollDataSADirective, LoopScrollSADirective} from '../../directives';
+import {LoopScrollData, LoopScrollDataDirective, LoopScrollDirective} from '../../directives';
 
 /**
  * Component used for rendering roller time picker
@@ -25,12 +25,12 @@ import {LoopScrollData, LoopScrollDataSADirective, LoopScrollSADirective} from '
         CommonModule,
         DatePipesModule,
         ClickOutsideSADirective,
-        LoopScrollDataSADirective,
-        LoopScrollSADirective,
+        LoopScrollDataDirective,
+        LoopScrollDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RollerTimePickerSAComponent<TDate = unknown> extends DateTimePeriodPickerBase<PeriodData<TDate>, TDate>  implements DateTimePicker<TDate>
+export class RollerTimePickerComponent<TDate = unknown> extends DateTimePeriodPickerBase<PeriodData<TDate>, TDate>  implements DateTimePicker<TDate>
 {
     //######################### protected properties - template bindings #########################
 

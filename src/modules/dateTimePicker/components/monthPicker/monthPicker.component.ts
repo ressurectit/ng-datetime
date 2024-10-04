@@ -27,7 +27,7 @@ import {FormatProvider} from '../../../../interfaces';
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MonthPickerSAComponent<TDate = unknown> extends DateTimePeriodPickerBase<MonthData<TDate>, TDate> implements DateTimePicker<TDate>
+export class MonthPickerComponent<TDate = unknown> extends DateTimePeriodPickerBase<MonthData<TDate>, TDate> implements DateTimePicker<TDate>
 {
     //######################### constructor #########################
     constructor(@Inject(FORMAT_PROVIDER) protected formatProvider: FormatProvider,)

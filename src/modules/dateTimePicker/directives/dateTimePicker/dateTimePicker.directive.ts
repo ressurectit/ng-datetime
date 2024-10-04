@@ -37,7 +37,7 @@ const defaultOptions: DateTimePickerDirectiveOptions =
     standalone: true,
     exportAs: 'dateTimePicker',
 })
-export class DateTimePickerSADirective<TDate = unknown> extends DateTimeBase<TDate> implements OnInit, OnDestroy
+export class DateTimePickerDirective<TDate = unknown> extends DateTimeBase<TDate> implements OnInit, OnDestroy
 {
     //######################### protected properties #########################
 

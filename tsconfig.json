@@ -19,15 +19,17 @@
         "strictNullChecks": true,
         "esModuleInterop": true,
         "importHelpers": true,
+        "useDefineForClassFields": false,
+        "skipLibCheck": false,
+        "forceConsistentCasingInFileNames": true,
         "newLine": "lf",
         "rootDir": ".",
         "outDir": "es2022",
-        "baseUrl": "src",
         "paths": 
         {
-            "@anglr/datetime": ["index.ts", "index.d.ts"],
-            "@anglr/datetime/moment": ["../moment/src/index.ts", "../moment/src/index.d.ts"],
-            "@anglr/datetime/date-fns": ["../date-fns/src/index.ts", "/../date-fns/src/index.d.ts"],
+            "@anglr/datetime": ["./src/index.ts"],
+            "@anglr/datetime/moment": ["./moment/src/index.ts"],
+            "@anglr/datetime/date-fns": ["./date-fns/src/index.ts"],
         },
         "lib":
         [
@@ -52,6 +54,13 @@
         "strictTemplates": true,
         "compilationMode": "partial",
         "enableResourceInlining": true,
-        "strictInjectionParameters": true
+        "strictInjectionParameters": true,
+        "extendedDiagnostics":
+        {
+            "checks":
+            {
+                "interpolatedSignalNotInvoked": "error"
+            }
+        }
     }
 }

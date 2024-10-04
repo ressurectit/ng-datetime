@@ -8,7 +8,7 @@ import {DateTimeInputOutputValue} from '../../misc/types';
 export interface DateTimeInputValue<TDate = unknown>
 {
     /**
-     * Current value of date time, could be string, unix timestamp, Date, TDate object, or ranged DateTimeValue
+     * Current value of date time, could be string, timestamp, Date, TDate object, or ranged DateTimeValue
      */
     value: DateTimeInputOutputValue<TDate>|undefined|null;
 

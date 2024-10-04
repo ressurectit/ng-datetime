@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 
 import {DateTimePickerComponent} from '../components';
-import {DateTimePickerSADirective} from '../directives';
+import {DateTimePickerDirective} from '../directives';
 
 /**
  * Module for components that are used as date time picker
@@ -10,7 +10,7 @@ import {DateTimePickerSADirective} from '../directives';
 {
     imports:
     [
-        DateTimePickerSADirective,
+        DateTimePickerDirective,
     ],
     declarations:
     [
@@ -19,7 +19,7 @@ import {DateTimePickerSADirective} from '../directives';
     exports:
     [
         DateTimePickerComponent,
-        DateTimePickerSADirective,
+        DateTimePickerDirective,
     ],
 })
 export class DateTimePickerModule

@@ -25,7 +25,7 @@ import {DateApiObject} from '../../../../services';
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DayPickerSAComponent<TDate = unknown> extends DateTimePeriodPickerBase<DayData<TDate>, TDate> implements DateTimePicker<TDate>
+export class DayPickerComponent<TDate = unknown> extends DateTimePeriodPickerBase<DayData<TDate>, TDate> implements DateTimePicker<TDate>
 {
     //######################### protected properties #########################
 

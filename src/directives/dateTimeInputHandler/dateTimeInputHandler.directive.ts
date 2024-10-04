@@ -6,7 +6,7 @@ import {DateTimeInput} from '../../interfaces';
 import {DATE_API, DATE_TIME_INPUT} from '../../misc/tokens';
 import {DateTimeObjectValue} from '../../misc/types';
 import {parseDateTime, parseRawInput} from '../../misc/utils';
-import {DateTimePickerSADirective, DateTimeSADirective} from '../../modules';
+import {DateTimePickerDirective, DateTimeDirective} from '../../modules';
 import {DateApi, DateApiObject, DatePositionParser, DatePositionParserService, DateValueProvider} from '../../services';
 
 /**
@@ -17,7 +17,7 @@ import {DateApi, DateApiObject, DatePositionParser, DatePositionParserService, D
     selector: '[dateTime][withHandler]',
     standalone: true,
 })
-export class DateTimeInputHandlerSADirective<TDate = unknown> implements OnInit, OnDestroy
+export class DateTimeInputHandlerDirective<TDate = unknown> implements OnInit, OnDestroy
 {
     //######################### protected properties #########################
 
@@ -41,16 +41,16 @@ export class DateTimeInputHandlerSADirective<TDate = unknown> implements OnInit,
             return this.input.element as HTMLInputElement;
         }
 
-        throw new Error('You cant use DateTimeInputHandlerSADirective without input element!');
+        throw new Error('You cant use DateTimeInputHandlerDirective without input element!');
     }
 
     //######################### constructor #########################
     constructor(@Inject(DATE_TIME_INPUT) protected input: DateTimeInput<TDate>,
                 @Inject(DATE_API) protected dateApi: DateApi<TDate>,
-                protected dateTimeData: DateTimeSADirective<TDate>,
+                protected dateTimeData: DateTimeDirective<TDate>,
                 protected parserSvc: DatePositionParserService,
                 protected valueProvider: DateValueProvider<TDate>,
-                @Optional() protected picker?: DateTimePickerSADirective<TDate>,)
+                @Optional() protected picker?: DateTimePickerDirective<TDate>,)
     {
         this.parser = parserSvc.createParser(this.dateTimeData.customFormat);
         this.initSubscriptions.add(this.dateTimeData.customFormatChanges.subscribe(() => this.parser = parserSvc.createParser(this.dateTimeData.customFormat)));

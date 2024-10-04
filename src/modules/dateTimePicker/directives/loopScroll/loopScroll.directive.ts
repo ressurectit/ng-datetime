@@ -1,7 +1,7 @@
 import {AfterContentInit, ContentChildren, Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, QueryList, SimpleChanges} from '@angular/core';
 import {DebounceCall, isBlank, nameof} from '@jscrpt/common';
 
-import {LoopScrollDataSADirective} from '../loopScrollData/loopScrollData.directive';
+import {LoopScrollDataDirective} from '../loopScrollData/loopScrollData.directive';
 
 /**
  * Renders loop scroll for array of elements
@@ -11,7 +11,7 @@ import {LoopScrollDataSADirective} from '../loopScrollData/loopScrollData.direct
     selector: '[loopScroll]',
     standalone: true,
 })
-export class LoopScrollSADirective<TData = unknown> implements OnChanges, AfterContentInit
+export class LoopScrollDirective<TData = unknown> implements OnChanges, AfterContentInit
 {
     //######################### protected fields #########################
 
@@ -23,12 +23,12 @@ export class LoopScrollSADirective<TData = unknown> implements OnChanges, AfterC
     /**
      * Array of elements for scrolled stuff
      */
-    protected ɵitems: LoopScrollDataSADirective<TData>[] = [];
+    protected ɵitems: LoopScrollDataDirective<TData>[] = [];
 
     /**
      * Array of elements and data for scrolled stuff
      */ 
-    protected dataItems: LoopScrollDataSADirective<TData>[] = [];
+    protected dataItems: LoopScrollDataDirective<TData>[] = [];
 
     /**
      * Indication whether is loop scroll initialized
@@ -90,8 +90,8 @@ export class LoopScrollSADirective<TData = unknown> implements OnChanges, AfterC
     /**
      * Array of items that are loop scrolled
      */
-    @ContentChildren(LoopScrollDataSADirective)
-    protected items: QueryList<LoopScrollDataSADirective<TData>>|undefined|null;
+    @ContentChildren(LoopScrollDataDirective)
+    protected items: QueryList<LoopScrollDataDirective<TData>>|undefined|null;
 
     //######################### constructor #########################
     constructor(protected scrollElement: ElementRef<HTMLElement>)
@@ -112,7 +112,7 @@ export class LoopScrollSADirective<TData = unknown> implements OnChanges, AfterC
 
         const itemHeight = this.itemHeight ?? 1;
 
-        if(nameof<LoopScrollSADirective>('open') in changes)
+        if(nameof<LoopScrollDirective>('open') in changes)
         {
             if(this.open)
             {
@@ -121,7 +121,7 @@ export class LoopScrollSADirective<TData = unknown> implements OnChanges, AfterC
                 return;
             }
 
-            if(nameof<LoopScrollSADirective>('value') in changes)
+            if(nameof<LoopScrollDirective>('value') in changes)
             {
                 const selectedItem = this.dataItems?.find(itm => itm.data == this.value);
 
@@ -139,7 +139,7 @@ export class LoopScrollSADirective<TData = unknown> implements OnChanges, AfterC
                 this.scrollElement.nativeElement.scrollTo({top: this.scrollElement.nativeElement.scrollTop + (2 * itemHeight), behavior: 'auto'});
             }
         }
-        else if(nameof<LoopScrollSADirective>('value') in changes)
+        else if(nameof<LoopScrollDirective>('value') in changes)
         {
             if(!this.skipValueChange)
             {

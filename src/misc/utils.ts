@@ -1,7 +1,7 @@
 import {isBlank, isJsObject, isPresent, isString, nameof} from '@jscrpt/common';
 
 import {DateTimeValue} from '../interfaces';
-import type {DateTimeSADirective} from '../modules/dateTime/directives/dateTime/dateTime.directive';
+import type {DateTimeDirective} from '../modules/dateTime/directives/dateTime/dateTime.directive';
 import {DateApi, DateApiObject, DateValue, DateValueProvider} from '../services';
 import {DateTimeValueFormat} from './enums';
 import {DateTimeInputOutputValue, DateTimeObjectValue} from './types';
@@ -53,6 +53,7 @@ export function parseDateTime<TDate = unknown>(value: DateTimeInputOutputValue<T
         if(dateTimeFormat != DateTimeValueFormat.DateInstance &&
            dateTimeFormat != DateTimeValueFormat.FormattedString &&
            dateTimeFormat != DateTimeValueFormat.UnixTimestamp &&
+           dateTimeFormat != DateTimeValueFormat.Timestamp &&
            dateTimeFormat != DateTimeValueFormat.DataString)
         {
             throw new Error('DateTime: unable to get date time value, should be date instance, or string, or number!');
@@ -60,11 +61,11 @@ export function parseDateTime<TDate = unknown>(value: DateTimeInputOutputValue<T
 
         if(dateTimeFormat == DateTimeValueFormat.DataString)
         {
-            //value is string, instance of date or unix timestamp
+            //value is string, instance of date or timestamp
             return dateApi.getValue(value, dataFormat ?? undefined);
         }
 
-        //value is string, instance of date or unix timestamp
+        //value is string, instance of date or timestamp
         return dateApi.getValue(value, stringFormat ?? undefined);
     }
 
@@ -83,7 +84,7 @@ export function parseDateTime<TDate = unknown>(value: DateTimeInputOutputValue<T
         throw new Error('DateTime: unable to parse string date, because format is missing!');
     }
 
-    //value is string, instance of date or unix timestamp
+    //value is string, instance of date or timestamp
     return dateApi.getValue(value, dataFormat ?? stringFormat ?? undefined);
 }
 
@@ -154,10 +155,10 @@ export function formatDateTime<TDate = unknown>(value: DateTimeObjectValue<TDate
         return value.format(stringFormat);
     }
 
-    if(dateTimeFormat == DateTimeValueFormat.UnixTimestamp)
+    if(dateTimeFormat == DateTimeValueFormat.UnixTimestamp ||
+       dateTimeFormat == DateTimeValueFormat.Timestamp)
     {
-        //TODO: fix this in "future"
-        return value.unixTimestamp() * 1000;
+        return value.timestamp();
     }
 
     return value.value;
@@ -197,7 +198,7 @@ export function getSingleDateTimeValue<TDate>(value: DateTimeInputOutputValue<TD
  */
 export function parseRawInput<TDate>(rawValue: string, 
                                      dateApi: DateApi<TDate>,
-                                     dateTimeData: DateTimeSADirective<TDate>,
+                                     dateTimeData: DateTimeDirective<TDate>,
                                      valueProvider: DateValueProvider<TDate>,): [DateTimeObjectValue<TDate>|undefined|null, DateTimeInputOutputValue<TDate>|undefined|null]
 {
     if(!rawValue)
@@ -221,7 +222,7 @@ export function parseRawInput<TDate>(rawValue: string,
  */
 export function getInternalValue<TDate>(value: DateTimeInputOutputValue<TDate>|undefined|null,
                                         dateApi: DateApi<TDate>,
-                                        dateTimeData: DateTimeSADirective<TDate>,
+                                        dateTimeData: DateTimeDirective<TDate>,
                                         valueProvider: DateValueProvider<TDate>,
                                         dateTimeFormat: DateTimeValueFormat|undefined|null = null,): DateTimeObjectValue<TDate>|undefined|null
 {

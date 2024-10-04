@@ -19,13 +19,13 @@ import {DateApi, DateValueProvider} from '../../services';
         <ExistingProvider>
         {
             provide: DATE_TIME_INPUT,
-            useExisting: forwardRef(() => ButtonDateTimeInputSADirective),
+            useExisting: forwardRef(() => ButtonDateTimeInputDirective),
         },
     ],
     standalone: true,
     exportAs: 'dateTime',
 })
-export class ButtonDateTimeInputSADirective<TDate = unknown> extends DateTimeBase<TDate> implements DateTimeInput, OnDestroy
+export class ButtonDateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate> implements DateTimeInput, OnDestroy
 {
     //######################### protected properties #########################
 

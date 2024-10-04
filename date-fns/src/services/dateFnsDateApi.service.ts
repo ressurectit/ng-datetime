@@ -1,7 +1,7 @@
 import {Inject, Injectable, ValueProvider} from '@angular/core';
 import {DateApi, DateValue, DateApiObject, DateTimeRelativeParser, DateApiObjectCtor, DATE_API_OBJECT_TYPE, DateObject} from '@anglr/datetime';
 import {isBlank, isPresent, isString} from '@jscrpt/common';
-import {toDate, getDate, setDate, isAfter, isBefore, isEqual, differenceInCalendarDays, format, formatISO, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, parseISO, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth, setISODay, getISODay, subHours, addHours, endOfHour, startOfHour, startOfMinute, endOfMinute, addMinutes, subMinutes, getHours, setHours, getMinutes, setMinutes, isDate, getUnixTime, getTime} from 'date-fns';
+import {toDate, getDate, setDate, isAfter, isBefore, isEqual, differenceInCalendarDays, format, formatISO, startOfMonth, endOfMonth, startOfWeek, endOfWeek, startOfDay, endOfDay, addMonths, addWeeks, addDays, subMonths, subWeeks, subDays, getDaysInMonth, isSameDay, isSameWeek, isSameMonth, isValid, parse, parseISO, addYears, subYears, startOfYear, endOfYear, isWeekend, setYear, getYear, isSameYear, startOfDecade, endOfDecade, setMonth, getMonth, setISODay, getISODay, subHours, addHours, endOfHour, startOfHour, startOfMinute, endOfMinute, addMinutes, subMinutes, getHours, setHours, getMinutes, setMinutes, isDate, getUnixTime, getTime, Day, FormatLongWidth} from 'date-fns';
 
 import {DATE_FNS_LOCALE} from '../misc/tokens';
 import {DateFnsLocale} from './dateFnsLocale.service';
@@ -26,7 +26,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     //######################### public properties - implementation of DateApiObject #########################
 
     /**
-     * Original value that is not changed unless 'updateOriginal' is called
+     * @inheritdoc
      */
     public get originalValue(): Date
     {
@@ -34,7 +34,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Instance of date
+     * @inheritdoc
      */
     public get value(): Date
     {
@@ -72,7 +72,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     //######################### public methods - implementation of DateApiObject #########################
 
     /**
-     * Gets indication whether provided instance of date is valid
+     * @inheritdoc
      */
     public isValid(): boolean
     {
@@ -80,7 +80,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Gets indication whether provided instance of date is weekend day
+     * @inheritdoc
      */
     public isWeekend(): boolean
     {
@@ -88,8 +88,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Formats date value
-     * @param formatString - Format token used for creating formatted string
+     * @inheritdoc
      */
     public format(formatString: string): string
     {
@@ -351,8 +350,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Updates value to end date and time of current minute
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public endOfMinute(): DateApiObject<Date>
     {
@@ -362,9 +360,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Add minutes, if count not specified adds 1 minute
-     * @param count - Number of minutes count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public addMinutes(count?: number): DateApiObject<Date>
     {
@@ -374,9 +370,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Subtract minutes, if count not specified subtract 1 minute
-     * @param count - Number of minutes count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public subtractMinutes(count?: number): DateApiObject<Date>
     {
@@ -386,7 +380,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Gets number of days in month
+     * @inheritdoc
      */
     public daysInMonth(): number
     {
@@ -394,18 +388,10 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Gets year
+     * @inheritdoc
      */
     public year(): number;
-    /**
-     * Sets year
-     * @param year - Year to be set
-     */
     public year(year: number): DateApiObject<Date>;
-    /**
-     * Gets or sets year
-     * @param year - If specified, sets year
-     */
     public year(year?: number): DateApiObject<Date>|number
     {
         if(isPresent(year))
@@ -419,18 +405,10 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Gets month
+     * @inheritdoc
      */
     public month(): number
-    /**
-     * Sets month
-     * @param month - Month to be set
-     */
     public month(month: number): DateApiObject<Date>
-    /**
-     * Gets or sets month
-     * @param month - If specified, sets month
-     */
     public month(month?: number): DateApiObject<Date>|number
     {
         if(isPresent(month))
@@ -444,18 +422,10 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Gets day of month one based
+     * @inheritdoc
      */
     public dayOfMonth(): number;
-    /**
-     * Sets day of month one based
-     * @param day - Day of month to be set
-     */
     public dayOfMonth(day: number): DateApiObject<Date>;
-    /**
-     * Gets or sets day of month one based
-     * @param day - If specified, sets day of month
-     */
     public dayOfMonth(day?: number): DateApiObject<Date>|number
     {
         if(isPresent(day))
@@ -469,18 +439,10 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Gets day of week zero based, first is monday
+     * @inheritdoc
      */
     public dayOfWeek(): number;
-    /**
-     * Sets day of week zero based, first is monday
-     * @param day - Day of week to be set
-     */
     public dayOfWeek(day: number): DateApiObject<Date>;
-    /**
-     * Gets or sets day of week zero based, first is monday
-     * @param day - If specified, sets day of week
-     */
     public dayOfWeek(day?: number): number|DateApiObject<Date>
     {
         if(isPresent(day))
@@ -494,18 +456,10 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Gets hours zero based
+     * @inheritdoc
      */
     public hour(): number;
-    /**
-     * Sets hours zero based
-     * @param hour - hour to be set
-     */
     public hour(hour: number): DateApiObject<Date>;
-    /**
-     * Gets or sets hours zero based
-     * @param hour - If specified, sets hour
-     */
     public hour(hour?: number): DateApiObject<Date>|number
     {
         if(isPresent(hour))
@@ -519,18 +473,10 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Gets minutes zero based
+     * @inheritdoc
      */
     public minute(): number;
-    /**
-     * Sets minutes zero based
-     * @param minute - minutes to be set
-     */
     public minute(minute: number): DateApiObject<Date>;
-    /**
-     * Gets or sets minutes zero based
-     * @param minute - If specified, sets minutes
-     */
     public minute(minute?: number): DateApiObject<Date>|number
     {
         if(isPresent(minute))
@@ -544,8 +490,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Gets indication whether current value is before 'date'
-     * @param date - Date which is this date compared to
+     * @inheritdoc
      */
     public isBefore(date: DateObject<Date>): boolean
     {
@@ -555,8 +500,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Gets indication whether current value is after 'date'
-     * @param date - Date which is this date compared to
+     * @inheritdoc
      */
     public isAfter(date: DateObject<Date>): boolean
     {
@@ -566,8 +510,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Gets number of days between this and provided date
-     * @param date - Date which is used for computation of diff against
+     * @inheritdoc
      */
     public diffDays(date: DateObject<Date>): number
     {
@@ -577,8 +520,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Compares whether this date is same week as provided date
-     * @param date - Date which is used for comparison of same week
+     * @inheritdoc
      */
     public isSameWeek(date: DateObject<Date>): boolean
     {
@@ -588,8 +530,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Compares whether this date is same decade as provided date
-     * @param date - Date which is used for comparison of same decade
+     * @inheritdoc
      */
     public isSameDecade(date: DateObject<Date>): boolean
     {
@@ -603,8 +544,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Compares whether this date is same year as provided date
-     * @param date - Date which is used for comparison of same year
+     * @inheritdoc
      */
     public isSameYear(date: DateObject<Date>): boolean
     {
@@ -614,8 +554,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Compares whether this date is same month as provided date
-     * @param date - Date which is used for comparison of same month
+     * @inheritdoc
      */
     public isSameMonth(date: DateObject<Date>): boolean
     {
@@ -645,7 +584,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Creates clone of this instance, value and originalValue have same value and are cloned from value
+     * @inheritdoc
      */
     public clone(): DateApiObject<Date>
     {
@@ -653,7 +592,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Creates clone of this instance, value and originalValue have same value and are cloned from originalValue
+     * @inheritdoc
      */
     public cloneOriginal(): DateApiObject<Date>
     {
@@ -661,9 +600,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Updates originalValue, if value is not provided originalValue is set to value
-     * @param value - Value to be set as original, or null (value will be used as value)
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public updateOriginal(value?: Date): DateApiObject<Date>
     {
@@ -680,8 +617,7 @@ export class DateFnsDateApiObject implements DateApiObject<Date>
     }
 
     /**
-     * Changes value to same value as originalValue
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public resetOriginal(): DateApiObject<Date>
     {
@@ -723,9 +659,7 @@ export class DateFnsDateApi implements DateApi<Date>
     //######################### public methods - implementation of DateApi #########################
 
     /**
-     * Gets wrapping object used for manipulation
-     * @param value - Value to be converted (parsed) and used for manipulation
-     * @param format - Format string used for parsing string value
+     * @inheritdoc
      */
     public getValue(value: DateValue|Date, format?: string): DateApiObject<Date>
     {
@@ -733,16 +667,15 @@ export class DateFnsDateApi implements DateApi<Date>
     }
 
     /**
-     * Gets wrapping object used for manipulation instantiated to current date and time
+     * @inheritdoc
      */
     public now(): DateApiObject<Date>
     {
-        return new this._dateApiObjecType(new Date(), null ?? undefined, this._localeSvc);
+        return new this._dateApiObjecType(new Date(), undefined, this._localeSvc);
     }
 
     /**
-     * Gets format string using pseudo format
-     * @param pseudoFormat - Pseudo format token, used for obtaining 'date' or 'time' format string
+     * @inheritdoc
      */
     public getFormat(pseudoFormat: string): string
     {
@@ -753,7 +686,7 @@ export class DateFnsDateApi implements DateApi<Date>
                 throw new Error('Missing long formats for locale in DateApi');
             }
 
-            const widths: {[index: number]: string} =
+            const widths: {[index: number]: FormatLongWidth} =
             {
                 1: 'short',
                 2: 'medium',
@@ -784,7 +717,7 @@ export class DateFnsDateApi implements DateApi<Date>
     }
 
     /**
-     * Gets information
+     * @inheritdoc
      */
     public weekStartsOnMonday(): boolean
     {
@@ -792,7 +725,7 @@ export class DateFnsDateApi implements DateApi<Date>
     }
 
     /**
-     * Gets array of weekday names in short format, order of days is dependent on locale
+     * @inheritdoc
      */
     public weekdaysShort(): string[]
     {
@@ -801,7 +734,7 @@ export class DateFnsDateApi implements DateApi<Date>
 
         for(let x = 0; x < 7; x++)
         {
-            weekdays.push(this._localeSvc.locale.localize!.day(startIndex++ % 7, {width: 'short'}));
+            weekdays.push(this._localeSvc.locale.localize!.day(startIndex++ % 7 as Day, {width: 'short'}));
         }
 
         return weekdays;
@@ -827,5 +760,5 @@ export const dateFnsDateApiObjectType: DateApiObjectCtor<Date, DateFnsDateApiObj
 export const DATE_FNS_DATE_API_OBJECT_TYPE: ValueProvider =
 {
     provide: DATE_API_OBJECT_TYPE,
-    useValue: dateFnsDateApiObjectType
+    useValue: dateFnsDateApiObjectType,
 };

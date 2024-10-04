@@ -1,6 +1,6 @@
 import {Directive} from '@angular/core';
 
-import {RollerTimePickerSAComponent, DateTimePickerSADirective, DayPickerSAComponent, MonthPickerSAComponent, YearPickerSAComponent, DateTimeSADirective} from '../../modules';
+import {RollerTimePickerComponent, DateTimePickerDirective, DayPickerComponent, MonthPickerComponent, YearPickerComponent, DateTimeDirective} from '../../modules';
 
 /**
  * Directive that sets up usage of date time picker to use time format and time picker
@@ -10,20 +10,20 @@ import {RollerTimePickerSAComponent, DateTimePickerSADirective, DayPickerSACompo
     selector: '[dateTime][withPicker][withTime]',
     standalone: true,
 })
-export class WithTimeSADirective<TDate = unknown>
+export class WithTimeDirective<TDate = unknown>
 {
     //######################### constructor #########################
-    constructor(picker: DateTimePickerSADirective<TDate>,
-                dateTime: DateTimeSADirective<TDate>,)
+    constructor(picker: DateTimePickerDirective<TDate>,
+                dateTime: DateTimeDirective<TDate>,)
     {
         picker.pickerOptions = 
         {
             periodsDefinition:
             {
-                'time': RollerTimePickerSAComponent,
-                'day': DayPickerSAComponent,
-                'month': MonthPickerSAComponent,
-                'year': YearPickerSAComponent,
+                'time': RollerTimePickerComponent,
+                'day': DayPickerComponent,
+                'month': MonthPickerComponent,
+                'year': YearPickerComponent,
             },
         };
 

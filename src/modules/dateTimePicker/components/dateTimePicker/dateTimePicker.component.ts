@@ -6,13 +6,13 @@ import {Subscription} from 'rxjs';
 import {DateTimeInputValue} from '../../../../interfaces';
 import {DateTimeInputOutputValue, DateTimeObjectValue} from '../../../../misc/types';
 import {DATE_TIME_PICKER_OPTIONS} from '../../misc/tokens';
-import {DayPickerSAComponent} from '../dayPicker/dayPicker.component';
-import {MonthPickerSAComponent} from '../monthPicker/monthPicker.component';
+import {DayPickerComponent} from '../dayPicker/dayPicker.component';
+import {MonthPickerComponent} from '../monthPicker/monthPicker.component';
 import {DateTimePickerOptions} from './dateTimePicker.interface';
-import {YearPickerSAComponent} from '../yearPicker/yearPicker.component';
+import {YearPickerComponent} from '../yearPicker/yearPicker.component';
 import {DateTimePicker} from '../../interfaces';
 import {formatDateTime, getInternalValue} from '../../../../misc/utils';
-import {DateTimeSADirective} from '../../../dateTime/directives';
+import {DateTimeDirective} from '../../../dateTime/directives';
 import {DateValueProvider} from '../../../../services';
 import {DateTimeValueFormat} from '../../../../misc/enums';
 
@@ -31,9 +31,9 @@ const defaultOptions: DateTimePickerOptions =
     defaultPeriod: 'day',
     periodsDefinition:
     {
-        'day': DayPickerSAComponent,
-        'month': MonthPickerSAComponent,
-        'year': YearPickerSAComponent,
+        'day': DayPickerComponent,
+        'month': MonthPickerComponent,
+        'year': YearPickerComponent,
     },
 };
 
@@ -46,12 +46,12 @@ const defaultOptions: DateTimePickerOptions =
     templateUrl: 'dateTimePicker.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DateTimePickerComponent<TDate = unknown> extends DateTimeSADirective<TDate> implements DateTimeInputValue<TDate>, OnInit, OnChanges, OnDestroy
+export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<TDate> implements DateTimeInputValue<TDate>, OnInit, OnChanges, OnDestroy
 {
     //######################### protected properties #########################
 
     /**
-     * Current value of date time, could be string, unix timestamp, Date, TDate object, or ranged DateTimeValue
+     * Current value of date time, could be string, timestamp, Date, TDate object, or ranged DateTimeValue
      */
     protected ɵValue: DateTimeInputOutputValue<TDate>|undefined|null;
 

@@ -23,7 +23,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     //######################### public properties - implementation of DateApiObject #########################
 
     /**
-     * Original value that is not changed unless 'updateOriginal' is called
+     * @inheritdoc
      */
     public get originalValue(): moment.Moment
     {
@@ -31,7 +31,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Instance of date
+     * @inheritdoc
      */
     public get value(): moment.Moment
     {
@@ -47,7 +47,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     //######################### public methods - implementation of DateApiObject #########################
 
     /**
-     * Gets indication whether provided instance of date is valid
+     * @inheritdoc
      */
     public isValid(): boolean
     {
@@ -55,7 +55,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Gets indication whether provided instance of date is weekend day
+     * @inheritdoc
      */
     public isWeekend(): boolean
     {
@@ -65,8 +65,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Formats date value
-     * @param format - Format token used for creating formatted string
+     * @inheritdoc
      */
     public format(format: string): string
     {
@@ -98,34 +97,31 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Updates value to start date and time of current decade
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public startOfDecade(): DateApiObject<moment.Moment>
     {
         const diff = (this._value.year() % 10);
 
         this._value = moment(this._value).subtract(diff, 'years').startOf('year');
-        
+
         return this;
     }
 
     /**
-     * Updates value to end date and time of current decade
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public endOfDecade(): DateApiObject<moment.Moment>
     {
         const diff = 9 - (this._value.year() % 10);
 
         this._value = moment(this._value).add(diff, 'years').endOf('year');
-        
+
         return this;
     }
 
     /**
-     * Updates value to start date and time of current year
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public startOfYear(): DateApiObject<moment.Moment>
     {
@@ -135,8 +131,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Updates value to end date and time of current year
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public endOfYear(): DateApiObject<moment.Moment>
     {
@@ -146,9 +141,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Add years, if count not specified adds 1 year
-     * @param count - Number of years count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public addYears(count?: number): DateApiObject<moment.Moment>
     {
@@ -158,9 +151,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Subtract years, if count not specified subtract 1 year
-     * @param count - Number of years count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public subtractYears(count?: number): DateApiObject<moment.Moment>
     {
@@ -170,8 +161,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Updates value to start date and time of current month
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public startOfMonth(): DateApiObject<moment.Moment>
     {
@@ -181,8 +171,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Updates value to end date and time of current month
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public endOfMonth(): DateApiObject<moment.Moment>
     {
@@ -192,9 +181,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Add months, if count not specified adds 1 month
-     * @param count - Number of months count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public addMonths(count?: number): DateApiObject<moment.Moment>
     {
@@ -204,9 +191,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Subtract months, if count not specified subtract 1 month
-     * @param count - Number of months count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public subtractMonths(count?: number): DateApiObject<moment.Moment>
     {
@@ -216,8 +201,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Updates value to start date and time of current week
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public startOfWeek(): DateApiObject<moment.Moment>
     {
@@ -227,8 +211,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Updates value to end date and time of current week
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public endOfWeek(): DateApiObject<moment.Moment>
     {
@@ -238,9 +221,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Add weeks, if count not specified adds 1 week
-     * @param count - Number of weeks count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public addWeeks(count?: number): DateApiObject<moment.Moment>
     {
@@ -250,9 +231,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Subtract weeks, if count not specified subtract 1 week
-     * @param count - Number of weeks count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public subtractWeeks(count?: number): DateApiObject<moment.Moment>
     {
@@ -262,8 +241,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Updates value to start date and time of current day
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public startOfDay(): DateApiObject<moment.Moment>
     {
@@ -273,8 +251,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Updates value to end date and time of current day
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public endOfDay(): DateApiObject<moment.Moment>
     {
@@ -284,9 +261,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Add days, if count not specified adds 1 day
-     * @param count - Number of days count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public addDays(count?: number): DateApiObject<moment.Moment>
     {
@@ -296,9 +271,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Subtract days, if count not specified subtract 1 day
-     * @param count - Number of days count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public subtractDays(count?: number): DateApiObject<moment.Moment>
     {
@@ -308,8 +281,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Updates value to start date and time of current hour
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public startOfHour(): DateApiObject<moment.Moment>
     {
@@ -319,8 +291,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Updates value to end date and time of current hour
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public endOfHour(): DateApiObject<moment.Moment>
     {
@@ -330,9 +301,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Add hours, if count not specified adds 1 hour
-     * @param count - Number of hours count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public addHours(count?: number): DateApiObject<moment.Moment>
     {
@@ -342,9 +311,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Subtract hours, if count not specified subtract 1 hour
-     * @param count - Number of hours count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public subtractHours(count?: number): DateApiObject<moment.Moment>
     {
@@ -354,8 +321,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Updates value to start date and time of current minute
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public startOfMinute(): DateApiObject<moment.Moment>
     {
@@ -365,8 +331,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Updates value to end date and time of current minute
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public endOfMinute(): DateApiObject<moment.Moment>
     {
@@ -376,9 +341,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Add minutes, if count not specified adds 1 minute
-     * @param count - Number of minutes count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public addMinutes(count?: number): DateApiObject<moment.Moment>
     {
@@ -388,9 +351,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Subtract minutes, if count not specified subtract 1 minute
-     * @param count - Number of minutes count
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public subtractMinutes(count?: number): DateApiObject<moment.Moment>
     {
@@ -400,7 +361,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Gets number of days in month
+     * @inheritdoc
      */
     public daysInMonth(): number
     {
@@ -408,18 +369,10 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Gets year
+     * @inheritdoc
      */
     public year(): number;
-    /**
-     * Sets year
-     * @param year - Year to be set
-     */
     public year(year: number): DateApiObject<moment.Moment>;
-    /**
-     * Gets or sets year
-     * @param year - If specified, sets year
-     */
     public year(year?: number): DateApiObject<moment.Moment>|number
     {
         if(isPresent(year))
@@ -433,18 +386,10 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Gets month
+     * @inheritdoc
      */
     public month(): number
-    /**
-     * Sets month
-     * @param month - Month to be set
-     */
     public month(month: number): DateApiObject<moment.Moment>
-    /**
-     * Gets or sets month
-     * @param month - If specified, sets month
-     */
     public month(month?: number): DateApiObject<moment.Moment>|number
     {
         if(isPresent(month))
@@ -458,18 +403,10 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Gets day of month one based
+     * @inheritdoc
      */
     public dayOfMonth(): number;
-    /**
-     * Sets day of month one based
-     * @param day - Day of month to be set
-     */
     public dayOfMonth(day: number): DateApiObject<moment.Moment>;
-    /**
-     * Gets or sets day of month one based
-     * @param day - If specified, sets day of month
-     */
     public dayOfMonth(day?: number): DateApiObject<moment.Moment>|number
     {
         if(isPresent(day))
@@ -483,18 +420,10 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Gets day of week zero based, first is monday
+     * @inheritdoc
      */
     public dayOfWeek(): number;
-    /**
-     * Sets day of week zero based, first is monday
-     * @param day - Day of week to be set
-     */
     public dayOfWeek(day: number): DateApiObject<moment.Moment>;
-    /**
-     * Gets or sets day of week zero based, first is monday
-     * @param day - If specified, sets day of week
-     */
     public dayOfWeek(day?: number): number|DateApiObject<moment.Moment>
     {
         if(isPresent(day))
@@ -508,18 +437,10 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Gets hours zero based
+     * @inheritdoc
      */
     public hour(): number;
-    /**
-     * Sets hours zero
-     * @param hour - hour to be set
-     */
     public hour(hour: number): DateApiObject<moment.Moment>;
-    /**
-     * Gets or sets hours zero
-     * @param hour - If specified, sets hour
-     */
     public hour(hour?: number): DateApiObject<moment.Moment>|number
     {
         if(isPresent(hour))
@@ -533,18 +454,10 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Gets minutes zero based
+     * @inheritdoc
      */
     public minute(): number;
-    /**
-     * Sets minutes zero based
-     * @param minute - minutes to be set
-     */
     public minute(minute: number): DateApiObject<moment.Moment>;
-    /**
-     * Gets or sets minutes zero based
-     * @param minute - If specified, sets minutes
-     */
     public minute(minute?: number): DateApiObject<moment.Moment>|number
     {
         if(isPresent(minute))
@@ -558,8 +471,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Gets indication whether current value is before 'date'
-     * @param date - Date which is this date compared to
+     * @inheritdoc
      */
     public isBefore(date: DateObject<moment.Moment>): boolean
     {
@@ -569,8 +481,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Gets indication whether current value is after 'date'
-     * @param date - Date which is this date compared to
+     * @inheritdoc
      */
     public isAfter(date: DateObject<moment.Moment>): boolean
     {
@@ -580,8 +491,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Gets number of days between this and provided date
-     * @param date - Date which is used for computation of diff against
+     * @inheritdoc
      */
     public diffDays(date: DateObject<moment.Moment>): number
     {
@@ -591,8 +501,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Compares whether this date is same week as provided date
-     * @param date - Date which is used for comparison of same week
+     * @inheritdoc
      */
     public isSameWeek(date: DateObject<moment.Moment>): boolean
     {
@@ -602,8 +511,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Compares whether this date is same decade as provided date
-     * @param date - Date which is used for comparison of same decade
+     * @inheritdoc
      */
     public isSameDecade(date: DateObject<moment.Moment>): boolean
     {
@@ -617,8 +525,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Compares whether this date is same year as provided date
-     * @param date - Date which is used for comparison of same year
+     * @inheritdoc
      */
     public isSameYear(date: DateObject<moment.Moment>): boolean
     {
@@ -628,8 +535,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Compares whether this date is same month as provided date
-     * @param date - Date which is used for comparison of same month
+     * @inheritdoc
      */
     public isSameMonth(date: DateObject<moment.Moment>): boolean
     {
@@ -639,8 +545,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Compares whether this date is same day as provided date
-     * @param date - Date which is used for comparison of same day
+     * @inheritdoc
      */
     public isSameDay(date: DateObject<moment.Moment>): boolean
     {
@@ -660,7 +565,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Creates clone of this instance, value and originalValue have same value and are cloned from value
+     * @inheritdoc
      */
     public clone(): DateApiObject<moment.Moment>
     {
@@ -668,7 +573,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Creates clone of this instance, value and originalValue have same value and are cloned from originalValue
+     * @inheritdoc
      */
     public cloneOriginal(): DateApiObject<moment.Moment>
     {
@@ -676,9 +581,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Updates originalValue, if value is not provided originalValue is set to value
-     * @param value - Value to be set as original, or null (value will be used as value)
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public updateOriginal(value?: moment.Moment): DateApiObject<moment.Moment>
     {
@@ -695,8 +598,7 @@ export class MomentDateApiObject implements DateApiObject<moment.Moment>
     }
 
     /**
-     * Changes value to same value as originalValue
-     * @returns Itself for fluent API
+     * @inheritdoc
      */
     public resetOriginal(): DateApiObject<moment.Moment>
     {
@@ -737,9 +639,7 @@ export class MomentDateApi implements DateApi<moment.Moment>
     //######################### public methods #########################
 
     /**
-     * Gets wrapping object used for manipulation
-     * @param value - Value to be converted (parsed) and used for manipulation
-     * @param format - Format string used for parsing string value
+     * @inheritdoc
      */
     public getValue(value: DateValue|moment.Moment, format?: string): DateApiObject<moment.Moment>
     {
@@ -747,7 +647,7 @@ export class MomentDateApi implements DateApi<moment.Moment>
     }
 
     /**
-     * Gets wrapping object used for manipulation instantiated to current date and time
+     * @inheritdoc
      */
     public now(): DateApiObject<moment.Moment>
     {
@@ -755,8 +655,7 @@ export class MomentDateApi implements DateApi<moment.Moment>
     }
 
     /**
-     * Gets format string using pseudo format
-     * @param pseudoFormat - Pseudo format token, used for obtaining 'date' or 'time' format string
+     * @inheritdoc
      */
     public getFormat(pseudoFormat: string): string
     {
@@ -769,7 +668,7 @@ export class MomentDateApi implements DateApi<moment.Moment>
     }
 
     /**
-     * Gets information 
+     * @inheritdoc
      */
     public weekStartsOnMonday(): boolean
     {
@@ -777,7 +676,7 @@ export class MomentDateApi implements DateApi<moment.Moment>
     }
 
     /**
-     * Gets array of weekday names in short format, order of days is dependent on locale
+     * @inheritdoc
      */
     public weekdaysShort(): string[]
     {

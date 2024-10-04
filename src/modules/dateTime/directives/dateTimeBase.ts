@@ -3,7 +3,7 @@ import {Subscription} from 'rxjs';
 
 import {DateTimeInputValue} from '../../../interfaces';
 import {DateTimeInputOutputValue} from '../../../misc/types';
-import {DateTimeSADirective} from './dateTime/dateTime.directive';
+import {DateTimeDirective} from './dateTime/dateTime.directive';
 
 /**
  * Base class for date time directives, contains basic shared data
@@ -19,14 +19,14 @@ export class DateTimeBase<TDate = unknown> implements DateTimeInputValue<TDate>,
     protected initSubscriptions: Subscription = new Subscription();
 
     /**
-     * Current value of date time, could be string, unix timestamp, Date, TDate object, or ranged DateTimeValue
+     * Current value of date time, could be string, timestamp, Date, TDate object, or ranged DateTimeValue
      */
     protected ɵValue: DateTimeInputOutputValue<TDate>|undefined|null;
 
     /**
      * Instance of date time shared data, like formats and restrictions
      */
-    protected dateTimeData: DateTimeSADirective<TDate> = inject(DateTimeSADirective<TDate>);
+    protected dateTimeData: DateTimeDirective<TDate> = inject(DateTimeDirective<TDate>);
 
     //######################### public properties - implementation of DateTimeInputValue #########################
 

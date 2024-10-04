@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 
-import {DateTimeControlValueAccessorSADirective, DateTimeSADirective, DateTimeInputSADirective, DateTimeMaxValidatorSADirective, DateTimeMinValidatorSADirective, DateTimeValidatorSADirective} from '../directives';
+import {DateTimeControlValueAccessorDirective, DateTimeDirective, DateTimeInputDirective, DateTimeMaxValidatorDirective, DateTimeMinValidatorDirective, DateTimeValidatorDirective} from '../directives';
 
 /**
  * Module for basic date time directives, components, pipes
@@ -9,21 +9,21 @@ import {DateTimeControlValueAccessorSADirective, DateTimeSADirective, DateTimeIn
 {
     imports:
     [
-        DateTimeSADirective,
-        DateTimeControlValueAccessorSADirective,
-        DateTimeInputSADirective,
-        DateTimeMaxValidatorSADirective,
-        DateTimeMinValidatorSADirective,
-        DateTimeValidatorSADirective,
+        DateTimeDirective,
+        DateTimeControlValueAccessorDirective,
+        DateTimeInputDirective,
+        DateTimeMaxValidatorDirective,
+        DateTimeMinValidatorDirective,
+        DateTimeValidatorDirective,
     ],
     exports:
     [
-        DateTimeSADirective,
-        DateTimeControlValueAccessorSADirective,
-        DateTimeInputSADirective,
-        DateTimeMaxValidatorSADirective,
-        DateTimeMinValidatorSADirective,
-        DateTimeValidatorSADirective,
+        DateTimeDirective,
+        DateTimeControlValueAccessorDirective,
+        DateTimeInputDirective,
+        DateTimeMaxValidatorDirective,
+        DateTimeMinValidatorDirective,
+        DateTimeValidatorDirective,
     ],
 })
 export class DateTimeModule

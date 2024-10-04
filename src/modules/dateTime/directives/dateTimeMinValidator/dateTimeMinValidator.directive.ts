@@ -17,13 +17,13 @@ import {DateTimeBase} from '../dateTimeBase';
         <ExistingProvider>
         {
             provide: NG_VALIDATORS,
-            useExisting: forwardRef(() => DateTimeMinValidatorSADirective),
+            useExisting: forwardRef(() => DateTimeMinValidatorDirective),
             multi: true
         },
     ],
     standalone: true,
 })
-export class DateTimeMinValidatorSADirective<TDate = unknown> extends DateTimeBase<TDate>  implements Validator, OnInit
+export class DateTimeMinValidatorDirective<TDate = unknown> extends DateTimeBase<TDate>  implements Validator, OnInit
 {
     //######################### private fields #########################
 
