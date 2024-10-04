@@ -97,7 +97,7 @@ export class DateTimePickerDirective<TDate = unknown> extends DateTimeBase<TDate
                 protected element: ElementRef<HTMLElement>,
                 @Inject(DATE_TIME_INPUT) protected input: DateTimeInput<TDate>,
                 @Inject(DOCUMENT) protected document: Document,
-                @Inject(POSITION) protected position: Position,
+                @Inject(POSITION) protected position: Position<HTMLElement>,
 
                 @Inject(DATE_TIME_PICKER_DIRECTIVE_OPTIONS) @Optional() options?: DateTimePickerDirectiveOptions,)
     {
