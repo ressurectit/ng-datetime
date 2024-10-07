@@ -1,5 +1,5 @@
 import {Component, ChangeDetectionStrategy} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {SlicePipe} from '@angular/common';
 import {ClickOutsideSADirective} from '@anglr/common';
 
 import {DatePipesModule} from '../../../datePipes.module';
@@ -22,7 +22,7 @@ import {LoopScrollData, LoopScrollDataDirective, LoopScrollDirective} from '../.
     standalone: true,
     imports:
     [
-        CommonModule,
+        SlicePipe,
         DatePipesModule,
         ClickOutsideSADirective,
         LoopScrollDataDirective,

@@ -5,9 +5,11 @@
 </div>
 
 <div class="period-data">
-    <div *ngFor="let year of periodData"
-         class="period-datum clickable"
-         [class.active]="year.active"
-         [class.disabled]="year.disabled"
-         (mousedown)="canScaleDown && displayDate ? scaleDownSubject.next(year.dateObj.value) : selectYear(year)">{{year.value}}</div>
+    @for(year of periodData; track year)
+    {
+        <div class="period-datum clickable"
+             [class.active]="year.active"
+             [class.disabled]="year.disabled"
+             (mousedown)="canScaleDown && displayDate ? scaleDownSubject.next(year.dateObj.value) : selectYear(year)">{{year.value}}</div>
+    }
 </div>

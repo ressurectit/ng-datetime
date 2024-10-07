@@ -727,6 +727,22 @@ export class DateFnsDateApi implements DateApi<Date>
     /**
      * @inheritdoc
      */
+    public weekdays(short?: boolean): string[]
+    {
+        let startIndex = this._localeSvc.locale.options!.weekStartsOn!;
+        const weekdays: string[] = [];
+
+        for(let x = 0; x < 7; x++)
+        {
+            weekdays.push(this._localeSvc.locale.localize!.day(startIndex++ % 7 as Day, {width: short ? 'short' : 'wide'}));
+        }
+
+        return weekdays;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public weekdaysShort(): string[]
     {
         let startIndex = this._localeSvc.locale.options!.weekStartsOn!;

@@ -5,17 +5,26 @@
 </div>
 
 <div class="period-data">
-    <div class="weekday" *ngFor="let weekday of weekdays">{{weekday}}</div>
-    <div *ngFor="let day of periodData"
-         class="period-datum clickable"
-         [class.other-month]="day.otherMonth"
-         [class.today]="day.today"
-         [class.weekend]="day.weekend"
-         [class.active]="day.active"
-         [class.disabled]="day.disabled"
-         (mousedown)="selectDay(day)">{{day.day}}</div>
+    @for(weekday of weekdays; track weekday)
+    {
+        <div class="weekday">{{weekday}}</div>
+    }
+
+    @for(day of periodData; track day)
+    {
+        <div class="period-datum clickable"
+             [class.other-month]="day.otherMonth"
+             [class.today]="day.today"
+             [class.weekend]="day.weekend"
+             [class.active]="day.active"
+             [class.disabled]="day.disabled"
+             (mousedown)="selectDay(day)">{{day.day}}</div>
+    }
 </div>
 
-<div class="go-down-button" *ngIf="canScaleDown">
-    <div [class.clickable]="canScaleDown" (mousedown)="displayDate ? scaleDownSubject.next(displayDate.value) : undefined">{{singleValue?.isValid() ? (singleValue?.value | dateFormat: 'time') : '0:00'}}</div>
-</div>
+@if(canScaleDown)
+{
+    <div class="go-down-button">
+        <div [class.clickable]="canScaleDown" (mousedown)="displayDate ? scaleDownSubject.next(displayDate.value) : undefined">{{singleValue?.isValid() ? (singleValue?.value | dateFormat: 'time') : '0:00'}}</div>
+    </div>
+}

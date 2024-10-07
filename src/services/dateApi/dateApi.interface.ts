@@ -432,7 +432,14 @@ export interface DateApi<TDate = unknown, TDateApiObject extends DateApiObject<T
     weekStartsOnMonday(): boolean;
 
     /**
+     * Gets array of weekday names, order of days is dependent on locale
+     * @param short - Indication whether return short format of weekdays
+     */
+    weekdays(short?: boolean): string[];
+
+    /**
      * Gets array of weekday names in short format, order of days is dependent on locale
+     * @deprecated Use `weekdays(true)` instead, will be removed in next major version
      */
     weekdaysShort(): string[];
 

@@ -1,5 +1,4 @@
 import {Component, ChangeDetectionStrategy} from '@angular/core';
-import {CommonModule} from '@angular/common';
 
 import {DateTimePicker, DayData} from '../../interfaces';
 import {DateTimePeriodPickerBase} from '../dateTimePeriodPickerBase';
@@ -20,7 +19,6 @@ import {DateApiObject} from '../../../../services';
     standalone: true,
     imports:
     [
-        CommonModule,
         DatePipesModule,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -46,7 +44,7 @@ export class DayPickerComponent<TDate = unknown> extends DateTimePeriodPickerBas
     {
         super();
 
-        this.weekdays = this.dateApi.weekdaysShort();
+        this.weekdays = this.dateApi.weekdays(true);
     }
 
     //######################### protected methods - template bindings #########################

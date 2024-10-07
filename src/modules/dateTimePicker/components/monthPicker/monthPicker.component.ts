@@ -1,5 +1,4 @@
 import {Component, ChangeDetectionStrategy, Inject} from '@angular/core';
-import {CommonModule} from '@angular/common';
 
 import {DateTimePicker, MonthData} from '../../interfaces';
 import {DateTimePeriodPickerBase} from '../dateTimePeriodPickerBase';
@@ -22,7 +21,6 @@ import {FormatProvider} from '../../../../interfaces';
     standalone: true,
     imports:
     [
-        CommonModule,
         DatePipesModule,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush

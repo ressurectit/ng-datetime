@@ -1,12 +1,15 @@
 # Changelog
 
-## Version 9.0.0 (2024-10-04)
+## Version 9.0.0 (2024-10-07)
 
 ### Features
 
 - updated `DateApiObject` interface
     - **new methods**
         - `timestamp` gets value of date time as timestamp (in miliseconds)
+- updated `DateApi` interface
+    - `weekdaysShort` method is now *deprecated*
+    - new `weekdays` method, which gets array of weekday names, order of days is dependent on locale
 - updated `DateTimeControlValueAccessorDirective` directive
     - now it can return also value as `DateTimeValueFormat.UnixTimestamp`
 - updated `DateFormatPipe` pipe
@@ -22,9 +25,13 @@
 - *subpackage* `@anglr/datetime/moment`
     - updated `MomentDateApi`
         - now implements also new `timestamp`
+    - updated `MomentDateApi`
+        - now implements new `weekdays`
 - *subpackage* `@anglr/datetime/date-fns`
     - updated `DateFnsDateApi`
         - now implements also new `timestamp`
+    - updated `DateFnsDateApi`
+        - now implements new `weekdays`
 
 ### BREAKING CHANGES
 

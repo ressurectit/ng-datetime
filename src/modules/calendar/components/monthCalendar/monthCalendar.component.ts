@@ -165,7 +165,6 @@ export class MonthCalendarComponent<TDate = unknown, TEvent = unknown> implement
     protected initWeekdayNames(): void
     {
         this.weekDayNames = [];
-        const dateApi = this.dateApi.now().startOfWeek();
 
         switch(this.weekDayName)
         {
@@ -181,21 +180,15 @@ export class MonthCalendarComponent<TDate = unknown, TEvent = unknown> implement
             }
             case MonthCalendarDayFormat.Short:
             {
-                for(let x = 0; x < 7; x++)
-                {
-                    this.weekDayNames.push(dateApi.format(this.formatProvider.dayNameShort));
-                    dateApi.addDays(1);
-                }
+                const names = this.dateApi.weekdays(true);
+                this.weekDayNames.push(...names);
 
                 break;
             }
             case MonthCalendarDayFormat.Full:
             {
-                for(let x = 0; x < 7; x++)
-                {
-                    this.weekDayNames.push(dateApi.format(this.formatProvider.dayName));
-                    dateApi.addDays(1);
-                }
+                const names = this.dateApi.weekdays();
+                this.weekDayNames.push(...names);
 
                 break;
             }

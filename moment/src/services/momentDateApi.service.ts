@@ -678,6 +678,14 @@ export class MomentDateApi implements DateApi<moment.Moment>
     /**
      * @inheritdoc
      */
+    public weekdays(short?: boolean): string[]
+    {
+        return short ? moment.weekdaysShort(true) : moment.weekdays(true);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public weekdaysShort(): string[]
     {
         return moment.weekdaysShort(true);

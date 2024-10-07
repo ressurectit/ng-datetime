@@ -1,4 +1,4 @@
-<div class="flex-row" style="justify-content: center;">
+<div class="date-time-flex-row" style="justify-content: center;">
      <div [class.clickable]="canScaleUp" (mousedown)="displayDate && canScaleUp ? scaleUpSubject.next(displayDate.value) : undefined">{{displayDate?.value | dateFormat: 'date'}}</div>
 </div>
 
@@ -14,22 +14,28 @@
              [open]="hoursOpen"
              (loopScrollChange)="setHour(null, $event)"
              (mousedown)="hoursOpen = !hoursOpen">
-            <div *ngFor="let hour of hours | slice: -14"
-                 [loopScrollData]="hour?.data"
-                 [clone]="true"
-                 class="roller-item"
-                 (mousedown)="setHour($event, hour?.data)">{{hour?.displayText}}</div>
+            @for(hour of hours | slice: -14; track hour)
+            {
+                <div [loopScrollData]="hour?.data"
+                     [clone]="true"
+                     class="roller-item"
+                     (mousedown)="setHour($event, hour?.data)">{{hour?.displayText}}</div>
+            }
 
-            <div *ngFor="let hour of hours"
-                 [loopScrollData]="hour?.data"
-                 class="roller-item"
-                 (mousedown)="setHour($event, hour?.data)">{{hour?.displayText}}</div>
+            @for(hour of hours; track hour)
+            {
+                <div [loopScrollData]="hour?.data"
+                     class="roller-item"
+                     (mousedown)="setHour($event, hour?.data)">{{hour?.displayText}}</div>
+            }
 
-            <div *ngFor="let hour of hours | slice: 0: 14"
-                 [loopScrollData]="hour?.data"
-                 [clone]="true"
-                 class="roller-item"
-                 (mousedown)="setHour($event, hour?.data)">{{hour?.displayText}}</div>
+            @for(hour of hours | slice: 0: 14; track hour)
+            {
+                <div [loopScrollData]="hour?.data"
+                     [clone]="true"
+                     class="roller-item"
+                     (mousedown)="setHour($event, hour?.data)">{{hour?.displayText}}</div>
+            }
         </div>
     </div>
 
@@ -46,22 +52,28 @@
              [open]="minutesOpen"
              (loopScrollChange)="setMinute(null, $event)"
              (mousedown)="minutesOpen = !minutesOpen">
-            <div *ngFor="let minute of minutes | slice: -14"
-                 [loopScrollData]="minute?.data"
-                 [clone]="true"
-                 class="roller-item"
-                 (mousedown)="setMinute($event, minute?.data)">{{minute?.displayText}}</div>
+            @for(minute of minutes | slice: -14; track minute)
+            {
+                <div [loopScrollData]="minute?.data"
+                     [clone]="true"
+                     class="roller-item"
+                     (mousedown)="setMinute($event, minute?.data)">{{minute?.displayText}}</div>
+            }
 
-            <div *ngFor="let minute of minutes"
-                 [loopScrollData]="minute?.data"
-                 class="roller-item"
-                 (mousedown)="setMinute($event, minute?.data)">{{minute?.displayText}}</div>
+            @for(minute of minutes; track minute)
+            {
+                <div [loopScrollData]="minute?.data"
+                     class="roller-item"
+                     (mousedown)="setMinute($event, minute?.data)">{{minute?.displayText}}</div>
+            }
 
-            <div *ngFor="let minute of minutes | slice: 0: 14"
-                 [loopScrollData]="minute?.data"
-                 [clone]="true"
-                 class="roller-item"
-                 (mousedown)="setMinute($event, minute?.data)">{{minute?.displayText}}</div>
+            @for(minute of minutes | slice: 0: 14; track minute)
+            {
+                <div [loopScrollData]="minute?.data"
+                     [clone]="true"
+                     class="roller-item"
+                     (mousedown)="setMinute($event, minute?.data)">{{minute?.displayText}}</div>
+            }
         </div>
     </div>
 </div>

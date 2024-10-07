@@ -5,9 +5,11 @@
 </div>
 
 <div class="period-data">
-    <div *ngFor="let month of periodData"
-         class="period-datum clickable"
-         [class.active]="month.active"
-         [class.disabled]="month.disabled"
-         (mousedown)="canScaleDown && displayDate ? scaleDownSubject.next(month.dateObj.value) : selectMonth(month)">{{month.name}}</div>
+    @for(month of periodData; track month)
+    {
+        <div class="period-datum clickable"
+             [class.active]="month.active"
+             [class.disabled]="month.disabled"
+             (mousedown)="canScaleDown && displayDate ? scaleDownSubject.next(month.dateObj.value) : selectMonth(month)">{{month.name}}</div>
+    }
 </div>
