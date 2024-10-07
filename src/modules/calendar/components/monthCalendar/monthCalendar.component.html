@@ -1,5 +1,7 @@
 <div *calendarDayTemplate="let data" class="default-calendar-day" [class.is-weekend]="data.isWeekend" [class.is-other-month]="!data.isCurrentMonth">{{data.day}}</div>
 
+<div></div>
+
 @for(dayName of weekDayNames; track dayName)
 {
     <div [class.week-day-name]="dayName">{{dayName}}</div>
