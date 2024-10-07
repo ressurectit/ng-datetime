@@ -89,7 +89,7 @@ export class MonthCalendarComponent<TDate = unknown, TEvent = unknown>
     /**
      * Format for displaying week day names
      */
-    public weekDayName: InputSignal<MonthCalendarDayFormat> = input<MonthCalendarDayFormat>(MonthCalendarDayFormat.Short);
+    public weekDayName: InputSignal<MonthCalendarDayFormat|keyof typeof MonthCalendarDayFormat> = input<MonthCalendarDayFormat|keyof typeof MonthCalendarDayFormat>(MonthCalendarDayFormat.Short);
 
     /**
      * Aspect ratio for displayed calendar day cell
@@ -197,16 +197,4 @@ export class MonthCalendarComponent<TDate = unknown, TEvent = unknown>
             //TODO: test whether event are refreshed when changed
         });
     }
-
-    //######################### ng language server #########################
-
-    /**
-     * Custom input type for `weekDayName` input
-     */
-    public static ngAcceptInputType_weekDayName: keyof typeof MonthCalendarDayFormat;
-
-    /**
-     * Custom input type for `dayAspectRatio` input
-     */
-    public static ngAcceptInputType_dayAspectRatio: keyof typeof CalendarDayAspectRatio|number;
 }
