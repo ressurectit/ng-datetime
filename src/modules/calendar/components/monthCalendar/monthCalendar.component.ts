@@ -204,4 +204,9 @@ export class MonthCalendarComponent<TDate = unknown, TEvent = unknown>
      * Custom input type for `weekDayName` input
      */
     public static ngAcceptInputType_weekDayName: keyof typeof MonthCalendarDayFormat;
+
+    /**
+     * Custom input type for `dayAspectRatio` input
+     */
+    public static ngAcceptInputType_dayAspectRatio: keyof typeof CalendarDayAspectRatio|number;
 }
