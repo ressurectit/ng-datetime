@@ -1,6 +1,6 @@
-import {Component, ChangeDetectionStrategy, Input, Inject, OnInit, ViewChild, TemplateRef, ContentChild, OnChanges, SimpleChanges} from '@angular/core';
-import {KeyValuePipe} from '@angular/common';
-import {Dictionary, isString, nameof} from '@jscrpt/common';
+import {Component, ChangeDetectionStrategy, Inject, TemplateRef, Signal, input, InputSignal, viewChild, contentChild, InputSignalWithTransform, computed, effect, inject} from '@angular/core';
+import {KeyValuePipe, NgTemplateOutlet} from '@angular/common';
+import {Dictionary, isString} from '@jscrpt/common';
 
 import {CalendarDayData, EventData} from '../../interfaces';
 import {CalendarDayTemplateDirective, CalendarDayTemplateContext} from '../../directives';
@@ -9,6 +9,19 @@ import {EventParser} from '../../services';
 import {DATE_API, FORMAT_PROVIDER} from '../../../../misc/tokens';
 import {DateApi} from '../../../../services';
 import {FormatProvider} from '../../../../interfaces';
+
+/**
+ * Transform function for `CalendarDayAspectRatio` allowing enter value as number or member name of `CalendarDayAspectRatio`
+ */
+function dayAspectRatioAttribute(value: keyof typeof CalendarDayAspectRatio|number): CalendarDayAspectRatio
+{
+    if(isString(value))
+    {
+        return CalendarDayAspectRatio[value];
+    }
+
+    return value;
+}
 
 /**
  * Component used for displaying month calendar
@@ -21,6 +34,7 @@ import {FormatProvider} from '../../../../interfaces';
     imports:
     [
         CalendarDayTemplateDirective,
+        NgTemplateOutlet,
         KeyValuePipe,
     ],
     providers:
@@ -29,229 +43,159 @@ import {FormatProvider} from '../../../../interfaces';
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MonthCalendarComponent<TDate = unknown, TEvent = unknown> implements OnInit, OnChanges
+export class MonthCalendarComponent<TDate = unknown, TEvent = unknown>
 {
     //######################### protected properties - template bindings #########################
 
     /**
-     * Aspect ratio for displayed calendar day cell
-     */
-    protected dayAspectRatioValue: number = CalendarDayAspectRatio.ThreeToTwo;
-
-    /**
      * Data that represents calendar data
      */
-    protected calendarData: Dictionary<CalendarDayData<TDate, TEvent>[]> = {};
+    protected calendarData: Signal<Dictionary<CalendarDayData<TDate, TEvent>[]>>;
 
     /**
      * Calendar day template to be used
      */
-    protected get calendarDayTemplate(): TemplateRef<CalendarDayTemplateContext>
-    {
-        return this.customCalendarDayTemplate ?? this.defaultCalendarDayTemplate;
-    }
+    protected calendarDayTemplate: Signal<TemplateRef<CalendarDayTemplateContext>>;
 
     /**
      * Array of weekday names
      */
-    protected weekDayNames: string[] = [];
+    protected weekDayNames: Signal<string[]>;
 
     //######################### protected properties - children #########################
 
     /**
      * Default calendar day template
      */
-    @ViewChild(CalendarDayTemplateDirective, {static: true, read: TemplateRef})
-    protected defaultCalendarDayTemplate!: TemplateRef<CalendarDayTemplateContext>;
+    protected defaultCalendarDayTemplate: Signal<TemplateRef<CalendarDayTemplateContext>> = viewChild.required(CalendarDayTemplateDirective, {read: TemplateRef});
 
     /**
      * Custom calendar day template
      */
-    @ContentChild(CalendarDayTemplateDirective, {static: true, read: TemplateRef})
-    protected customCalendarDayTemplate: TemplateRef<CalendarDayTemplateContext>|undefined|null;
+    protected customCalendarDayTemplate: Signal<TemplateRef<CalendarDayTemplateContext>|undefined|null> = contentChild(CalendarDayTemplateDirective, {read: TemplateRef});
 
     //######################### public properties - inputs #########################
 
     /**
      * Indication that week number should be displayed
      */
-    @Input()
-    public showWeekNumber: boolean = false;
+    public showWeekNumber: InputSignal<boolean> = input(false);
 
     /**
      * Date that should be displayed in month calendar
      */
-    @Input()
-    public display: TDate|undefined|null;
+    public display: InputSignal<TDate> = input(inject<DateApi<TDate>>(DATE_API).now().value);
 
     /**
      * Format for displaying week day names
      */
-    @Input()
-    public weekDayName: MonthCalendarDayFormat = MonthCalendarDayFormat.Short;
+    public weekDayName: InputSignal<MonthCalendarDayFormat> = input<MonthCalendarDayFormat>(MonthCalendarDayFormat.Short);
 
     /**
      * Aspect ratio for displayed calendar day cell
      */
-    @Input()
-    public get dayAspectRatio(): number
-    {
-        return this.dayAspectRatioValue;
-    }
-    public set dayAspectRatio(value: number)
-    {
-        if(isString(value))
-        {
-            this.dayAspectRatioValue = CalendarDayAspectRatio[value] as unknown as number;
-
-            return;
-        }
-
-        this.dayAspectRatioValue = value;
-    }
+    public dayAspectRatio: InputSignalWithTransform<CalendarDayAspectRatio, keyof typeof CalendarDayAspectRatio|number> = input<CalendarDayAspectRatio, keyof typeof CalendarDayAspectRatio|number>(CalendarDayAspectRatio.ThreeToTwo, {transform: dayAspectRatioAttribute});
 
     /**
      * Array of events that should be displayed
      */
-    @Input()
-    public events: EventData<TDate, TEvent>[] = [];
+    public events: InputSignal<EventData<TDate, TEvent>[]> = input<EventData<TDate, TEvent>[]>([]);
 
     //######################### constructor #########################
     constructor(@Inject(DATE_API) protected dateApi: DateApi<TDate>,
                 @Inject(FORMAT_PROVIDER) protected formatProvider: FormatProvider,
                 protected eventParser: EventParser<TDate, TEvent>,)
     {
-    }
+        this.calendarDayTemplate = computed(() => this.customCalendarDayTemplate() ?? this.defaultCalendarDayTemplate());
 
-    //######################### public methods - implementation of OnInit #########################
-
-    /**
-     * Initialize component
-     */
-    public ngOnInit(): void
-    {
-        this.initWeekdayNames();
-        this.initializeDisplayCalendar();
-    }
-
-    //######################### public methods - implementation of OnChanges #########################
-
-    /**
-     * Called when input value changes
-     */
-    public ngOnChanges(changes: SimpleChanges): void
-    {
-        if(nameof<MonthCalendarComponent>('weekDayName') in changes)
+        this.weekDayNames = computed(() =>
         {
-            this.initWeekdayNames();
-        }
+            const weekDayNames = [];
 
-        if(nameof<MonthCalendarComponent>('display') in changes)
-        {
-            this.initializeDisplayCalendar();
-        }
-
-        if(nameof<MonthCalendarComponent>('events') in changes && !(nameof<MonthCalendarComponent>('display') in changes))
-        {
-            this.initAndAttachEventData();
-        }
-    }
-
-    //######################### protected methods #########################
-
-    /**
-     * Initialize weekday names
-     */
-    protected initWeekdayNames(): void
-    {
-        this.weekDayNames = [];
-
-        switch(this.weekDayName)
-        {
-            default:
-            // case MonthCalendarDayFormat.None:
+            switch(this.weekDayName())
             {
+                default:
+                // case MonthCalendarDayFormat.None:
+                {
+                    for(let x = 0; x < 7; x++)
+                    {
+                        weekDayNames.push('');
+                    }
+    
+                    break;
+                }
+                case MonthCalendarDayFormat.Short:
+                {
+                    const names = this.dateApi.weekdays(true);
+                    weekDayNames.push(...names);
+    
+                    break;
+                }
+                case MonthCalendarDayFormat.Full:
+                {
+                    const names = this.dateApi.weekdays();
+                    weekDayNames.push(...names);
+    
+                    break;
+                }
+            }
+
+            return weekDayNames;
+        });
+
+        this.calendarData = computed(() =>
+        {
+            const display = this.display();
+            const workDate = this.dateApi.getValue(display);
+
+            workDate.startOfMonth()
+                .startOfWeek();
+    
+            const calendarData: Dictionary<CalendarDayData<TDate, TEvent>[]> = {};
+    
+            do
+            {
+                const weekData: CalendarDayData<TDate, TEvent>[] = calendarData[workDate.format(this.formatProvider.week)] = [];
+    
                 for(let x = 0; x < 7; x++)
                 {
-                    this.weekDayNames.push('');
+                    weekData.push(
+                    {
+                        date: workDate.value,
+                        day: workDate.dayOfMonth(),
+                        events: [],
+                        isCurrentMonth: workDate.isSameMonth(display),
+                        isWeekend: workDate.isWeekend(),
+                        week: +workDate.format(this.formatProvider.week),
+                    });
+    
+                    workDate.addDays(1);
                 }
-
-                break;
+    
+                workDate.startOfWeek();
             }
-            case MonthCalendarDayFormat.Short:
-            {
-                const names = this.dateApi.weekdays(true);
-                this.weekDayNames.push(...names);
+            while(workDate.isSameMonth(display));
+    
+            return calendarData;
+        });
 
-                break;
-            }
-            case MonthCalendarDayFormat.Full:
-            {
-                const names = this.dateApi.weekdays();
-                this.weekDayNames.push(...names);
-
-                break;
-            }
-        }
-    }
-
-    /**
-     * Initialize date for calendar that should be displayed
-     */
-    protected initializeDisplayCalendar(): void
-    {
-        this.display ??= this.dateApi.now().value;
-
-        const workDate = this.dateApi.getValue(this.display);
-
-        workDate.startOfMonth()
-            .startOfWeek();
-
-        this.calendarData = {};
-
-        do
+        effect(() =>
         {
-            const weekData: CalendarDayData<TDate, TEvent>[] = this.calendarData[workDate.format(this.formatProvider.week)] = [];
+            const events = this.eventParser.getEventsPerDay(this.events());
+            const calendarData = this.calendarData();
 
-            for(let x = 0; x < 7; x++)
+            for(const week in calendarData)
             {
-                weekData.push(
+                const weekData = calendarData[week];
+    
+                for(const day of weekData)
                 {
-                    date: workDate.value,
-                    day: workDate.dayOfMonth(),
-                    events: [],
-                    isCurrentMonth: workDate.isSameMonth(this.display),
-                    isWeekend: workDate.isWeekend(),
-                    week: +workDate.format(this.formatProvider.week),
-                });
-
-                workDate.addDays(1);
+                    const found = events.find(itm => this.dateApi.getValue(itm[0]).isSame(day.date));
+                    day.events = found?.[1] ?? [];
+                }
             }
-
-            workDate.startOfWeek();
-        }
-        while(workDate.isSameMonth(this.display));
-
-        this.initAndAttachEventData();
-    }
-
-    /**
-     * Initialize and attaches event data
-     */
-    protected initAndAttachEventData(): void
-    {
-        const events = this.eventParser.getEventsPerDay(this.events);
-
-        for(const week in this.calendarData)
-        {
-            const weekData = this.calendarData[week];
-
-            for(const day of weekData)
-            {
-                const found = events.find(itm => this.dateApi.getValue(itm[0]).isSame(day.date));
-                day.events = found?.[1] ?? [];
-            }
-        }
+            //TODO: test whether event are refreshed when changed
+        });
     }
 
     //######################### ng language server #########################
@@ -260,9 +204,4 @@ export class MonthCalendarComponent<TDate = unknown, TEvent = unknown> implement
      * Custom input type for `weekDayName` input
      */
     public static ngAcceptInputType_weekDayName: keyof typeof MonthCalendarDayFormat;
-
-    /**
-     * Custom input type for `dayAspectRatio` input
-     */
-    public static ngAcceptInputType_dayAspectRatio: keyof typeof CalendarDayAspectRatio|number;
 }

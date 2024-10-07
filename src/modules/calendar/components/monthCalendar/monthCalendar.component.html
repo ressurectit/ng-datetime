@@ -2,15 +2,15 @@
 
 <div></div>
 
-@for(dayName of weekDayNames; track dayName)
+@for(dayName of weekDayNames(); track dayName)
 {
     <div [class.week-day-name]="dayName">{{dayName}}</div>
 }
 
-@for(weekData of calendarData | keyvalue; track weekData)
+@for(weekData of calendarData() | keyvalue; track weekData)
 {
     <div class="week-number">
-        @if(showWeekNumber)
+        @if(showWeekNumber())
         {
             {{weekData.key}}
         }
@@ -18,8 +18,8 @@
     
     @for(dayData of weekData.value; track dayData)
     {
-        <div [style.padding-bottom.%]="dayAspectRatioValue" class="day-wrapper">
-            <div class="day-content"><ng-container *ngTemplateOutlet="calendarDayTemplate; context: {$implicit: dayData}"/></div>
+        <div [style.padding-bottom.%]="dayAspectRatio()" class="day-wrapper">
+            <div class="day-content"><ng-container *ngTemplateOutlet="calendarDayTemplate(); context: {$implicit: dayData}"/></div>
         </div>
     }
 }
