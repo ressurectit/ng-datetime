@@ -1,6 +1,15 @@
 # Changelog
 
-## Version 9.0.0 (2024-10-07)
+## Version 9.0.0 (2024-12-03)
+
+### Bug Fixes
+
+- fixed `DateConvertPipe` pipe
+    - fixed typings, now correctly accepts also `undefined` and `null`
+    - works as pre date-fns 4, which returns `null` value for `null` or `undefined` input value
+- fixed `DateFormatPipe` pipe
+    - fixed typings, now correctly accepts also `undefined` and `null`
+    - works as pre date-fns 4, which returns empty string value for `null` or `undefined` input value
 
 ### Features
 
