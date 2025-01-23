@@ -1,6 +1,6 @@
 import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {SlicePipe} from '@angular/common';
-import {ClickOutsideSADirective} from '@anglr/common';
+import {ClickOutsideDirective} from '@anglr/common';
 
 import {DatePipesModule} from '../../../datePipes.module';
 import {hours, minutes} from './rollerTimePicker.data';
@@ -19,18 +19,17 @@ import {LoopScrollData, LoopScrollDataDirective, LoopScrollDirective} from '../.
     {
         '[class.date-time-period]': 'true',
     },
-    standalone: true,
     imports:
     [
         SlicePipe,
         DatePipesModule,
-        ClickOutsideSADirective,
+        ClickOutsideDirective,
         LoopScrollDataDirective,
         LoopScrollDirective,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RollerTimePickerComponent<TDate = unknown> extends DateTimePeriodPickerBase<PeriodData<TDate>, TDate>  implements DateTimePicker<TDate>
+export class RollerTimePickerComponent<TDate = unknown> extends DateTimePeriodPickerBase<PeriodData<TDate>, TDate> implements DateTimePicker<TDate>
 {
     //######################### protected properties - template bindings #########################
 
@@ -96,7 +95,6 @@ export class RollerTimePickerComponent<TDate = unknown> extends DateTimePeriodPi
      * Sets hour
      * @param event - Mouse event that was triggered
      * @param value - Value to be set as hour
-     * @returns 
      */
     protected setHour<TData = unknown>(event: MouseEvent|null, value: TData): void
     {
@@ -113,7 +111,7 @@ export class RollerTimePickerComponent<TDate = unknown> extends DateTimePeriodPi
         }
 
         this.hour = value as unknown as number;
-        
+
         if(event)
         {
             this.hoursOpen = false;
@@ -127,7 +125,7 @@ export class RollerTimePickerComponent<TDate = unknown> extends DateTimePeriodPi
      * Sets minute
      * @param event - Mouse event that was triggered
      * @param value - Value to be set as minute
-     * @returns 
+     * @returns
      */
     protected setMinute<TData = unknown>(event: MouseEvent|null, value: TData): void
     {
@@ -142,7 +140,7 @@ export class RollerTimePickerComponent<TDate = unknown> extends DateTimePeriodPi
         }
 
         this.minute = value as unknown as number;
-        
+
         if(event)
         {
             this.minutesOpen = false;

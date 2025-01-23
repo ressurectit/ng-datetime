@@ -9,7 +9,6 @@ import {WithTimeDirective} from '../withTime/withTime.directive';
 @Directive(
 {
     selector: 'input[dateTime][dateTimePickerInput]',
-    standalone: true,
     hostDirectives:
     [
         {

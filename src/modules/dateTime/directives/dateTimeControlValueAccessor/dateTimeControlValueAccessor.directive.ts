@@ -24,7 +24,6 @@ import {DateTimeValueFormat} from '../../../../misc/enums';
             multi: true,
         },
     ],
-    standalone: true,
 })
 export class DateTimeControlValueAccessorDirective<TDate = unknown> implements ControlValueAccessor, OnDestroy
 {

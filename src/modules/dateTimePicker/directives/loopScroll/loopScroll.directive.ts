@@ -9,7 +9,6 @@ import {LoopScrollDataDirective} from '../loopScrollData/loopScrollData.directiv
 @Directive(
 {
     selector: '[loopScroll]',
-    standalone: true,
 })
 export class LoopScrollDirective<TData = unknown> implements OnChanges, AfterContentInit
 {
@@ -27,7 +26,7 @@ export class LoopScrollDirective<TData = unknown> implements OnChanges, AfterCon
 
     /**
      * Array of elements and data for scrolled stuff
-     */ 
+     */
     protected dataItems: LoopScrollDataDirective<TData>[] = [];
 
     /**
@@ -99,7 +98,7 @@ export class LoopScrollDirective<TData = unknown> implements OnChanges, AfterCon
     }
 
     //######################### public methods - implementation of OnChanges #########################
-    
+
     /**
      * Called when input value changes
      */
@@ -153,7 +152,7 @@ export class LoopScrollDirective<TData = unknown> implements OnChanges, AfterCon
     }
 
     //######################### public methods - implementation of AfterContentInit #########################
-    
+
     /**
      * Called when content was initialized
      */
@@ -259,7 +258,7 @@ export class LoopScrollDirective<TData = unknown> implements OnChanges, AfterCon
      * @param dataLength - Length of all data
      * @param add - Indication whether add or subtract length
      * @param index - Current index
-     * @param dataIndex - Current index of data 
+     * @param dataIndex - Current index of data
      */
     @DebounceCall(18)
     protected _updateScroll(dataLength: number, add: boolean, index: number, dataIndex: number): void
@@ -276,7 +275,7 @@ export class LoopScrollDirective<TData = unknown> implements OnChanges, AfterCon
     protected _emitValue(index: number): void
     {
         index = Math.round(index) % this.dataItems.length;
-        
+
         if(index < 0)
         {
             index = this.dataItems.length + index;

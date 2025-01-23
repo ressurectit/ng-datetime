@@ -11,7 +11,6 @@ import {DateApi} from '../../services';
 @Directive(
 {
     selector: '[dateTime][withNow]',
-    standalone: true,
 })
 export class WithNowDirective<TDate = unknown> implements OnDestroy
 {
@@ -34,9 +33,9 @@ export class WithNowDirective<TDate = unknown> implements OnDestroy
             }
         }));
     }
-    
+
     //######################### public methods - implementation of OnDestroy #########################
-    
+
     /**
      * Called when component is destroyed
      */

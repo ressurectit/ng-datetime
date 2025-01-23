@@ -18,7 +18,6 @@ import {FormatProvider} from '../../../../interfaces';
     {
         '[class.date-time-period]': 'true',
     },
-    standalone: true,
     imports:
     [
         DatePipesModule,

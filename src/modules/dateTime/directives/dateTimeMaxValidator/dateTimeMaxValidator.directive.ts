@@ -18,12 +18,11 @@ import {DateTimeBase} from '../dateTimeBase';
         {
             provide: NG_VALIDATORS,
             useExisting: forwardRef(() => DateTimeMaxValidatorDirective),
-            multi: true
+            multi: true,
         },
     ],
-    standalone: true,
 })
-export class DateTimeMaxValidatorDirective<TDate = unknown> extends DateTimeBase<TDate>  implements Validator, OnInit
+export class DateTimeMaxValidatorDirective<TDate = unknown> extends DateTimeBase<TDate> implements Validator, OnInit
 {
     //######################### private fields #########################
 
@@ -39,7 +38,7 @@ export class DateTimeMaxValidatorDirective<TDate = unknown> extends DateTimeBase
     }
 
     //######################### public methods - implementation of OnInit #########################
-    
+
     /**
      * Initialize component
      */

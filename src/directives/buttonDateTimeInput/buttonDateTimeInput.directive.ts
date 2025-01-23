@@ -22,7 +22,6 @@ import {DateApi, DateValueProvider} from '../../services';
             useExisting: forwardRef(() => ButtonDateTimeInputDirective),
         },
     ],
-    standalone: true,
     exportAs: 'dateTime',
 })
 export class ButtonDateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate> implements DateTimeInput, OnDestroy

@@ -13,7 +13,6 @@ import {DateApi, DateApiObject} from '../../services';
 @Directive(
 {
     selector: '[dateTime][withSimpleHandler]',
-    standalone: true,
 })
 export class SimpleDateTimeInputHandlerDirective<TDate = unknown> implements OnInit, OnDestroy
 {
@@ -26,7 +25,7 @@ export class SimpleDateTimeInputHandlerDirective<TDate = unknown> implements OnI
     }
 
     //######################### public methods - implementation of OnInit #########################
-    
+
     /**
      * Initialize component
      */
@@ -36,7 +35,7 @@ export class SimpleDateTimeInputHandlerDirective<TDate = unknown> implements OnI
     }
 
     //######################### public methods - implementation of OnDestroy #########################
-    
+
     /**
      * Called when component is destroyed
      */
@@ -55,7 +54,7 @@ export class SimpleDateTimeInputHandlerDirective<TDate = unknown> implements OnI
     public handleKeyboard(event: KeyboardEvent): void
     {
         const parsedValue = parseDateTime(this.input.value, this.dateApi, null, this.dateTimeData.customFormat, this.dateTimeData.dataFormat);
-        
+
         //no value do nothing
         if(!parsedValue)
         {

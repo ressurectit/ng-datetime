@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 9.0.0 (2024-12-03)
+## Version 9.0.0 (2025-01-23)
 
 ### Bug Fixes
 
@@ -44,12 +44,12 @@
 
 ### BREAKING CHANGES
 
-- minimal supported version of `@angular` is `18.2.6`
-- minimal supported version of `@jscrpt/common` is `6.2.1`
-- minimal supported version of `@anglr/common` is `21.2.0`
+- minimal supported version of `@angular` is `19.1.0`
+- minimal supported version of `@jscrpt/common` is `7.0.0`
+- minimal supported version of `@anglr/common` is `22.0.0`
 - minimal supported version of `date-fns` is `4.1.0`
 - minimal supported version of `moment` is `2.30.1`
-- minimal supported version of `tslib` is `2.7.0`
+- minimal supported version of `tslib` is `2.8.1`
 - updated all comments, fixed *unix timestamp* for *timestamp*
 - updated `DateTimeValueFormat` enum
     - `UnixTimestamp` now returns value in seconds, use `Timestamp` to get value in miliseconds

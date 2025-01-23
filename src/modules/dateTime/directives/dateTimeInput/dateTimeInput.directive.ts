@@ -25,7 +25,6 @@ import {DateTimeValueFormat} from '../../../../misc/enums';
             useExisting: forwardRef(() => DateTimeInputDirective),
         },
     ],
-    standalone: true,
     exportAs: 'dateTime',
 })
 export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate> implements DateTimeInput, OnDestroy
@@ -63,7 +62,7 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
         //accepts all available formats
         this.setInternalValue(value);
         this.ɵValue = formatDateTime(this.internalValue, this.dateTimeData.valueFormat, this.dateTimeData.customFormat, this.dateTimeData.dataFormat);
-        
+
         //not range value
         if(!Array.isArray(this.internalValue))
         {
@@ -120,7 +119,7 @@ export class DateTimeInputDirective<TDate = unknown> extends DateTimeBase<TDate>
     }
 
     //######################### public methods - implementation of OnDestroy #########################
-    
+
     /**
      * Called when component is destroyed
      */

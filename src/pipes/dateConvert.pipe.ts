@@ -7,7 +7,7 @@ import {DateApi, DateApiObject, DateValue} from '../services';
 /**
  * Pipe that is used for converting date
  */
-@Pipe({name: 'dateConvert', standalone: true})
+@Pipe({name: 'dateConvert'})
 export class DateConvertPipe<TDate = unknown> implements PipeTransform
 {
     //######################### constructors #########################

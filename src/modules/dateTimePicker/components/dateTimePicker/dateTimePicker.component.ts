@@ -1,6 +1,7 @@
 import {Component, ChangeDetectionStrategy, ViewChild, ViewContainerRef, Type, EventEmitter, Output, Input, OnChanges, SimpleChanges, Inject, Optional, OnDestroy, ComponentRef, OnInit} from '@angular/core';
 import {Position, POSITION} from '@anglr/common';
-import {extend, isBlank, nameof} from '@jscrpt/common';
+import {isBlank, nameof} from '@jscrpt/common';
+import {extend} from '@jscrpt/common/extend';
 import {Subscription} from 'rxjs';
 
 import {DateTimeInputValue} from '../../../../interfaces';
@@ -26,14 +27,14 @@ const CORRUPTED_CONFIG_TEXT = 'DateTime: Corrupted configuration for DateTimePic
 /**
  * Default options for date time picker
  */
-const defaultOptions: DateTimePickerOptions = 
+const defaultOptions: DateTimePickerOptions =
 {
     defaultPeriod: 'day',
     periodsDefinition:
     {
-        'day': DayPickerComponent,
-        'month': MonthPickerComponent,
-        'year': YearPickerComponent,
+        day: DayPickerComponent,
+        month: MonthPickerComponent,
+        year: YearPickerComponent,
     },
 };
 
@@ -44,7 +45,6 @@ const defaultOptions: DateTimePickerOptions =
 {
     selector: 'date-time-picker',
     templateUrl: 'dateTimePicker.component.html',
-    standalone: true,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<TDate> implements DateTimeInputValue<TDate>, OnInit, OnChanges, OnDestroy
@@ -60,7 +60,7 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
      * Internal representation of current date time value
      */
     protected internalValue: DateTimeObjectValue<TDate>|undefined|null;
-    
+
     /**
      * Subscription for changes in date time period picker
      */
@@ -85,7 +85,7 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
      * Instance of created date time period picker
      */
     protected component: ComponentRef<DateTimePicker<TDate>>|undefined|null;
-    
+
     //######################### protected properties - children #########################
 
     /**
@@ -149,7 +149,7 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
         super();
 
         this.ɵOptions = extend(true, {}, defaultOptions, options);
-        
+
         this.setOptions(options);
 
         if(!this.displayedPeriodType)
@@ -159,7 +159,7 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
     }
 
     //######################### public methods - implementation of OnInit #########################
-    
+
     /**
      * Initialize component
      */
@@ -181,7 +181,7 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
     }
 
     //######################### public methods - implementation of OnChanges #########################
-    
+
     /**
      * Called when input value changes
      */
@@ -223,7 +223,7 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
     }
 
     //######################### public methods - implementation of OnDestroy #########################
-    
+
     /**
      * Called when component is destroyed
      */
@@ -299,7 +299,7 @@ export class DateTimePickerComponent<TDate = unknown> extends DateTimeDirective<
         const component = this.component.instance;
 
         component.ranged = this.valueFormat === DateTimeValueFormat.RangeOfDateInstances;
-        component.canScaleDown = this.canScaleDown(),
+        component.canScaleDown = this.canScaleDown();
         component.canScaleUp = this.canScaleUp();
         component.display = displayDate;
         component.maxDate = this.maxDateTime;

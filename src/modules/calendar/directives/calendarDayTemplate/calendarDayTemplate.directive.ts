@@ -8,7 +8,6 @@ import {CalendarDayTemplateContext} from './calendarDayTemplate.context';
 @Directive(
 {
     selector: '[calendarDayTemplate]',
-    standalone: true,
 })
 export class CalendarDayTemplateDirective<TDate = unknown, TEvent = unknown>
 {
@@ -18,7 +17,7 @@ export class CalendarDayTemplateDirective<TDate = unknown, TEvent = unknown>
     }
 
     //######################### ng language server #########################
-    
+
     /**
      * Allows typechecking for template
      */

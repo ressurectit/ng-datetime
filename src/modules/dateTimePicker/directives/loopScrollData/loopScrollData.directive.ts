@@ -6,7 +6,6 @@ import {Directive, ElementRef, Input} from '@angular/core';
 @Directive(
 {
     selector: '[loopScrollData]',
-    standalone: true,
 })
 export class LoopScrollDataDirective<TData = unknown>
 {

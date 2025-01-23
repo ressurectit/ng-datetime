@@ -16,7 +16,6 @@ import {DateApiObject} from '../../../../services';
     {
         '[class.date-time-period]': 'true',
     },
-    standalone: true,
     imports:
     [
         DatePipesModule,

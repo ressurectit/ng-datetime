@@ -1,7 +1,8 @@
 import {ComponentRef, Directive, ElementRef, EmbeddedViewRef, Inject, Input, OnDestroy, OnInit, Optional, ViewContainerRef} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {Position, POSITION, applyPositionResult, PositionPlacement, PositionResult} from '@anglr/common';
-import {extend, nameof, isDescendant, BindThis, renderToBody} from '@jscrpt/common';
+import {nameof, isDescendant, BindThis, renderToBody} from '@jscrpt/common';
+import {extend} from '@jscrpt/common/extend';
 import {Observable, Subscription} from 'rxjs';
 
 import {DateTimeInput} from '../../../../interfaces';
@@ -34,7 +35,6 @@ const defaultOptions: DateTimePickerDirectiveOptions =
 @Directive(
 {
     selector: '[dateTime][withPicker]',
-    standalone: true,
     exportAs: 'dateTimePicker',
 })
 export class DateTimePickerDirective<TDate = unknown> extends DateTimeBase<TDate> implements OnInit, OnDestroy
@@ -225,10 +225,10 @@ export class DateTimePickerDirective<TDate = unknown> extends DateTimeBase<TDate
         }
 
         this.componentElement?.removeEventListener('mousedown', this.handleClickInside);
-        
+
         this.pickerChangesSubscription?.unsubscribe();
         this.pickerChangesSubscription = null;
-        
+
         this.component = null;
 
         this.componentRef?.destroy();

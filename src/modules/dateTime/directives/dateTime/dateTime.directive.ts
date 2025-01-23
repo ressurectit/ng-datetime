@@ -16,7 +16,6 @@ import {DateTimeBase} from '../dateTimeBase';
 @Directive(
 {
     selector: '[dateTime]',
-    standalone: true,
 })
 export class DateTimeDirective<TDate = unknown> implements OnDestroy
 {
@@ -215,7 +214,7 @@ export class DateTimeDirective<TDate = unknown> implements OnDestroy
 
             val = v;
         }
-        
+
         this.setMinMaxValue(val, this.maxDateSet);
     }
 
@@ -275,7 +274,7 @@ export class DateTimeDirective<TDate = unknown> implements OnDestroy
     }
 
     //######################### public methods - implementation of OnDestroy #########################
-    
+
     /**
      * Called when component is destroyed
      */
@@ -348,7 +347,7 @@ export class DateTimeDirective<TDate = unknown> implements OnDestroy
     }
 
     //######################### ng language server #########################
-    
+
     /**
      * Custom input type for `valueFormat` input
      */

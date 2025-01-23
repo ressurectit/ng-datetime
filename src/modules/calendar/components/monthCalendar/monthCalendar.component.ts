@@ -30,7 +30,6 @@ function dayAspectRatioAttribute(value: keyof typeof CalendarDayAspectRatio|numb
 {
     selector: 'month-calendar',
     templateUrl: 'monthCalendar.component.html',
-    standalone: true,
     imports:
     [
         CalendarDayTemplateDirective,
@@ -121,21 +120,21 @@ export class MonthCalendarComponent<TDate = unknown, TEvent = unknown>
                     {
                         weekDayNames.push('');
                     }
-    
+
                     break;
                 }
                 case MonthCalendarDayFormat.Short:
                 {
                     const names = this.dateApi.weekdays(true);
                     weekDayNames.push(...names);
-    
+
                     break;
                 }
                 case MonthCalendarDayFormat.Full:
                 {
                     const names = this.dateApi.weekdays();
                     weekDayNames.push(...names);
-    
+
                     break;
                 }
             }
@@ -150,13 +149,13 @@ export class MonthCalendarComponent<TDate = unknown, TEvent = unknown>
 
             workDate.startOfMonth()
                 .startOfWeek();
-    
+
             const calendarData: Dictionary<CalendarDayData<TDate, TEvent>[]> = {};
-    
+
             do
             {
                 const weekData: CalendarDayData<TDate, TEvent>[] = calendarData[workDate.format(this.formatProvider.week)] = [];
-    
+
                 for(let x = 0; x < 7; x++)
                 {
                     weekData.push(
@@ -168,14 +167,14 @@ export class MonthCalendarComponent<TDate = unknown, TEvent = unknown>
                         isWeekend: workDate.isWeekend(),
                         week: +workDate.format(this.formatProvider.week),
                     });
-    
+
                     workDate.addDays(1);
                 }
-    
+
                 workDate.startOfWeek();
             }
             while(workDate.isSameMonth(display));
-    
+
             return calendarData;
         });
 
@@ -187,7 +186,7 @@ export class MonthCalendarComponent<TDate = unknown, TEvent = unknown>
             for(const week in calendarData)
             {
                 const weekData = calendarData[week];
-    
+
                 for(const day of weekData)
                 {
                     const found = events.find(itm => this.dateApi.getValue(itm[0]).isSame(day.date));

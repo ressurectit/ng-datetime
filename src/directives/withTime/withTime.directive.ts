@@ -8,7 +8,6 @@ import {RollerTimePickerComponent, DateTimePickerDirective, DayPickerComponent, 
 @Directive(
 {
     selector: '[dateTime][withPicker][withTime]',
-    standalone: true,
 })
 export class WithTimeDirective<TDate = unknown>
 {
@@ -16,14 +15,14 @@ export class WithTimeDirective<TDate = unknown>
     constructor(picker: DateTimePickerDirective<TDate>,
                 dateTime: DateTimeDirective<TDate>,)
     {
-        picker.pickerOptions = 
+        picker.pickerOptions =
         {
             periodsDefinition:
             {
-                'time': RollerTimePickerComponent,
-                'day': DayPickerComponent,
-                'month': MonthPickerComponent,
-                'year': YearPickerComponent,
+                time: RollerTimePickerComponent,
+                day: DayPickerComponent,
+                month: MonthPickerComponent,
+                year: YearPickerComponent,
             },
         };
 

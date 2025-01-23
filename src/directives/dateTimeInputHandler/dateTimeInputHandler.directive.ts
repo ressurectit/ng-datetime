@@ -15,7 +15,6 @@ import {DateApi, DateApiObject, DatePositionParser, DatePositionParserService, D
 @Directive(
 {
     selector: '[dateTime][withHandler]',
-    standalone: true,
 })
 export class DateTimeInputHandlerDirective<TDate = unknown> implements OnInit, OnDestroy
 {
@@ -57,7 +56,7 @@ export class DateTimeInputHandlerDirective<TDate = unknown> implements OnInit, O
     }
 
     //######################### public methods - implementation of OnInit #########################
-    
+
     /**
      * Initialize component
      */
@@ -70,7 +69,7 @@ export class DateTimeInputHandlerDirective<TDate = unknown> implements OnInit, O
     }
 
     //######################### public methods - implementation of OnDestroy #########################
-    
+
     /**
      * Called when component is destroyed
      */
@@ -97,7 +96,7 @@ export class DateTimeInputHandlerDirective<TDate = unknown> implements OnInit, O
                               if(this.inputElement.selectionStart == 0 && this.inputElement.selectionEnd == this.inputElement.value.length)
                               {
                                   const result = this.parser.parse(this.inputElement.value, this.inputElement.selectionStart);
-  
+
                                   this.inputElement.selectionStart = result.positionFrom;
                                   this.inputElement.selectionEnd = result.positionTo;
                               }
@@ -117,7 +116,7 @@ export class DateTimeInputHandlerDirective<TDate = unknown> implements OnInit, O
         this.runWithValue(() =>
                           {
                               const result = this.parser.parse(this.inputElement.value, this.inputElement.selectionStart ?? 0);
-  
+
                               this.inputElement.selectionStart = result.positionFrom;
                               this.inputElement.selectionEnd = result.positionTo;
                           },
@@ -137,7 +136,7 @@ export class DateTimeInputHandlerDirective<TDate = unknown> implements OnInit, O
         const selectionStart = this.inputElement.selectionStart ?? 0;
         const selectionEnd = this.inputElement.selectionEnd ?? 0;
         const newRawValueArray = this.inputElement.value.split('');
-        newRawValueArray.splice(selectionStart , selectionEnd - selectionStart);
+        newRawValueArray.splice(selectionStart, selectionEnd - selectionStart);
         newRawValueArray.splice(selectionStart, 0, ...event.key);
         const newRawValue = newRawValueArray.join('');
 
@@ -176,15 +175,15 @@ export class DateTimeInputHandlerDirective<TDate = unknown> implements OnInit, O
                                   {
                                       event.preventDefault();
                                       event.stopPropagation();
-                      
+
                                       const result = event.key == 'ArrowLeft' ? this.parser.previous(this.inputElement.value, selectionStart) : this.parser.next(this.inputElement.value, selectionStart);
-                      
+
                                       if(result)
                                       {
                                           this.inputElement.selectionStart = result.positionFrom;
                                           this.inputElement.selectionEnd = result.positionTo;
                                       }
-                      
+
                                       break;
                                   }
                                   case 'ArrowUp':
@@ -192,32 +191,32 @@ export class DateTimeInputHandlerDirective<TDate = unknown> implements OnInit, O
                                   {
                                       event.preventDefault();
                                       event.stopPropagation();
-                      
+
                                       let result = this.parser.parse(this.inputElement.value, selectionStart);
                                       const selectionStartNew = result.positionFrom;
-                      
+
                                       this.stepChangeValue(parsedValue, result.part, event.key == 'ArrowUp');
-                      
+
                                       result = this.parser.parse(this.inputElement.value, selectionStartNew);
-                      
+
                                       this.inputElement.selectionStart = result.positionFrom;
                                       this.inputElement.selectionEnd = result.positionTo;
-                      
+
                                       break;
                                   }
                                   case 'Tab':
                                   {
                                       const result = event.shiftKey ? this.parser.previous(this.inputElement.value, selectionStart) : this.parser.next(this.inputElement.value, selectionStart);
-                      
+
                                       if(result)
                                       {
                                           event.preventDefault();
                                           event.stopPropagation();
-                      
+
                                           this.inputElement.selectionStart = result.positionFrom;
                                           this.inputElement.selectionEnd = result.positionTo;
                                       }
-                      
+
                                       break;
                                   }
                                   case 'a':
@@ -227,20 +226,20 @@ export class DateTimeInputHandlerDirective<TDate = unknown> implements OnInit, O
                                           event.preventDefault();
                                           event.stopPropagation();
                                       }
-                      
+
                                       break;
                                   }
                                   case 'Backspace':
                                   {
                                       this.input.value = null;
                                       this.input.valueChange.next();
-                      
+
                                       break;
                                   }
                                   case 'Escape':
                                   {
                                       this.picker?.hidePicker();
-                      
+
                                       break;
                                   }
                                   case ' ':
@@ -249,7 +248,7 @@ export class DateTimeInputHandlerDirective<TDate = unknown> implements OnInit, O
                                       {
                                           this.picker?.showPicker();
                                       }
-                      
+
                                       break;
                                   }
                               }

@@ -9,7 +9,6 @@ import {SimpleDateTimeInputHandlerDirective} from '../simpleDateTimeInputHandler
 @Directive(
 {
     selector: 'input[dateTime][simpleDatePickerInput]',
-    standalone: true,
     hostDirectives:
     [
         {
