@@ -1,4 +1,4 @@
 export * from './calendar';
-export * from './datePipes.module';
+export * from './datePipes';
 export * from './dateTime';
 export * from './dateTimePicker';

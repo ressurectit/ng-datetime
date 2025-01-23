@@ -13,6 +13,8 @@
 
 ### Features
 
+- new `IsAfterPipe` pipe, that tests whether is provided date after tested date
+- new `IsBeforePipe` pipe, that tests whether is provided date before tested date
 - updated `DateApiObject` interface
     - **new methods**
         - `timestamp` gets value of date time as timestamp (in miliseconds)

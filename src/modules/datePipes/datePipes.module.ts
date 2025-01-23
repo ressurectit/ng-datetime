@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 
-import {DateConvertPipe} from '../pipes/dateConvert.pipe';
-import {DateFormatPipe} from '../pipes/dateFormat.pipe';
+import {DateConvertPipe, DateFormatPipe, IsAfterPipe, IsBeforePipe} from '../../pipes';
 
 /**
  * Module used for exporting date pipes
@@ -10,14 +9,19 @@ import {DateFormatPipe} from '../pipes/dateFormat.pipe';
 {
     imports:
     [
+        IsAfterPipe,
+        IsBeforePipe,
         DateFormatPipe,
         DateConvertPipe,
+
     ],
     exports:
     [
+        IsAfterPipe,
+        IsBeforePipe,
         DateFormatPipe,
         DateConvertPipe,
-    ]
+    ],
 })
 export class DatePipesModule
 {

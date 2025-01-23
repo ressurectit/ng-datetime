@@ -2,8 +2,8 @@ import {Component, ChangeDetectionStrategy} from '@angular/core';
 
 import {DateTimePicker, DayData} from '../../interfaces';
 import {DateTimePeriodPickerBase} from '../dateTimePeriodPickerBase';
-import {DatePipesModule} from '../../../datePipes.module';
 import {DateApiObject} from '../../../../services';
+import {DatePipesModule} from '../../../datePipes';
 
 /**
  * Component used for displaying day picker

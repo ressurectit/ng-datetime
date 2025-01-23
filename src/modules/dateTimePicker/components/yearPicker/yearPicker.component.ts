@@ -2,7 +2,7 @@ import {Component, ChangeDetectionStrategy} from '@angular/core';
 
 import {DateTimePicker, YearData} from '../../interfaces';
 import {DateTimePeriodPickerBase} from '../dateTimePeriodPickerBase';
-import {DatePipesModule} from '../../../datePipes.module';
+import {DatePipesModule} from '../../../datePipes';
 import {DateApiObject} from '../../../../services';
 
 /**

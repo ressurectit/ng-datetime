@@ -8,5 +8,4 @@ export * from './misc/utils';
 export * from './misc/validators';
 export * from './modules';
 export * from './services';
-export * from './pipes/dateConvert.pipe';
-export * from './pipes/dateFormat.pipe';
+export * from './pipes';

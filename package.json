@@ -97,7 +97,7 @@
         "copyfiles": "2.4.1",
         "date-fns": "4.1.0",
         "eslint": "9.18.0",
-        "eslint-plugin-ressurectit": "0.2.1",
+        "eslint-plugin-ressurectit": "0.3.0",
         "jest": "29.7.0",
         "jest-preset-angular": "14.2.4",
         "lerna": "8.1.9",

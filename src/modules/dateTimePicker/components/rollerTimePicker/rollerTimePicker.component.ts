@@ -2,7 +2,7 @@ import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {SlicePipe} from '@angular/common';
 import {ClickOutsideDirective} from '@anglr/common';
 
-import {DatePipesModule} from '../../../datePipes.module';
+import {DatePipesModule} from '../../../datePipes';
 import {hours, minutes} from './rollerTimePicker.data';
 import {DateTimePicker, PeriodData} from '../../interfaces';
 import {DateTimePeriodPickerBase} from '../dateTimePeriodPickerBase';
