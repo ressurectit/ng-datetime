@@ -1,9 +1,9 @@
 import {Inject, Pipe, PipeTransform} from '@angular/core';
 import {isBlank, isString, nameof} from '@jscrpt/common';
 
-import {FormatProvider} from '../interfaces';
-import {DATE_API, FORMAT_PROVIDER} from '../misc/tokens';
-import {DateApi, DateValue} from '../services';
+import {FormatProvider} from '../../interfaces';
+import {DATE_API, FORMAT_PROVIDER} from '../../misc/tokens';
+import {DateApi, DateValue} from '../../services';
 
 /**
  * Pipe that is used for formatting date

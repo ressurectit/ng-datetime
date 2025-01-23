@@ -1,8 +1,8 @@
 import {Inject, Pipe, PipeTransform} from '@angular/core';
 import {isBlank} from '@jscrpt/common';
 
-import {DATE_API} from '../misc/tokens';
-import {DateApi, DateApiObject, DateValue} from '../services';
+import {DATE_API} from '../../misc/tokens';
+import {DateApi, DateApiObject, DateValue} from '../../services';
 
 /**
  * Pipe that is used for converting date
