@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 9.0.1 (2025-12-12)
+
+### Bug Fixes
+
+- fixed `MonthCalendarComponent` component
+    - now properly displays week which is last week of the year
+
 ## Version 9.0.0 (2025-01-23)
 
 ### Bug Fixes

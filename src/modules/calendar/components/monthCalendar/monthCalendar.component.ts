@@ -1,6 +1,6 @@
 import {Component, ChangeDetectionStrategy, Inject, TemplateRef, Signal, input, InputSignal, viewChild, contentChild, InputSignalWithTransform, computed, effect, inject} from '@angular/core';
-import {KeyValuePipe, NgTemplateOutlet} from '@angular/common';
-import {Dictionary, isString} from '@jscrpt/common';
+import {NgTemplateOutlet} from '@angular/common';
+import {isString} from '@jscrpt/common';
 
 import {CalendarDayData, EventData} from '../../interfaces';
 import {CalendarDayTemplateDirective, CalendarDayTemplateContext} from '../../directives';
@@ -34,7 +34,6 @@ function dayAspectRatioAttribute(value: keyof typeof CalendarDayAspectRatio|numb
     [
         CalendarDayTemplateDirective,
         NgTemplateOutlet,
-        KeyValuePipe,
     ],
     providers:
     [
@@ -49,7 +48,7 @@ export class MonthCalendarComponent<TDate = unknown, TEvent = unknown>
     /**
      * Data that represents calendar data
      */
-    protected calendarData: Signal<Dictionary<CalendarDayData<TDate, TEvent>[]>>;
+    protected calendarData: Signal<[string, CalendarDayData<TDate, TEvent>[]][]>;
 
     /**
      * Calendar day template to be used
@@ -150,11 +149,13 @@ export class MonthCalendarComponent<TDate = unknown, TEvent = unknown>
             workDate.startOfMonth()
                 .startOfWeek();
 
-            const calendarData: Dictionary<CalendarDayData<TDate, TEvent>[]> = {};
+            const calendarData: [string, CalendarDayData<TDate, TEvent>[]][] = [];
 
             do
             {
-                const weekData: CalendarDayData<TDate, TEvent>[] = calendarData[workDate.format(this.formatProvider.week)] = [];
+                const weekDataItem: [string, CalendarDayData<TDate, TEvent>[]] = [workDate.format(this.formatProvider.week), []];
+                calendarData.push(weekDataItem);
+                const [, weekData] = weekDataItem;
 
                 for(let x = 0; x < 7; x++)
                 {
@@ -183,10 +184,8 @@ export class MonthCalendarComponent<TDate = unknown, TEvent = unknown>
             const events = this.eventParser.getEventsPerDay(this.events());
             const calendarData = this.calendarData();
 
-            for(const week in calendarData)
+            for(const [, weekData] of calendarData)
             {
-                const weekData = calendarData[week];
-
                 for(const day of weekData)
                 {
                     const found = events.find(itm => this.dateApi.getValue(itm[0]).isSame(day.date));
