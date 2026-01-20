@@ -60,7 +60,7 @@ export class DateTimeBase<TDate = unknown> implements DateTimeInputValue<TDate>,
     }
 
     //######################### public methods - implementation of OnDestroy #########################
-    
+
     /**
      * Called when component is destroyed
      */

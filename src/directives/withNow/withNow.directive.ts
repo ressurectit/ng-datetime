@@ -30,6 +30,7 @@ export class WithNowDirective<TDate = unknown> implements OnDestroy
             if(!input.value)
             {
                 input.value = dateApi.now().value;
+                input.valueChange.next();
             }
         }));
     }

@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 9.0.2 (2026-01-20)
+
+### Bug Fixes
+
+- fixed `WithNowDirective` directive
+    - now correctly sets value of control value accessor (form) after opening picker
+- fixed `WithTodayDirective` directive
+    - now correctly sets value of control value accessor (form) after opening picker
+
 ## Version 9.0.1 (2025-12-12)
 
 ### Bug Fixes
