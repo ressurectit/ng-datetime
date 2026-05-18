@@ -13,15 +13,16 @@
 - Use 4 spaces for indentation
 - For new lines use LF (line feed) character, not CRLF (carriage return + line feed)
 - Put empty line at the end of file
-- Always put opening braces on the new line
+- Always put opening braces on the new line, except case when object or array literal used together with `return` statement, in that case put opening brace on same line as `return`
 - Always use single quotes for strings
 - Always use semicolons at the end of statements
 - Always use block braces for control flow statements (if, for, while, switch), even if they are optional
 - Do not use braces around single parameter lambda functions, unless the parameter type is unknown
 - Do not use space after control flow statements (if, for, while, switch)
 - Do not put space after opening braces and before closing braces in oneline object literals, arrays, and function parameters, deconstructions, and imports (e.g. `import {Component} from '@angular/core';`, not `import { Component } from '@angular/core';`)
+- never wrap `import` statements, always keep them on one line, does not matter what is length of that line
 - Use empty line after before and after control flow statements (if, for, while, switch) (unless its first or last line of the block)
-- Always put comma at the end of the line in multiline object literals, arrays, and function parameters
+- Always put comma after last item in array literal, after last property in object literal or after last argument in function definition when defined across multiple lines
 - Formatting arguments of function definition and declaration:
   - Constructor arguments, put second and following arguments on new line, and align them with the first argument
   - For other functions, if the function has more than 2 arguments and line length exceeds 120 characters, put second and following arguments on new line, and align them with the first argument
@@ -36,7 +37,7 @@
   - Opening and closing braces should be on their own line and aligned with the first property
 - Angular Component and Directive decorators:
   - Follow rules for Json literals, but also:
-    - order properties in the following order: selector, templateUrl, template, styleUrl, styleUrls, styles, host, imports, providers, changeDetection
+    - order properties in the following order: selector, templateUrl, template, styleUrl, styleUrls, styles, host, imports, providers, hostDirectives, changeDetection
     - order array properties values in the following order: from shortest to longest (e.g. in `imports` property, put items with shorter names first)
     - never use one line array or object literal for `imports`, `providers`, `host`
     - always use `changeDetection: ChangeDetectionStrategy.OnPush`

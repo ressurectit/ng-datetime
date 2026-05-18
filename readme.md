@@ -3,7 +3,7 @@
 
 # @anglr/datetime
 
-> Angular library for datetime input, manipulation, validation, formatting, and calendar/picker UI components with pluggable date adapters (date-fns, Moment.js).
+> Angular library for datetime input, manipulation, validation, formatting, and calendar/picker UI components with pluggable date adapters (date-fns, Moment.js, or any other implementing `DateApiObject`).
 
 - [API](https://ressurectit.github.io/#/content/api/ng-datetime/datetime)
 - [API Date FNS](https://ressurectit.github.io/#/content/api/ng-datetime-date-fns/datetime-date-fns)
@@ -27,13 +27,14 @@
 - [Date/Time Picker](#datetime-picker)
 - [Theming & Styles](#theming--styles)
 - [Usage Examples](#usage-examples)
+- [Samples](#samples)
 - [Advanced Usage](#advanced-usage)
 
 ---
 
 ## Why Use This Library?
 
-- **Adapter-based architecture** — swap between `date-fns` and `Moment.js` without changing your templates or component code.
+- **Adapter-based architecture** — swap between `date-fns` and `Moment.js` (or your custom implementation) without changing your templates or component code.
 - **Standalone directives** — tree-shakable, composable, use only what you need.
 - **Rich keyboard handling** — arrow key navigation between date parts, increment/decrement with constraints, auto-selection of date segments.
 - **Built-in validation** — min/max/format validators with Angular Reactive and Template-driven forms integration.
@@ -503,7 +504,7 @@ import {CalendarDayAspectRatio, EventData, MonthCalendarDayFormat, MonthCalendar
                 <div class="day-number">{{ day.day }}</div>
                 @for (event of day.events; track event) {
                     <div class="event" [class.all-day]="event.allDay">
-                        {{ event.data.title }}
+                        {{ $any(event.data).title }}
                     </div>
                 }
             </ng-template>
@@ -639,7 +640,6 @@ import {DateTimeModule, WithTodayDirective, SimpleDatePickerInputDirective} from
 @Component(
 {
     selector: 'my-form',
-    standalone: true,
     template: `
         <input dateTime simpleDatePickerInput withToday
                class="form-control"
@@ -669,7 +669,6 @@ import {DateTimeModule, WithNowDirective, SimpleDateTimePickerInputDirective} fr
 
 @Component(
 {
-    standalone: true,
     template: `
         <input dateTime simpleDateTimePickerInput withNow
                class="form-control"
@@ -699,7 +698,6 @@ import {DateTimeModule, DateTimePickerModule, DatePickerInputDirective} from '@a
 
 @Component(
 {
-    standalone: true,
     template: `
         <input dateTime datePickerInput
                class="form-control"
@@ -732,7 +730,6 @@ import {DatePipesModule} from '@anglr/datetime';
 
 @Component(
 {
-    standalone: true,
     template: `
         <!-- Default date format -->
         <span>{{ createdAt | dateFormat }}</span>
@@ -779,7 +776,6 @@ import {
 @Directive(
 {
     selector: 'input[dateTime][dayPicker]',
-    standalone: true,
     hostDirectives:
     [
         DateTimeInputDirective,
@@ -824,7 +820,6 @@ import {
 @Directive(
 {
     selector: 'input[dateTime][monthPicker]',
-    standalone: true,
     hostDirectives:
     [
         DateTimeInputDirective,
@@ -872,7 +867,6 @@ import {
 @Directive(
 {
     selector: 'input[dateTime][dayTimePicker]',
-    standalone: true,
     hostDirectives:
     [
         WithTimeDirective,
@@ -1014,6 +1008,380 @@ import {DatePipesModule} from '@anglr/datetime';
 export class DisplayingFeatureModule
 {
 }
+```
+
+---
+
+## Samples
+
+These samples demonstrate the building-block approach using individual directives. Live demos are available at [Samples](https://ressurectit.github.io/#/content/datetime#samples).
+
+### Basic DateTime Input
+
+A minimal date input using `dateTime` and `dateTimeInput` directives with a reactive form control.
+
+```typescript
+import {Component, ChangeDetectionStrategy} from '@angular/core';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {JsonPipe} from '@angular/common';
+import {DatePipesModule, DateTimeModule} from '@anglr/datetime';
+
+@Component(
+{
+    selector: 'basic-sample',
+    templateUrl: 'basicSample.component.html',
+    imports:
+    [
+        ReactiveFormsModule,
+        DatePipesModule,
+        DateTimeModule,
+        JsonPipe,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class BasicSampleComponent
+{
+    protected datetimeControl: FormControl<unknown> = new FormControl(null);
+}
+```
+
+```html
+<div class="flex-row margin-bottom-extra-small">
+    <div class="flex-1">Raw value: {{datetimeControl.value | json}}</div>
+    <div class="flex-1">Date value: {{datetimeControl.value | dateFormat}}</div>
+</div>
+
+<input class="form-control" dateTime dateTimeInput [formControl]="datetimeControl">
+```
+
+### Basic DateTime Picker
+
+Adds a date picker popup by applying the `withPicker` directive.
+
+```typescript
+import {Component, ChangeDetectionStrategy} from '@angular/core';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {JsonPipe} from '@angular/common';
+import {DatePipesModule, DateTimeModule, DateTimePickerModule} from '@anglr/datetime';
+
+@Component(
+{
+    selector: 'basic-picker-sample',
+    templateUrl: 'basicPickerSample.component.html',
+    imports:
+    [
+        DateTimePickerModule,
+        ReactiveFormsModule,
+        DatePipesModule,
+        DateTimeModule,
+        JsonPipe,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class BasicPickerSampleComponent
+{
+    protected datetimeControl: FormControl<unknown> = new FormControl(null);
+}
+```
+
+```html
+<div class="flex-row margin-bottom-extra-small">
+    <div class="flex-1">Raw value: {{datetimeControl.value | json}}</div>
+    <div class="flex-1">Date value: {{datetimeControl.value | dateFormat}}</div>
+</div>
+
+<input class="form-control" dateTime dateTimeInput withPicker [formControl]="datetimeControl">
+```
+
+### DateTime with Time
+
+Enables time selection alongside date by adding the `withTime` directive.
+
+```typescript
+import {Component, ChangeDetectionStrategy} from '@angular/core';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {JsonPipe} from '@angular/common';
+import {DatePipesModule, DateTimeModule, DateTimePickerModule, WithTimeDirective} from '@anglr/datetime';
+
+@Component(
+{
+    selector: 'with-time-sample',
+    templateUrl: 'withTimeSample.component.html',
+    imports:
+    [
+        DateTimePickerModule,
+        WithTimeDirective,
+        ReactiveFormsModule,
+        DatePipesModule,
+        DateTimeModule,
+        JsonPipe,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class WithTimeSampleComponent
+{
+    protected datetimeControl: FormControl<unknown> = new FormControl(null);
+}
+```
+
+```html
+<div class="flex-row margin-bottom-extra-small">
+    <div class="flex-1">Raw value: {{datetimeControl.value | json}}</div>
+    <div class="flex-1">Date value: {{datetimeControl.value | dateFormat: 'dateTime'}}</div>
+</div>
+
+<input class="form-control" dateTime dateTimeInput withPicker withTime [formControl]="datetimeControl">
+```
+
+### Today vs Now
+
+Compares `withToday` (sets value to start of day) and `withNow` (sets value to current date/time) when the input is focused while empty.
+
+```typescript
+import {Component, ChangeDetectionStrategy} from '@angular/core';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {JsonPipe} from '@angular/common';
+import {DatePipesModule, DateTimeModule, DateTimePickerModule, WithNowDirective, WithTimeDirective, WithTodayDirective} from '@anglr/datetime';
+
+@Component(
+{
+    selector: 'today-vs-now-sample',
+    templateUrl: 'todayVsNowSample.component.html',
+    imports:
+    [
+        WithTimeDirective,
+        WithTodayDirective,
+        DateTimePickerModule,
+        ReactiveFormsModule,
+        WithNowDirective,
+        DatePipesModule,
+        DateTimeModule,
+        JsonPipe,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class TodayVsNowSampleComponent
+{
+    protected datetimeControl: FormControl<unknown> = new FormControl(null);
+    protected datetimeControl2: FormControl<unknown> = new FormControl(null);
+}
+```
+
+```html
+<div class="flex-row column-gap-small margin-bottom-extra-small">
+    <div class="flex-1">
+        <div>Raw value: {{datetimeControl.value | json}}</div>
+        <div>Date value: {{datetimeControl.value | dateFormat: 'dateTime'}}</div>
+    </div>
+
+    <div class="flex-1">
+        <div>Raw value: {{datetimeControl2.value | json}}</div>
+        <div>Date value: {{datetimeControl2.value | dateFormat: 'dateTime'}}</div>
+    </div>
+</div>
+
+<div class="flex-row column-gap-small">
+    <div class="form-group flex-1">
+        <label class="control-label">today</label>
+        <input class="form-control" dateTime dateTimeInput withPicker withTime withToday [formControl]="datetimeControl">
+    </div>
+
+    <div class="form-group flex-1">
+        <label class="control-label">now</label>
+        <input class="form-control" dateTime dateTimeInput withPicker withTime withNow [formControl]="datetimeControl2">
+    </div>
+</div>
+```
+
+### Input Handlers
+
+Demonstrates the difference between `withSimpleHandler` (simple arrow key navigation: ±1 day/±1 week) and `withHandler` (advanced segment-based keyboard navigation).
+
+```typescript
+import {Component, ChangeDetectionStrategy} from '@angular/core';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {JsonPipe} from '@angular/common';
+import {DatePipesModule, DateTimeInputHandlerDirective, DateTimeModule, DateTimePickerModule, SimpleDateTimeInputHandlerDirective} from '@anglr/datetime';
+
+@Component(
+{
+    selector: 'handlers-sample',
+    templateUrl: 'handlersSample.component.html',
+    imports:
+    [
+        SimpleDateTimeInputHandlerDirective,
+        DateTimeInputHandlerDirective,
+        DateTimePickerModule,
+        ReactiveFormsModule,
+        DatePipesModule,
+        DateTimeModule,
+        JsonPipe,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class HandlersSampleComponent
+{
+    protected datetimeControl: FormControl<unknown> = new FormControl(null);
+    protected datetimeControl2: FormControl<unknown> = new FormControl(null);
+}
+```
+
+```html
+<div class="flex-row column-gap-small margin-bottom-extra-small">
+    <div class="flex-1">
+        <div>Raw value: {{datetimeControl.value | json}}</div>
+        <div>Date value: {{datetimeControl.value | dateFormat}}</div>
+    </div>
+
+    <div class="flex-1">
+        <div>Raw value: {{datetimeControl2.value | json}}</div>
+        <div>Date value: {{datetimeControl2.value | dateFormat}}</div>
+    </div>
+</div>
+
+<div class="flex-row column-gap-small">
+    <div class="form-group flex-1">
+        <label class="control-label">simple handler</label>
+        <input class="form-control" dateTime dateTimeInput withPicker withSimpleHandler [formControl]="datetimeControl">
+    </div>
+
+    <div class="form-group flex-1">
+        <label class="control-label">handler</label>
+        <input class="form-control" dateTime dateTimeInput withPicker withHandler [formControl]="datetimeControl2">
+    </div>
+</div>
+```
+
+### Different Data Types
+
+Shows how to use different `valueFormat` options to control the output type of the form control value.
+
+```typescript
+import {Component, ChangeDetectionStrategy} from '@angular/core';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {JsonPipe} from '@angular/common';
+import {DatePipesModule, DateTimeModule, DateTimePickerModule} from '@anglr/datetime';
+
+@Component(
+{
+    selector: 'data-types-sample',
+    templateUrl: 'dataTypesSample.component.html',
+    imports:
+    [
+        DateTimePickerModule,
+        ReactiveFormsModule,
+        DatePipesModule,
+        DateTimeModule,
+        JsonPipe,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class DataTypesSampleComponent
+{
+    protected datetimeControl: FormControl<unknown> = new FormControl(null);
+    protected timestampControl: FormControl<number|null> = new FormControl(null);
+    protected stringControl: FormControl<string|null> = new FormControl(null);
+    protected customStringControl: FormControl<string|null> = new FormControl(null);
+}
+```
+
+```html
+<div class="flex-row column-gap-medium margin-bottom-extra-small">
+    <div class="flex-1">
+        <div>Raw value: {{datetimeControl.value | json}}</div>
+        <div>Date value: {{datetimeControl.value | dateFormat}}</div>
+    </div>
+
+    <div class="flex-1">
+        <div>Raw value: {{timestampControl.value | json}}</div>
+        <div>Date value: {{timestampControl.value | dateFormat}}</div>
+    </div>
+
+    <div class="flex-1">
+        <div>Raw value: {{stringControl.value | json}}</div>
+        <div>Date value: {{stringControl.value | dateFormat: 'date' : 'yyyyMMdd'}}</div>
+    </div>
+
+    <div class="flex-1">
+        <div>Raw value: {{customStringControl.value | json}}</div>
+        <div>Date value: {{customStringControl.value | dateFormat: 'date' : 'yyyy-MM-dd'}}</div>
+    </div>
+</div>
+
+<div class="flex-row column-gap-medium">
+    <div class="form-group flex-1">
+        <label class="control-label">type DateInstance</label>
+        <input class="form-control" dateTime dateTimeInput withPicker [formControl]="datetimeControl" valueFormat="DateInstance">
+    </div>
+
+    <div class="form-group flex-1">
+        <label class="control-label">type UnixTimestamp</label>
+        <input class="form-control" dateTime dateTimeInput withPicker [formControl]="timestampControl" valueFormat="Timestamp">
+    </div>
+
+    <div class="form-group flex-1">
+        <label class="control-label">type FormattedString</label>
+        <input class="form-control" dateTime dateTimeInput withPicker [formControl]="stringControl" valueFormat="FormattedString" customFormat="yyyyMMdd">
+    </div>
+
+    <div class="form-group flex-1">
+        <label class="control-label">type DataString</label>
+        <input class="form-control" dateTime dateTimeInput withPicker [formControl]="customStringControl" valueFormat="DataString" dataFormat="yyyy-MM-dd">
+    </div>
+</div>
+```
+
+### Customized Picker
+
+Customizes the picker to show only month/year periods with a custom date format.
+
+```typescript
+import {Component, ChangeDetectionStrategy} from '@angular/core';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {JsonPipe} from '@angular/common';
+import {DatePipesModule, DateTimeModule, DateTimePickerModule, DateTimePickerOptions, MonthPickerComponent, YearPickerComponent} from '@anglr/datetime';
+
+@Component(
+{
+    selector: 'customized-picker-sample',
+    templateUrl: 'customizedPickerSample.component.html',
+    imports:
+    [
+        DateTimePickerModule,
+        ReactiveFormsModule,
+        DatePipesModule,
+        DateTimeModule,
+        JsonPipe,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class CustomizedPickerSampleComponent
+{
+    protected datetimeControl: FormControl<unknown> = new FormControl(null);
+    protected pickerOptions: Partial<DateTimePickerOptions<unknown>>;
+
+    constructor()
+    {
+        this.pickerOptions =
+        {
+            periodsDefinition:
+            {
+                month: MonthPickerComponent,
+                year: YearPickerComponent,
+            },
+            defaultPeriod: 'month',
+        };
+    }
+}
+```
+
+```html
+<div class="flex-row margin-bottom-extra-small">
+    <div class="flex-1">Raw value: {{datetimeControl.value | json}}</div>
+    <div class="flex-1">Date value: {{datetimeControl.value | dateFormat: 'date': 'yyyyMM'}}</div>
+</div>
+
+<input class="form-control" dateTime dateTimeInput withPicker [formControl]="datetimeControl" [pickerOptions]="pickerOptions" valueFormat="FormattedString" customFormat="yyyyMM">
 ```
 
 ---

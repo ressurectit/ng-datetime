@@ -68,7 +68,7 @@ export class DateValueProvider<TDate = unknown>
 
         return {
             from: start,
-            to: end
+            to: end,
         };
     }
 }
