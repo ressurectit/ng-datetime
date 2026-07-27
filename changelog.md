@@ -1,5 +1,24 @@
 # Changelog
 
+## Version 10.0.0 (2026-07-27)
+
+### Features
+
+- new `DateTimeFormControl` directive, that provides form value control for DateTime
+    - **implements**
+        - `FormValueControl`
+        - `OnDestroy`
+
+### BREAKING CHANGES
+
+- minimal supported version of `Node` is `^22.22.3 || ^24.15.0 || >=26.0.0`
+- minimal supported version of `@angular` is `22.0.4`
+- minimal supported version of `@anglr/common` is `24.2.0`
+- minimal supported version of `@jscrpt/common` is `7.1.1`
+- minimal supported version of `rxjs` is `7.8.2`
+- new dependency `lodash-es` minimal supported version is `4.18.1`
+- removed dependency on `@angular/animations`
+
 ## Version 9.0.3 (2026-05-18)
 
 ### Bug Fixes
