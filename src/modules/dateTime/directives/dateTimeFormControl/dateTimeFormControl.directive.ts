@@ -78,7 +78,7 @@ export class DateTimeFormControl<TDate = unknown> implements FormValueControl<Da
             else
             {
                 this.logger.verbose('DateTime: Form control: setting control value "{{@(4)value}}"', {value});
-                this.value.set(value);
+                this.value.set(value ?? null);
             }
         }));
 

@@ -26,6 +26,7 @@ const defaultOptions: DateTimePickerDirectiveOptions =
     positionOptions: PositionPlacement.BottomStart,
     showOnFocus: true,
     targetElement: null,
+    renderIntoClosest: null,
     pickerCssClass: null,
 };
 
@@ -172,7 +173,20 @@ export class DateTimePickerDirective<TDate = unknown> extends DateTimeBase<TDate
 
         if(this.withPickerOptions.absolute)
         {
-            renderToBody(this.document, this.componentElement, this.withPickerOptions.targetElement);
+            const closestContainer = this.withPickerOptions.renderIntoClosest ?
+                this.element.nativeElement.closest(this.withPickerOptions.renderIntoClosest):
+                null;
+
+            //render into closest matching ancestor (eg. wrapping CDK overlay pane) so that
+            //interacting with the picker is not treated as an outside click by the container
+            if(closestContainer)
+            {
+                closestContainer.appendChild(this.componentElement);
+            }
+            else
+            {
+                renderToBody(this.document, this.componentElement, this.withPickerOptions.targetElement);
+            }
         }
 
         this.pickerChangesSubscription = new Subscription();

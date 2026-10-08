@@ -1,5 +1,18 @@
 # Changelog
 
+## Version 10.1.0 (2026-10-08)
+
+### Bug Fixes
+
+- fixed `DateTimeFormControl` directive
+    - now correctly sets `null` value when form control value is `undefined`, preventing Angular error which does not support `undefined` value
+
+### Features
+
+- updated `DateTimePickerDirectiveOptions` interface
+    - **new properties**
+        - `renderIntoClosest` css selector of the closest ancestor of the date time input into which the picker should be rendered, working only with `absolute` set to `true`
+
 ## Version 10.0.0 (2026-07-27)
 
 ### Features
